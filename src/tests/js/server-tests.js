@@ -11,12 +11,14 @@ require("../../../node_modules/gpii-express/src/js/cookieparser.js");
 require("../../../node_modules/gpii-express/src/js/session.js");
 require("../../../node_modules/gpii-express/src/js/router.js");
 require("../../../node_modules/gpii-express/src/js/middleware.js");
-require("../../../node_modules/gpii-express/src/js/helper.js");
 
-require("../../js/common/helpers");
 require("../../js/server/dispatcher");
-require("../../js/server/helpers-server");
+require("../../js/server/handlebars");
+require("../../js/common/helper.js");
+require("../../js/common/jsonify");
+require("../../js/common/md-common");
 require("../../js/server/inline");
+require("../../js/server/md-server");
 
 var viewDir = path.resolve(__dirname, "../views");
 
@@ -57,8 +59,8 @@ var testServer = gpii.express({
                 }
             }
         },
-        helpers: {
-            type: "gpii.express.hb.helpers.server"
+        handlebars: {
+            type: "gpii.express.hb"
         }
     }
 });
@@ -152,8 +154,6 @@ testServer.runTests = function() {
     });
 };
 
-testServer.start(function() {
-    testServer.runTests();
-});
+testServer.runTests();
 
 

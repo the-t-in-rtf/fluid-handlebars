@@ -8,15 +8,21 @@ fluid.registerNamespace("gpii.express");
 var jqUnit  = fluid.require("jqUnit");
 var Browser = require("zombie");
 
-require("../../../node_modules/gpii-express/src/js/express");
-require("../../../node_modules/gpii-express/src/js/router");
-require("../../../node_modules/gpii-express/src/js/middleware");
-require("../../../node_modules/gpii-express/src/js/static");
-require("../../../node_modules/gpii-express/src/js/helper");
+require("../../../node_modules/gpii-express/src/js/express.js");
+require("../../../node_modules/gpii-express/src/js/bodyparser.js");
+require("../../../node_modules/gpii-express/src/js/cookieparser.js");
+require("../../../node_modules/gpii-express/src/js/session.js");
+require("../../../node_modules/gpii-express/src/js/static.js");
+require("../../../node_modules/gpii-express/src/js/router.js");
+require("../../../node_modules/gpii-express/src/js/middleware.js");
 
-require("../../js/common/helpers");
-require("../../js/server/helpers-server");
+require("../../js/server/dispatcher");
+require("../../js/server/handlebars");
+require("../../js/common/helper.js");
+require("../../js/common/jsonify");
+require("../../js/common/md-common");
 require("../../js/server/inline");
+require("../../js/server/md-server");
 
 var bcDir      = path.resolve(__dirname, "../../../bower_components");
 var contentDir = path.resolve(__dirname, "../html");
@@ -66,8 +72,8 @@ var testServer = gpii.express({
                 content: contentDir
             }
         },
-        helpers: {
-            type: "gpii.express.hb.helpers.server"
+        handlebars: {
+            type: "gpii.express.hb"
         }
     }
 });
@@ -106,8 +112,6 @@ testServer.runTests = function() {
     });
 };
 
-testServer.start(function() {
-    testServer.runTests();
-});
+testServer.runTests();
 
 

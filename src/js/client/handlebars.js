@@ -1,40 +1,46 @@
-// A client-side extension of the template handling module.  Brings in the client-side dependencies and wires them in to the general helper grade.
-//
-// Also provides DOM-manipulation functions that are completely unique to the client side.
+// A client-side module that provides various template handling capabilities, and which wires in any
+// child components with the grade `gpii.templates.hb.helper` as handlebars helpers.
 //
 // Requires Handlebars.js and Pagedown (for markdown rendering)
 (function ($) {
     "use strict";   
-    var namespace     = "gpii.templates.hb.client";
-    var helpersClient = fluid.registerNamespace(namespace);
+    var gpii = fluid.registerNamespace("gpii")
+    fluid.registerNamespace("gpii.templates.hb.client");
 
-
-    helpersClient.initConverter = function(that) {
-        if (Markdown && Markdown.getSanitizingConverter) {
-            var converter = Markdown.getSanitizingConverter();
-            that.applier.change("converter", converter);
-        }
-        else {
-            console.error("Pagedown or one of its dependencies is not available, so markdown will be passed on without any changes.");
-        }
-        
+    gpii.templates.hb.client.addHelpers = function(that) {
         if (Handlebars) {
-            Handlebars.registerHelper("md", that.md);
-            Handlebars.registerHelper("jsonify", that.jsonify);
+            if (that.options.components) {
+                var keys = Object.keys(that.options.components);
+                for (var a = 0; a < keys.length; a++) {
+                    var key = keys[a];
+                    var component = that[key];
+                    if (fluid.hasGrade(component.options, "gpii.templates.hb.helper")){
+                        if (component.getHelper) {
+                            Handlebars.registerHelper(key, component.getHelper());
+                        }
+                        else {
+                            console.log("Can't register helper '" + key + "' because it doesn't have a getHelper() invoker.");
+                        }
+                    }
+                }
+            }
+            else {
+                console.log("I have no components, so no helpers will be wired in to Handlebars.");
+            }
         }
         else {
             console.error("Handlebars is not available, so we cannot wire in our helpers.")
         }
     };
 
-    helpersClient.render = function(that, key, context) {
+    gpii.templates.hb.client.render = function(that, key, context) {
         // TODO:  Convert to "that-ism" where we use locate() instead of $(selector)
         // If a template exists, load that.  Otherwise, try to load the partial.
         var element = $("#partial-" + key).length ? $("#partial-" + key) : $("#template-" + key);
 
         // Cache each compiled template the first time we use it...
-        if (that.model.compiled[key]) {
-            return that.model.compiled[key](context);
+        if (that.options.compiled[key]) {
+            return that.options.compiled[key](context);
         }
         else {
             if (!element || !element.html()) {
@@ -43,32 +49,35 @@
             }
 
             var template = Handlebars.compile(element.html());
-            that.model.compiled[key] = template;
+            that.options.compiled[key] = template;
             return template(context);
         }
     };
 
-    helpersClient.passthrough = function(that, element, key, context, manipulator) {
-        element[manipulator](helpersClient.render(that, key, context));
+    gpii.templates.hb.client.passthrough = function(that, element, key, context, manipulator) {
+        // TODO: Confirm whether that.function syntax works here
+        element[manipulator](gpii.templates.hb.client.render(that, key, context));
     };
 
     ["after","append","before","prepend","replaceWith", "html"].forEach(function(manipulator){
-        helpersClient[manipulator] = function(that, element, key, context) {
-            helpersClient.passthrough(that, element, key, context, manipulator);
+        // TODO: Confirm whether that.function syntax works here
+        gpii.templates.hb.client[manipulator] = function(that, element, key, context) {
+            gpii.templates.hb.client.passthrough(that, element, key, context, manipulator);
         };
     });
 
-    helpersClient.appendToBody = function (that, data, textStatus, jqXHR) {
+    gpii.templates.hb.client.appendToBody = function (that, data, textStatus, jqXHR) {
         // TODO:  Replace this with a {that} reference?
         $("body").append(data);
 
-        helpersClient.loadPartials();
+        // TODO: Confirm whether that.function syntax works here
+        gpii.templates.hb.client.loadPartials();
 
         // Fire a "templates loaded" event so that components can wait for their markup to appear.
         that.events.templatesLoaded.fire();
     };
 
-    helpersClient.loadPartials  = function() {
+    gpii.templates.hb.client.loadPartials  = function() {
         // load all partials so that we can use them in context
         $("[id^=partial-]").each(function(index, element) {
             var id = element.id;
@@ -77,9 +86,9 @@
         });
     };
 
-    helpersClient.loadTemplates = function(that, callback){
+    gpii.templates.hb.client.loadTemplates = function(that, callback){
         var settings = {
-            url:     that.model.templateUrl,
+            url:     that.options.templateUrl,
             success: that.appendToBody
         };
         if (callback) {
@@ -90,50 +99,56 @@
         }
     };
 
-    fluid.defaults(namespace,{
+    fluid.defaults("gpii.templates.hb.client",{
         gradeNames: ["fluid.standardRelayComponent","gpii.templates.hb.helpers", "autoInit"],
-        model: {
-            compiled:    {},
-            templateUrl: "/hbs"
+        components: {
+            "md": {
+                "type": "gpii.templates.hb.helper.md.client"
+            },
+            "jsonify": {
+                "type": "gpii.templates.hb.helper.jsonify"
+            }
         },
+        compiled:    {},
+        templateUrl: "/hbs",
         invokers: {
             "after": {
-                funcName: namespace + ".after",
+                funcName: "gpii.templates.hb.client.after",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "append": {
-                funcName: namespace + ".append",
+                funcName: "gpii.templates.hb.client.append",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "appendToBody": {
-                funcName: namespace + ".appendToBody",
+                funcName: "gpii.templates.hb.client.appendToBody",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
             },
             "before": {
-                funcName: namespace + ".before",
+                funcName: "gpii.templates.hb.client.before",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "body": {
-                funcName: namespace + ".body",
+                funcName: "gpii.templates.hb.client.body",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "html": {
-                funcName: namespace + ".html",
+                funcName: "gpii.templates.hb.client.html",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "loadPartials": {
-                funcName: namespace + ".loadPartials"
+                funcName: "gpii.templates.hb.client.loadPartials"
             },
             "loadTemplates": {
-                funcName: namespace + ".loadTemplates",
+                funcName: "gpii.templates.hb.client.loadTemplates",
                 args: ["{that}", "{arguments}.0"]
             },
             "prepend": {
-                funcName: namespace + ".prepend",
+                funcName: "gpii.templates.hb.client.prepend",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "replaceWith": {
-                funcName: namespace + ".replaceWith",
+                funcName: "gpii.templates.hb.client.replaceWith",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             }
         },
@@ -143,7 +158,7 @@
         listeners: {
             onCreate: [
                 {
-                    funcName: namespace + ".initConverter",
+                    funcName: "gpii.templates.hb.client.addHelpers",
                     args: ["{that}"]
                 }
             ]
