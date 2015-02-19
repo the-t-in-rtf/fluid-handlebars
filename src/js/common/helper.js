@@ -3,26 +3,36 @@ var fluid = fluid || require('infusion');
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.templates.hb.helper");
 
-// Return a function that processes handlebars content.
+// Each "helper" module is expected to replace the `getHelper` invoker with an invoker that returns a helper function, something like the following:
 //
-// See http://handlebarsjs.com/block_helpers.html for an overview of the various types of helpers that are possible.
+//your.namespace.moduleName.exampleFunction = function(that){
+//    return function(arg1, arg2) {
+//        // The two argument variations have the "options" object as the second argument.  one-argument variations have it as the first.
+//        var options = arg2 ? arg2 : arg1;
+//        return options.fn(this);
+//    };
+//};
 //
-// This is a "noop" function that also serves as an example of what arguments are expected.
+// See http://handlebarsjs.com/block_helpers.html for an overview of the various types of helper functions that are possible.
 //
-// Each "helper" module is expected to replace this function.
-gpii.templates.hb.helper.getNoopHelper = function(that){
-    return function(arg1, arg2) {
-        // The two argument variations have the "options" object as the second argument.  one-argument variations have it as the first.
-        var options = arg2 ? arg2 : arg1;
-        return options.fn(this);
-    };
+// Once you have a module and function, you would then replace getHelper using an invoker definition like:
+//
+//     invokers: {
+//      "getHelper": {
+//          "funcName": "your.namespace.moduleName.exampleFunction",
+//          "args":     ["{that}"]
+//      }
+//    }
+
+gpii.templates.hb.helper.complainAboutMissingHelperFunction = function(that){
+    throw(new Error("You must implement getHelper in your grade before it will function properly as a helper."))
 };
 
 fluid.defaults("gpii.templates.hb.helper", {
     gradeNames: ["fluid.eventedComponent", "fluid.modelRelayComponent", "autoInit"],
     invokers: {
         "getHelper": {
-            "funcName": "gpii.templates.hb.helper.getNoopHelper",
+            "funcName": "gpii.templates.hb.helper.complainAboutMissingHelperFunction",
             "args":     ["{that}"]
         }
     }
