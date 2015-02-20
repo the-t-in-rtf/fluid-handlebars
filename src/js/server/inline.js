@@ -92,7 +92,7 @@ fluid.defaults("gpii.express.hb.inline", {
     },
     listeners: {
         addRoutes: {
-            listener: "{inline}.addRoutes",
+            funcName: "{inline}.addRoutes",
             args: ["{that}"]
         }
     }
