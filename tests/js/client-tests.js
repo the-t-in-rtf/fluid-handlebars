@@ -2,10 +2,10 @@
 //
 // To run these tests, you should look at zombie-tests.js, which will start the server and launch a headless browser.
 //
-var clientTests = fluid.registerNamespace("gpii.hb.clientTests");
+fluid.registerNamespace("gpii.hb.clientTests");
 
 // All tests should look for rendered content as well as variables, jsonify content, and markdown content
-clientTests.commonTests = function(that, element) {
+gpii.hb.clientTests.commonTests = function(that, element) {
     jqUnit.assertNotNull("The results should not be null.", element.html());
 
     var mdRegexp = /<p><em>this works<\/em><\/p>/i;
@@ -18,7 +18,7 @@ clientTests.commonTests = function(that, element) {
     jqUnit.assertNotNull("The results should contain jsonify data.", element.html().match(jsonifyRegexp));
 };
 
-clientTests.runTests = function(that) {
+gpii.hb.clientTests.runTests = function(that) {
     that.templates.loadPartials();
 
     jqUnit.asyncTest("Testing 'after' function...", function() {
@@ -31,7 +31,7 @@ clientTests.runTests = function(that) {
         var elementAfter = element.next();
         jqUnit.assertTrue("The inserted element should contain new content", elementAfter.html().indexOf("from the template") !== -1);
 
-        clientTests.commonTests(that, elementAfter);
+        that.commonTests(elementAfter);
     });
 
     jqUnit.asyncTest("Testing 'append' function...", function() {
@@ -44,7 +44,7 @@ clientTests.runTests = function(that) {
         var appendRegexp = /^original content/;
         jqUnit.assertNotNull("The original text should be at the beginning of the results", element.html().match(appendRegexp));
 
-        clientTests.commonTests(that, element);
+        that.commonTests(element);
     });
 
     jqUnit.asyncTest("Testing 'before' function...", function() {
@@ -57,7 +57,7 @@ clientTests.runTests = function(that) {
         var elementBefore = element.prev();
         jqUnit.assertTrue("The inserted element should contain new content", elementBefore.html().indexOf("from the template") !== -1);
 
-        clientTests.commonTests(that, elementBefore);
+        that.commonTests(elementBefore);
     });
 
     jqUnit.asyncTest("Testing 'html' function...", function() {
@@ -68,7 +68,7 @@ clientTests.runTests = function(that) {
         jqUnit.assertTrue("The updated element should not contain the original text", element.html().indexOf("original content") === -1);
         jqUnit.assertTrue("The updated element should contain new content", element.html().indexOf("from the template") !== -1);
 
-        clientTests.commonTests(that, element);
+        that.commonTests(element);
     });
 
 
@@ -82,7 +82,7 @@ clientTests.runTests = function(that) {
         var prependRegexp = /original content$/;
         jqUnit.assertNotNull("The original text should be at the end of the results", element.html().match(prependRegexp));
 
-        clientTests.commonTests(that, element);
+        that.commonTests(element);
     });
 
     jqUnit.asyncTest("Testing 'replaceWith' function...", function() {
@@ -93,7 +93,7 @@ clientTests.runTests = function(that) {
         jqUnit.start();
         jqUnit.assertTrue("The updated element should not contain the original text", replacedElement.html().indexOf("original content") === -1);
 
-        clientTests.commonTests(that, replacedElement);
+        that.commonTests(replacedElement);
     });
 };
 
@@ -122,11 +122,11 @@ fluid.defaults("gpii.hb.clientTests", {
     invokers: {
         "commonTests": {
             "funcName": "gpii.hb.clientTests.commonTests",
-            "args":     "{that}, {argument}.0"
+            "args":     ["{that}", "{arguments}.0"]
         },
         "runTests": {
             "funcName": "gpii.hb.clientTests.runTests",
-            "args":     "{that}"
+            "args":     ["{that}"]
         }
     }
 });

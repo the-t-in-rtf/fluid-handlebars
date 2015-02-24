@@ -3,22 +3,25 @@
 var fluid = fluid || require("infusion");
 var gpii = fluid.registerNamespace("gpii");
 var path = require("path");
-fluid.registerNamespace("gpii.express");
 
-require("../../../node_modules/gpii-express/src/js/express.js");
-require("../../../node_modules/gpii-express/src/js/bodyparser.js");
-require("../../../node_modules/gpii-express/src/js/cookieparser.js");
-require("../../../node_modules/gpii-express/src/js/session.js");
-require("../../../node_modules/gpii-express/src/js/router.js");
-require("../../../node_modules/gpii-express/src/js/middleware.js");
+var jqUnit  = fluid.require("jqUnit");
+var request = require("request");
 
-require("../../js/server/dispatcher");
-require("../../js/server/handlebars");
-require("../../js/common/helper.js");
-require("../../js/common/jsonify");
-require("../../js/common/md-common");
-require("../../js/server/inline");
-require("../../js/server/md-server");
+require("../../node_modules/gpii-express/src/js/express.js");
+require("../../node_modules/gpii-express/src/js/middleware.js");
+require("../../node_modules/gpii-express/src/js/router.js");
+require("../../node_modules/gpii-express/src/js/json.js");
+require("../../node_modules/gpii-express/src/js/urlencoded.js");
+require("../../node_modules/gpii-express/src/js/cookieparser.js");
+require("../../node_modules/gpii-express/src/js/session.js");
+
+require("../../src/js/server/dispatcher");
+require("../../src/js/server/handlebars");
+require("../../src/js/common/helper.js");
+require("../../src/js/common/jsonify");
+require("../../src/js/common/md-common");
+require("../../src/js/server/inline");
+require("../../src/js/server/md-server");
 
 var viewDir = path.resolve(__dirname, "../views");
 
@@ -36,9 +39,17 @@ var testServer = gpii.express({
             }
         }
     },
+    "model": {
+        myvar:    "modelvariable",
+        json:     { "foo": "bar" },
+        markdown: "*this works*"
+    },
     components: {
-        "bodyparser": {
-            "type": "gpii.express.middleware.bodyparser"
+        "json": {
+            "type": "gpii.express.middleware.bodyparser.json"
+        },
+        "urlencoded": {
+            "type": "gpii.express.middleware.bodyparser.urlencoded"
         },
         "cookieparser": {
             "type": "gpii.express.middleware.cookieparser"
@@ -51,12 +62,8 @@ var testServer = gpii.express({
         },
         dispatcher: {
             type: "gpii.express.hb.dispatcher",
-            "options": {
-                "model": {
-                    myvar:    "modelvariable",
-                    json:     { "foo": "bar" },
-                    markdown: "*this works*"
-                }
+            options: {
+                model: "{gpii.express}.model"
             }
         },
         handlebars: {
@@ -77,9 +84,6 @@ testServer.isSaneResponse = function(jqUnit, error, response, body) {
 };
 
 testServer.runTests = function() {
-    var jqUnit  = fluid.require("jqUnit");
-    var request = require("request");
-
     jqUnit.module("Tests for inlining of templates...");
 
     jqUnit.asyncTest("Confirm that template content is inlined...", function() {
@@ -134,17 +138,7 @@ testServer.runTests = function() {
         });
     });
 
-    jqUnit.asyncTest("Test template handling dispatcher including trailing path content...", function() {
-        request.get(testServer.options.config.express.baseUrl + "dispatcher/code/12345678", function(error, response, body) {
-            jqUnit.start();
-
-            testServer.isSaneResponse(jqUnit, error, response, body);
-
-            jqUnit.assertNotNull("The submitted code should appear in the body...", body.match(/12345678/));
-        });
-    });
-
-    jqUnit.asyncTest("Test 404 handling for router...", function() {
+    jqUnit.asyncTest("Test 404 handling for dispatcher...", function() {
         request.get(testServer.options.config.express.baseUrl + "dispatcher/bogus", function(error, response, body) {
             jqUnit.start();
 

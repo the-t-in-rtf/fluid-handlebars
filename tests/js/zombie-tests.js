@@ -8,27 +8,34 @@ fluid.registerNamespace("gpii.express");
 var jqUnit  = fluid.require("jqUnit");
 var Browser = require("zombie");
 
-require("../../../node_modules/gpii-express/src/js/express.js");
-require("../../../node_modules/gpii-express/src/js/bodyparser.js");
-require("../../../node_modules/gpii-express/src/js/cookieparser.js");
-require("../../../node_modules/gpii-express/src/js/session.js");
-require("../../../node_modules/gpii-express/src/js/static.js");
-require("../../../node_modules/gpii-express/src/js/router.js");
-require("../../../node_modules/gpii-express/src/js/middleware.js");
+require("../../node_modules/gpii-express/src/js/express.js");
+require("../../node_modules/gpii-express/src/js/json.js");
+require("../../node_modules/gpii-express/src/js/urlencoded.js");
+require("../../node_modules/gpii-express/src/js/cookieparser.js");
+require("../../node_modules/gpii-express/src/js/session.js");
+require("../../node_modules/gpii-express/src/js/static.js");
+require("../../node_modules/gpii-express/src/js/router.js");
+require("../../node_modules/gpii-express/src/js/middleware.js");
 
-require("../../js/server/dispatcher");
-require("../../js/server/handlebars");
-require("../../js/common/helper.js");
-require("../../js/common/jsonify");
-require("../../js/common/md-common");
-require("../../js/server/inline");
-require("../../js/server/md-server");
+require("../../src/js/server/dispatcher");
+require("../../src/js/server/handlebars");
+require("../../src/js/common/helper.js");
+require("../../src/js/common/jsonify");
+require("../../src/js/common/md-common");
+require("../../src/js/server/inline");
+require("../../src/js/server/md-server");
 
-var bcDir      = path.resolve(__dirname, "../../../bower_components");
-var contentDir = path.resolve(__dirname, "../html");
-var srcDir     = path.resolve(__dirname, "../../../src");
-var modulesDir = path.resolve(__dirname, "../../../node_modules");
-var viewDir    = path.resolve(__dirname, "../views");
+// Test content (HTML, JS, templates)
+var testDir    = path.resolve(__dirname,"..");
+var contentDir = testDir + "/html";
+var viewDir    = testDir + "views";
+
+// Dependencies
+var bcDir      = path.resolve(__dirname, "../../bower_components");
+var modulesDir = path.resolve(__dirname, "../../node_modules");
+
+// Main source to be tested
+var srcDir     = path.resolve(__dirname, "../../src");
 
 var testServer = gpii.express({
     config:  {
@@ -58,7 +65,15 @@ var testServer = gpii.express({
                 path:    "/src",
                 content: srcDir
             }
-        },        modules: {
+        },
+        tests: {
+            type: "gpii.express.router.static",
+            "options": {
+                path:    "/tests",
+                content: testDir
+            }
+        },
+        modules: {
             type: "gpii.express.router.static",
             "options": {
                 path:    "/modules",
