@@ -1,7 +1,7 @@
 {
-  "name": "gpii-hb-helper",
+  "name": "gpii-handlebars",
   "version": "0.0.0",
-  "homepage": "gpii-hb-helper",
+  "homepage": "gpii-handlebars",
   "authors": [
     "Tony <tony@raisingthefloor.org>"
   ],
