@@ -1,4 +1,5 @@
+"use strict";
 var tests = ["./js/server-tests.js", "./js/zombie-tests.js"];
-tests.forEach(function(testFile){
+tests.forEach(function (testFile) {
     require(testFile);
 });

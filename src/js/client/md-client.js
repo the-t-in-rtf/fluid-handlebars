@@ -2,12 +2,13 @@
 // This is intended to be added as a child component of a grade that wires in helpers, such as `gpii.templates.hb.client`
 //
 // Requires Pagedown (for markdown rendering)
-(function ($) {
+/* global fluid, jQuery, Markdown */
+(function () {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.templates.hb.helper.md.client");
 
-    gpii.templates.hb.helper.md.client.initConverter = function(that) {
+    gpii.templates.hb.helper.md.client.initConverter = function (that) {
         if (Markdown && Markdown.getSanitizingConverter) {
             that.options.converter = Markdown.getSanitizingConverter();
             that.events.converterAvailable.fire();
@@ -17,7 +18,7 @@
         }
     };
 
-    fluid.defaults("gpii.templates.hb.helper.md.client",{
+    fluid.defaults("gpii.templates.hb.helper.md.client", {
         gradeNames: ["gpii.templates.hb.helper.md", "autoInit"],
         listeners: {
             onCreate: [

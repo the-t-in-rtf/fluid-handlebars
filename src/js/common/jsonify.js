@@ -6,13 +6,13 @@
 //
 // The triple braces are advisable to avoid escaping ampersands.
 "use strict";
-var fluid = fluid || require('infusion');
-var gpii  = fluid.registerNamespace("gpii")
+var fluid = fluid || require("infusion");
+var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.templates.hb.helper.jsonify");
 
 
-gpii.templates.hb.helper.jsonify.getJsonifyFunction = function(that) {
-    return function(context){
+gpii.templates.hb.helper.jsonify.getJsonifyFunction = function () {
+    return function (context) {
         try {
             return JSON.stringify(context);
         }

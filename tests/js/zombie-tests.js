@@ -8,14 +8,7 @@ fluid.registerNamespace("gpii.express");
 var jqUnit  = fluid.require("jqUnit");
 var Browser = require("zombie");
 
-require("../../node_modules/gpii-express/src/js/express.js");
-require("../../node_modules/gpii-express/src/js/json.js");
-require("../../node_modules/gpii-express/src/js/urlencoded.js");
-require("../../node_modules/gpii-express/src/js/cookieparser.js");
-require("../../node_modules/gpii-express/src/js/session.js");
-require("../../node_modules/gpii-express/src/js/static.js");
-require("../../node_modules/gpii-express/src/js/router.js");
-require("../../node_modules/gpii-express/src/js/middleware.js");
+require("gpii-express");
 
 require("../../src/js/server/dispatcher");
 require("../../src/js/server/handlebars");
@@ -26,7 +19,7 @@ require("../../src/js/server/inline");
 require("../../src/js/server/md-server");
 
 // Test content (HTML, JS, templates)
-var testDir    = path.resolve(__dirname,"..");
+var testDir    = path.resolve(__dirname, "..");
 var contentDir = testDir + "/html";
 var viewDir    = testDir + "views";
 
@@ -93,31 +86,31 @@ var testServer = gpii.express({
     }
 });
 
-testServer.runTests = function() {
+testServer.runTests = function () {
     var browser = Browser.create();
 
     jqUnit.module("Integration tests for combined client and server-side template handling...");
 
-    jqUnit.asyncTest("Use zombie.js to run the client-side tests...", function() {
-        browser.on("error", function(error){
+    jqUnit.asyncTest("Use zombie.js to run the client-side tests...", function () {
+        browser.on("error", function (error) {
             jqUnit.start();
             jqUnit.fail("There should be no errors:" + error);
         });
-        browser.visit( testServer.options.config.express.baseUrl + "content/client-tests.html").then(function () {
+        browser.visit(testServer.options.config.express.baseUrl + "content/client-tests.html").then(function () {
             jqUnit.start();
 
             // Zombie provides its own assert library, but we can also just use its jQuery to inspect the DOM.
             var failures = 0;
-            browser.window.$(".counts .failed").each(function(index, value){
+            browser.window.$(".counts .failed").each(function (index, value) {
                 var element = browser.window.$(value);
-                failures += parseInt(element.text());
+                failures += parseInt(element.text(), 10);
             });
             jqUnit.assertEquals("There should be no failed tests...", "0", failures);
 
             var passes = 0;
-            browser.window.$(".counts .passed").each(function(index, value){
+            browser.window.$(".counts .passed").each(function (index, value) {
                 var element = browser.window.$(value);
-                passes += parseInt(element.text());
+                passes += parseInt(element.text(), 10);
             });
             jqUnit.assertTrue("There should be passed tests...", passes > 0);
 

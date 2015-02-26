@@ -2,19 +2,21 @@
 // child components with the grade `gpii.templates.hb.helper` as handlebars helpers.
 //
 // Requires Handlebars.js and Pagedown (for markdown rendering)
+
+/* global fluid, jQuery, Handlebars */
 (function ($) {
-    "use strict";   
-    var gpii = fluid.registerNamespace("gpii")
+    "use strict";
+    var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.templates.hb.client");
 
-    gpii.templates.hb.client.addHelpers = function(that) {
+    gpii.templates.hb.client.addHelpers = function (that) {
         if (Handlebars) {
             if (that.options.components) {
                 var keys = Object.keys(that.options.components);
                 for (var a = 0; a < keys.length; a++) {
                     var key = keys[a];
                     var component = that[key];
-                    if (fluid.hasGrade(component.options, "gpii.templates.hb.helper")){
+                    if (fluid.hasGrade(component.options, "gpii.templates.hb.helper")) {
                         if (component.getHelper) {
                             Handlebars.registerHelper(key, component.getHelper());
                         }
@@ -29,11 +31,11 @@
             }
         }
         else {
-            console.error("Handlebars is not available, so we cannot wire in our helpers.")
+            console.error("Handlebars is not available, so we cannot wire in our helpers.");
         }
     };
 
-    gpii.templates.hb.client.render = function(that, key, context) {
+    gpii.templates.hb.client.render = function (that, key, context) {
         // TODO:  Convert to "that-ism" where we use locate() instead of $(selector)
         // If a template exists, load that.  Otherwise, try to load the partial.
         var element = $("#partial-" + key).length ? $("#partial-" + key) : $("#template-" + key);
@@ -54,19 +56,19 @@
         }
     };
 
-    gpii.templates.hb.client.passthrough = function(that, element, key, context, manipulator) {
+    gpii.templates.hb.client.passthrough = function (that, element, key, context, manipulator) {
         // TODO: Confirm whether that.function syntax works here
         element[manipulator](gpii.templates.hb.client.render(that, key, context));
     };
 
-    ["after","append","before","prepend","replaceWith", "html"].forEach(function(manipulator){
+    ["after", "append", "before", "prepend", "replaceWith", "html"].forEach(function (manipulator) {
         // TODO: Confirm whether that.function syntax works here
-        gpii.templates.hb.client[manipulator] = function(that, element, key, context) {
+        gpii.templates.hb.client[manipulator] = function (that, element, key, context) {
             gpii.templates.hb.client.passthrough(that, element, key, context, manipulator);
         };
     });
 
-    gpii.templates.hb.client.appendToBody = function (that, data, textStatus, jqXHR) {
+    gpii.templates.hb.client.appendToBody = function (that, data) {
         // TODO:  Replace this with a {that} reference?
         $("body").append(data);
 
@@ -77,16 +79,16 @@
         that.events.templatesLoaded.fire();
     };
 
-    gpii.templates.hb.client.loadPartials  = function() {
+    gpii.templates.hb.client.loadPartials  = function () {
         // load all partials so that we can use them in context
-        $("[id^=partial-]").each(function(index, element) {
+        $("[id^=partial-]").each(function (index, element) {
             var id = element.id;
-            var key = id.substring(id.indexOf("-")+1);
-            Handlebars.registerPartial(key,$("#" + id).html());
+            var key = id.substring(id.indexOf("-") + 1);
+            Handlebars.registerPartial(key, $("#" + id).html());
         });
     };
 
-    gpii.templates.hb.client.loadTemplates = function(that, callback){
+    gpii.templates.hb.client.loadTemplates = function (that, callback) {
         var settings = {
             url:     that.options.templateUrl,
             success: that.appendToBody
@@ -99,8 +101,8 @@
         }
     };
 
-    fluid.defaults("gpii.templates.hb.client",{
-        gradeNames: ["fluid.standardRelayComponent","gpii.templates.hb.helpers", "autoInit"],
+    fluid.defaults("gpii.templates.hb.client", {
+        gradeNames: ["fluid.standardRelayComponent", "gpii.templates.hb.helpers", "autoInit"],
         components: {
             "md": {
                 "type": "gpii.templates.hb.helper.md.client"

@@ -7,14 +7,14 @@
 //  _client_: `gpii.templates.hb.helper.md.client`
 
 "use strict";
-var fluid = fluid || require('infusion');
+var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.templates.hb.helper.md");
 
-gpii.templates.hb.helper.md.getMdFunction = function(that) {
-    return function(context) {
+gpii.templates.hb.helper.md.getMdFunction = function (that) {
+    return function (context) {
         if (!context) {
-            console.log("No context was provided, ignoring markdown helper call.")
+            console.log("No context was provided, ignoring markdown helper call.");
         }
         else if (that && that.options && that.options.converter) {
             return that.options.converter.makeHtml(context);
@@ -28,13 +28,13 @@ gpii.templates.hb.helper.md.getMdFunction = function(that) {
     };
 };
 
-gpii.templates.hb.helper.md.configureConverter = function(that) {
+gpii.templates.hb.helper.md.configureConverter = function (that) {
     if (that.options.converter) {
         // Double all single carriage returns so that they result in new paragraphs, at least for now
         that.options.converter.hooks.chain("preConversion", function (text) { return text.replace(/[\r\n]+/g, "\n\n"); });
     }
     else {
-        console.error("Could not initialize pagedown converter.  Markdown content will not be parsed.")
+        console.error("Could not initialize pagedown converter.  Markdown content will not be parsed.");
     }
 };
 

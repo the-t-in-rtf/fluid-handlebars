@@ -1,5 +1,6 @@
+"use strict";
 // Base gradeName for handlebars "helper" modules, which can be used on both the client and server side handlebars stacks.
-var fluid = fluid || require('infusion');
+var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.templates.hb.helper");
 
@@ -24,8 +25,8 @@ fluid.registerNamespace("gpii.templates.hb.helper");
 //      }
 //    }
 
-gpii.templates.hb.helper.complainAboutMissingHelperFunction = function(that){
-    throw(new Error("You must implement getHelper in your grade before it will function properly as a helper."))
+gpii.templates.hb.helper.complainAboutMissingHelperFunction = function () {
+    throw (new Error("You must implement getHelper in your grade before it will function properly as a helper."));
 };
 
 fluid.defaults("gpii.templates.hb.helper", {

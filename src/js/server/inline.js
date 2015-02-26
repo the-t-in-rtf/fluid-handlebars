@@ -1,13 +1,13 @@
 "use strict";
 // This script will take one or more server-side template directories and inline their contents on a page.  Used to expose templates for client-side rendering.
-var fluid  = fluid || require('infusion');
+var fluid  = fluid || require("infusion");
 var gpii = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.hb.inline");
-var fs     = require('fs');
+var fs     = require("fs");
 
 gpii.express.hb.inline.loadTemplates =  function (that, dir, res) {
     var dirContents = fs.readdirSync(dir);
-    dirContents.forEach(function(entry){
+    dirContents.forEach(function (entry) {
         var path = dir + "/" + entry;
         var stats = fs.statSync(path);
         if (stats.isFile()) {
@@ -40,17 +40,17 @@ gpii.express.hb.inline.loadTemplates =  function (that, dir, res) {
 
 gpii.express.hb.inline.wrapTemplate = function (that, key, content) {
     // We have to pseudo-escape script tags to avoid them breaking our templates.
-    return '<script id="' + key + '" type="text/x-handlebars-template">' + content.toString().replace(that.options.hbsScriptRegexp,"{{!}}$1") + "</script>\n\n";
+    return "<script id=\"" + key + "\" type=\"text/x-handlebars-template\">" + content.toString().replace(that.options.hbsScriptRegexp, "{{!}}$1") + "</script>\n\n";
 };
 
-gpii.express.hb.inline.getRouterFunction = function(that) {
-    return function(req,res) {
+gpii.express.hb.inline.getRouterFunction = function (that) {
+    return function (req, res) {
         that.loadTemplates(that.options.config.express.views, res);
 
         if (that.model.updated) {
             //console.log("Generating html output...");
             that.model.html = "";
-            Object.keys(that.model.cache).forEach(function(key){
+            Object.keys(that.model.cache).forEach(function (key) {
                 that.model.html += that.wrapTemplate(key, that.model.cache[key].content);
             });
         }

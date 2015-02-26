@@ -1,11 +1,13 @@
+"use strict";
 // This is a test component that is meant to be included in a client-side document.
 //
 // To run these tests, you should look at zombie-tests.js, which will start the server and launch a headless browser.
 //
+/* global fluid, gpii, jqUnit */
 fluid.registerNamespace("gpii.hb.clientTests");
 
 // All tests should look for rendered content as well as variables, jsonify content, and markdown content
-gpii.hb.clientTests.commonTests = function(that, element) {
+gpii.hb.clientTests.commonTests = function (that, element) {
     jqUnit.assertNotNull("The results should not be null.", element.html());
 
     var mdRegexp = /<p><em>this works<\/em><\/p>/i;
@@ -18,10 +20,10 @@ gpii.hb.clientTests.commonTests = function(that, element) {
     jqUnit.assertNotNull("The results should contain jsonify data.", element.html().match(jsonifyRegexp));
 };
 
-gpii.hb.clientTests.runTests = function(that) {
+gpii.hb.clientTests.runTests = function (that) {
     that.templates.loadPartials();
 
-    jqUnit.asyncTest("Testing 'after' function...", function() {
+    jqUnit.asyncTest("Testing 'after' function...", function () {
         var element = that.locate("viewport-after");
         that.templates.after(element, that.model.templateName, that.model);
 
@@ -34,7 +36,7 @@ gpii.hb.clientTests.runTests = function(that) {
         that.commonTests(elementAfter);
     });
 
-    jqUnit.asyncTest("Testing 'append' function...", function() {
+    jqUnit.asyncTest("Testing 'append' function...", function () {
         var element = that.locate("viewport-append");
         that.templates.append(element, that.model.templateName, that.model);
 
@@ -47,7 +49,7 @@ gpii.hb.clientTests.runTests = function(that) {
         that.commonTests(element);
     });
 
-    jqUnit.asyncTest("Testing 'before' function...", function() {
+    jqUnit.asyncTest("Testing 'before' function...", function () {
         var element = that.locate("viewport-before");
         that.templates.before(element, that.model.templateName, that.model);
 
@@ -60,7 +62,7 @@ gpii.hb.clientTests.runTests = function(that) {
         that.commonTests(elementBefore);
     });
 
-    jqUnit.asyncTest("Testing 'html' function...", function() {
+    jqUnit.asyncTest("Testing 'html' function...", function () {
         var element = that.locate("viewport-html");
         that.templates.html(element, that.model.templateName, that.model);
 
@@ -72,7 +74,7 @@ gpii.hb.clientTests.runTests = function(that) {
     });
 
 
-    jqUnit.asyncTest("Testing 'prepend' function...", function() {
+    jqUnit.asyncTest("Testing 'prepend' function...", function () {
         var element = that.locate("viewport-prepend");
         that.templates.prepend(element, that.model.templateName, that.model);
 
@@ -85,7 +87,7 @@ gpii.hb.clientTests.runTests = function(that) {
         that.commonTests(element);
     });
 
-    jqUnit.asyncTest("Testing 'replaceWith' function...", function() {
+    jqUnit.asyncTest("Testing 'replaceWith' function...", function () {
         var replaceWithElement = that.locate("viewport-replaceWith");
         that.templates.replaceWith(replaceWithElement, that.model.replaceWithTemplateName, that.model);
 

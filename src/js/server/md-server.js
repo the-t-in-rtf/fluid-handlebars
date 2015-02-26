@@ -2,13 +2,13 @@
 //
 // This is designed to be included as a child component of `gpii.express.hb`
 "use strict";
-var fluid = require('infusion');
+var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.templates.hb.helper.md.server");
 
 var pagedown       = require("pagedown");
 
-gpii.templates.hb.helper.md.server.initConverter = function(that) {
+gpii.templates.hb.helper.md.server.initConverter = function (that) {
     var converter = pagedown.getSanitizingConverter();
     that.options.converter = converter;
     that.events.converterAvailable.fire();

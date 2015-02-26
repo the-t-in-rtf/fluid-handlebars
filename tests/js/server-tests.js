@@ -7,17 +7,11 @@ var path = require("path");
 var jqUnit  = fluid.require("jqUnit");
 var request = require("request");
 
-require("../../node_modules/gpii-express/src/js/express.js");
-require("../../node_modules/gpii-express/src/js/middleware.js");
-require("../../node_modules/gpii-express/src/js/router.js");
-require("../../node_modules/gpii-express/src/js/json.js");
-require("../../node_modules/gpii-express/src/js/urlencoded.js");
-require("../../node_modules/gpii-express/src/js/cookieparser.js");
-require("../../node_modules/gpii-express/src/js/session.js");
+require("gpii-express");
 
 require("../../src/js/server/dispatcher");
 require("../../src/js/server/handlebars");
-require("../../src/js/common/helper.js");
+require("../../src/js/common/helper");
 require("../../src/js/common/jsonify");
 require("../../src/js/common/md-common");
 require("../../src/js/server/inline");
@@ -72,7 +66,7 @@ var testServer = gpii.express({
     }
 });
 
-testServer.isSaneResponse = function(jqUnit, error, response, body) {
+testServer.isSaneResponse = function (jqUnit, error, response, body) {
     jqUnit.assertNull("There should be no errors.", error);
 
     jqUnit.assertEquals("The response should have a reasonable status code", 200, response.statusCode);
@@ -83,11 +77,11 @@ testServer.isSaneResponse = function(jqUnit, error, response, body) {
     jqUnit.assertNotNull("There should be a body.", body);
 };
 
-testServer.runTests = function() {
+testServer.runTests = function () {
     jqUnit.module("Tests for inlining of templates...");
 
-    jqUnit.asyncTest("Confirm that template content is inlined...", function() {
-        request.get(testServer.options.config.express.baseUrl + "inline", function(error, response, body) {
+    jqUnit.asyncTest("Confirm that template content is inlined...", function () {
+        request.get(testServer.options.config.express.baseUrl + "inline", function (error, response, body) {
             jqUnit.start();
 
             testServer.isSaneResponse(jqUnit, error, response, body);
@@ -116,9 +110,9 @@ testServer.runTests = function() {
     //  All variations should test partials and variables
     var pages = ["custom", "custom-no-matching-layout"];
 
-    pages.forEach(function(page) {
-        jqUnit.asyncTest("Test template handling dispatcher for page '" + page + "' ...", function() {
-            request.get(testServer.options.config.express.baseUrl + "dispatcher/" + page + "?myvar=queryvariable", function(error, response, body) {
+    pages.forEach(function (page) {
+        jqUnit.asyncTest("Test template handling dispatcher for page '" + page + "' ...", function () {
+            request.get(testServer.options.config.express.baseUrl + "dispatcher/" + page + "?myvar=queryvariable", function (error, response, body) {
                 jqUnit.start();
 
                 testServer.isSaneResponse(jqUnit, error, response, body);
@@ -138,8 +132,8 @@ testServer.runTests = function() {
         });
     });
 
-    jqUnit.asyncTest("Test 404 handling for dispatcher...", function() {
-        request.get(testServer.options.config.express.baseUrl + "dispatcher/bogus", function(error, response, body) {
+    jqUnit.asyncTest("Test 404 handling for dispatcher...", function () {
+        request.get(testServer.options.config.express.baseUrl + "dispatcher/bogus", function (error, response) {
             jqUnit.start();
 
             jqUnit.assertNull("There should be no errors...", error);

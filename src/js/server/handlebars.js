@@ -4,14 +4,14 @@
 //
 // Any "helper" functions should extend the `gpii.express.hb.helper` grade, and should be added as child components of an instance of this grade.
 "use strict";
-var fluid = fluid || require('infusion');
+var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.hb");
 
 var exphbs      = require("express-handlebars");
-var handlebars  = require("handlebars");
+require("handlebars");
 
-gpii.express.hb.configureExpress = function(that, express) {
+gpii.express.hb.configureExpress = function (that, express) {
     if (that.options.config.express.views) {
         var viewRoot = that.options.config.express.views;
         var handlebarsConfig = {
@@ -33,14 +33,14 @@ gpii.express.hb.configureExpress = function(that, express) {
     }
 };
 
-gpii.express.hb.getHelpers = function(that) {
+gpii.express.hb.getHelpers = function (that) {
     var functions = {};
     if (that.options.components) {
         var components = Object.keys(that.options.components);
         for (var a = 0; a < components.length; a++) {
             var key = components[a];
             var component = that[key];
-            if (fluid.hasGrade(component.options, "gpii.templates.hb.helper")){
+            if (fluid.hasGrade(component.options, "gpii.templates.hb.helper")) {
                 functions[key] = component.getHelper();
             }
         }
