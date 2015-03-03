@@ -8,7 +8,7 @@ var jqUnit  = fluid.require("jqUnit");
 var request = require("request");
 
 require("gpii-express");
-require("../../src/js/");
+require("../../");
 
 var viewDir = path.resolve(__dirname, "../views");
 

@@ -20,7 +20,7 @@ gpii.express.hb.dispatcher.getRouterFunction = function (that) {
         var filename     = pagesDir + templateName + ".handlebars";
         if (fs.existsSync(filename)) {
             var layoutFilename = fs.existsSync(layoutDir + templateName + ".handlebars") ? templateName : "main";
-            var options        = JSON.parse(JSON.stringify(that.model));
+            var options        = that.model ? JSON.parse(JSON.stringify(that.model)): {};
             options.layout     = layoutDir + layoutFilename + ".handlebars";
             options.req        = req;
             res.render(pagesDir + templateName + ".handlebars", options);

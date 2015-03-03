@@ -10,7 +10,7 @@ var Browser = require("zombie");
 
 require("gpii-express");
 
-require("../../src/js/");
+require("../../");
 
 // Test content (HTML, JS, templates)
 var testDir    = path.resolve(__dirname, "..");

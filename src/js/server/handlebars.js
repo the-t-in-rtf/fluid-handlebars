@@ -52,27 +52,28 @@ gpii.express.hb.getHelpers = function (that) {
 };
 
 fluid.defaults("gpii.express.hb", {
-    "gradeNames": ["fluid.eventedComponent", "fluid.modelRelayComponent", "autoInit"],
-    "config":     "{gpii.express}.options.config",
-    "express":    "{gpii.express}.express",
-    "components": {
-        "md": {
-            "type": "gpii.templates.hb.helper.md.server"
+    gradeNames: ["fluid.eventedComponent", "fluid.modelRelayComponent", "autoInit"],
+    config:     "{gpii.express}.options.config",
+    express:    "{gpii.express}.express",
+    model: {},    // We should have an empty model, as the dispatcher expects to expose that.
+    components: {
+        md: {
+            type: "gpii.templates.hb.helper.md.server"
         },
-        "jsonify": {
-            "type": "gpii.templates.hb.helper.jsonify"
+        jsonify: {
+            type: "gpii.templates.hb.helper.jsonify"
         }
     },
-    "invokers": {
-        "getHelpers": {
-            "funcName": "gpii.express.hb.getHelpers",
-            "args":     ["{that}"]
+    invokers: {
+        getHelpers: {
+            funcName: "gpii.express.hb.getHelpers",
+            args:     ["{that}"]
         }
     },
-    "listeners": {
+    listeners: {
         "{gpii.express}.events.started": {
-            "funcName": "gpii.express.hb.configureExpress",
-            "args":     ["{that}", "{arguments}.0"]
+            funcName: "gpii.express.hb.configureExpress",
+            args:     ["{that}", "{arguments}.0"]
         }
     }
 });
