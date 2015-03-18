@@ -26,7 +26,7 @@ fluid.registerNamespace("gpii.templates.hb.helper");
 //    }
 
 gpii.templates.hb.helper.complainAboutMissingHelperFunction = function () {
-    throw (new Error("You must implement getHelper in your grade before it will function properly as a helper."));
+    fluid.fail(new Error("You must implement getHelper in your grade before it will function properly as a helper."));
 };
 
 fluid.defaults("gpii.templates.hb.helper", {
