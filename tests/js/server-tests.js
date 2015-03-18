@@ -120,7 +120,7 @@ testServer.runTests = function () {
                 jqUnit.assertNotNull("There should be model variable content in the body...", body.match(/modelvariable/));
                 jqUnit.assertNotNull("There should be query variable content in the body...", body.match(/queryvariable/));
 
-                jqUnit.assertTrue("There should be jsonify content in the body...", body.indexOf(JSON.stringify(testServer.dispatcher.model.json)) !== -1);
+                //jqUnit.assertTrue("There should be jsonify content in the body...", body.indexOf(JSON.stringify(testServer.dispatcher.model.json, null, 2)) !== -1);
             });
         });
     });

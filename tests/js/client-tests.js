@@ -16,8 +16,10 @@ gpii.hb.clientTests.commonTests = function (that, element) {
     var variableRegexp = new RegExp(that.model.myvar);
     jqUnit.assertNotNull("The results should contain variable data.", element.html().match(variableRegexp));
 
-    var jsonifyRegexp = new RegExp(JSON.stringify(that.model.json));
-    jqUnit.assertNotNull("The results should contain jsonify data.", element.html().match(jsonifyRegexp));
+    var jsonString = element.find(".jsonify").html();
+    var outputData = JSON.parse(jsonString);
+
+    jqUnit.assertDeepEq("The output should match the model...", that.model.json, outputData);
 };
 
 gpii.hb.clientTests.runTests = function (that) {
