@@ -41,8 +41,8 @@
         var element = $("#partial-" + key).length ? $("#partial-" + key) : $("#template-" + key);
 
         // Cache each compiled template the first time we use it...
-        if (that.options.compiled[key]) {
-            return that.options.compiled[key](context);
+        if (that.compiled[key]) {
+            return that.compiled[key](context);
         }
         else {
             if (!element || !element.html()) {
@@ -51,7 +51,7 @@
             }
 
             var template = Handlebars.compile(element.html());
-            that.options.compiled[key] = template;
+            that.compiled[key] = template;
             return template(context);
         }
     };
@@ -111,7 +111,9 @@
                 "type": "gpii.templates.hb.helper.jsonify"
             }
         },
-        compiled:    {},
+        members: {
+            compiled:    {}
+        },
         templateUrl: "/hbs",
         invokers: {
             "after": {
