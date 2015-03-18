@@ -32,7 +32,7 @@ gpii.express.hb.dispatcher.getRouter = function (that) {
 };
 
 fluid.defaults("gpii.express.hb.dispatcher", {
-    gradeNames: ["gpii.express.router", "autoInit"],
+    gradeNames: ["gpii.express.router", "fluid.standardRelayComponent", "autoInit"],
     method: "get",
     path:   "/dispatcher/:template",
     invokers: {

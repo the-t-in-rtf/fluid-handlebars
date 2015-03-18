@@ -10,11 +10,11 @@
 
     gpii.templates.hb.helper.md.client.initConverter = function (that) {
         if (Markdown && Markdown.getSanitizingConverter) {
-            that.options.converter = Markdown.getSanitizingConverter();
+            that.converter = Markdown.getSanitizingConverter();
             that.events.converterAvailable.fire();
         }
         else {
-            fluid.error("Pagedown or one of its dependencies is not available, so markdown will be passed on without any changes.");
+            fluid.log("Pagedown or one of its dependencies is not available, so markdown will be passed on without any changes.");
         }
     };
 

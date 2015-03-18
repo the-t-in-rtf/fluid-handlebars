@@ -25,16 +25,21 @@ fluid.registerNamespace("gpii.templates.hb.helper");
 //      }
 //    }
 
-gpii.templates.hb.helper.complainAboutMissingHelperFunction = function () {
-    fluid.fail(new Error("You must implement getHelper in your grade before it will function properly as a helper."));
+gpii.templates.hb.helper.complainAboutMissingFunction = function (that, message) {
+    fluid.fail(new Error(message));
 };
+
 
 fluid.defaults("gpii.templates.hb.helper", {
     gradeNames: ["fluid.eventedComponent", "fluid.modelRelayComponent", "autoInit"],
     invokers: {
         "getHelper": {
-            "funcName": "gpii.templates.hb.helper.complainAboutMissingHelperFunction",
-            "args":     ["{that}"]
+            "funcName": "gpii.templates.hb.helper.complainAboutMissingFunction",
+            "args":     ["{that}", "You must implement getHelper in your grade before it will function properly as a helper."]
+        },
+        "getHelperName": {
+            "funcName": "gpii.templates.hb.helper.complainAboutMissingFunction",
+            "args":     ["{that}", "You must implement getHelperName in your grade before it will function properly as a helper."]
         }
     }
 });

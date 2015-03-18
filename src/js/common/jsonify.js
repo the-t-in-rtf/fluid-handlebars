@@ -10,7 +10,6 @@ var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.templates.hb.helper.jsonify");
 
-
 gpii.templates.hb.helper.jsonify.getJsonifyFunction = function () {
     return function (context) {
         try {
@@ -23,11 +22,22 @@ gpii.templates.hb.helper.jsonify.getJsonifyFunction = function () {
     };
 };
 
+gpii.templates.hb.helper.jsonify.getHelperName = function(that) {
+    return that.name;
+};
+
 fluid.defaults("gpii.templates.hb.helper.jsonify", {
     gradeNames: ["gpii.templates.hb.helper", "autoInit"],
+    members: {
+        name: "jsonify"
+    },
     invokers: {
         "getHelper": {
             "funcName": "gpii.templates.hb.helper.jsonify.getJsonifyFunction",
+            "args":     ["{that}"]
+        },
+        "getHelperName": {
+            "funcName": "gpii.templates.hb.helper.jsonify.getHelperName",
             "args":     ["{that}"]
         }
     }
