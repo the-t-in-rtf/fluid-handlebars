@@ -71,7 +71,7 @@ fluid.defaults("gpii.express.hb", {
         }
     },
     listeners: {
-        "{gpii.express}.events.started": {
+        "{gpii.express}.events.onStarted": {
             funcName: "gpii.express.hb.configureExpress",
             args:     ["{that}", "{arguments}.0"]
         }

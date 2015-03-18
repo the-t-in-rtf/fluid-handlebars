@@ -10,7 +10,7 @@ fluid.registerNamespace("gpii.express.hb.dispatcher");
 
 var fs         = require("fs");
 
-gpii.express.hb.dispatcher.getRouterFunction = function (that) {
+gpii.express.hb.dispatcher.getRouter = function (that) {
     return function (req, res) {
         var templateName = req.params.template;
 
@@ -36,8 +36,8 @@ fluid.defaults("gpii.express.hb.dispatcher", {
     method: "get",
     path:   "/dispatcher/:template",
     invokers: {
-        "getRouterFunction": {
-            funcName: "gpii.express.hb.dispatcher.getRouterFunction",
+        "getRouter": {
+            funcName: "gpii.express.hb.dispatcher.getRouter",
             args: ["{that}"]
         }
     }
