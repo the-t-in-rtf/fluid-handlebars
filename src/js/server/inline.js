@@ -18,7 +18,7 @@ gpii.express.hb.inline.loadTemplates =  function (that, dir, res) {
 
                 // cache file information so that we only reload templates that have been updated
                 if (that.model.cache[key] && stats.mtime.getTime() === that.model.cache[key].mtime.getTime()) {
-                    //console.log("Skipping cached " + templateType + " '" + key + "'...");
+                    //fluid.log("Skipping cached " + templateType + " '" + key + "'...");
                 }
                 else {
                     that.applier.change("updated", true);
@@ -48,14 +48,14 @@ gpii.express.hb.inline.getRouterFunction = function (that) {
         that.loadTemplates(that.options.config.express.views, res);
 
         if (that.model.updated) {
-            //console.log("Generating html output...");
+            //fluid.log("Generating html output...");
             that.model.html = "";
             Object.keys(that.model.cache).forEach(function (key) {
                 that.model.html += that.wrapTemplate(key, that.model.cache[key].content);
             });
         }
         else {
-            //console.log("Sending cached html output...");
+            //fluid.log("Sending cached html output...");
         }
 
         res.status(200).send(that.model.html);

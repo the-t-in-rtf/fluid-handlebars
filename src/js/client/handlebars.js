@@ -21,17 +21,17 @@
                             Handlebars.registerHelper(key, component.getHelper());
                         }
                         else {
-                            console.log("Can't register helper '" + key + "' because it doesn't have a getHelper() invoker.");
+                            fluid.log("Can't register helper '" + key + "' because it doesn't have a getHelper() invoker.");
                         }
                     }
                 }
             }
             else {
-                console.log("I have no components, so no helpers will be wired in to Handlebars.");
+                fluid.log("I have no components, so no helpers will be wired in to Handlebars.");
             }
         }
         else {
-            console.error("Handlebars is not available, so we cannot wire in our helpers.");
+            fluid.error("Handlebars is not available, so we cannot wire in our helpers.");
         }
     };
 
@@ -46,7 +46,7 @@
         }
         else {
             if (!element || !element.html()) {
-                console.log("Template '" + key + "' does not have any content. Skipping");
+                fluid.log("Template '" + key + "' does not have any content. Skipping");
                 return;
             }
 

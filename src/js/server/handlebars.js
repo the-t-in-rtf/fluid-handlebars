@@ -29,7 +29,7 @@ gpii.express.hb.configureExpress = function (that, express) {
         express.set("view engine", "handlebars");
     }
     else {
-        console.error("Cannot initialize template handling without a 'config.express.views' option");
+        fluid.error("Cannot initialize template handling without a 'config.express.views' option");
     }
 };
 
@@ -46,7 +46,7 @@ gpii.express.hb.getHelpers = function (that) {
         }
     }
     else {
-        console.log("No components are configured, which means no helpers will be added.");
+        fluid.log("No components are configured, which means no helpers will be added.");
     }
     return functions;
 };
