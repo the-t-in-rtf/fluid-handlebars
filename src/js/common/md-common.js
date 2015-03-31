@@ -38,23 +38,15 @@ gpii.templates.hb.helper.md.configureConverter = function (that) {
     }
 };
 
-gpii.templates.hb.helper.md.getHelperName = function(that) {
-    return that.name;
-};
-
 fluid.defaults("gpii.templates.hb.helper.md", {
     gradeNames: ["gpii.templates.hb.helper", "autoInit"],
+    helperName: "md",
     members: {
-        converter: null,
-        name:      "md"
+        converter: null
     },
     invokers: {
         "getHelper": {
             "funcName": "gpii.templates.hb.helper.md.getMdFunction",
-            "args":     ["{that}"]
-        },
-        "getHelperName": {
-            "funcName": "gpii.templates.hb.helper.md.getHelperName",
             "args":     ["{that}"]
         }
     },

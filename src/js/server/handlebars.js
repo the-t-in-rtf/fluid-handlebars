@@ -12,7 +12,7 @@ var exphbs      = require("express-handlebars");
 require("handlebars");
 
 gpii.express.hb.addHelper = function (that, component) {
-    var key = component.getHelperName();
+    var key = component.options.helperName;
     if (component.getHelper) {
         that.helpers[key] = component.getHelper();
     }

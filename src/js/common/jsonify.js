@@ -22,22 +22,12 @@ gpii.templates.hb.helper.jsonify.getJsonifyFunction = function () {
     };
 };
 
-gpii.templates.hb.helper.jsonify.getHelperName = function(that) {
-    return that.name;
-};
-
 fluid.defaults("gpii.templates.hb.helper.jsonify", {
     gradeNames: ["gpii.templates.hb.helper", "autoInit"],
-    members: {
-        name: "jsonify"
-    },
+    helperName: "jsonify",
     invokers: {
         "getHelper": {
             "funcName": "gpii.templates.hb.helper.jsonify.getJsonifyFunction",
-            "args":     ["{that}"]
-        },
-        "getHelperName": {
-            "funcName": "gpii.templates.hb.helper.jsonify.getHelperName",
             "args":     ["{that}"]
         }
     }
