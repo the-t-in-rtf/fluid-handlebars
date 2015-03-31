@@ -14,13 +14,13 @@ fluid.registerNamespace("gpii.templates.hb.helper.md");
 gpii.templates.hb.helper.md.getMdFunction = function (that) {
     return function (context) {
         if (!context) {
-            fluid.log("No context was provided, ignoring markdown helper call.");
+            fluid.fail("No context was provided, ignoring markdown helper call.");
         }
         else if (that && that.options && that.converter) {
             return that.converter.makeHtml(context);
         }
         else {
-            fluid.log("Can't convert markdown content because the converter could not be found.");
+            fluid.fail("Can't convert markdown content because the converter could not be found.");
         }
 
         // If we can't evolve the output, we just pass it through.
@@ -34,7 +34,7 @@ gpii.templates.hb.helper.md.configureConverter = function (that) {
         that.converter.hooks.chain("preConversion", function (text) { return text.replace(/[\r\n]+/g, "\n\n"); });
     }
     else {
-        fluid.log("Could not initialize pagedown converter.  Markdown content will not be parsed.");
+        fluid.fail("Could not initialize pagedown converter.  Markdown content will not be parsed.");
     }
 };
 
