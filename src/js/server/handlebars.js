@@ -8,7 +8,7 @@ var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.hb");
 
-var exphbs      = require("express-handlebars");
+var exphbs = require("express-handlebars");
 require("handlebars");
 
 gpii.express.hb.addHelper = function (that, component) {
