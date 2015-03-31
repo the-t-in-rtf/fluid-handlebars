@@ -10,12 +10,12 @@
     fluid.registerNamespace("gpii.templates.hb.client");
 
     gpii.templates.hb.client.addHelper = function (that, component) {
-        var key = component.getHelperName();
+        var key = component.options.helperName;
         if (component.getHelper) {
             that.helpers[key] = component.getHelper();
         }
         else {
-            fluid.log("Can't register helper '" + key + "' because it doesn't have a getHelper() invoker.");
+            fluid.fail("Can't register helper '" + key + "' because it doesn't have a getHelper() invoker.");
         }
     };
 
@@ -97,7 +97,7 @@
     };
 
     fluid.defaults("gpii.templates.hb.client", {
-        gradeNames: ["fluid.standardRelayComponent", "autoInit"],
+        gradeNames: ["fluid.eventedComponent", "autoInit"],
         components: {
             "md": {
                 "type": "gpii.templates.hb.helper.md.client"
@@ -171,7 +171,6 @@
                     args: ["{that}", "{arguments}.0"]
                 }
             ]
-
         }
     });
 })(jQuery);
