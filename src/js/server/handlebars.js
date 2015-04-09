@@ -17,7 +17,7 @@ gpii.express.hb.addHelper = function (that, component) {
         that.helpers[key] = component.getHelper();
     }
     else {
-        fluid.log("Can't register helper '" + key + "' because it doesn't have a getHelper() invoker.");
+        fluid.fail("Can't register helper '" + key + "' because it doesn't have a getHelper() invoker.");
     }
 };
 
