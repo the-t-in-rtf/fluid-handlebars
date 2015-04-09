@@ -14,7 +14,7 @@
             that.events.converterAvailable.fire();
         }
         else {
-            fluid.log("Pagedown or one of its dependencies is not available, so markdown will be passed on without any changes.");
+            fluid.fail("Pagedown or one of its dependencies is not available, so markdown will be passed on without any changes.");
         }
     };
 

@@ -16,7 +16,7 @@ gpii.templates.hb.helper.jsonify.getJsonifyFunction = function () {
             return JSON.stringify(context, null, 2);
         }
         catch (e) {
-            fluid.log("Can't convert JSON object to string: " + e);
+            fluid.fail("Can't convert JSON object to string: " + e);
             return context;
         }
     };

@@ -41,7 +41,7 @@
         }
         else {
             if (!element || !element.html()) {
-                fluid.log("Template '" + key + "' does not have any content. Skipping");
+                fluid.fail("Template '" + key + "' does not have any content. Skipping");
                 return;
             }
 
