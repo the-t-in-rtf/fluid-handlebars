@@ -23,5 +23,17 @@
         <td>markdown</td>
         <td class="markdown">{{{md markdown}}}</td>
     </tr>
+    <tr>
+        <td>Testing Equal Variables</td>
+        <td class="equal">{{#equals json.baz json.qux}}true{{else}}false{{/equals}}</td>
+    </tr>
+    <tr>
+        <td>Testing Equal Variable and String</td>
+        <td class="equal">{{#equals json.foo "bar"}}true{{else}}false{{/equals}}</td>
+    </tr>
+    <tr>
+        <td>Testing Unequal Variable and String</td>
+        <td class="unequal">{{#equals "nonsense" json.qux}}true{{else}}false{{/equals}}</td>
+    </tr>
     </tbody>
 </table>

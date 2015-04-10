@@ -43,7 +43,7 @@ gpii.express.hb.inline.wrapTemplate = function (that, key, content) {
     return "<script id=\"" + key + "\" type=\"text/x-handlebars-template\">" + content.toString().replace(that.options.hbsScriptRegexp, "{{!}}$1") + "</script>\n\n";
 };
 
-gpii.express.hb.inline.getRouterFunction = function (that) {
+gpii.express.hb.inline.getRouter = function (that) {
     return function (req, res) {
         that.loadTemplates(that.options.config.express.views, res);
 
@@ -77,8 +77,8 @@ fluid.defaults("gpii.express.hb.inline", {
         addRoutes: null
     },
     invokers: {
-        "getRouterFunction": {
-            funcName: "gpii.express.hb.inline.getRouterFunction",
+        "getRouter": {
+            funcName: "gpii.express.hb.inline.getRouter",
             args: ["{that}"]
         },
         "loadTemplates": {
