@@ -102,6 +102,9 @@
             "md": {
                 "type": "gpii.templates.hb.helper.md.client"
             },
+            "equals": {
+                "type": "gpii.templates.hb.helper.equals"
+            },
             "jsonify": {
                 "type": "gpii.templates.hb.helper.jsonify"
             }

@@ -7,23 +7,23 @@
 fluid.registerNamespace("gpii.hb.clientTests");
 
 gpii.hb.clientTests.transformUsingTemplates = function (that) {
-    that.templates.after(that.locate("viewport-after"), that.model.templateName, that.model);
-    that.templates.append(that.locate("viewport-append"), that.model.templateName, that.model);
-    that.templates.before(that.locate("viewport-before"), that.model.templateName, that.model);
-    that.templates.html(that.locate("viewport-html"), that.model.templateName, that.model);
-    that.templates.prepend(that.locate("viewport-prepend"), that.model.templateName, that.model);
-    that.templates.replaceWith(that.locate("viewport-replaceWith"), that.model.replaceWithTemplateName, that.model);
+    that.templates.after(that.locate("viewport-after"), that.options.templateName, that.model);
+    that.templates.append(that.locate("viewport-append"), that.options.templateName, that.model);
+    that.templates.before(that.locate("viewport-before"), that.options.templateName, that.model);
+    that.templates.html(that.locate("viewport-html"), that.options.templateName, that.model);
+    that.templates.prepend(that.locate("viewport-prepend"), that.options.templateName, that.model);
+    that.templates.replaceWith(that.locate("viewport-replaceWith"), that.options.replaceWithTemplateName, that.model);
 };
 
 fluid.defaults("gpii.hb.clientTests", {
     gradeNames: ["fluid.viewRelayComponent", "autoInit"],
     model: {
-        "myvar":                   "modelvariable",
-        "markdown":                "*this works*",
-        "json":                    { "foo": "bar", "baz": "quux", "qux": "quux" },
-        "templateName":            "main",
-        "replaceWithTemplateName": "replace"
+        myvar:                   "modelvariable",
+        markdown:                "*this works*",
+        json:                    { foo: "bar", baz: "quux", qux: "quux" }
     },
+    templateName:            "index",
+    replaceWithTemplateName: "replace",
     selectors: {
         "viewport-after":       ".viewport-after",
         "viewport-append":      ".viewport-append",
@@ -33,12 +33,12 @@ fluid.defaults("gpii.hb.clientTests", {
         "viewport-replaceWith": ".viewport-replaceWith"
     },
     components: {
-        "templates": {
-            "type": "gpii.templates.hb.client",
-            "options": {
-                "listeners": {
+        templates: {
+            type: "gpii.templates.hb.client",
+            options: {
+                listeners: {
                     "onCreate.loadTemplates": {
-                        "func": "{templates}.loadTemplates"
+                        func: "{templates}.loadTemplates"
                     }
                 }
             }
@@ -46,8 +46,8 @@ fluid.defaults("gpii.hb.clientTests", {
     },
     listeners: {
         "{templates}.events.templatesLoaded": {
-            "funcName": "gpii.hb.clientTests.transformUsingTemplates",
-            "args":     ["{that}"]
+            funcName: "gpii.hb.clientTests.transformUsingTemplates",
+            args:     ["{that}"]
         }
     }
 });
