@@ -31,7 +31,7 @@ gpii.express.hb.inline.loadTemplates =  function (that, dir, res) {
         }
         else if (stats.isDirectory()) {
             // call the function recursively for each directory
-            that.loadTemplates(path, res);
+            gpii.express.hb.inline.loadTemplates(that, path, res);
         }
     });
 };
@@ -51,7 +51,7 @@ gpii.express.hb.inline.generateCachedHtml = function (that) {
 
 gpii.express.hb.inline.getRouter = function (that) {
     return function (req, res) {
-        that.loadTemplates(that.options.config.express.views, res);
+        gpii.express.hb.inline.loadTemplates(that, that.options.config.express.views, res);
 
         res.status(200).send(that.html);
     };
@@ -74,10 +74,6 @@ fluid.defaults("gpii.express.hb.inline", {
         "getRouter": {
             funcName: "gpii.express.hb.inline.getRouter",
             args: ["{that}"]
-        },
-        "loadTemplates": {
-            funcName: "gpii.express.hb.inline.loadTemplates",
-            args: ["{that}", "{arguments}.0", "{arguments}.1"]
         },
         "wrapTemplate": {
             funcName: "gpii.express.hb.inline.wrapTemplate",
