@@ -64,6 +64,9 @@ fluid.defaults("gpii.express.hb", {
         md: {
             type: "gpii.templates.hb.helper.md.server"
         },
+        equals: {
+            type: "gpii.templates.hb.helper.equals"
+        },
         jsonify: {
             type: "gpii.templates.hb.helper.jsonify"
         }

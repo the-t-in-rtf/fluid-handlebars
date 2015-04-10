@@ -120,7 +120,36 @@ testServer.runTests = function () {
                 jqUnit.assertNotNull("There should be model variable content in the body...", body.match(/modelvariable/));
                 jqUnit.assertNotNull("There should be query variable content in the body...", body.match(/queryvariable/));
 
-                //jqUnit.assertTrue("There should be jsonify content in the body...", body.indexOf(JSON.stringify(testServer.dispatcher.model.json, null, 2)) !== -1);
+                // Tests for the "equals" helper
+
+                // TODO:  If I end up using this pattern any more often, make it into a function
+                // TODO:  Also, check with Antranig about jQuery like find, etc. functionality in fluid itself.
+                var equalsElementRegexp = /<td class="equal">([^<]+)<\/td>/;
+                var equalMatches = body.match(equalsElementRegexp);
+                jqUnit.assertNotNull("There should be 'equal' content.", equalMatches);
+                for (var b = 1; b < equalMatches.length; b++) {
+                    var equalElementText = equalMatches[b];
+                    jqUnit.assertEquals("All 'equal' comparisons should end up displaying 'true'.", "true", equalElementText);
+                }
+
+                var unequalRegexp = /<td class="unequal">([^<]+)<\/td>/;
+                var unequalMatches = body.match(unequalRegexp);
+                jqUnit.assertNotNull("There should be 'unequal' content.", unequalMatches);
+                for (var c = 1; c < unequalMatches.length; c++) {
+                    var unequalElementText = unequalMatches[c];
+                    jqUnit.assertEquals("All 'unequal' comparisons should end up displaying 'false'.", "false", unequalElementText);
+                }
+
+                // Tests for the "jsonify" (JSON.stringify) helper
+                var jsonifyElementRegexp = /<td class="jsonify">([^<]+)<\/td>/;
+                var matches = body.match(jsonifyElementRegexp);
+                jqUnit.assertNotNull("There should be jsonify content.", matches);
+                for (var a = 1; a < matches.length; a++) {
+                    var jsonString = matches[a];
+                    var data = JSON.parse(jsonString);
+                    jqUnit.assertDeepEq("The JSON data should match the model", testServer.dispatcher.model.json, data);
+
+                }
             });
         });
     });

@@ -2,6 +2,7 @@
 
 // Common base components for both server and client side
 require("./src/js/common/helper");
+require("./src/js/common/equals");
 require("./src/js/common/jsonify");
 require("./src/js/common/md-common");
 
