@@ -4,12 +4,13 @@ var fluid  = fluid || require("infusion");
 var gpii = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.hb.inline");
 var fs     = require("fs");
+var path   = require("path");
 
 gpii.express.hb.inline.loadTemplates =  function (that, dir, res) {
     var dirContents = fs.readdirSync(dir);
     dirContents.forEach(function (entry) {
-        var path = dir + "/" + entry;
-        var stats = fs.statSync(path);
+        var templatePath = path.resolve(dir, entry);
+        var stats = fs.statSync(templatePath);
         if (stats.isFile()) {
             var matches = that.options.hbsExtensionRegexp.exec(entry);
             if (matches) {
@@ -23,7 +24,7 @@ gpii.express.hb.inline.loadTemplates =  function (that, dir, res) {
                 else {
                     that.cache[key] = {
                         mtime: stats.mtime,
-                        content: fs.readFileSync(path)
+                        content: fs.readFileSync(templatePath)
                     };
                     that.events.onUpdated.fire(that);
                 }
@@ -31,7 +32,7 @@ gpii.express.hb.inline.loadTemplates =  function (that, dir, res) {
         }
         else if (stats.isDirectory()) {
             // call the function recursively for each directory
-            gpii.express.hb.inline.loadTemplates(that, path, res);
+            gpii.express.hb.inline.loadTemplates(that, templatePath, res);
         }
     });
 };
