@@ -1,0 +1,50 @@
+/*
+  A fluid-component for use with express.js that routes requests to the appropriate layout and page (if available).
+
+  Any data that is visible in the instance's model variable will be passed along to the template renderer and available for use in your handlebars templates.
+ */
+"use strict";
+var fluid      = fluid || require("infusion");
+var gpii       = fluid.registerNamespace("gpii");
+fluid.registerNamespace("gpii.express.hb.dispatcher");
+
+var fs         = require("fs");
+var path       = require("path");
+
+gpii.express.hb.dispatcher.getRouter = function (that) {
+    return function (req, res) {
+        var templateName = req.params.template + ".handlebars";
+
+        var viewDir          = that.options.config.express.views;
+        var templateRelPath  = path.join("pages", templateName);
+        var layoutFilename   = templateName;
+        var layoutFullPath   = path.join(viewDir, "layouts", layoutFilename);
+        if (!fs.existsSync(layoutFullPath)) {
+            layoutFilename = "main.handlebars";
+        }
+
+        var templateFullPath = path.join(viewDir, templateRelPath);
+        if (fs.existsSync(templateFullPath)) {
+            var options    = that.model ? fluid.copy(that.model): {};
+            options.layout = layoutFilename;
+            options.req    = req;
+            res.render(templateRelPath, options);
+        }
+        else {
+            var errorRelPath = path.join(viewDir, "pages", "error.handlebars");
+            res.status(404).render(errorRelPath, {message: "The template you requested ('" + templateName + "') was not found."});
+        }
+    };
+};
+
+fluid.defaults("gpii.express.hb.dispatcher", {
+    gradeNames: ["gpii.express.router", "fluid.standardRelayComponent", "autoInit"],
+    method: "get",
+    path:   "/dispatcher/:template",
+    invokers: {
+        "getRouter": {
+            funcName: "gpii.express.hb.dispatcher.getRouter",
+            args: ["{that}"]
+        }
+    }
+});
