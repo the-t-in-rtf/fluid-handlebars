@@ -9,35 +9,41 @@ var gpii       = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.hb.dispatcher");
 
 var fs         = require("fs");
+var path       = require("path");
 
-gpii.express.hb.dispatcher.getRouterFunction = function (that) {
+gpii.express.hb.dispatcher.getRouter = function (that) {
     return function (req, res) {
-        var templateName = req.params.template;
+        var templateName = req.params.template + ".handlebars";
 
-        var viewDir      = that.options.config.express.views;
-        var pagesDir     = viewDir + "/pages/";
-        var layoutDir    = viewDir + "/layouts/";
-        var filename     = pagesDir + templateName + ".handlebars";
-        if (fs.existsSync(filename)) {
-            var layoutFilename = fs.existsSync(layoutDir + templateName + ".handlebars") ? templateName : "main";
-            var options        = that.model ? JSON.parse(JSON.stringify(that.model)): {};
-            options.layout     = layoutDir + layoutFilename + ".handlebars";
-            options.req        = req;
-            res.render(pagesDir + templateName + ".handlebars", options);
+        var viewDir          = that.options.config.express.views;
+        var templateRelPath  = path.join("pages", templateName);
+        var layoutFilename   = templateName;
+        var layoutFullPath   = path.join(viewDir, "layouts", layoutFilename);
+        if (!fs.existsSync(layoutFullPath)) {
+            layoutFilename = "main.handlebars";
+        }
+
+        var templateFullPath = path.join(viewDir, templateRelPath);
+        if (fs.existsSync(templateFullPath)) {
+            var options    = that.model ? fluid.copy(that.model): {};
+            options.layout = layoutFilename;
+            options.req    = req;
+            res.render(templateRelPath, options);
         }
         else {
-            res.status(404).render(pagesDir + "error.handlebars", {message: "The page you requested ('" + templateName + "') was not found."});
+            var errorRelPath = path.join(viewDir, "pages", "error.handlebars");
+            res.status(404).render(errorRelPath, {message: "The template you requested ('" + templateName + "') was not found."});
         }
     };
 };
 
 fluid.defaults("gpii.express.hb.dispatcher", {
-    gradeNames: ["gpii.express.router", "autoInit"],
+    gradeNames: ["gpii.express.router", "fluid.standardRelayComponent", "autoInit"],
     method: "get",
     path:   "/dispatcher/:template",
     invokers: {
-        "getRouterFunction": {
-            funcName: "gpii.express.hb.dispatcher.getRouterFunction",
+        "getRouter": {
+            funcName: "gpii.express.hb.dispatcher.getRouter",
             args: ["{that}"]
         }
     }

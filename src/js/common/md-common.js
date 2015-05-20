@@ -14,13 +14,13 @@ fluid.registerNamespace("gpii.templates.hb.helper.md");
 gpii.templates.hb.helper.md.getMdFunction = function (that) {
     return function (context) {
         if (!context) {
-            console.log("No context was provided, ignoring markdown helper call.");
+            fluid.fail("No context was provided, ignoring markdown helper call.");
         }
-        else if (that && that.options && that.options.converter) {
-            return that.options.converter.makeHtml(context);
+        else if (that && that.options && that.converter) {
+            return that.converter.makeHtml(context);
         }
         else {
-            console.error("Can't convert markdown content because the converter could not be found");
+            fluid.fail("Can't convert markdown content because the converter could not be found.");
         }
 
         // If we can't evolve the output, we just pass it through.
@@ -29,18 +29,21 @@ gpii.templates.hb.helper.md.getMdFunction = function (that) {
 };
 
 gpii.templates.hb.helper.md.configureConverter = function (that) {
-    if (that.options.converter) {
+    if (that.converter) {
         // Double all single carriage returns so that they result in new paragraphs, at least for now
-        that.options.converter.hooks.chain("preConversion", function (text) { return text.replace(/[\r\n]+/g, "\n\n"); });
+        that.converter.hooks.chain("preConversion", function (text) { return text.replace(/[\r\n]+/g, "\n\n"); });
     }
     else {
-        console.error("Could not initialize pagedown converter.  Markdown content will not be parsed.");
+        fluid.fail("Could not initialize pagedown converter.  Markdown content will not be parsed.");
     }
 };
 
 fluid.defaults("gpii.templates.hb.helper.md", {
     gradeNames: ["gpii.templates.hb.helper", "autoInit"],
-    converter: null,
+    helperName: "md",
+    members: {
+        converter: null
+    },
     invokers: {
         "getHelper": {
             "funcName": "gpii.templates.hb.helper.md.getMdFunction",

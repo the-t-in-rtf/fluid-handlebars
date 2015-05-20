@@ -9,29 +9,24 @@
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.templates.hb.client");
 
-    gpii.templates.hb.client.addHelpers = function (that) {
-        if (Handlebars) {
-            if (that.options.components) {
-                var keys = Object.keys(that.options.components);
-                for (var a = 0; a < keys.length; a++) {
-                    var key = keys[a];
-                    var component = that[key];
-                    if (fluid.hasGrade(component.options, "gpii.templates.hb.helper")) {
-                        if (component.getHelper) {
-                            Handlebars.registerHelper(key, component.getHelper());
-                        }
-                        else {
-                            console.log("Can't register helper '" + key + "' because it doesn't have a getHelper() invoker.");
-                        }
-                    }
-                }
-            }
-            else {
-                console.log("I have no components, so no helpers will be wired in to Handlebars.");
-            }
+    gpii.templates.hb.client.addHelper = function (that, component) {
+        var key = component.options.helperName;
+        if (component.getHelper) {
+            that.helpers[key] = component.getHelper();
         }
         else {
-            console.error("Handlebars is not available, so we cannot wire in our helpers.");
+            fluid.fail("Can't register helper '" + key + "' because it doesn't have a getHelper() invoker.");
+        }
+    };
+
+    gpii.templates.hb.client.init = function(that) {
+        if (Handlebars) {
+            Object.keys(that.helpers).forEach(function(key){
+                Handlebars.registerHelper(key, that.helpers[key]);
+            });
+        }
+        else {
+            fluid.fail("Handlebars is not available, so we cannot wire in our helpers.");
         }
     };
 
@@ -41,17 +36,17 @@
         var element = $("#partial-" + key).length ? $("#partial-" + key) : $("#template-" + key);
 
         // Cache each compiled template the first time we use it...
-        if (that.options.compiled[key]) {
-            return that.options.compiled[key](context);
+        if (that.compiled[key]) {
+            return that.compiled[key](context);
         }
         else {
             if (!element || !element.html()) {
-                console.log("Template '" + key + "' does not have any content. Skipping");
+                fluid.fail("Template '" + key + "' does not have any content. Skipping");
                 return;
             }
 
             var template = Handlebars.compile(element.html());
-            that.options.compiled[key] = template;
+            that.compiled[key] = template;
             return template(context);
         }
     };
@@ -102,16 +97,31 @@
     };
 
     fluid.defaults("gpii.templates.hb.client", {
-        gradeNames: ["fluid.standardRelayComponent", "gpii.templates.hb.helpers", "autoInit"],
+        gradeNames: ["fluid.eventedComponent", "autoInit"],
         components: {
             "md": {
                 "type": "gpii.templates.hb.helper.md.client"
+            },
+            "equals": {
+                "type": "gpii.templates.hb.helper.equals"
             },
             "jsonify": {
                 "type": "gpii.templates.hb.helper.jsonify"
             }
         },
-        compiled:    {},
+        members: {
+            helpers:  {},
+            compiled: {}
+        },
+        distributeOptions: [
+            {
+                record: {
+                    "funcName": "gpii.templates.hb.client.addHelper",
+                    "args": ["{gpii.templates.hb.client}", "{gpii.templates.hb.helper}"]
+                },
+                target: "{that > gpii.templates.hb.helper}.options.listeners.onCreate"
+            }
+        ],
         templateUrl: "/hbs",
         invokers: {
             "after": {
@@ -160,11 +170,10 @@
         listeners: {
             onCreate: [
                 {
-                    funcName: "gpii.templates.hb.client.addHelpers",
-                    args: ["{that}"]
+                    funcName: "gpii.templates.hb.client.init",
+                    args: ["{that}", "{arguments}.0"]
                 }
             ]
-
         }
     });
 })(jQuery);

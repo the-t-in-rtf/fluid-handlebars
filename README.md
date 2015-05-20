@@ -45,3 +45,35 @@ Transform markdown into html.  To use this function in your handlebars templates
 
 {{md "string value"}}
 ```
+
+## equals
+
+Display content when two values match.  Values can be context variables or strings:
+
+```
+{{#equals json.baz json.qux}}true{{else}}false{{/equals}}
+
+{{#equals json.foo json.qux}}true{{else}}false{{/equals}}
+
+{{#equals json.foo "bar"}}true{{else}}false{{/equals}}
+
+{{#equals "nonsense" json.qux}}true{{else}}false{{/equals}}
+```
+
+Note that, just like the {{#if}} block provided by handlebars, the {{#equals}} block supports the use of an optional {{else}} block for cases in which the two values are not equal.
+
+
+# Testing This Module
+
+On OS X and Linux, building this module should be as simple as running the following commands in order:
+
+1. `bower install`
+2. `npm install`
+3. `grunt dedupe-infusion`
+4. `node tests/all-tests.js`
+
+## Testing on Windows
+
+This module uses [Zombie](http://zombie.labnotes.org/) for client-side testing.  This requires "contextify", which cannot be automatically built under windows because of problems with `node-gyp` in that environment.
+
+To run the `npm install` command for this module under windows, you will need to follow [the instructions for installing `node-gyp`](https://github.com/TooTallNate/node-gyp/wiki/Visual-Studio-2010-Setup) first, and save "contextify" to your local npm cache using `npm install`.

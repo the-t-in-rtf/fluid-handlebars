@@ -10,14 +10,13 @@ var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.templates.hb.helper.jsonify");
 
-
 gpii.templates.hb.helper.jsonify.getJsonifyFunction = function () {
     return function (context) {
         try {
-            return JSON.stringify(context);
+            return JSON.stringify(context, null, 2);
         }
         catch (e) {
-            console.log("Can't convert JSON object to string: " + e);
+            fluid.fail("Can't convert JSON object to string: " + e);
             return context;
         }
     };
@@ -25,6 +24,7 @@ gpii.templates.hb.helper.jsonify.getJsonifyFunction = function () {
 
 fluid.defaults("gpii.templates.hb.helper.jsonify", {
     gradeNames: ["gpii.templates.hb.helper", "autoInit"],
+    helperName: "jsonify",
     invokers: {
         "getHelper": {
             "funcName": "gpii.templates.hb.helper.jsonify.getJsonifyFunction",

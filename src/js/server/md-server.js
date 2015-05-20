@@ -6,11 +6,11 @@ var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.templates.hb.helper.md.server");
 
-var pagedown       = require("pagedown");
+var pagedown = require("pagedown");
 
 gpii.templates.hb.helper.md.server.initConverter = function (that) {
     var converter = pagedown.getSanitizingConverter();
-    that.options.converter = converter;
+    that.converter = converter;
     that.events.converterAvailable.fire();
 };
 

@@ -4,12 +4,13 @@ var fluid  = fluid || require("infusion");
 var gpii = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.hb.inline");
 var fs     = require("fs");
+var path   = require("path");
 
 gpii.express.hb.inline.loadTemplates =  function (that, dir, res) {
     var dirContents = fs.readdirSync(dir);
     dirContents.forEach(function (entry) {
-        var path = dir + "/" + entry;
-        var stats = fs.statSync(path);
+        var templatePath = path.resolve(dir, entry);
+        var stats = fs.statSync(templatePath);
         if (stats.isFile()) {
             var matches = that.options.hbsExtensionRegexp.exec(entry);
             if (matches) {
@@ -17,22 +18,21 @@ gpii.express.hb.inline.loadTemplates =  function (that, dir, res) {
                 var key =  templateType + "-" + matches[1];
 
                 // cache file information so that we only reload templates that have been updated
-                if (that.model.cache[key] && stats.mtime.getTime() === that.model.cache[key].mtime.getTime()) {
-                    //console.log("Skipping cached " + templateType + " '" + key + "'...");
+                if (that.cache[key] && stats.mtime.getTime() === that.cache[key].mtime.getTime()) {
+                    //fluid.log("Skipping cached " + templateType + " '" + key + "'...");
                 }
                 else {
-                    that.applier.change("updated", true);
-                    // TODO:  Talk with Antranig about the best way to update this kind of structure using a change applier.
-                    that.model.cache[key] = {
+                    that.cache[key] = {
                         mtime: stats.mtime,
-                        content: fs.readFileSync(path)
+                        content: fs.readFileSync(templatePath)
                     };
+                    that.events.onUpdated.fire(that);
                 }
             }
         }
         else if (stats.isDirectory()) {
             // call the function recursively for each directory
-            that.loadTemplates(path, res);
+            gpii.express.hb.inline.loadTemplates(that, templatePath, res);
         }
     });
 };
@@ -43,51 +43,48 @@ gpii.express.hb.inline.wrapTemplate = function (that, key, content) {
     return "<script id=\"" + key + "\" type=\"text/x-handlebars-template\">" + content.toString().replace(that.options.hbsScriptRegexp, "{{!}}$1") + "</script>\n\n";
 };
 
-gpii.express.hb.inline.getRouterFunction = function (that) {
+gpii.express.hb.inline.generateCachedHtml = function (that) {
+    that.html = "";
+    Object.keys(that.cache).forEach(function (key) {
+        that.html += that.wrapTemplate(key, that.cache[key].content);
+    });
+};
+
+gpii.express.hb.inline.getRouter = function (that) {
     return function (req, res) {
-        that.loadTemplates(that.options.config.express.views, res);
+        gpii.express.hb.inline.loadTemplates(that, that.options.config.express.views, res);
 
-        if (that.model.updated) {
-            //console.log("Generating html output...");
-            that.model.html = "";
-            Object.keys(that.model.cache).forEach(function (key) {
-                that.model.html += that.wrapTemplate(key, that.model.cache[key].content);
-            });
-        }
-        else {
-            //console.log("Sending cached html output...");
-        }
-
-        res.status(200).send(that.model.html);
+        res.status(200).send(that.html);
     };
 };
 
-
 fluid.defaults("gpii.express.hb.inline", {
-    gradeNames: ["gpii.express.router", "fluid.modelRelayComponent", "autoInit"],
+    gradeNames: ["gpii.express.router", "autoInit"],
     path:               "/inline",
     hbsExtensionRegexp: /^(.+)\.(?:hbs|handlebars)$/,
     hbsScriptRegexp:    /(script>)/g,
-    model: {
+    members: {
         cache:              {},
-        html:               "",
-        updated:            false
+        html:               ""
     },
     events: {
-        addRoutes: null
+        addRoutes: null,
+        onUpdated: null
     },
     invokers: {
-        "getRouterFunction": {
-            funcName: "gpii.express.hb.inline.getRouterFunction",
+        "getRouter": {
+            funcName: "gpii.express.hb.inline.getRouter",
             args: ["{that}"]
-        },
-        "loadTemplates": {
-            funcName: "gpii.express.hb.inline.loadTemplates",
-            args: ["{that}", "{arguments}.0", "{arguments}.1"]
         },
         "wrapTemplate": {
             funcName: "gpii.express.hb.inline.wrapTemplate",
             args: ["{that}", "{arguments}.0", "{arguments}.1"]
+        }
+    },
+    listeners: {
+        "onUpdated": {
+            funcName: "gpii.express.hb.inline.generateCachedHtml",
+            args:     ["{that}"]
         }
     }
 });

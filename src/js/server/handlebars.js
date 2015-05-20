@@ -8,8 +8,18 @@ var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.hb");
 
-var exphbs      = require("express-handlebars");
+var exphbs = require("express-handlebars");
 require("handlebars");
+
+gpii.express.hb.addHelper = function (that, component) {
+    var key = component.options.helperName;
+    if (component.getHelper) {
+        that.helpers[key] = component.getHelper();
+    }
+    else {
+        fluid.fail("Can't register helper '" + key + "' because it doesn't have a getHelper() invoker.");
+    }
+};
 
 gpii.express.hb.configureExpress = function (that, express) {
     if (that.options.config.express.views) {
@@ -20,7 +30,7 @@ gpii.express.hb.configureExpress = function (that, express) {
             partialsDir:   viewRoot + "/partials/"
         };
 
-        handlebarsConfig.helpers = that.getHelpers();
+        handlebarsConfig.helpers = that.helpers;
 
         express.set("views", viewRoot);
 
@@ -29,49 +39,40 @@ gpii.express.hb.configureExpress = function (that, express) {
         express.set("view engine", "handlebars");
     }
     else {
-        console.error("Cannot initialize template handling without a 'config.express.views' option");
+        fluid.fail("Cannot initialize template handling without a 'config.express.views' option");
     }
-};
-
-gpii.express.hb.getHelpers = function (that) {
-    var functions = {};
-    if (that.options.components) {
-        var components = Object.keys(that.options.components);
-        for (var a = 0; a < components.length; a++) {
-            var key = components[a];
-            var component = that[key];
-            if (fluid.hasGrade(component.options, "gpii.templates.hb.helper")) {
-                functions[key] = component.getHelper();
-            }
-        }
-    }
-    else {
-        console.log("No components are configured, which means no helpers will be added.");
-    }
-    return functions;
 };
 
 fluid.defaults("gpii.express.hb", {
     gradeNames: ["fluid.eventedComponent", "fluid.modelRelayComponent", "autoInit"],
     config:     "{gpii.express}.options.config",
     express:    "{gpii.express}.express",
+    members: {
+        helpers: {}
+    },
     model: {},    // We should have an empty model, as the dispatcher expects to expose that.
+    distributeOptions: [
+        {
+            record: {
+                "funcName": "gpii.express.hb.addHelper",
+                "args": ["{gpii.express.hb}", "{gpii.templates.hb.helper}"]
+            },
+            target: "{that > gpii.templates.hb.helper}.options.listeners.onCreate"
+        }
+    ],
     components: {
         md: {
             type: "gpii.templates.hb.helper.md.server"
+        },
+        equals: {
+            type: "gpii.templates.hb.helper.equals"
         },
         jsonify: {
             type: "gpii.templates.hb.helper.jsonify"
         }
     },
-    invokers: {
-        getHelpers: {
-            funcName: "gpii.express.hb.getHelpers",
-            args:     ["{that}"]
-        }
-    },
     listeners: {
-        "{gpii.express}.events.started": {
+        "{gpii.express}.events.onStarted": {
             funcName: "gpii.express.hb.configureExpress",
             args:     ["{that}", "{arguments}.0"]
         }
