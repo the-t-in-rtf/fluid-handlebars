@@ -63,6 +63,7 @@ fluid.defaults("gpii.express.hb.inline", {
     path:               "/inline",
     hbsExtensionRegexp: /^(.+)\.(?:hbs|handlebars)$/,
     hbsScriptRegexp:    /(script>)/g,
+    config: "{expressConfigHolder}.options.config",
     members: {
         cache:              {},
         html:               ""

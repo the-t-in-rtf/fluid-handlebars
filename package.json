@@ -15,7 +15,7 @@
     "underscore-node":    "0.1.2"
   },
   "devDependencies": {
-    "gpii-express":         "git://github.com/the-t-in-rtf/gpii-express.git#e4fe4c978a9b41e5e42cab9dad53d41870e52035",
+    "gpii-express":         "git://github.com/GPII/gpii-express.git#7d4ec39ac4cef7c1dced6bf7e8d91fc18b5af34c",
     "grunt":                "~0.4.4",
     "grunt-shell":          "0.6.4",
     "grunt-contrib-jshint": "~0.9.0",
