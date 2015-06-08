@@ -20,7 +20,7 @@
         }
     };
 
-    gpii.templates.hb.client.init = function (that) {
+    gpii.templates.hb.client.registerHelpers = function (that) {
         if (Handlebars) {
             Object.keys(that.helpers).forEach(function (key) {
                 Handlebars.registerHelper(key, that.helpers[key]);
@@ -68,7 +68,7 @@
         gpii.templates.hb.client.loadPartials(that);
 
         // Fire a "templates loaded" event so that components can wait for their markup to appear.
-        that.events.templatesLoaded.fire(that);
+        that.events.onTemplatesLoaded.fire(that);
     };
 
     gpii.templates.hb.client.loadPartials  = function (that) {
@@ -151,9 +151,6 @@
                 funcName: "gpii.templates.hb.client.html",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
-            "loadPartials": {
-                funcName: "gpii.templates.hb.client.loadPartials"
-            },
             "retrieveTemplates": {
                 funcName: "gpii.templates.hb.client.retrieveTemplates",
                 args: ["{that}", "{arguments}.0"]
@@ -168,15 +165,18 @@
             }
         },
         events: {
-            "templatesLoaded": null
+            "onTemplatesLoaded": null
         },
         listeners: {
-            onCreate: [
+            "onCreate.registerHelpers": [
                 {
-                    funcName: "gpii.templates.hb.client.init",
+                    funcName: "gpii.templates.hb.client.registerHelpers",
                     args: ["{that}", "{arguments}.0"]
                 }
-            ]
+            ],
+            "onCreate.loadTemplates": {
+                func: "{that}.retrieveTemplates"
+            }
         }
     });
 })(jQuery);

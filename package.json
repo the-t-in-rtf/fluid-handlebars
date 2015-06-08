@@ -6,12 +6,11 @@
     "test": "node src/tests/all-tests.js"
   },
   "dependencies": {
+    "express-handlebars": "1.1.0",
     "handlebars":         "2.0.0",
     "infusion":           "git://github.com/fluid-project/infusion.git#605b0bcfaedf6193c31456236d3aa4e42cf36a96",
     "marked":             "0.3.2",
     "pagedown":           "1.1.0",
-    "handlebars":         "2.0.0",
-    "express-handlebars": "1.1.0",
     "underscore-node":    "0.1.2"
   },
   "devDependencies": {

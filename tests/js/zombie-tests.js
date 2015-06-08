@@ -8,16 +8,17 @@ fluid.setLogging(true);
 var gpii  = fluid.registerNamespace("gpii");
 var path  = require("path");
 
-var jqUnit  = fluid.require("jqUnit");
+//var jqUnit  = fluid.require("jqUnit");
 var Browser = require("zombie");
 
 require("gpii-express");
 
 require("../../");
+require("./test-router-error");
 
 // Test content (HTML, JS, templates)
 var testDir    = path.resolve(__dirname, "..");
-var contentDir = path.join(testDir, "html");
+var contentDir = path.join(testDir, "static");
 var viewDir    = path.join(testDir, "views");
 
 // Dependencies
@@ -147,13 +148,6 @@ fluid.defaults("gpii.handlebars.tests.zombieTests", {
                 content: srcDir
             }
         },
-        tests: {
-            type: "gpii.express.router.static",
-            "options": {
-                path:    "/tests",
-                content: testDir
-            }
-        },
         modules: {
             type: "gpii.express.router.static",
             "options": {
@@ -168,16 +162,19 @@ fluid.defaults("gpii.handlebars.tests.zombieTests", {
                 content: contentDir
             }
         },
+        error: {
+            type: "gpii.templates.tests.router.error"
+        },
         handlebars: {
             type: "gpii.express.hb"
         }
     },
-    listeners: {
-        "{express}.events.onStarted": {
-            funcName: "gpii.handlebars.tests.zombieTests.runTests",
-            args:     ["{that}"]
-        }
-    }
+    //listeners: {
+    //    "{express}.events.onStarted": {
+    //        funcName: "gpii.handlebars.tests.zombieTests.runTests",
+    //        args:     ["{that}"]
+    //    }
+    //}
 });
 
 gpii.handlebars.tests.zombieTests();

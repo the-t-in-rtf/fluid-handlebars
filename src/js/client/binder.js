@@ -46,19 +46,26 @@
 //  }
 //
 // Once you have done this, model changes should be passed to form controls and vice versa.
-
+//
+// Note that if you reload markup or otherwise generate new markup, you will need to reapply the set of bindings.
+//
+// This code was originally written by Antranig Basman <amb26@ponder.org.uk> and was evolved by Tony Atkins
+// <tony@raisingthefloor.org> to document its use and make it usable with a wider range of form element types.
+//
 /* global fluid, jQuery */
 (function ($) {
     "use strict";
-    var binder = fluid.registerNamespace("ctr.components.binder");
+    fluid.registerNamespace("gpii.templates.binder");
 
-    binder.setRadioValue = function (element, change) {
+    // A convenience function to handle setting of radio buttons.
+    gpii.templates.binder.setRadioValue = function (element, change) {
         element.each(function (index, option) {
             option.checked = ($(option).val() === change);
         });
     };
 
-    binder.applyBinding = function (that) {
+    // The main function to create bindings between markup and model elements.  See above for usage details.
+    gpii.templates.binder.applyBinding = function (that) {
         var bindings = that.options.bindings;
         fluid.each(bindings, function (binding) {
             var element = that.locate(binding.selector);
@@ -67,7 +74,7 @@
 
             // initial sync, model overwrites values
             if (binding.elementType === "radio") {
-                binder.setRadioValue(element, value);
+                gpii.templates.binder.setRadioValue(element, value);
             }
             else {
                 element.val(value);
@@ -93,7 +100,7 @@
                 console.log("Changing value based on model update.");
 
                 if (binding.elementType === "radio") {
-                    binder.setRadioValue(element, change);
+                    gpii.templates.binder.setRadioValue(element, change);
                 }
                 else {
                     element.val(change);

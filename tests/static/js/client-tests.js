@@ -34,14 +34,7 @@ fluid.defaults("gpii.hb.clientTests", {
     },
     components: {
         templates: {
-            type: "gpii.templates.hb.client",
-            options: {
-                listeners: {
-                    "onCreate.loadTemplates": {
-                        func: "{templates}.retrieveTemplates"
-                    }
-                }
-            }
+            type: "gpii.templates.hb.client"
         }
     },
     listeners: {
