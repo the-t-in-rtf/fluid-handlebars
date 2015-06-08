@@ -97,7 +97,7 @@ functions by changing the value of `options.selectors.success` and `options.sele
             initial: "",  // The container that will be overwritten with template content on startup.
             error:   "",  // The container that will be updated with template content if an AJAX error occurs.
             success: "",  // The container that will be updated with content if the AJAX request succeeds.
-            submit: ".submit" // Clicking or hitting enter on our submit button will launch our AJAX request
+            submit:  ".submit" // Clicking or hitting enter on our submit button will launch our AJAX request
         },
         invokers: {
             renderMarkup: {

@@ -11,14 +11,31 @@ fluid.registerNamespace("gpii.hb.tests.templateAware");
 fluid.defaults("gpii.hb.tests.templateAware", {
     gradeNames: ["gpii.templates.hb.client.templateFormControl", "autoInit"],
     templates: {
-        "initial": "form-initial",
         "error":   "form-error",
         "success": "form-success"
+    }
+});
+
+fluid.registerNamespace("gpii.hb.tests.templateAware.readyForSuccess");
+fluid.defaults("gpii.hb.tests.templateAware.readyForSuccess", {
+    gradeNames: ["gpii.hb.tests.templateAware", "autoInit"],
+    ajaxUrl: "/content/json/success.json",
+    model: {
+        buttonName: "Succeed"
     },
-    selectors: {
-        initial: ".schmewport",
-        error:   ".schmewport",
-        success: ".schmewport"
+    templates: {
+        "initial": "form-success-initial"
+    }
+});
+
+fluid.registerNamespace("gpii.hb.tests.templateAware.readyForFailure");
+fluid.defaults("gpii.hb.tests.templateAware.readyForFailure", {
+    gradeNames: ["gpii.hb.tests.templateAware", "autoInit"],
+    ajaxUrl: "/error",
+    model: {
+        buttonName: "Fail"
     },
-    ajaxUrl: "/error"
+    templates: {
+        "initial": "form-error-initial"
+    }
 });

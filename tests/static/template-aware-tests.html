@@ -47,11 +47,16 @@
 
         <hr/>
 
-        <div class="viewport"><div class="schmewport">This content should not be visible.</div></div>
+        <div class="readyForSuccess">This content should not be visible.></div>
+
+        <hr/>
+
+        <div class="readyForFailure">This content should not be visible.></div>
 
         <script type="text/javascript">
             <!-- instantiate test component -->
-            var tests = gpii.hb.tests.templateAware(".viewport");
+            var success = gpii.hb.tests.templateAware.readyForSuccess(".readyForSuccess");
+            var failure = gpii.hb.tests.templateAware.readyForFailure(".readyForFailure");
         </script>
     </body>
 </html>
