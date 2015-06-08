@@ -3,6 +3,8 @@
 // The client-side template handling requires a server to provide the template content.
 "use strict";
 var fluid = fluid || require("infusion");
+fluid.setLogging(true);
+
 var gpii  = fluid.registerNamespace("gpii");
 var path  = require("path");
 
@@ -108,21 +110,6 @@ gpii.handlebars.tests.zombieTests.runTests = function (that) {
         });
     });
 };
-
-/*
-
- jqUnit.asyncTest("Testing 'prepend' function...", function () {
- "viewport-prepend":     ".viewport-prepend",
-
- jqUnit.start();
- jqUnit.assertTrue("The updated element should contain the original text", element.html().indexOf("original content") !== -1);
-
- var prependRegexp = /original content$/;
- jqUnit.assertNotNull("The original text should be at the end of the results", element.html().match(prependRegexp));
-
- gpii.handlebars.tests.zombieTests.commonTests(that, element);
- });
- */
 
 fluid.defaults("gpii.handlebars.tests.zombieTests", {
     gradeNames: ["gpii.express", "autoInit"],
