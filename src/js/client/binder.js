@@ -64,7 +64,7 @@
 
             // Update the model when the form changes
             element.change(function () {
-                console.log("Changing model based on element update.");
+                fluid.log("Changing model based on element update.");
 
                 var value = fluid.value(element);
                 that.applier.change(binding.path, value);
@@ -72,7 +72,7 @@
 
             // Update the form elements when the model changes
             that.applier.modelChanged.addListener(binding.path, function (change) {
-                console.log("Changing value based on model update.");
+                fluid.log("Changing value based on model update.");
 
                 fluid.value(element, change);
             });
