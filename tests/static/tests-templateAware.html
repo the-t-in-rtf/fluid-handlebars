@@ -38,7 +38,7 @@
 
 
         <!-- Bring in our test helper -->
-        <script type="text/javascript" src="/content/js/template-aware-test-harness.js"></script>
+        <script type="text/javascript" src="/content/js/tests-templateAware.js"></script>
     </head>
     <body>
         <h1>"Template Aware" Component Tests</h1>
@@ -47,16 +47,11 @@
 
         <hr/>
 
-        <div class="readyForSuccess">This content should not be visible.></div>
-
-        <hr/>
-
-        <div class="readyForFailure">This content should not be visible.></div>
+        <div class="viewport">This content should not be visible.></div>
 
         <script type="text/javascript">
             <!-- instantiate test component -->
-            var success = gpii.hb.tests.templateAware.readyForSuccess(".readyForSuccess");
-            var failure = gpii.hb.tests.templateAware.readyForFailure(".readyForFailure");
+            var templateAware = gpii.hb.tests.templateAware(".viewport");
         </script>
     </body>
 </html>

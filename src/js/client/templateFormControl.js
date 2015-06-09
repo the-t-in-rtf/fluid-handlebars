@@ -19,7 +19,6 @@ functions by changing the value of `options.selectors.success` and `options.sele
 (function ($) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
-    fluid.setLogging(true);
     fluid.registerNamespace("gpii.templates.hb.client.templateFormControl");
 
 
@@ -43,13 +42,6 @@ functions by changing the value of `options.selectors.success` and `options.sele
         }
     };
 
-    // Redraw the whole form using the specified template and data.
-    gpii.templates.hb.client.templateFormControl.renderMarkup = function (that, selector, template, data) {
-        var element = that.locate(selector);
-        that.renderer.replaceWith(element, template, data);
-        that.events.onMarkupRendered.fire(that);
-    };
-
     gpii.templates.hb.client.templateFormControl.submitForm = function (that, event) {
         event.preventDefault();
         $.ajax(that.options.ajaxOptions);
@@ -61,14 +53,14 @@ functions by changing the value of `options.selectors.success` and `options.sele
             that.applier.change(key, transformedData[key]);
         });
 
-        gpii.templates.hb.client.templateFormControl.renderMarkup(that, that.options.selectors.success, that.options.templates.success, that.model);
+        gpii.templates.hb.client.templateAware.renderMarkup(that, that.options.selectors.success, that.options.templates.success, that.model);
     };
 
     gpii.templates.hb.client.templateFormControl.handleError = function (that, jqXHR) {
         var data = JSON.parse(jqXHR.responseText);
         var errorData = fluid.model.transformWithRules(data, that.options.rules.error);
 
-        gpii.templates.hb.client.templateFormControl.renderMarkup(that, that.options.selectors.error, that.options.templates.error, errorData);
+        gpii.templates.hb.client.templateAware.renderMarkup(that, that.options.selectors.error, that.options.templates.error, errorData);
     };
 
     gpii.templates.hb.client.templateFormControl.handleKeyPress = function (that, event) {
@@ -100,9 +92,9 @@ functions by changing the value of `options.selectors.success` and `options.sele
             submit:  ".submit" // Clicking or hitting enter on our submit button will launch our AJAX request
         },
         invokers: {
-            renderMarkup: {
-                funcName: "gpii.templates.hb.client.templateFormControl.renderMarkup",
-                args: ["{that}", "initial", "{that}.options.templates.initial", "{that}.model"]
+            renderInitialMarkup: {
+                funcName: "gpii.templates.hb.client.templateAware.renderMarkup",
+                args: ["{that}", "initial", "{that}.options.templates.initial", "{that}.model", "replaceWith"]
             },
             submitForm: {
                 funcName: "gpii.templates.hb.client.templateFormControl.submitForm",

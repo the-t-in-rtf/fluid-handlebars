@@ -3,12 +3,10 @@
 //
 // This is a test component that is meant to be included in a client-side document.
 //
-// To run these tests, you should look at zombie-tests.js, which will start the server and launch a headless browser.
-//
 /* global fluid */
-fluid.registerNamespace("gpii.hb.tests.templateAware");
+fluid.registerNamespace("gpii.hb.tests.templateFormControl");
 
-fluid.defaults("gpii.hb.tests.templateAware", {
+fluid.defaults("gpii.hb.tests.templateFormControl", {
     gradeNames: ["gpii.templates.hb.client.templateFormControl", "autoInit"],
     templates: {
         "error":   "form-error",
@@ -16,9 +14,9 @@ fluid.defaults("gpii.hb.tests.templateAware", {
     }
 });
 
-fluid.registerNamespace("gpii.hb.tests.templateAware.readyForSuccess");
-fluid.defaults("gpii.hb.tests.templateAware.readyForSuccess", {
-    gradeNames: ["gpii.hb.tests.templateAware", "autoInit"],
+fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForSuccess");
+fluid.defaults("gpii.hb.tests.templateFormControl.readyForSuccess", {
+    gradeNames: ["gpii.hb.tests.templateFormControl", "autoInit"],
     ajaxUrl: "/content/json/success.json",
     model: {
         buttonName: "Succeed"
@@ -28,9 +26,9 @@ fluid.defaults("gpii.hb.tests.templateAware.readyForSuccess", {
     }
 });
 
-fluid.registerNamespace("gpii.hb.tests.templateAware.readyForFailure");
-fluid.defaults("gpii.hb.tests.templateAware.readyForFailure", {
-    gradeNames: ["gpii.hb.tests.templateAware", "autoInit"],
+fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForFailure");
+fluid.defaults("gpii.hb.tests.templateFormControl.readyForFailure", {
+    gradeNames: ["gpii.hb.tests.templateFormControl", "autoInit"],
     ajaxUrl: "/error",
     model: {
         buttonName: "Fail"

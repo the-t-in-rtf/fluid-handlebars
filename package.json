@@ -23,6 +23,6 @@
     "jqUnit":               "git://github.com/fluid-project/node-jqUnit.git#e9bf72445bd343a4f3aabe3ba96a1087d3498612",
     "request":              "2.51.0",
     "tough-cookie":         "0.12.1",
-    "zombie":               "2.5.1"
+    "zombie":               "3.0.15"
   }
 }

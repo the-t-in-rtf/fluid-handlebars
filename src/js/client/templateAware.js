@@ -3,11 +3,25 @@
   A base grade for components that make use of the Handlebars client to render their content.  To use this in a
   component, you will need to:
 
-  1. Replace the `renderMarkup` invoker with your own implementation, that should replace selected view content using
-     the `templates` component.
-
-  2. Pass in a `templateUrl` option that points to a REST interface from which the template content can be retrieved.
+  1. Pass in a `templateUrl` option that points to a REST interface from which the template content can be retrieved.
      See the `inline` server-side component for an example of the output required.
+
+  2. Replace the `renderInitialMarkup` invoker with your own implementation, that should replace selected view content
+     using the `templates` component.  Replace this with an empty function if you want to disable the initial render
+     once template content is loaded.
+
+     This grade provides a convenience function that you can use when defining your `renderMarkup` controller, as in:
+
+     renderInitialMarkup: {
+        funcName: "gpii.templates.hb.client.templateAware.renderMarkup",
+        args: [
+          "{that}",
+          "{that}.options.selectors.selector",
+          "{that}.options.templates.templates",
+          "{that}.model",
+          "appendTo"
+        ]
+      }
 
   For an example of using this in depth, check out the provided `templateFormControl` grade or the client side tests.
  */
@@ -23,9 +37,18 @@
         }
     };
 
+    // A convenience function that can be used to more easily define `renderInitialMarkup` invokers (see example above).
+    gpii.templates.hb.client.templateAware.renderMarkup = function (that, selector, template, data, manipulator) {
+        manipulator = manipulator ? manipulator : "replaceWith";
+        var element = that.locate(selector);
+        that.renderer[manipulator](element, template, data);
+        that.events.onMarkupRendered.fire(that);
+    };
+
+
     // When overriding this, you should fire an `onMarkupRendered` event to ensure that bindings can be applied.
-    gpii.templates.hb.client.templateAware.renderMarkup = function () {
-        fluid.fail("You are expected to implement a renderMarkup invoker when implementing a templateAware component");
+    gpii.templates.hb.client.templateAware.noRenderFunctionDefined = function () {
+        fluid.fail("You are expected to define a renderInitialMarkup invoker when implementing a templateAware component.");
     };
 
     gpii.templates.hb.client.templateAware.refreshDom = function (that) {
@@ -46,7 +69,7 @@
                     templateUrl: "{templateAware}.options.templateUrl",
                     listeners: {
                         "onTemplatesLoaded.renderMarkup": {
-                            func: "{templateAware}.renderMarkup"
+                            func: "{templateAware}.renderInitialMarkup"
                         }
                     }
                 }
@@ -63,7 +86,7 @@
                 args:     ["{that}"]
             },
             "refresh.renderMarkup": {
-                func: "{that}.renderMarkup"
+                func: "{that}.renderInitialMarkup"
             },
             "onDomBind.applyBinding": {
                 funcName: "gpii.templates.binder.applyBinding",
@@ -72,6 +95,11 @@
             "onMarkupRendered.refreshDom": {
                 funcName: "gpii.templates.hb.client.templateAware.refreshDom",
                 args:     ["{that}"]
+            }
+        },
+        invokers: {
+            renderInitialMarkup: {
+                funcName: "gpii.templates.hb.client.templateAware.noRenderFunctionDefined"
             }
         }
     });

@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Unit Tests for Handlebars Module</title>
+        <title>Unit Tests for "Template Aware" components</title>
         <!-- Bring in jQuery and other dependencies -->
         <script type="text/javascript" src="/modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
 
@@ -27,41 +27,36 @@
 
         <!-- Bring in client library being tested -->
         <script type="text/javascript" src="/src/js/client/handlebars.js"></script>
+        <script type="text/javascript" src="/src/js/client/binder.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateFormControl.js"></script>
         <script type="text/javascript" src="/src/js/common/helper.js"></script>
         <script type="text/javascript" src="/src/js/common/md-common.js"></script>
         <script type="text/javascript" src="/src/js/client/md-client.js"></script>
         <script type="text/javascript" src="/src/js/common/jsonify.js"></script>
         <script type="text/javascript" src="/src/js/common/equals.js"></script>
 
+
         <!-- Bring in our test helper -->
-        <script type="text/javascript" src="/content/js/client-tests.js"></script>
+        <script type="text/javascript" src="/content/js/tests-templateFormControl.js"></script>
     </head>
     <body>
-        <h1>Handlebars Helper Test Suite</h1>
+        <h1>"Template Form Control" Component Tests</h1>
 
         <p>This page needs to be served up by a server that can also deliver the required handlebars templates.  The tests should not complete in a standalone browser.</p>
 
         <hr/>
 
-        <!-- The markup we will be targeting -->
+        <div class="readyForSuccess">This content should not be visible.></div>
 
-        <!-- Must come first so that we can tell that content has been inserted before it... -->
-        <div class="viewport-before" style="display:none">original content</div>
+        <hr/>
 
-        <div class="viewport-append" style="display:none">original content</div>
-
-        <div class="viewport-html" style="display:none">original content</div>
-
-        <div class="viewport-prepend" style="display:none">original content</div>
-
-        <div class="viewport-replaceWith" style="display:none">original content</div>
-
-        <!-- Must come last so that we can tell that content has been inserted after it... -->
-        <div class="viewport-after"  style="display:none">original content</div>
+        <div class="readyForFailure">This content should not be visible.></div>
 
         <script type="text/javascript">
             <!-- instantiate test component -->
-            var tests = gpii.hb.clientTests("body");
+            var success = gpii.hb.tests.templateFormControl.readyForSuccess(".readyForSuccess");
+            var failure = gpii.hb.tests.templateFormControl.readyForFailure(".readyForFailure");
         </script>
     </body>
 </html>
