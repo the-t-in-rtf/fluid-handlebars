@@ -46,7 +46,10 @@ functions by changing the value of `options.selectors.success` and `options.sele
         event.preventDefault();
 
         var options = fluid.copy(that.options.ajaxOptions);
-        options.data = that.model;
+
+        var transformedModel = fluid.model.transformWithRules(that.model, that.options.rules.submission);
+
+        options.data = transformedModel;
         $.ajax(options);
     };
 
@@ -96,6 +99,9 @@ functions by changing the value of `options.selectors.success` and `options.sele
             success: {}, // Do not parse or attempt to update the model by default.
             error: {     // Assume the error message can be found in a `message` element.
                 message: "message"
+            },
+            submission: {
+                "": "" // Pass the model with no alterations.
             }
         },
         selectors: {
