@@ -9,6 +9,9 @@ fluid.registerNamespace("gpii.hb.tests.templateAware");
 fluid.defaults("gpii.hb.tests.templateAware", {
     gradeNames: ["gpii.templates.hb.client.templateAware", "autoInit"],
     template:   "index",
+    selectors: {
+        initial: "" // Update the whole container
+    },
     model: {
         myvar:    "modelvariable",
         markdown: "*this works*",
@@ -19,12 +22,20 @@ fluid.defaults("gpii.hb.tests.templateAware", {
             funcName: "gpii.templates.hb.client.templateAware.renderMarkup",
             args: [
                 "{that}",
-                "", // Update our container
+                "initial",
                 "{that}.options.template",
                 "{that}.model",
                 "html"
             ]
         }
+    }
+});
 
+fluid.registerNamespace("gpii.hb.tests.templateAware.contained");
+fluid.defaults("gpii.hb.tests.templateAware.contained", {
+    gradeNames: ["gpii.hb.tests.templateAware", "autoInit"],
+    template:  "form-contained-initial",
+    selectors: {
+        initial: ".contained-inner" // Update an interior element without disturbing the root container.
     }
 });

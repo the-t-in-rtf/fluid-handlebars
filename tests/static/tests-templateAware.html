@@ -49,9 +49,17 @@
 
         <div class="viewport">This content should not be visible.></div>
 
+        <hr/>
+
+        <div class="contained">
+            <p>This content should not be overwritten.</p>
+            <div class="contained-inner">This content should not be visible.</div>
+        </div>
+
         <script type="text/javascript">
             <!-- instantiate test component -->
             var templateAware = gpii.hb.tests.templateAware(".viewport");
+            var contained = gpii.hb.tests.templateAware.contained(".contained");
         </script>
     </body>
 </html>

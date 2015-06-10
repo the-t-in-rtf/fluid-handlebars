@@ -37,6 +37,10 @@ gpii.templates.hb.tests.client.templateAware.runTests = function (that) {
             // Reuse the rendering tests to confirm that the templateAware wiring is correct
             var viewport = browser.window.$(".viewport");
             gpii.templates.hb.tests.client.render.commonTests(that, viewport, browser.window.$);
+
+            var contained = browser.window.$(".contained");
+            jqUnit.assertTrue("Content outside of the inner container should not have been disturbed...", contained.html().indexOf("This content should not be overwritten.") !== -1);
+            jqUnit.assertTrue("The original content of the inner container should have been updated...", contained.html().indexOf("A place for everything, and everything in its place.") !== -1);
         });
     });
 };

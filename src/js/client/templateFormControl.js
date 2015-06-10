@@ -59,7 +59,7 @@ functions by changing the value of `options.selectors.success` and `options.sele
                 });
             }
 
-            gpii.templates.hb.client.templateAware.renderMarkup(that, that.options.selectors.success, that.options.templates.success, that.model);
+            gpii.templates.hb.client.templateAware.renderMarkup(that, "success", that.options.templates.success, that.model);
         }
         // If the response is not OK, pass it along to be handled as an error instead.
         else {
@@ -73,7 +73,7 @@ functions by changing the value of `options.selectors.success` and `options.sele
 
     gpii.templates.hb.client.templateFormControl.handleError = function (that, data) {
         var errorData = fluid.model.transformWithRules(data, that.options.rules.error);
-        gpii.templates.hb.client.templateAware.renderMarkup(that, that.options.selectors.error, that.options.templates.error, errorData);
+        gpii.templates.hb.client.templateAware.renderMarkup(that, "error", that.options.templates.error, errorData);
     };
 
     gpii.templates.hb.client.templateFormControl.handleKeyPress = function (that, event) {
