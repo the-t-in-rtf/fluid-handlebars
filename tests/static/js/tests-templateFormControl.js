@@ -20,6 +20,13 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForSuccess", {
     model: {
         buttonName: "Succeed"
     },
+    rules: {
+        success: {
+            model: {
+                record: "record"
+            }
+        }
+    },
     templates: {
         "initial": "form-success-initial"
     }

@@ -51,15 +51,19 @@ functions by changing the value of `options.selectors.success` and `options.sele
         if (typeof data === "string") { data = JSON.parse(data); }
         if (data.ok) {
             var transformedData = fluid.model.transformWithRules(data, that.options.rules.success);
-            Object.keys(transformedData).forEach(function (key) {
-                that.applier.change(key, transformedData[key]);
-            });
+
+            // Any data that is stored in the `model` of the transformed result is used to update the component's `model`.
+            if (transformedData.model) {
+                Object.keys(transformedData.model).forEach(function (key) {
+                    that.applier.change(key, transformedData.model[key]);
+                });
+            }
 
             gpii.templates.hb.client.templateAware.renderMarkup(that, that.options.selectors.success, that.options.templates.success, that.model);
         }
         // If the response is not OK, pass it along to be handled as an error instead.
         else {
-            gpii.templates.hb.client.templateFormControl.handleError(that,data);
+            gpii.templates.hb.client.templateFormControl.handleError(that, data);
         }
     };
 
@@ -87,10 +91,8 @@ functions by changing the value of `options.selectors.success` and `options.sele
             error:   "{that}.handleAjaxError"
         },
         rules: {
-            success: { // Assume the entire model is contained in a `record` element.
-                model: "record"
-            },
-            error: {  // Assume the error message can be found in a `message` element.
+            success: {}, // Do not parse or attempt to update the model by default.
+            error: {     // Assume the error message can be found in a `message` element.
                 message: "message"
             }
         },

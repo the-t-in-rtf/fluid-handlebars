@@ -8,7 +8,6 @@ var fluid = fluid || require("infusion");
 //fluid.setLogging(true);
 
 var gpii  = fluid.registerNamespace("gpii");
-var path  = require("path");
 
 var jqUnit  = fluid.require("jqUnit");
 var Browser = require("zombie");
@@ -18,19 +17,6 @@ require("gpii-express");
 require("../../");
 require("./zombie-test-harness");
 require("./test-router-error");
-
-// Test content (HTML, JS, templates)
-var testDir    = path.resolve(__dirname, "..");
-var contentDir = path.join(testDir, "static");
-var viewDir    = path.join(testDir, "views");
-
-// Dependencies
-var bcDir      = path.resolve(__dirname, "../../bower_components");
-var modulesDir = path.resolve(__dirname, "../../node_modules");
-
-// Main source to be tested
-var srcDir     = path.resolve(__dirname, "../../src");
-
 
 fluid.registerNamespace("gpii.templates.hb.tests.client.templateFormControl");
 
@@ -65,6 +51,10 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
                 jqUnit.start();
                 var successElement = browser.window.$(".readyForSuccess");
                 jqUnit.assertTrue("The component should now contain a 'success' message in place of the original text", successElement.text().indexOf("This was a triumph") !== -1);
+
+                var jsonElement = successElement.find(".json");
+                var jsonData = JSON.parse(jsonElement.text());
+                jqUnit.assertDeepEq("AJAX results should have been appended to the model data as outlined in our rules...", that.options.expected, jsonData);
             });
         });
     });
@@ -104,9 +94,11 @@ gpii.templates.hb.tests.client.harness({
     "expressPort" :   6995,
     "baseUrl":        "http://localhost:6995/",
     expected: {
-        myvar:    "modelvariable",
-        markdown: "*this works*",
-        json:     { foo: "bar", baz: "quux", qux: "quux" }
+        "buttonName": "Succeed",
+        "record": {
+            "foo": "bar",
+            "baz": "qux"
+        }
     },
     listeners: {
         "{express}.events.onStarted": {
