@@ -89,7 +89,6 @@ functions by changing the value of `options.selectors.success` and `options.sele
         gradeNames: ["gpii.templates.hb.client.templateAware", "autoInit"],
         ajaxOptions: {
             url:     "{that}.options.ajaxUrl",
-            data:    "{that}.model",
             success: "{that}.handleSuccess",
             error:   "{that}.handleAjaxError"
         },
