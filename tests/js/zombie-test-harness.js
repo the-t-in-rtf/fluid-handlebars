@@ -7,6 +7,7 @@ var path  = require("path");
 require("gpii-express");
 
 require("../../");
+require("./test-router-error");
 
 // Test content (HTML, JS, templates)
 var testDir    = path.resolve(__dirname, "..");
@@ -68,6 +69,9 @@ fluid.defaults("gpii.templates.hb.tests.client.harness", {
         },
         handlebars: {
             type: "gpii.express.hb"
+        },
+        error: {
+            type: "gpii.templates.tests.router.error"
         }
     }
 });

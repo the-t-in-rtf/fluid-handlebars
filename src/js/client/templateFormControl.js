@@ -48,18 +48,27 @@ functions by changing the value of `options.selectors.success` and `options.sele
     };
 
     gpii.templates.hb.client.templateFormControl.handleSuccess = function (that, data) {
-        var transformedData = fluid.model.transformWithRules(data, that.options.rules.success);
-        Object.keys(transformedData).forEach(function (key) {
-            that.applier.change(key, transformedData[key]);
-        });
+        if (typeof data === "string") { data = JSON.parse(data); }
+        if (data.ok) {
+            var transformedData = fluid.model.transformWithRules(data, that.options.rules.success);
+            Object.keys(transformedData).forEach(function (key) {
+                that.applier.change(key, transformedData[key]);
+            });
 
-        gpii.templates.hb.client.templateAware.renderMarkup(that, that.options.selectors.success, that.options.templates.success, that.model);
+            gpii.templates.hb.client.templateAware.renderMarkup(that, that.options.selectors.success, that.options.templates.success, that.model);
+        }
+        // If the response is not OK, pass it along to be handled as an error instead.
+        else {
+            gpii.templates.hb.client.templateFormControl.handleError(that,data);
+        }
     };
 
-    gpii.templates.hb.client.templateFormControl.handleError = function (that, jqXHR) {
-        var data = JSON.parse(jqXHR.responseText);
-        var errorData = fluid.model.transformWithRules(data, that.options.rules.error);
+    gpii.templates.hb.client.templateFormControl.handleAjaxError = function (that, jqXHR) {
+        gpii.templates.hb.client.templateFormControl.handleError(that, JSON.parse(jqXHR.responseText));
+    };
 
+    gpii.templates.hb.client.templateFormControl.handleError = function (that, data) {
+        var errorData = fluid.model.transformWithRules(data, that.options.rules.error);
         gpii.templates.hb.client.templateAware.renderMarkup(that, that.options.selectors.error, that.options.templates.error, errorData);
     };
 
@@ -75,7 +84,7 @@ functions by changing the value of `options.selectors.success` and `options.sele
             url:     "{that}.options.ajaxUrl",
             data:    "{that}.model",
             success: "{that}.handleSuccess",
-            error:   "{that}.handleError"
+            error:   "{that}.handleAjaxError"
         },
         rules: {
             success: { // Assume the entire model is contained in a `record` element.
@@ -104,8 +113,8 @@ functions by changing the value of `options.selectors.success` and `options.sele
                 funcName: "gpii.templates.hb.client.templateFormControl.handleSuccess",
                 args: ["{that}", "{arguments}.0"]
             },
-            handleError: {
-                funcName: "gpii.templates.hb.client.templateFormControl.handleError",
+            handleAjaxError: {
+                funcName: "gpii.templates.hb.client.templateFormControl.handleAjaxError",
                 args: ["{that}", "{arguments}.0"]
             },
             handleKeyPress: {

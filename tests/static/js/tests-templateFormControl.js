@@ -9,7 +9,6 @@ fluid.registerNamespace("gpii.hb.tests.templateFormControl");
 fluid.defaults("gpii.hb.tests.templateFormControl", {
     gradeNames: ["gpii.templates.hb.client.templateFormControl", "autoInit"],
     templates: {
-        "error":   "form-error",
         "success": "form-success"
     }
 });
@@ -34,6 +33,20 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForFailure", {
         buttonName: "Fail"
     },
     templates: {
-        "initial": "form-error-initial"
+        "initial": "form-failure-initial",
+        "error":   "form-failure-error"
+    }
+});
+
+fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForAmbiguity");
+fluid.defaults("gpii.hb.tests.templateFormControl.readyForAmbiguity", {
+    gradeNames: ["gpii.hb.tests.templateFormControl", "autoInit"],
+    ajaxUrl: "/content/json/error.json", // An error, delivered with a 200 status code.
+    model: {
+        buttonName: "Dither"
+    },
+    templates: {
+        "initial": "form-ambiguous-initial",
+        "error":   "form-ambiguous-error"
     }
 });

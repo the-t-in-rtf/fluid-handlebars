@@ -53,10 +53,15 @@
 
         <div class="readyForFailure">This content should not be visible.></div>
 
+        <hr/>
+
+        <div class="readyForAmbiguity">This content should not be visible.></div>
+
         <script type="text/javascript">
             <!-- instantiate test component -->
-            var success = gpii.hb.tests.templateFormControl.readyForSuccess(".readyForSuccess");
-            var failure = gpii.hb.tests.templateFormControl.readyForFailure(".readyForFailure");
+            var success   = gpii.hb.tests.templateFormControl.readyForSuccess(".readyForSuccess");
+            var failure   = gpii.hb.tests.templateFormControl.readyForFailure(".readyForFailure");
+            var ambiguous = gpii.hb.tests.templateFormControl.readyForAmbiguity(".readyForAmbiguity");
         </script>
     </body>
 </html>

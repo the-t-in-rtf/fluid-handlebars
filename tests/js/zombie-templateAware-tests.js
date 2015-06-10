@@ -41,8 +41,7 @@ gpii.templates.hb.tests.client.templateAware.runTests = function (that) {
     });
 };
 
-fluid.defaults("gpii.templates.hb.tests.client.templateAware", {
-    gradeNames: ["gpii.templates.hb.tests.client.harness", "autoInit"],
+gpii.templates.hb.tests.client.harness({
     "expressPort" :   6995,
     "baseUrl":        "http://localhost:6995/",
     expected: {
@@ -57,5 +56,3 @@ fluid.defaults("gpii.templates.hb.tests.client.templateAware", {
         }
     }
 });
-
-gpii.templates.hb.tests.client.templateAware();

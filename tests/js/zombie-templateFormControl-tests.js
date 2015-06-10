@@ -16,6 +16,7 @@ var Browser = require("zombie");
 require("gpii-express");
 
 require("../../");
+require("./zombie-test-harness");
 require("./test-router-error");
 
 // Test content (HTML, JS, templates)
@@ -63,7 +64,7 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
             browser.pressButton("Succeed", function () {
                 jqUnit.start();
                 var successElement = browser.window.$(".readyForSuccess");
-                jqUnit.assertTrue("The body should now contain a 'success' message in place of the original text", successElement.text().indexOf("This was a triumph") !== -1);
+                jqUnit.assertTrue("The component should now contain a 'success' message in place of the original text", successElement.text().indexOf("This was a triumph") !== -1);
             });
         });
     });
@@ -78,62 +79,34 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
             browser.pressButton("Fail", function () {
                 jqUnit.start();
                 var failureElement = browser.window.$(".readyForFailure");
-                jqUnit.assertTrue("The body should now contain a 'fail' message in place of the original text", failureElement.text().indexOf("Something has gone horribly wrong as planned.") !== -1);
+                jqUnit.assertTrue("The component should now contain a 'fail' message in place of the original text", failureElement.text().indexOf("Something has gone horribly wrong as planned.") !== -1);
+            });
+        });
+    });
+
+    jqUnit.asyncTest("Use Zombie.js to submit a form that is sent an error with a 200 status code...", function () {
+        var browser = Browser.create();
+        browser.on("error", function (error) {
+            jqUnit.start();
+            jqUnit.fail("There should be no errors:" + error);
+        });
+        browser.visit(that.options.config.express.baseUrl + "content/tests-templateFormControl.html").then(function () {
+            browser.pressButton("Dither", function () {
+                jqUnit.start();
+                var ambiguityElement = browser.window.$(".readyForAmbiguity");
+                jqUnit.assertTrue("The component should now contain a 'fail' message in place of the original text", ambiguityElement.text().indexOf("Things seemed to go well") !== -1);
             });
         });
     });
 };
 
-fluid.defaults("gpii.templates.hb.tests.client.templateFormControl", {
-    gradeNames: ["gpii.express", "autoInit"],
-    config:  {
-        "express": {
-            "port" :   6995,
-            "baseUrl": "http://localhost:6995/",
-            "views":   viewDir
-        }
-    },
-    components: {
-        inline: {
-            type: "gpii.express.hb.inline",
-            "options": {
-                "path": "/hbs"
-            }
-        },
-        bc: {
-            type: "gpii.express.router.static",
-            "options": {
-                path:    "/bc",
-                content: bcDir
-            }
-        },
-        js: {
-            type: "gpii.express.router.static",
-            "options": {
-                path:    "/src",
-                content: srcDir
-            }
-        },
-        modules: {
-            type: "gpii.express.router.static",
-            "options": {
-                path:    "/modules",
-                content: modulesDir
-            }
-        },
-        content: {
-            type: "gpii.express.router.static",
-            "options": {
-                path:    "/content",
-                content: contentDir
-            }
-        },
-        error: {
-            type: "gpii.templates.tests.router.error"
-        },
-        handlebars: {
-            type: "gpii.express.hb"
-        }
+gpii.templates.hb.tests.client.harness({
+    "expressPort" :   6995,
+    "baseUrl":        "http://localhost:6995/",
+    expected: {
+        myvar:    "modelvariable",
+        markdown: "*this works*",
+        json:     { foo: "bar", baz: "quux", qux: "quux" }
     },
     listeners: {
         "{express}.events.onStarted": {
@@ -142,5 +115,3 @@ fluid.defaults("gpii.templates.hb.tests.client.templateFormControl", {
         }
     }
 });
-
-gpii.templates.hb.tests.client.templateFormControl();
