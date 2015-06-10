@@ -44,7 +44,10 @@ functions by changing the value of `options.selectors.success` and `options.sele
 
     gpii.templates.hb.client.templateFormControl.submitForm = function (that, event) {
         event.preventDefault();
-        $.ajax(that.options.ajaxOptions);
+
+        var options = fluid.copy(that.options.ajaxOptions);
+        options.data = that.model;
+        $.ajax(options);
     };
 
     gpii.templates.hb.client.templateFormControl.handleSuccess = function (that, data) {
