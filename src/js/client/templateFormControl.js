@@ -8,7 +8,7 @@
       displayed on screen using the template `options.templates.error`.
   4.  If the AJAX request is successful:
     a) The results are transformed using the rules found in `options.rules.success`.
-    b) The transformed results are saved to the component's model.
+    b) Any information contained in the `model` section of the transformed results is saved to the component's model using the change applier.
     c) The updated model is displayed on screen using the template `options.templates.success`.
 
 By default, all updates are made against the same selector. You can override this behavior for the success and error
