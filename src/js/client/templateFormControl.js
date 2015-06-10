@@ -4,7 +4,7 @@
 
   1.  Performs an initial render of the component using the template specified in `options.templates.initial`
   2.  Binds a form submission that sends the `model` data using the options specified in `options.ajax`
-  3.  If the AJAX request returns an error, the error is transformed using the rules found in `options.rules.error` and
+  3.  If the AJAX request returns an error or the result contains a "falsy" `ok` variable, the error is transformed using the rules found in `options.rules.error` and
       displayed on screen using the template `options.templates.error`.
   4.  If the AJAX request is successful:
     a) The results are transformed using the rules found in `options.rules.success`.
