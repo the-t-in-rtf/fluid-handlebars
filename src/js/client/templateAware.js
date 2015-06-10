@@ -45,7 +45,6 @@
         that.events.onMarkupRendered.fire(that);
     };
 
-
     // When overriding this, you should fire an `onMarkupRendered` event to ensure that bindings can be applied.
     gpii.templates.hb.client.templateAware.noRenderFunctionDefined = function () {
         fluid.fail("You are expected to define a renderInitialMarkup invoker when implementing a templateAware component.");
@@ -100,6 +99,10 @@
         invokers: {
             renderInitialMarkup: {
                 funcName: "gpii.templates.hb.client.templateAware.noRenderFunctionDefined"
+            },
+            renderMarkup: {
+                funcName: "gpii.templates.hb.client.templateAware.renderMarkup",
+                args:     ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
             }
         }
     });
