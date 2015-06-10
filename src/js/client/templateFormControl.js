@@ -136,13 +136,13 @@ functions by changing the value of `options.selectors.success` and `options.sele
             "onMarkupRendered.wireSubmitButton": [
                 {
                     "this": "{that}.dom.submit",
-                    method: "keyup",
-                    args:   "{that}.handleKeyPress"
+                    method: "on",
+                    args:   ["keyup.handleKeyPress", "{that}.handleKeyPress"]
                 },
                 {
                     "this": "{that}.dom.submit",
-                    method: "click",
-                    args:   "{that}.submitForm"
+                    method: "on",
+                    args:   ["click.submitForm", "{that}.submitForm"]
                 }
             ]
         }
