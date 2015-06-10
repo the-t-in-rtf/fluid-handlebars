@@ -39,7 +39,7 @@
 
     // A convenience function that can be used to more easily define `renderInitialMarkup` invokers (see example above).
     gpii.templates.hb.client.templateAware.renderMarkup = function (that, selector, template, data, manipulator) {
-        manipulator = manipulator ? manipulator : "replaceWith";
+        manipulator = manipulator ? manipulator : "html";
         var element = that.locate(selector);
         that.renderer[manipulator](element, template, data);
         that.events.onMarkupRendered.fire(that);
