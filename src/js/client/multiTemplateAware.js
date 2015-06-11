@@ -14,17 +14,7 @@
     fluid.registerNamespace("gpii.templates.hb.client.multiTemplateAware.singularRenderer");
     fluid.defaults("gpii.templates.hb.client.multiTemplateAware.singularRenderer", {
         components: {
-            renderer: {
-                type: "gpii.templates.hb.client",
-                options: {
-                    templateUrl: "{templateAware}.options.templateUrl",
-                    listeners: {
-                        "onTemplatesLoaded.renderMarkup": {
-                            func: "{templateAware}.renderInitialMarkup"
-                        }
-                    }
-                }
-            }
+            renderer: "{multiTemplateAware}.renderer"
         }
     });
 
