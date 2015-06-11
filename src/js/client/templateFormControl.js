@@ -92,7 +92,7 @@
 
         // Display the updated error message.
         var errorData = fluid.model.transformWithRules(data, that.options.rules.error);
-        that.error.applier.change("message", errorData.message);
+        that.error.applier.change("message", errorData);
     };
 
     gpii.templates.hb.client.templateFormControl.handleKeyPress = function (that, event) {
