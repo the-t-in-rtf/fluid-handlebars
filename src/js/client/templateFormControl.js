@@ -4,15 +4,14 @@
 
   1.  Performs an initial render of the component using the template specified in `options.templates.initial`
   2.  Binds a form submission that sends the `model` data using the options specified in `options.ajax`
-  3.  If the AJAX request returns an error or the result contains a "falsy" `ok` variable, the error is transformed using the rules found in `options.rules.error` and
-      displayed on screen using the template `options.templates.error`.
+  3.  If the AJAX request returns an error or the result contains a "falsy" `ok` variable:
+      a)  Any previous "success" messages are cleared.
+      b)  the error is transformed using the rules found in `options.rules.error`
+      c)  the results are passed along to the `error` subcomponent for display.
   4.  If the AJAX request is successful:
-    a) The results are transformed using the rules found in `options.rules.success`.
-    b) Any information contained in the `model` section of the transformed results is saved to the component's model using the change applier.
-    c) The updated model is displayed on screen using the template `options.templates.success`.
-
-By default, all updates are made against the same selector. You can override this behavior for the success and error
-functions by changing the value of `options.selectors.success` and `options.selectors.error`.
+      a)  Any previous "error" messages are cleared.
+      b)  The results are transformed using the rules found in `options.rules.success` and passed to the `success` subcomponent for display.
+      c)  The results are transformed using the rules found in `options.rules.model`, and applied to the model using the change applier.
 
  */
 /* global fluid, jQuery */
@@ -33,8 +32,8 @@ functions by changing the value of `options.selectors.success` and `options.sele
             errors.push("Your AJAX options do not include a URL.  The AJAX request will not be able to complete as expected.");
         }
 
-        if (!that.options.rules || !that.options.rules.error || !that.options.rules.success) {
-            errors.push("You have not configured any rules regarding how to handle AJAX responses.");
+        if (!that.options.rules || !that.options.rules.error || !that.options.rules.success || !that.options.rules.submission) {
+            errors.push("You have not configured the required rules regarding how to handle AJAX responses.");
         }
 
         if (errors.length > 0) {
@@ -56,7 +55,7 @@ functions by changing the value of `options.selectors.success` and `options.sele
     gpii.templates.hb.client.templateFormControl.handleSuccess = function (that, data) {
         if (typeof data === "string") { data = JSON.parse(data); }
         if (data.ok) {
-            var transformedData = fluid.model.transformWithRules(data, that.options.rules.success);
+            var transformedData = fluid.model.transformWithRules(data, that.options.rules.model);
 
             // Any data that is stored in the `model` of the transformed result is used to update the component's `model`.
             if (transformedData.model) {
@@ -65,7 +64,17 @@ functions by changing the value of `options.selectors.success` and `options.sele
                 });
             }
 
-            that.renderMarkup("success", that.options.templates.success, that.model);
+            // Clear out any "error" messages
+            that.error.applier.change("message", null);
+
+            // Pass along any "success" message
+            var successData = fluid.model.transformWithRules(data, that.options.rules.success);
+            that.success.applier.change("message", successData);
+
+            // Optionally hide the original content.
+            if (that.options.hideOnSuccess) {
+                that.locate("form").hide();
+            }
         }
         // If the response is not OK, pass it along to be handled as an error instead.
         else {
@@ -78,8 +87,12 @@ functions by changing the value of `options.selectors.success` and `options.sele
     };
 
     gpii.templates.hb.client.templateFormControl.handleError = function (that, data) {
+        // Clear out any "success" messages.
+        that.success.applier.change("message", null);
+
+        // Display the updated error message.
         var errorData = fluid.model.transformWithRules(data, that.options.rules.error);
-        that.renderMarkup("error", that.options.templates.error, errorData);
+        that.error.applier.change("message", errorData.message);
     };
 
     gpii.templates.hb.client.templateFormControl.handleKeyPress = function (that, event) {
@@ -89,31 +102,57 @@ functions by changing the value of `options.selectors.success` and `options.sele
     };
 
     fluid.defaults("gpii.templates.hb.client.templateFormControl", {
-        gradeNames: ["gpii.templates.hb.client.templateAware", "autoInit"],
+        gradeNames:    ["gpii.templates.hb.client.multiTemplateAware", "autoInit"],
+        hideOnSuccess: true, // Whether to hide our form if the results are successful
         ajaxOptions: {
             url:     "{that}.options.ajaxUrl",
             success: "{that}.handleSuccess",
             error:   "{that}.handleAjaxError"
         },
         rules: {
-            success: {}, // Do not parse or attempt to update the model by default.
-            error: {     // Assume the error message can be found in a `message` element.
-                message: "message"
+            // Rules to control what (if any) feedback from successful response is displayed.
+            success: {
+                message: {
+                    literalValue: "You have succeeded!"
+                }
             },
-            submission: {
-                "": "" // Pass the model with no alterations.
+            model:   {}, // Rules to control what (if any) part of the response is used to update the model.
+            error: {     // Rules to control how an error is parsed.
+                message: "message" // By default, assume the error message can be found in a `message` element.
+            },
+            submission: { // Rules to control how our model is parsed before submitting to `options.ajaxOptions.url`
+                "": ""    // By default, pass the model with no alterations.
+            }
+        },
+        components: {
+            success: {
+                type:     "gpii.templates.hb.client.templateMessage",
+                createOnEvent: "{templateFormControl}.events.onMarkupRendered",
+                container: "{templateFormControl}.dom.success",
+                options: {
+                    template: "{templateFormControl}.options.templates.success"
+                }
+            },
+            error: {
+                type:          "gpii.templates.hb.client.templateMessage",
+                createOnEvent: "{templateFormControl}.events.onMarkupRendered",
+                container:     "{templateFormControl}.dom.error",
+                options: {
+                    template: "{templateFormControl}.options.templates.error"
+                }
             }
         },
         selectors: {
-            initial: "",  // The container that will be overwritten with template content on startup.
-            error:   "",  // The container that will be updated with template content if an AJAX error occurs.
-            success: "",  // The container that will be updated with content if the AJAX request succeeds.
-            submit:  ".submit" // Clicking or hitting enter on our submit button will launch our AJAX request
+            initial: "",         // The container that will be updated with template content on startup and on a full refresh.
+            form:    "form",     // The form element whose submission we will control
+            error:   ".error",   // The error message controlled by our sub-component
+            success: ".success", // The positive feedback controlled by our sub-component
+            submit:  ".submit"   // Clicking or hitting enter on our submit button will launch our AJAX request
         },
         invokers: {
             renderInitialMarkup: {
                 funcName: "gpii.templates.hb.client.templateAware.renderMarkup",
-                args: ["{that}", "initial", "{that}.options.templates.initial", "{that}.model", "replaceWith"]
+                args: ["{that}", "initial", "{that}.options.templates.initial", "{that}.model", "html"]
             },
             submitForm: {
                 funcName: "gpii.templates.hb.client.templateFormControl.submitForm",
@@ -132,8 +171,12 @@ functions by changing the value of `options.selectors.success` and `options.sele
                 args: ["{that}", "{arguments}.0"]
             }
         },
+        templates: {
+            success: "common-success",
+            error:   "common-error"
+        },
         listeners: {
-            "onMarkupRendered.wireSubmitButton": [
+            "onMarkupRendered.wireControls": [
                 {
                     "this": "{that}.dom.submit",
                     method: "on",
@@ -143,6 +186,11 @@ functions by changing the value of `options.selectors.success` and `options.sele
                     "this": "{that}.dom.submit",
                     method: "on",
                     args:   ["click.submitForm", "{that}.submitForm"]
+                },
+                {
+                    "this": "{that}.dom.form",
+                    method: "on",
+                    args:   ["submit.submitForm", "{that}.submitForm"]
                 }
             ]
         }

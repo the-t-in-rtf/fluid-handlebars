@@ -9,7 +9,8 @@ fluid.registerNamespace("gpii.hb.tests.templateFormControl");
 fluid.defaults("gpii.hb.tests.templateFormControl", {
     gradeNames: ["gpii.templates.hb.client.templateFormControl", "autoInit"],
     templates: {
-        "success": "form-success"
+        success: "common-success",
+        error:   "common-error"
     }
 });
 
@@ -28,7 +29,8 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForSuccess", {
         }
     },
     templates: {
-        "initial": "form-success-initial"
+        initial: "form-success-initial",
+        success: "form-success"
     }
 });
 
@@ -40,8 +42,7 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForFailure", {
         buttonName: "Fail"
     },
     templates: {
-        "initial": "form-failure-initial",
-        "error":   "form-failure-error"
+        initial: "form-failure-initial"
     }
 });
 
@@ -53,7 +54,18 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForAmbiguity", {
         buttonName: "Dither"
     },
     templates: {
-        "initial": "form-ambiguous-initial",
-        "error":   "form-ambiguous-error"
+        initial: "form-ambiguous-initial",
+        error:   "form-ambiguous-error"
+    }
+});
+
+
+fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForKeys");
+fluid.defaults("gpii.hb.tests.templateFormControl.readyForKeys", {
+    gradeNames:    ["gpii.hb.tests.templateFormControl", "autoInit"],
+    hideOnSuccess: false,
+    ajaxUrl: "/content/json/success.json",
+    templates: {
+        initial: "form-keyed-initial"
     }
 });

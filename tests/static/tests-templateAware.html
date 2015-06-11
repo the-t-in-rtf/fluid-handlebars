@@ -29,6 +29,8 @@
         <script type="text/javascript" src="/src/js/client/handlebars.js"></script>
         <script type="text/javascript" src="/src/js/client/binder.js"></script>
         <script type="text/javascript" src="/src/js/client/templateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/multiTemplateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateMessage.js"></script>
         <script type="text/javascript" src="/src/js/client/templateFormControl.js"></script>
         <script type="text/javascript" src="/src/js/common/helper.js"></script>
         <script type="text/javascript" src="/src/js/common/md-common.js"></script>
@@ -39,21 +41,28 @@
 
         <!-- Bring in our test helper -->
         <script type="text/javascript" src="/content/js/tests-templateAware.js"></script>
+
+        <!-- Foundation styles -->
+        <link rel="stylesheet" href="/bc/foundation/css/foundation.css"/>
     </head>
     <body>
-        <h1>"Template Aware" Component Tests</h1>
+        <div class="row">
+            <div class="column">
+                <h1>"Template Aware" Component Tests</h1>
 
-        <p>This page needs to be served up by a server that can also deliver the required handlebars templates.  The tests should not complete in a standalone browser.</p>
+                <p>This page needs to be served up by a server that can also deliver the required handlebars templates.  The tests should not complete in a standalone browser.</p>
 
-        <hr/>
+                <hr/>
 
-        <div class="viewport">This content should not be visible.></div>
+                <div class="viewport">This content should not be visible.></div>
 
-        <hr/>
+                <hr/>
 
-        <div class="contained">
-            <p>This content should not be overwritten.</p>
-            <div class="contained-inner">This content should not be visible.</div>
+                <div class="contained">
+                    <p>This content should not be overwritten.</p>
+                    <div class="contained-inner">This content should not be visible.</div>
+                </div>
+            </div>
         </div>
 
         <script type="text/javascript">

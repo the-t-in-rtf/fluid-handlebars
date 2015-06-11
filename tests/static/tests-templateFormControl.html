@@ -29,6 +29,8 @@
         <script type="text/javascript" src="/src/js/client/handlebars.js"></script>
         <script type="text/javascript" src="/src/js/client/binder.js"></script>
         <script type="text/javascript" src="/src/js/client/templateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/multiTemplateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateMessage.js"></script>
         <script type="text/javascript" src="/src/js/client/templateFormControl.js"></script>
         <script type="text/javascript" src="/src/js/common/helper.js"></script>
         <script type="text/javascript" src="/src/js/common/md-common.js"></script>
@@ -39,29 +41,41 @@
 
         <!-- Bring in our test helper -->
         <script type="text/javascript" src="/content/js/tests-templateFormControl.js"></script>
+
+        <!-- Foundation styles -->
+        <link rel="stylesheet" href="/bc/foundation/css/foundation.css"/>
     </head>
     <body>
-        <h1>"Template Form Control" Component Tests</h1>
+        <div class="row">
+            <div class="column">
+                <h1>"Template Form Control" Component Tests</h1>
 
-        <p>This page needs to be served up by a server that can also deliver the required handlebars templates.  The tests should not complete in a standalone browser.</p>
+                <p>This page needs to be served up by a server that can also deliver the required handlebars templates.  The tests should not complete in a standalone browser.</p>
 
-        <hr/>
+                <hr/>
 
-        <div class="readyForSuccess">This content should not be visible.></div>
+                <div class="readyForSuccess">This content should not be visible.</div>
 
-        <hr/>
+                <hr/>
 
-        <div class="readyForFailure">This content should not be visible.></div>
+                <div class="readyForFailure">This content should not be visible.</div>
 
-        <hr/>
+                <hr/>
 
-        <div class="readyForAmbiguity">This content should not be visible.></div>
+                <div class="readyForAmbiguity">This content should not be visible.</div>
 
-        <script type="text/javascript">
-            <!-- instantiate test component -->
-            var success   = gpii.hb.tests.templateFormControl.readyForSuccess(".readyForSuccess");
-            var failure   = gpii.hb.tests.templateFormControl.readyForFailure(".readyForFailure");
-            var ambiguous = gpii.hb.tests.templateFormControl.readyForAmbiguity(".readyForAmbiguity");
-        </script>
+                <hr/>
+
+                <div class="readyForKeys">This content should not be visible.</div>
+
+                <script type="text/javascript">
+                    <!-- instantiate test component -->
+                    var success   = gpii.hb.tests.templateFormControl.readyForSuccess(".readyForSuccess");
+                    var failure   = gpii.hb.tests.templateFormControl.readyForFailure(".readyForFailure");
+                    var ambiguous = gpii.hb.tests.templateFormControl.readyForAmbiguity(".readyForAmbiguity");
+                    var keyed     = gpii.hb.tests.templateFormControl.readyForKeys(".readyForKeys");
+                </script>
+            </div>
+        </div>
     </body>
 </html>

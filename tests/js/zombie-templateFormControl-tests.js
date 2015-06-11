@@ -29,6 +29,7 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
         browser.on("error", function (error) {
             jqUnit.start();
             jqUnit.fail("There should be no errors:" + error);
+            jqUnit.stop();
         });
         browser.visit(that.options.config.express.baseUrl + "content/tests-templateFormControl.html").then(function () {
             // The client side has already manipulated a bunch of stuff by the time we see it, we're just inspecting the results.
@@ -45,12 +46,13 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
         browser.on("error", function (error) {
             jqUnit.start();
             jqUnit.fail("There should be no errors:" + error);
+            jqUnit.stop();
         });
         browser.visit(that.options.config.express.baseUrl + "content/tests-templateFormControl.html").then(function () {
             browser.pressButton("Succeed", function () {
                 jqUnit.start();
                 var successElement = browser.window.$(".readyForSuccess");
-                jqUnit.assertTrue("The component should now contain a 'success' message in place of the original text", successElement.text().indexOf("This was a triumph") !== -1);
+                jqUnit.assertTrue("The component should now contain a 'success' message...", successElement.html().indexOf("This was a triumph") !== -1);
 
                 var jsonElement = successElement.find(".json");
                 var jsonData = JSON.parse(jsonElement.text());
@@ -64,12 +66,13 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
         browser.on("error", function (error) {
             jqUnit.start();
             jqUnit.fail("There should be no errors:" + error);
+            jqUnit.stop();
         });
         browser.visit(that.options.config.express.baseUrl + "content/tests-templateFormControl.html").then(function () {
             browser.pressButton("Fail", function () {
                 jqUnit.start();
                 var failureElement = browser.window.$(".readyForFailure");
-                jqUnit.assertTrue("The component should now contain a 'fail' message in place of the original text", failureElement.text().indexOf("Something has gone horribly wrong as planned.") !== -1);
+                jqUnit.assertTrue("The component should now contain a 'fail' message...", failureElement.text().indexOf("Something went wrong") !== -1);
             });
         });
     });
@@ -79,25 +82,46 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
         browser.on("error", function (error) {
             jqUnit.start();
             jqUnit.fail("There should be no errors:" + error);
+            jqUnit.stop();
         });
         browser.visit(that.options.config.express.baseUrl + "content/tests-templateFormControl.html").then(function () {
             browser.pressButton("Dither", function () {
                 jqUnit.start();
                 var ambiguityElement = browser.window.$(".readyForAmbiguity");
-                jqUnit.assertTrue("The component should now contain a 'fail' message in place of the original text", ambiguityElement.text().indexOf("Things seemed to go well") !== -1);
+                jqUnit.assertTrue("The component should now contain a 'fail' message...", ambiguityElement.text().indexOf("Things seemed to go well") !== -1);
             });
         });
     });
+
+    // TODO:  Find a way to simulate keyboard input from within Zombie or an alternative.
+    //jqUnit.asyncTest("Use Zombie.js to submit a form by pressing 'enter' in a text field...", function () {
+    //    var browser = Browser.create();
+    //    browser.on("error", function (error) {
+    //        jqUnit.start();
+    //        jqUnit.fail("There should be no errors:" + error);
+    //    });
+    //    browser.visit(that.options.config.express.baseUrl + "content/tests-templateFormControl.html").then(function () {
+    //        // Zombie lacks the ability to simulate keyboard events or form submits, but we can do it through jQuery.
+    //        browser.window.$(".readyForKeys form").submit();
+    //        setTimeout(function () {
+    //            jqUnit.start();
+    //            var keyedElement = browser.window.$(".readyForKeys");
+    //            jqUnit.assertTrue("The component should now contain a 'success' message...", keyedElement.text().indexOf("You have succeeded") !== -1);
+    //        }, 5000);
+    //    });
+    //});
 };
 
 gpii.templates.hb.tests.client.harness({
     "expressPort" :   6995,
     "baseUrl":        "http://localhost:6995/",
     expected: {
-        "buttonName": "Succeed",
-        "record": {
-            "foo": "bar",
-            "baz": "qux"
+        message: "You have succeeded!",
+        model: {
+            record: {
+                foo: "bar",
+                baz: "qux"
+            }
         }
     },
     listeners: {
