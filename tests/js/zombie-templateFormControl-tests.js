@@ -93,7 +93,9 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
         });
     });
 
-    // TODO:  Find a way to simulate keyboard input from within Zombie or an alternative.
+
+    // Zombie lacks the ability to simulate keyboard input, you must roll your own.  See: https://github.com/assaf/zombie/issues/705
+    // TODO:  Find a way to simulate keyboard input from within Zombie or migrate to an alternative.
     //jqUnit.asyncTest("Use Zombie.js to submit a form by pressing 'enter' in a text field...", function () {
     //    var browser = Browser.create();
     //    browser.on("error", function (error) {
@@ -101,7 +103,6 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
     //        jqUnit.fail("There should be no errors:" + error);
     //    });
     //    browser.visit(that.options.config.express.baseUrl + "content/tests-templateFormControl.html").then(function () {
-    //        // Zombie lacks the ability to simulate keyboard events or form submits, but we can do it through jQuery.
     //        browser.window.$(".readyForKeys form").submit();
     //        setTimeout(function () {
     //            jqUnit.start();
