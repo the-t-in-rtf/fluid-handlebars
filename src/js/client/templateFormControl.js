@@ -130,6 +130,9 @@
                 createOnEvent: "{templateFormControl}.events.onMarkupRendered",
                 container: "{templateFormControl}.dom.success",
                 options: {
+                    //components: {
+                    //    renderer: "{renderer}"
+                    //},
                     template: "{templateFormControl}.options.templates.success"
                 }
             },
@@ -138,6 +141,9 @@
                 createOnEvent: "{templateFormControl}.events.onMarkupRendered",
                 container:     "{templateFormControl}.dom.error",
                 options: {
+                    //components: {
+                    //    renderer: "{renderer}"
+                    //},
                     template: "{templateFormControl}.options.templates.error"
                 }
             }

@@ -9,16 +9,33 @@
 /* global fluid, jQuery */
 (function () {
     "use strict";
-    fluid.registerNamespace("gpii.templates.hb.client.templateAware");
+    fluid.registerNamespace("gpii");
+
+    fluid.registerNamespace("gpii.templates.hb.client.multiTemplateAware.singularRenderer");
+    fluid.defaults("gpii.templates.hb.client.multiTemplateAware.singularRenderer", {
+        components: {
+            renderer: {
+                type: "gpii.templates.hb.client",
+                options: {
+                    templateUrl: "{templateAware}.options.templateUrl",
+                    listeners: {
+                        "onTemplatesLoaded.renderMarkup": {
+                            func: "{templateAware}.renderInitialMarkup"
+                        }
+                    }
+                }
+            }
+        }
+    });
+
     fluid.defaults("gpii.templates.hb.client.multiTemplateAware", {
-        gradeNames: ["gpii.templates.hb.client.templateAware", "autoInit"]
-        //,
-        //distributeOptions: [
-        //    {
-        //        // Any child components of this one should use our renderer.
-        //        source: "{that}.renderer",
-        //        target: "{that > templateAware}.options.components.renderer"
-        //    }
-        //]
+        gradeNames: ["gpii.templates.hb.client.templateAware", "autoInit"],
+        distributeOptions: [
+            {
+                // Any child components of this one should use our renderer.
+                record: "gpii.templates.hb.client.multiTemplateAware.singularRenderer",
+                target: "{that templateAware}.options.gradeNames"
+            }
+        ]
     });
 })(jQuery);
