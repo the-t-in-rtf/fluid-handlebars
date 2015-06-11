@@ -117,7 +117,6 @@ gpii.templates.hb.tests.client.harness({
     "expressPort" :   6995,
     "baseUrl":        "http://localhost:6995/",
     expected: {
-        message: "You have succeeded!",
         model: {
             record: {
                 foo: "bar",

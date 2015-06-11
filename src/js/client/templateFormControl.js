@@ -109,14 +109,12 @@
             success: "{that}.handleSuccess",
             error:   "{that}.handleAjaxError"
         },
+        // Rules to control what (if any) feedback from successful response is displayed.
         rules: {
-            // Rules to control what (if any) feedback from successful response is displayed.
-            success: {
-                message: {
-                    literalValue: "You have succeeded!"
-                }
-            },
             model:   {}, // Rules to control what (if any) part of the response is used to update the model.
+            success: {
+                message: "message" // By default, assume we have been given a message to display on success.
+            },
             error: {     // Rules to control how an error is parsed.
                 message: "message" // By default, assume the error message can be found in a `message` element.
             },
