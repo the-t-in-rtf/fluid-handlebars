@@ -34,12 +34,54 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForSuccess", {
     }
 });
 
+fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForStringifySuccess");
+fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringifySuccess", {
+    gradeNames: ["gpii.hb.tests.templateFormControl.readyForSuccess", "autoInit"],
+    ajaxUrl: "/content/stringifySuccess.txt",
+    model: {
+        buttonName: "Stringify Succeed"
+    }
+});
+
+fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForStringSuccess");
+fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringSuccess", {
+    gradeNames: ["gpii.hb.tests.templateFormControl.readyForSuccess", "autoInit"],
+    ajaxUrl: "/content/stringSuccess.txt",
+    model: {
+        buttonName: "String Succeed"
+    }
+});
+
 fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForFailure");
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForFailure", {
     gradeNames: ["gpii.hb.tests.templateFormControl", "autoInit"],
     ajaxUrl: "/error",
     model: {
         buttonName: "Fail"
+    },
+    templates: {
+        initial: "form-failure-initial"
+    }
+});
+
+fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForStringifyFailure");
+fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringifyFailure", {
+    gradeNames: ["gpii.hb.tests.templateFormControl", "autoInit"],
+    ajaxUrl: "/errorJsonString",
+    model: {
+        buttonName: "Stringify Fail"
+    },
+    templates: {
+        initial: "form-failure-initial"
+    }
+});
+
+fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForStringFailure");
+fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringFailure", {
+    gradeNames: ["gpii.hb.tests.templateFormControl", "autoInit"],
+    ajaxUrl: "/errorString",
+    model: {
+        buttonName: "String Fail"
     },
     templates: {
         initial: "form-failure-initial"

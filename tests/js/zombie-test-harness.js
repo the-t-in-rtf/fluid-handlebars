@@ -72,6 +72,20 @@ fluid.defaults("gpii.templates.hb.tests.client.harness", {
         },
         error: {
             type: "gpii.templates.tests.router.error"
+        },
+        errorJsonString: {
+            type: "gpii.templates.tests.router.error",
+            options: {
+                path: "/errorJsonString",
+                body: JSON.stringify({ok: false, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
+            }
+        },
+        errorString: {
+            type: "gpii.templates.tests.router.error",
+            options: {
+                path: "/errorString",
+                body: "There was a problem.  I'm telling you about it with a string response, hopefully this doesn't cause another problem."
+            }
         }
     }
 });

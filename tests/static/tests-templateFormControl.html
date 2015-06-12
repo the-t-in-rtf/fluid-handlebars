@@ -58,7 +58,23 @@
 
                 <hr/>
 
+                <div class="readyForStringifySuccess">This content should not be visible.</div>
+
+                <hr/>
+
+                <div class="readyForStringSuccess">This content should not be visible.</div>
+
+                <hr/>
+
                 <div class="readyForFailure">This content should not be visible.</div>
+
+                <hr/>
+
+                <div class="readyForStringifyFailure">This content should not be visible.</div>
+
+                <hr/>
+
+                <div class="readyForStringFailure">This content should not be visible.</div>
 
                 <hr/>
 
@@ -70,10 +86,14 @@
 
                 <script type="text/javascript">
                     <!-- instantiate test component -->
-                    var success   = gpii.hb.tests.templateFormControl.readyForSuccess(".readyForSuccess");
-                    var failure   = gpii.hb.tests.templateFormControl.readyForFailure(".readyForFailure");
-                    var ambiguous = gpii.hb.tests.templateFormControl.readyForAmbiguity(".readyForAmbiguity");
-                    var keyed     = gpii.hb.tests.templateFormControl.readyForKeys(".readyForKeys");
+                    var success          = gpii.hb.tests.templateFormControl.readyForSuccess(".readyForSuccess");
+                    var successString    = gpii.hb.tests.templateFormControl.readyForStringSuccess(".readyForStringSuccess");
+                    var successStringify = gpii.hb.tests.templateFormControl.readyForStringifySuccess(".readyForStringifySuccess");
+                    var failure          = gpii.hb.tests.templateFormControl.readyForFailure(".readyForFailure");
+                    var stringifyFailure = gpii.hb.tests.templateFormControl.readyForStringifyFailure(".readyForStringifyFailure");
+                    var stringFailure    = gpii.hb.tests.templateFormControl.readyForStringFailure(".readyForStringFailure");
+                    var ambiguous        = gpii.hb.tests.templateFormControl.readyForAmbiguity(".readyForAmbiguity");
+                    var keyed            = gpii.hb.tests.templateFormControl.readyForKeys(".readyForKeys");
                 </script>
             </div>
         </div>

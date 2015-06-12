@@ -48,14 +48,36 @@
 
         var transformedModel = fluid.model.transformWithRules(that.model, that.options.rules.submission);
 
-        options.data = transformedModel;
+        if (options.json) {
+            options.contentType = "application/json";
+        }
+
+        options.data = options.json ? JSON.stringify(transformedModel) : transformedModel;
         $.ajax(options);
     };
 
+    // Make sure that we end up with a reasonable JSON object before we apply our rules.
+    gpii.templates.hb.client.templateFormControl.jsonOrString = function (data) {
+        if (typeof data === "string") {
+            try {
+                var jsonData = JSON.parse(data);
+                return jsonData;
+            }
+            catch (e) {
+                // Treat the data as a string message if we can't otherwise parse it.
+                return { message: data };
+            }
+        }
+
+        return data;
+    };
+
     gpii.templates.hb.client.templateFormControl.handleSuccess = function (that, data) {
-        if (typeof data === "string") { data = JSON.parse(data); }
-        if (data.ok) {
-            var transformedData = fluid.model.transformWithRules(data, that.options.rules.model);
+        var jsonData = gpii.templates.hb.client.templateFormControl.jsonOrString(data);
+
+        // We assume that we are working with a success unless we have explicit data that suggests otherwise.
+        if (jsonData.ok === undefined || jsonData.ok === null || jsonData.ok) {
+            var transformedData = fluid.model.transformWithRules(jsonData, that.options.rules.model);
 
             // Any data that is stored in the `model` of the transformed result is used to update the component's `model`.
             if (transformedData.model) {
@@ -68,7 +90,7 @@
             that.error.applier.change("message", null);
 
             // Pass along any "success" message
-            var successData = fluid.model.transformWithRules(data, that.options.rules.success);
+            var successData = fluid.model.transformWithRules(jsonData, that.options.rules.success);
             that.success.applier.change("message", successData);
 
             // Optionally hide the original content.
@@ -83,15 +105,17 @@
     };
 
     gpii.templates.hb.client.templateFormControl.handleAjaxError = function (that, jqXHR) {
-        gpii.templates.hb.client.templateFormControl.handleError(that, JSON.parse(jqXHR.responseText));
+        gpii.templates.hb.client.templateFormControl.handleError(that, jqXHR.responseText);
     };
 
     gpii.templates.hb.client.templateFormControl.handleError = function (that, data) {
         // Clear out any "success" messages.
         that.success.applier.change("message", null);
 
+        var jsonData = gpii.templates.hb.client.templateFormControl.jsonOrString(data);
+
         // Display the updated error message.
-        var errorData = fluid.model.transformWithRules(data, that.options.rules.error);
+        var errorData = fluid.model.transformWithRules(jsonData, that.options.rules.error);
         that.error.applier.change("message", errorData);
     };
 

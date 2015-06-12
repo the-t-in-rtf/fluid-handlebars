@@ -20,79 +20,102 @@ require("./test-router-error");
 
 fluid.registerNamespace("gpii.templates.hb.tests.client.templateFormControl");
 
+gpii.templates.hb.tests.client.templateFormControl.clickAndCheck = function (that, description, url, button, callback) {
+    jqUnit.asyncTest(description, function () {
+            var browser = Browser.create();
+            browser.on("error", function (error) {
+                jqUnit.start();
+                jqUnit.fail("There should be no errors:" + error);
+                jqUnit.stop();
+            });
+            browser.visit(url, function () {
+                if (button) {
+                    browser.pressButton(button, function () {
+                        callback(browser);
+                    });
+                }
+                else {
+                    callback(browser);
+                }
+            });
+        }
+    );
+};
+
 gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
 
     jqUnit.module("Testing templateFormControl component...");
 
-    jqUnit.asyncTest("Use Zombie.js to verify the initial form rendering...", function () {
-        var browser = Browser.create();
-        browser.on("error", function (error) {
-            jqUnit.start();
-            jqUnit.fail("There should be no errors:" + error);
-            jqUnit.stop();
-        });
-        browser.visit(that.options.config.express.baseUrl + "content/tests-templateFormControl.html").then(function () {
+    that.clickAndCheck("Use Zombie.js to verify the initial form rendering...", null, function (browser) {
             // The client side has already manipulated a bunch of stuff by the time we see it, we're just inspecting the results.
             jqUnit.start();
 
             // Testing the "replaceWith" DOM-manipulation function
             var body = browser.window.$("body");
             jqUnit.assertTrue("The body should contain rendered content that replaces the original source.", body.text().indexOf("This content should not be visible") === -1);
-        });
-    });
+        }
+    );
 
-    jqUnit.asyncTest("Use Zombie.js to submit a form that receives a successful AJAX response...", function () {
-        var browser = Browser.create();
-        browser.on("error", function (error) {
+    that.clickAndCheck("Use Zombie.js to submit a form that receives a successful AJAX response (as JSON)...", "Succeed", function (browser) {
             jqUnit.start();
-            jqUnit.fail("There should be no errors:" + error);
-            jqUnit.stop();
-        });
-        browser.visit(that.options.config.express.baseUrl + "content/tests-templateFormControl.html").then(function () {
-            browser.pressButton("Succeed", function () {
-                jqUnit.start();
-                var successElement = browser.window.$(".readyForSuccess");
-                jqUnit.assertTrue("The component should now contain a 'success' message...", successElement.html().indexOf("This was a triumph") !== -1);
+            var successElement = browser.window.$(".readyForSuccess");
+            jqUnit.assertTrue("The component should now contain a 'success' message...", successElement.html().indexOf("This was a triumph") !== -1);
 
-                var jsonElement = successElement.find(".json");
-                var jsonData = JSON.parse(jsonElement.text());
-                jqUnit.assertDeepEq("AJAX results should have been appended to the model data as outlined in our rules...", that.options.expected, jsonData);
-            });
-        });
-    });
+            var jsonElement = successElement.find(".json");
+            var jsonData = JSON.parse(jsonElement.text());
+            jqUnit.assertDeepEq("AJAX results should have been appended to the model data as outlined in our rules...", that.options.expected, jsonData);
+        }
+    );
 
-    jqUnit.asyncTest("Use Zombie.js to submit a form that receives an unsuccessful AJAX response...", function () {
-        var browser = Browser.create();
-        browser.on("error", function (error) {
+    that.clickAndCheck("Use Zombie.js to submit a form that receives a successful AJAX response (as stringified JSON)...", "Stringify Succeed", function (browser) {
             jqUnit.start();
-            jqUnit.fail("There should be no errors:" + error);
-            jqUnit.stop();
-        });
-        browser.visit(that.options.config.express.baseUrl + "content/tests-templateFormControl.html").then(function () {
-            browser.pressButton("Fail", function () {
-                jqUnit.start();
-                var failureElement = browser.window.$(".readyForFailure");
-                jqUnit.assertTrue("The component should now contain a 'fail' message...", failureElement.text().indexOf("Something went wrong") !== -1);
-            });
-        });
-    });
+            var successElement = browser.window.$(".readyForStringifySuccess");
+            jqUnit.assertTrue("The component should now contain a 'success' message...", successElement.html().indexOf("This was a triumph") !== -1);
 
-    jqUnit.asyncTest("Use Zombie.js to submit a form that is sent an error with a 200 status code...", function () {
-        var browser = Browser.create();
-        browser.on("error", function (error) {
+            var jsonElement = successElement.find(".json");
+            var jsonData = JSON.parse(jsonElement.text());
+            jqUnit.assertDeepEq("AJAX results should have been appended to the model data as outlined in our rules...", that.options.expected, jsonData);
+        }
+    );
+
+    that.clickAndCheck("Use Zombie.js to submit a form that receives a successful AJAX response (as a raw string)...", "String Succeed", function (browser) {
             jqUnit.start();
-            jqUnit.fail("There should be no errors:" + error);
-            jqUnit.stop();
-        });
-        browser.visit(that.options.config.express.baseUrl + "content/tests-templateFormControl.html").then(function () {
-            browser.pressButton("Dither", function () {
-                jqUnit.start();
-                var ambiguityElement = browser.window.$(".readyForAmbiguity");
-                jqUnit.assertTrue("The component should now contain a 'fail' message...", ambiguityElement.text().indexOf("Things seemed to go well") !== -1);
-            });
-        });
-    });
+            var successElement = browser.window.$(".readyForStringSuccess");
+            jqUnit.assertTrue("The component should now contain a 'success' message...", successElement.html().indexOf("This was a triumph") !== -1);
 
+            var jsonElement = successElement.find(".json");
+            var jsonData = JSON.parse(jsonElement.text());
+            jqUnit.assertDeepEq("AJAX results should have been appended to the model data as outlined in our rules...", that.options.successStringExpected, jsonData);
+        }
+    );
+
+    that.clickAndCheck("Use Zombie.js to submit a form that receives an unsuccessful AJAX response (as JSON)...", "Fail", function (browser) {
+            jqUnit.start();
+            var failureElement = browser.window.$(".readyForFailure");
+            jqUnit.assertTrue("The component should now contain a 'fail' message...", failureElement.text().indexOf("Something went wrong") !== -1);
+        }
+    );
+
+    that.clickAndCheck("Use Zombie.js to submit a form that receives an unsuccessful AJAX response (as stringified JSON)...", "Stringify Fail", function (browser) {
+            jqUnit.start();
+            var failureElement = browser.window.$(".readyForStringifyFailure");
+            jqUnit.assertTrue("The component should now contain a 'fail' message...", failureElement.text().indexOf("Something went wrong") !== -1);
+        }
+    );
+
+    that.clickAndCheck("Use Zombie.js to submit a form that receives an unsuccessful AJAX response (as a raw string)...", "String Fail", function (browser) {
+            jqUnit.start();
+            var failureElement = browser.window.$(".readyForStringFailure");
+            jqUnit.assertTrue("The component should now contain a 'fail' message...", failureElement.text().indexOf("Something went wrong") !== -1);
+        }
+    );
+
+    that.clickAndCheck("Use Zombie.js to submit a form that is sent an error with a 200 status code...", "Dither", function (browser) {
+            jqUnit.start();
+            var ambiguityElement = browser.window.$(".readyForAmbiguity");
+            jqUnit.assertTrue("The component should now contain a 'fail' message...", ambiguityElement.text().indexOf("Things seemed to go well") !== -1);
+        }
+    );
 
     // Zombie lacks the ability to simulate keyboard input, you must roll your own.  See: https://github.com/assaf/zombie/issues/705
     // TODO:  Find a way to simulate keyboard input from within Zombie or migrate to an alternative.
@@ -114,8 +137,9 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
 };
 
 gpii.templates.hb.tests.client.harness({
-    "expressPort" :   6995,
-    "baseUrl":        "http://localhost:6995/",
+    expressPort : 6995,
+    baseUrl:      "http://localhost:6995/",
+    contentUrl:   "http://localhost:6995/content/tests-templateFormControl.html",
     expected: {
         model: {
             record: {
@@ -124,10 +148,18 @@ gpii.templates.hb.tests.client.harness({
             }
         }
     },
+    successStringExpected: { "message": "A success string is still a success." },
     listeners: {
         "{express}.events.onStarted": {
             funcName: "gpii.templates.hb.tests.client.templateFormControl.runTests",
             args:     ["{that}"]
+        }
+    },
+    invokers: {
+        clickAndCheck: {
+            funcName: "gpii.templates.hb.tests.client.templateFormControl.clickAndCheck",
+            // that, description, url, button, callback
+            args:     ["{that}", "{arguments}.0", "{that}.options.contentUrl", "{arguments}.1", "{arguments}.2"]
         }
     }
 });
