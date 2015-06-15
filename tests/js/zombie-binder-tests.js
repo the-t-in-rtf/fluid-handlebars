@@ -47,14 +47,9 @@ gpii.hb.tests.binder.runTests = function (that) {
                 if (tag === "textarea" || (tag === "input" && type === "text")) {
                     browser.fill(formElementToUpdate.selector, "updated using form controls");
                 }
-                // Zombie unhelpfully does not allow you to click the right radio button from the group of possible values.  Instead, you have to `choose` an appropriate selector.
+                // Zombie does provide to click on a radio button using only the button's value or text, but we have a number with the same value and text and want to target things more cleanly.
                 else if (tag === "input" && type === "radio") {
-                    formElementToUpdate.each(function (index, button) {
-                        if (button.value === "updated using form controls") {
-                            // Click the button with the right id.
-                            browser.choose("#" + button.id);
-                        }
-                    });
+                    browser.choose(formElementToUpdate.selector + "[value='updated using form controls']");
                 }
                 // Thankfully, Zombie at least allows choosing a select option matching a desired value.
                 else if (tag === "select") {
