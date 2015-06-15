@@ -42,7 +42,9 @@
     };
 
     gpii.templates.hb.client.templateFormControl.submitForm = function (that, event) {
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
 
         var options = fluid.copy(that.options.ajaxOptions);
 
