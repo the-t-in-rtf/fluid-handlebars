@@ -141,11 +141,9 @@ gpii.templates.hb.tests.client.harness({
     baseUrl:      "http://localhost:6995/",
     contentUrl:   "http://localhost:6995/content/tests-templateFormControl.html",
     expected: {
-        model: {
-            record: {
-                foo: "bar",
-                baz: "qux"
-            }
+        record: {
+            foo: "bar",
+            baz: "qux"
         }
     },
     successStringExpected: { "message": "A success string is still a success." },

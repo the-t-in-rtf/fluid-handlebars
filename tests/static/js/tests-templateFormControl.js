@@ -23,9 +23,8 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForSuccess", {
     },
     rules: {
         success: {
-            model: {
-                record: "record"
-            }
+            "":     "notfound",
+            record: "responseJSON.record"
         }
     },
     templates: {
@@ -38,6 +37,9 @@ fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForStringifySucc
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringifySuccess", {
     gradeNames: ["gpii.hb.tests.templateFormControl.readyForSuccess", "autoInit"],
     ajaxUrl: "/content/stringifySuccess.txt",
+    ajaxOptions: {
+        dataType: "json"
+    },
     model: {
         buttonName: "Stringify Succeed"
     }
@@ -47,6 +49,12 @@ fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForStringSuccess
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringSuccess", {
     gradeNames: ["gpii.hb.tests.templateFormControl.readyForSuccess", "autoInit"],
     ajaxUrl: "/content/stringSuccess.txt",
+    rules: {
+        success: {
+            ok:     false,
+            message: "responseText"
+        }
+    },
     model: {
         buttonName: "String Succeed"
     }
@@ -82,6 +90,12 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringFailure", {
     ajaxUrl: "/errorString",
     model: {
         buttonName: "String Fail"
+    },
+    rules: {
+        error: {
+            ok:     false,
+            message: "responseText"
+        }
     },
     templates: {
         initial: "form-failure-initial"

@@ -21,6 +21,7 @@
     fluid.registerNamespace("gpii.templates.hb.client.templateFormControl");
 
 
+    // TODO: Replace this with JSON Schema validation: https://issues.gpii.net/browse/GPII-1176
     gpii.templates.hb.client.templateFormControl.checkRequirements = function (that) {
         var errors = [];
 
@@ -58,41 +59,21 @@
         $.ajax(options);
     };
 
-    // Make sure that we end up with a reasonable JSON object before we apply our rules.
-    gpii.templates.hb.client.templateFormControl.jsonOrString = function (data) {
-        if (typeof data === "string") {
-            try {
-                var jsonData = JSON.parse(data);
-                return jsonData;
-            }
-            catch (e) {
-                // Treat the data as a string message if we can't otherwise parse it.
-                return { message: data };
-            }
-        }
-
-        return data;
-    };
-
     gpii.templates.hb.client.templateFormControl.handleSuccess = function (that, data) {
-        var jsonData = gpii.templates.hb.client.templateFormControl.jsonOrString(data);
-
         // We assume that we are working with a success unless we have explicit data that suggests otherwise.
-        if (jsonData.ok === undefined || jsonData.ok === null || jsonData.ok) {
-            var transformedData = fluid.model.transformWithRules(jsonData, that.options.rules.model);
-
-            // Any data that is stored in the `model` of the transformed result is used to update the component's `model`.
-            if (transformedData.model) {
-                Object.keys(transformedData.model).forEach(function (key) {
-                    that.applier.change(key, transformedData.model[key]);
-                });
-            }
+        var okData = fluid.model.transformWithRules(data, that.options.rules.ok);
+        if (okData.ok === undefined || okData.ok === null || okData.ok) {
+            var transformedData = fluid.model.transformWithRules(data, that.options.rules.model);
+            // The transformed result is used to update the component's `model`.
+            Object.keys(transformedData).forEach(function (key) {
+                that.applier.change(key, transformedData[key]);
+            });
 
             // Clear out any "error" messages
             that.error.applier.change("message", null);
 
             // Pass along any "success" message
-            var successData = fluid.model.transformWithRules(jsonData, that.options.rules.success);
+            var successData = fluid.model.transformWithRules(data, that.options.rules.success);
             that.success.applier.change("message", successData);
 
             // Optionally hide the original content.
@@ -101,24 +82,24 @@
             }
         }
         // If the response is not OK, pass it along to be handled as an error instead.
+        // NOTE:  The error handling has its own rules for parsing the original response, so we must pass it along.
         else {
             gpii.templates.hb.client.templateFormControl.handleError(that, data);
         }
-    };
-
-    gpii.templates.hb.client.templateFormControl.handleAjaxError = function (that, jqXHR) {
-        gpii.templates.hb.client.templateFormControl.handleError(that, jqXHR.responseText);
     };
 
     gpii.templates.hb.client.templateFormControl.handleError = function (that, data) {
         // Clear out any "success" messages.
         that.success.applier.change("message", null);
 
-        var jsonData = gpii.templates.hb.client.templateFormControl.jsonOrString(data);
-
         // Display the updated error message.
-        var errorData = fluid.model.transformWithRules(jsonData, that.options.rules.error);
+        var errorData = fluid.model.transformWithRules(data, that.options.rules.error);
         that.error.applier.change("message", errorData);
+
+        // Optionally hide the original content.
+        if (that.options.hideOnError) {
+            that.locate("form").hide();
+        }
     };
 
     gpii.templates.hb.client.templateFormControl.handleKeyPress = function (that, event) {
@@ -133,18 +114,30 @@
         ajaxOptions: {
             url:     "{that}.options.ajaxUrl",
             success: "{that}.handleSuccess",
-            error:   "{that}.handleAjaxError"
+            error:   "{that}.handleError"
         },
         // Rules to control what (if any) feedback from successful response is displayed.
         rules: {
-            model:   {}, // Rules to control what (if any) part of the response is used to update the model.
+            // Rules to control what (if any) part of the response is used to update the model.
+            model:   {}, // Explicitly avoid model changes by default.
+
+            // Rules to evaluate whether a response is successful
+            ok: {
+                "": "responseJSON" // By default, use the entire jQuery `jqXHR` object's JSON payload.
+            },
+
+            // Rules to control how a successful response is parsed for display on screen.
             success: {
-                message: "message" // By default, assume we have been given a message to display on success.
+                "": "responseJSON" // By default, use the entire jQuery `jqXHR` object's JSON payload.
             },
-            error: {     // Rules to control how an error is parsed.
-                message: "message" // By default, assume the error message can be found in a `message` element.
+
+            // Rules to control how an error is parsed.
+            error: {
+                "": "responseJSON" // By default, use the entire jQuery `jqXHR` object's JSON payload.
             },
-            submission: { // Rules to control how our model is parsed before submitting to `options.ajaxOptions.url`
+
+            // Rules to control how our model is parsed before submitting to `options.ajaxOptions.url`
+            submission: {
                 "": ""    // By default, pass the model with no alterations.
             }
         },
@@ -184,11 +177,11 @@
             },
             handleSuccess: {
                 funcName: "gpii.templates.hb.client.templateFormControl.handleSuccess",
-                args: ["{that}", "{arguments}.0"]
+                args: ["{that}", "{arguments}.2"]  // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
             },
-            handleAjaxError: {
-                funcName: "gpii.templates.hb.client.templateFormControl.handleAjaxError",
-                args: ["{that}", "{arguments}.0"]
+            handleError: {
+                funcName: "gpii.templates.hb.client.templateFormControl.handleError",
+                args: ["{that}", "{arguments}.0"] // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
             },
             handleKeyPress: {
                 funcName: "gpii.templates.hb.client.templateFormControl.handleKeyPress",

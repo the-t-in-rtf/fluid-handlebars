@@ -58,7 +58,6 @@
     });
 
     gpii.templates.hb.client.cacheTemplates = function (that, data) {
-        data = typeof data === "string" ? JSON.parse(data) : data;
         ["layout", "pages", "partials"].forEach(function (key) {
             if (data.templates[key]) {
                 that.templates[key] = data.templates[key];
