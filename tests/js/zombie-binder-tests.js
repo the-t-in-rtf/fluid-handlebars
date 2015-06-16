@@ -36,10 +36,6 @@ gpii.hb.tests.binder.runTests = function (that) {
                 var component = browser.window[componentName];
                 jqUnit.assertDeepEq("The initial model of component '" + componentName + "' should match the expected results.", that.options.expectedOnInit, component.model);
 
-                component.applier.change("updateFromModel", "updated using applier");
-                var updatedFormElement = component.locate("updateFromModel");
-                jqUnit.assertEquals("A change to the model should result in an update to the form element", "updated using applier", updatedFormElement.val());
-
                 var formElementToUpdate = component.locate("updateFromMarkup");
                 // Zombie's `fill(selector, value)` method only works with particular types of elements, so we have to use a range of approaches for other types of form elements.
                 var tag = formElementToUpdate.prop("tagName").toLowerCase();
@@ -56,6 +52,12 @@ gpii.hb.tests.binder.runTests = function (that) {
                     browser.select(formElementToUpdate.selector, "updated using form controls");
                 }
                 jqUnit.assertEquals("A change to the form controls should result in an update to the model", "updated using form controls", component.model.updateFromMarkup);
+
+                component.applier.change("updateFromModel", "updated using applier");
+                var updatedFormElement = component.locate("updateFromModel");
+                var clientSideFluid = browser.window.fluid;
+                var clientSideValue = clientSideFluid.value(updatedFormElement);
+                jqUnit.assertEquals("A change to the model should result in an update to the form element", "updated using applier", clientSideValue);
             });
         });
     });

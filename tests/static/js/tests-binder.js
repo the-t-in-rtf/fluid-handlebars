@@ -91,22 +91,18 @@ fluid.defaults("gpii.hb.tests.binder.radio", {
     gradeNames: ["gpii.hb.tests.binder.base", "autoInit"],
     bindings: {
         initFromModel: {
-            type:     "radio",
             selector: "initFromModel",
             path:     "initFromModel"
         },
         initFromMarkup: {
-            type:     "radio",
             selector: "initFromMarkup",
             path:     "initFromMarkup"
         },
         updateFromModel: {
-            type:     "radio",
             selector: "updateFromModel",
             path:     "updateFromModel"
         },
         updateFromMarkup: {
-            type:     "radio",
             selector: "updateFromMarkup",
             path:     "updateFromMarkup"
         }

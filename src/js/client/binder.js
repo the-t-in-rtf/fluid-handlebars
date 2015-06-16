@@ -5,8 +5,7 @@
 // bindings: {
 //   "key": {
 //     selector: "selector1",
-//     path:     "path1",
-//     type:     "radio"
+//     path:     "path1"
 //   },
 //   "selector2": "path2"
 // }
@@ -19,9 +18,6 @@
 //
 // * path:        A valid path for the model variable whose value will be watched.
 //                Must be able to be resolved using fluid.get(path)
-//
-// * type:        The type of form input we are dealing with.  Only needed when dealing with `radio` inputs, which
-//                Require special handling.
 //
 // The "short form" uses the selector as the key, and the path as a string value (as in the second example above).
 //
@@ -85,18 +81,7 @@
             that.applier.modelChanged.addListener(path, function (change) {
                 fluid.log("Changing value based on model update.");
 
-                // We must use a separate method to update radio buttons
-                if (type === "radio") {
-                    element.val(change[path]);
-                    element.each(function (index, button) {
-                        if (button.value === change[path]) {
-                            button.checked = true;
-                        }
-                    });
-                }
-                else {
-                    fluid.value(element, change[path]);
-                }
+                fluid.value(element, change[path]);
             });
 
             // If we have model data initially, update the form.  Model values win out over markup.
