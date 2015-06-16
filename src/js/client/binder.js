@@ -6,6 +6,7 @@
 //   "key": {
 //     selector: "selector1",
 //     path:     "path1",
+//     type:     "radio"
 //   },
 //   "selector2": "path2"
 // }
@@ -18,6 +19,9 @@
 //
 // * path:        A valid path for the model variable whose value will be watched.
 //                Must be able to be resolved using fluid.get(path)
+//
+// * type:        The type of form input we are dealing with.  Only needed when dealing with `radio` inputs, which
+//                Require special handling.
 //
 // The "short form" uses the selector as the key, and the path as a string value (as in the second example above).
 //
@@ -51,12 +55,13 @@
 // The `templateAware` grade included with this package takes care of that for you by calling `fluid.initDomBinder`
 // and then running `applyBinding` once the `onDomBind` event is fired.  See that component for a working example.
 //
-// This code was originally written by Dr. Antranig Basman <amb26@ponder.org.uk> and with his advice was updated and
+// This code was originally written by Antranig Basman <amb26@ponder.org.uk> and with his advice was updated and
 // extended by Tony Atkins <tony@raisingthefloor.org>.
 //
 /* global fluid, jQuery */
-(function ($) {
+(function () {
     "use strict";
+    var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.templates.binder");
 
     // The main function to create bindings between markup and model elements.  See above for usage details.
