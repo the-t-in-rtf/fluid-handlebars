@@ -125,3 +125,25 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForKeys", {
         initial: "form-keyed-initial"
     }
 });
+
+fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForNested");
+fluid.defaults("gpii.hb.tests.templateFormControl.readyForNested", {
+    gradeNames:    ["gpii.hb.tests.templateFormControl", "autoInit"],
+    hideOnSuccess: false,
+    ajaxUrl: "/content/json/success.json",
+    components: {
+        nested: {
+            type:      "gpii.hb.tests.templateFormControl",
+            container: ".form-nested-nested",
+            createOnEvent: "{readyForNested}.events.onMarkupRendered",
+            options: {
+                templates: {
+                    initial: "form-nested-nested"
+                }
+            }
+        }
+    },
+    templates: {
+        initial: "form-nested-initial"
+    }
+});
