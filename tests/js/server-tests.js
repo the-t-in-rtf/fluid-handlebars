@@ -53,6 +53,7 @@ var testServer = gpii.express({
         dispatcher: {
             type: "gpii.express.hb.dispatcher",
             options: {
+                path: ["/dispatcher/:template", "/dispatcher"],
                 model: "{gpii.express}.model"
             }
         },
@@ -101,7 +102,7 @@ testServer.runTests = function () {
     //   3. A custom page with no matching layout
     //
     //  All variations should test partials and variables
-    var pages = ["custom", "custom-no-matching-layout"];
+    var pages = ["custom", "custom-no-matching-layout", ""];
 
     pages.forEach(function (page) {
         jqUnit.asyncTest("Test template handling dispatcher for page '" + page + "' ...", function () {
