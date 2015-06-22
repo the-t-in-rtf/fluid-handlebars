@@ -128,17 +128,49 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForKeys", {
 
 fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForNested");
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForNested", {
-    gradeNames:    ["gpii.hb.tests.templateFormControl", "autoInit"],
-    hideOnSuccess: false,
+    gradeNames:    ["gpii.templates.hb.client.templateFormControl.singleRenderer", "autoInit"],
+    hideOnSuccess: true,
     ajaxUrl: "/content/json/success.json",
+    model: {
+        buttonName: "Outer"
+    },
+    selectors: {
+        form:    ".outer-form",
+        submit:  ".outer-submit",
+        success: ".outer-success",
+        error:   ".outer-error"
+    },
+    rules: {
+        success: {
+            message: {
+                literalValue: "I look successful at least on the outside."
+            }
+        }
+    },
     components: {
-        nested: {
-            type:      "gpii.hb.tests.templateFormControl",
-            container: ".form-nested-nested",
+        inner: {
+            type:          "gpii.hb.tests.templateFormControl",
+            container:     ".form-nested-nested",
             createOnEvent: "{readyForNested}.events.onMarkupRendered",
             options: {
+                selectors: {
+                    form:    ".inner-form",
+                    submit:  ".inner-submit",
+                    success: ".inner-success",
+                    error:   ".inner-error"
+                },
                 templates: {
                     initial: "form-nested-nested"
+                },
+                model: {
+                    buttonName: "Inner"
+                },
+                rules: {
+                    success: {
+                        message: {
+                            literalValue: "I feel successful on the inside."
+                        }
+                    }
                 }
             }
         }

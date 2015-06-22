@@ -11,17 +11,27 @@
     "use strict";
     fluid.registerNamespace("gpii");
 
-    fluid.defaults("gpii.templates.hb.client.multiTemplateAware.singularRenderer", {
+    fluid.defaults("gpii.templates.hb.client.multiTemplateAware.hasSingularRenderer", {
         components: {
             renderer: "{rendererHolder}.renderer"
-        }
+        },
+        //TODO: Review with Antranig
+        //listeners: {
+        //    // Ordinarily a component renders when the template renderer is available.  Subcomponents can assume that
+        //    // Their parent has already taken care of this and render on creation.
+        //    "onCreate.render": {
+        //        listeners: {
+        //            func: "{that}.renderInitialMarkup"
+        //        }
+        //    }
+        //}
     });
 
     fluid.defaults("gpii.templates.hb.client.multiTemplateAware.distributor", {
         distributeOptions: [
             {
                 // Any child components of this one should use our renderer.
-                record: "gpii.templates.hb.client.multiTemplateAware.singularRenderer",
+                record: "gpii.templates.hb.client.multiTemplateAware.hasSingularRenderer",
                 target: "{that templateAware}.options.gradeNames"
             }
         ]
@@ -32,7 +42,7 @@
     });
 
     fluid.defaults("gpii.templates.hb.client.multiTemplateAware", {
-        gradeNames: ["gpii.templates.hb.client.multiTemplateAware.rendererHolder", "gpii.templates.hb.client.multiTemplateAware.distributor","autoInit"],
+        gradeNames: ["gpii.templates.hb.client.multiTemplateAware.rendererHolder", "gpii.templates.hb.client.multiTemplateAware.distributor", "autoInit"]
     });
 
 })(jQuery);

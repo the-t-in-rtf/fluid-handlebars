@@ -109,7 +109,7 @@
     };
 
     fluid.defaults("gpii.templates.hb.client.templateFormControl", {
-        gradeNames:    ["gpii.templates.hb.client.multiTemplateAware", "autoInit"],
+        gradeNames:    ["gpii.templates.hb.client.templateAware", "autoInit"],
         hideOnSuccess: true, // Whether to hide our form if the results are successful
         ajaxOptions: {
             url:     "{that}.options.ajaxUrl",
@@ -211,5 +211,13 @@
                 }
             ]
         }
+    });
+
+    // An instance of this component that uses a single template renderer.  Please note, you should only have a single
+    // component in your tree with the multiTemplateAware grade.  If you are building your own complex component using
+    // `templateFormControl`, you should use the grade above and add `gpii.templates.hb.client.multiTemplateAware` to
+    // your top-level component.
+    fluid.defaults("gpii.templates.hb.client.templateFormControl.singleRenderer", {
+        gradeNames: ["gpii.templates.hb.client.templateFormControl", "gpii.templates.hb.client.multiTemplateAware", "autoInit"]
     });
 })(jQuery);
