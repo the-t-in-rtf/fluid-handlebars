@@ -1,6 +1,10 @@
 // A client-side module that provides various template handling capabilities, and which wires in any
 // child components with the grade `gpii.templates.hb.helper` as handlebars helpers.
 //
+// For tests and other simple uses, you can directly use the `gpii.template.hb.client` grade.  If you are working with
+// templates provided by the `inline` router included with this package, you should add
+// `gpii.template.hb.client.serverAware` to `options.gradeNames`.
+//
 // Requires Handlebars.js and Pagedown (for markdown rendering)
 
 /* global fluid, jQuery, Handlebars */
@@ -57,36 +61,10 @@
         };
     });
 
-    gpii.templates.hb.client.cacheTemplates = function (that, data) {
-        ["layout", "pages", "partials"].forEach(function (key) {
-            if (data.templates[key]) {
-                that.templates[key] = data.templates[key];
-            }
-        });
-
-        gpii.templates.hb.client.loadPartials(that);
-
-        // Fire a "templates loaded" event so that components can wait for their markup to appear.
-        that.events.onTemplatesLoaded.fire(that);
-    };
-
     gpii.templates.hb.client.loadPartials  = function (that) {
         Object.keys(that.templates.partials).forEach(function (key) {
             Handlebars.registerPartial(key, that.templates.partials[key]);
         });
-    };
-
-    gpii.templates.hb.client.retrieveTemplates = function (that, callback) {
-        var settings = {
-            url:     that.options.templateUrl,
-            success: that.cacheTemplates
-        };
-        if (callback) {
-            $.ajax(settings).then(callback);
-        }
-        else {
-            $.ajax(settings);
-        }
     };
 
     fluid.defaults("gpii.templates.hb.client", {
@@ -134,10 +112,6 @@
                 funcName: "gpii.templates.hb.client.append",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
-            "cacheTemplates": {
-                funcName: "gpii.templates.hb.client.cacheTemplates",
-                args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
-            },
             "before": {
                 funcName: "gpii.templates.hb.client.before",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
@@ -150,10 +124,6 @@
                 funcName: "gpii.templates.hb.client.html",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
-            "retrieveTemplates": {
-                funcName: "gpii.templates.hb.client.retrieveTemplates",
-                args: ["{that}", "{arguments}.0"]
-            },
             "prepend": {
                 funcName: "gpii.templates.hb.client.prepend",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
@@ -163,16 +133,59 @@
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             }
         },
+        listeners: {
+            "onCreate.registerHelpers": {
+                funcName: "gpii.templates.hb.client.registerHelpers",
+                args:     ["{that}", "{arguments}.0"]
+            },
+            "onCreate.loadPartials": {
+                funcName: "gpii.templates.hb.client.loadPartials",
+                args:     ["{that}"]
+            }
+        }
+    });
+
+
+    fluid.registerNamespace("gpii.templates.hb.client.serverAware");
+    gpii.templates.hb.client.serverAware.cacheTemplates = function (that, data) {
+        ["layout", "pages", "partials"].forEach(function (key) {
+            if (data.templates[key]) {
+                that.templates[key] = data.templates[key];
+            }
+        });
+
+        gpii.templates.hb.client.loadPartials(that);
+
+        // Fire a "templates loaded" event so that components can wait for their markup to appear.
+        that.events.onTemplatesLoaded.fire(that);
+    };
+
+    gpii.templates.hb.client.serverAware.retrieveTemplates = function (that) {
+        var settings = {
+            url:     that.options.templateUrl,
+            success: that.cacheTemplates
+        };
+
+        $.ajax(settings);
+    };
+
+    fluid.defaults("gpii.templates.hb.client.serverAware", {
+        gradeNames: ["gpii.templates.hb.client", "autoInit"],
+        templateUrl: "/hbs",
+        invokers: {
+            "cacheTemplates": {
+                funcName: "gpii.templates.hb.client.serverAware.cacheTemplates",
+                args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
+            },
+            "retrieveTemplates": {
+                funcName: "gpii.templates.hb.client.serverAware.retrieveTemplates",
+                args: ["{that}", "{arguments}.0"]
+            }
+        },
         events: {
             "onTemplatesLoaded": null
         },
         listeners: {
-            "onCreate.registerHelpers": [
-                {
-                    funcName: "gpii.templates.hb.client.registerHelpers",
-                    args: ["{that}", "{arguments}.0"]
-                }
-            ],
             "onCreate.loadTemplates": {
                 func: "{that}.retrieveTemplates"
             }

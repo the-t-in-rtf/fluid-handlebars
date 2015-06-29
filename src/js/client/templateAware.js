@@ -65,12 +65,7 @@
             renderer: {
                 type: "gpii.templates.hb.client",
                 options: {
-                    templateUrl: "{templateAware}.options.templateUrl",
-                    listeners: {
-                        "onTemplatesLoaded.renderMarkup": {
-                            func: "{templateAware}.renderInitialMarkup"
-                        }
-                    }
+                    templateUrl: "{templateAware}.options.templateUrl"
                 }
             }
         },
@@ -83,6 +78,9 @@
             "onCreate.checkRequirements": {
                 funcName: "gpii.templates.hb.client.templateAware.checkRequirements",
                 args:     ["{that}"]
+            },
+            "onCreate.renderMarkup": {
+                func: "{that}.renderInitialMarkup"
             },
             "refresh.renderMarkup": {
                 func: "{that}.renderInitialMarkup"
@@ -103,6 +101,36 @@
             renderMarkup: {
                 funcName: "gpii.templates.hb.client.templateAware.renderMarkup",
                 args:     ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
+            }
+        }
+    });
+
+    fluid.registerNamespace("gpii.templates.hb.client.templateAware.serverAware");
+    gpii.templates.hb.client.templateAware.serverAware.noop = function () {};
+
+    fluid.defaults("gpii.templates.hb.client.templateAware.serverAware", {
+        gradeNames: ["gpii.templates.hb.client.templateAware", "autoInit"],
+        components: {
+            renderer: {
+                type: "gpii.templates.hb.client.serverAware",
+                options: {
+                    listeners: {
+                        "onTemplatesLoaded.renderMarkup": {
+                            func: "{templateAware}.renderInitialMarkup"
+                        }
+                    }
+                }
+            }
+        },
+        invokers: {
+            noop: {
+                funcName: "gpii.templates.hb.client.templateAware.serverAware.noop"
+
+            }
+        },
+        listeners: {
+            "onCreate.renderMarkup": {
+                func: "{that}.noop"
             }
         }
     });

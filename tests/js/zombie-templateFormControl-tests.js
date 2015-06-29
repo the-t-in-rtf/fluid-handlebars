@@ -117,6 +117,14 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
         }
     );
 
+    that.clickAndCheck("Use Zombie.js to confirm that forms can be nested and still use a single renderer...", null, function (browser) {
+            jqUnit.start();
+            var nestedComponent = browser.window.nested;
+            jqUnit.assertDeepEq("The outer and inner form should have the same renderer...", nestedComponent.renderer, nestedComponent.inner.renderer);
+        }
+    );
+
+
     // Zombie lacks the ability to simulate keyboard input, you must roll your own.  See: https://github.com/assaf/zombie/issues/705
     // TODO:  Find a way to simulate keyboard input from within Zombie or migrate to an alternative.
     //jqUnit.asyncTest("Use Zombie.js to submit a form by pressing 'enter' in a text field...", function () {

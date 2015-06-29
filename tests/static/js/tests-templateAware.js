@@ -7,7 +7,7 @@
 fluid.registerNamespace("gpii.hb.tests.templateAware");
 
 fluid.defaults("gpii.hb.tests.templateAware", {
-    gradeNames: ["gpii.templates.hb.client.templateAware", "autoInit"],
+    gradeNames: ["gpii.templates.hb.client.templateAware.serverAware", "autoInit"],
     template:   "index",
     selectors: {
         initial: "" // Update the whole container

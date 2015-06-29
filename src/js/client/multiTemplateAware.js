@@ -16,15 +16,13 @@
             renderer: "{rendererHolder}.renderer"
         },
         //TODO: Review with Antranig
-        //listeners: {
-        //    // Ordinarily a component renders when the template renderer is available.  Subcomponents can assume that
-        //    // Their parent has already taken care of this and render on creation.
-        //    "onCreate.render": {
-        //        listeners: {
-        //            func: "{that}.renderInitialMarkup"
-        //        }
-        //    }
-        //}
+        listeners: {
+            // Ordinarily a component renders when the template renderer is available.  Subcomponents can assume that
+            // Their parent has already taken care of this and render on creation.
+            "onCreate.render": {
+                func: "{that}.renderInitialMarkup"
+            }
+        }
     });
 
     fluid.defaults("gpii.templates.hb.client.multiTemplateAware.distributor", {

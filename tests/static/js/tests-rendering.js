@@ -6,12 +6,12 @@
 fluid.registerNamespace("gpii.hb.clientTests");
 
 gpii.hb.clientTests.transformUsingTemplates = function (that) {
-    that.templates.after(that.locate("viewport-after"), that.options.templateName, that.model);
-    that.templates.append(that.locate("viewport-append"), that.options.templateName, that.model);
-    that.templates.before(that.locate("viewport-before"), that.options.templateName, that.model);
-    that.templates.html(that.locate("viewport-html"), that.options.templateName, that.model);
-    that.templates.prepend(that.locate("viewport-prepend"), that.options.templateName, that.model);
-    that.templates.replaceWith(that.locate("viewport-replaceWith"), that.options.replaceWithTemplateName, that.model);
+    that.renderer.after(that.locate("viewport-after"), that.options.templateName, that.model);
+    that.renderer.append(that.locate("viewport-append"), that.options.templateName, that.model);
+    that.renderer.before(that.locate("viewport-before"), that.options.templateName, that.model);
+    that.renderer.html(that.locate("viewport-html"), that.options.templateName, that.model);
+    that.renderer.prepend(that.locate("viewport-prepend"), that.options.templateName, that.model);
+    that.renderer.replaceWith(that.locate("viewport-replaceWith"), that.options.replaceWithTemplateName, that.model);
 };
 
 fluid.defaults("gpii.hb.clientTests", {
@@ -32,12 +32,12 @@ fluid.defaults("gpii.hb.clientTests", {
         "viewport-replaceWith": ".viewport-replaceWith"
     },
     components: {
-        templates: {
-            type: "gpii.templates.hb.client"
+        renderer: {
+            type: "gpii.templates.hb.client.serverAware"
         }
     },
     listeners: {
-        "{templates}.events.onTemplatesLoaded": {
+        "{renderer}.events.onTemplatesLoaded": {
             funcName: "gpii.hb.clientTests.transformUsingTemplates",
             args:     ["{that}"]
         }
