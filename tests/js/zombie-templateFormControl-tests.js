@@ -61,9 +61,8 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
             var successElement = browser.window.$(".readyForSuccess");
             jqUnit.assertTrue("The component should now contain a 'success' message...", successElement.html().indexOf("This was a triumph") !== -1);
 
-            var jsonElement = successElement.find(".json");
-            var jsonData = JSON.parse(jsonElement.text());
-            jqUnit.assertDeepEq("AJAX results should have been appended to the model data as outlined in our rules...", that.options.expected, jsonData);
+            var successComponent = browser.window.success;
+            jqUnit.assertDeepEq("AJAX results should have been appended to the model data as outlined in our rules...", that.options.expected.record, successComponent.model.record);
         }
     );
 
@@ -72,22 +71,16 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
             var successElement = browser.window.$(".readyForStringifySuccess");
             jqUnit.assertTrue("The component should now contain a 'success' message...", successElement.html().indexOf("This was a triumph") !== -1);
 
-            var jsonElement = successElement.find(".json");
-            var jsonData = JSON.parse(jsonElement.text());
-            jqUnit.assertDeepEq("AJAX results should have been appended to the model data as outlined in our rules...", that.options.expected, jsonData);
+            var successStringifyComponent = browser.window.successStringify;
+            jqUnit.assertDeepEq("AJAX results should have been appended to the model data as outlined in our rules...", that.options.expected.record, successStringifyComponent.model.record);
         }
     );
 
     that.clickAndCheck("Use Zombie.js to submit a form that receives a successful AJAX response (as a raw string)...", "String Succeed", function (browser) {
-            jqUnit.start();
-            var successElement = browser.window.$(".readyForStringSuccess");
-            jqUnit.assertTrue("The component should now contain a 'success' message...", successElement.html().indexOf("This was a triumph") !== -1);
-
-            var jsonElement = successElement.find(".json");
-            var jsonData = JSON.parse(jsonElement.text());
-            jqUnit.assertDeepEq("AJAX results should have been appended to the model data as outlined in our rules...", that.options.successStringExpected, jsonData);
-        }
-    );
+        jqUnit.start();
+        var successElement = browser.window.$(".readyForStringSuccess");
+        jqUnit.assertTrue("The component should now contain a 'success' message...", successElement.html().indexOf("This was a triumph") !== -1);
+    });
 
     that.clickAndCheck("Use Zombie.js to submit a form that receives an unsuccessful AJAX response (as JSON)...", "Fail", function (browser) {
             jqUnit.start();

@@ -11,21 +11,25 @@ fluid.defaults("gpii.hb.tests.templateFormControl", {
     templates: {
         success: "common-success",
         error:   "common-error"
+    },
+    rules: {
+        success: {
+            successMessage: { literalValue: "The response was successful..." }
+        },
+        error: {
+            errorMessage: { literalValue: "The response was not successful..." }
+        }
     }
 });
 
 fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForSuccess");
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForSuccess", {
     gradeNames: ["gpii.hb.tests.templateFormControl", "autoInit"],
-    ajaxUrl: "/content/json/success.json",
+    ajaxOptions: {
+        url: "/content/json/success.json"
+    },
     model: {
         buttonName: "Succeed"
-    },
-    rules: {
-        success: {
-            "":     "notfound",
-            record: "responseJSON.record"
-        }
     },
     templates: {
         initial: "form-success-initial",
@@ -36,8 +40,8 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForSuccess", {
 fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForStringifySuccess");
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringifySuccess", {
     gradeNames: ["gpii.hb.tests.templateFormControl.readyForSuccess", "autoInit"],
-    ajaxUrl: "/content/stringifySuccess.txt",
     ajaxOptions: {
+        url:      "/content/stringifySuccess.txt",
         dataType: "json"
     },
     model: {
@@ -48,11 +52,13 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringifySuccess", {
 fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForStringSuccess");
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringSuccess", {
     gradeNames: ["gpii.hb.tests.templateFormControl.readyForSuccess", "autoInit"],
-    ajaxUrl: "/content/stringSuccess.txt",
+    ajaxOptions: {
+        url:      "/content/stringSuccess.txt"
+    },
     rules: {
         success: {
-            ok:     false,
-            message: "responseText"
+            ok:             false,
+            successMessage: "responseText"
         }
     },
     model: {
@@ -63,7 +69,9 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringSuccess", {
 fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForFailure");
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForFailure", {
     gradeNames: ["gpii.hb.tests.templateFormControl", "autoInit"],
-    ajaxUrl: "/error",
+    ajaxOptions: {
+        url: "/error"
+    },
     model: {
         buttonName: "Fail"
     },
@@ -75,7 +83,9 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForFailure", {
 fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForStringifyFailure");
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringifyFailure", {
     gradeNames: ["gpii.hb.tests.templateFormControl", "autoInit"],
-    ajaxUrl: "/errorJsonString",
+    ajaxOptions: {
+        url: "/errorJsonString"
+    },
     model: {
         buttonName: "Stringify Fail"
     },
@@ -87,14 +97,16 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringifyFailure", {
 fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForStringFailure");
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringFailure", {
     gradeNames: ["gpii.hb.tests.templateFormControl", "autoInit"],
-    ajaxUrl: "/errorString",
+    ajaxOptions: {
+        url: "/errorString"
+    },
     model: {
         buttonName: "String Fail"
     },
     rules: {
         error: {
-            ok:     false,
-            message: "responseText"
+            ok:           false,
+            errorMessage: ""
         }
     },
     templates: {
@@ -105,7 +117,9 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForStringFailure", {
 fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForAmbiguity");
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForAmbiguity", {
     gradeNames: ["gpii.hb.tests.templateFormControl", "autoInit"],
-    ajaxUrl: "/content/json/error.json", // An error, delivered with a 200 status code.
+    ajaxOptions: {
+        url: "/content/json/error.json" // An error, delivered with a 200 status code.
+    },
     model: {
         buttonName: "Dither"
     },
@@ -120,7 +134,9 @@ fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForKeys");
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForKeys", {
     gradeNames:    ["gpii.hb.tests.templateFormControl", "autoInit"],
     hideOnSuccess: false,
-    ajaxUrl: "/content/json/success.json",
+    ajaxOptions: {
+        url: "/content/json/success.json"
+    },
     templates: {
         initial: "form-keyed-initial"
     }
@@ -130,7 +146,9 @@ fluid.registerNamespace("gpii.hb.tests.templateFormControl.readyForNested");
 fluid.defaults("gpii.hb.tests.templateFormControl.readyForNested", {
     gradeNames:    ["gpii.templates.hb.client.templateFormControl.singleRenderer", "autoInit"],
     hideOnSuccess: true,
-    ajaxUrl: "/content/json/success.json",
+    ajaxOptions: {
+        url: "/content/json/success.json"
+    },
     model: {
         buttonName: "Outer"
     },
@@ -142,7 +160,7 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForNested", {
     },
     rules: {
         success: {
-            message: {
+            successMessage: {
                 literalValue: "I look successful at least on the outside."
             }
         }
@@ -167,7 +185,7 @@ fluid.defaults("gpii.hb.tests.templateFormControl.readyForNested", {
                 },
                 rules: {
                     success: {
-                        message: {
+                        successMessage: {
                             literalValue: "I feel successful on the inside."
                         }
                     }

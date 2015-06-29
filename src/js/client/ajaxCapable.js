@@ -126,16 +126,16 @@ If you need to do both (or each multiple times), you should create a parent comp
         },
         invokers: {
             makeRequest: {
-                funcName: "gpii.template.hb.client.ajaxCapable.makeRequest",
+                funcName: "gpii.templates.hb.client.ajaxCapable.makeRequest",
                 args:     ["{that}"]
             },
             handleSuccess: {
                 funcName: "gpii.templates.hb.client.ajaxCapable.handleSuccess",
-                args: ["{that}", "{arguments}.2"]  // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
+                args:     ["{that}", "{arguments}.2"]  // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
             },
             handleError: {
                 funcName: "gpii.templates.hb.client.ajaxCapable.handleError",
-                args: ["{that}", "{arguments}.0"] // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
+                args:     ["{that}", "{arguments}.2"] // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
             }
         }
     });

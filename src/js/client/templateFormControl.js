@@ -10,7 +10,7 @@
 
  */
 /* global fluid, jQuery */
-(function ($) {
+(function () {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.templates.hb.client.templateFormControl");
@@ -43,18 +43,47 @@
         }
     };
 
+    gpii.templates.hb.client.templateFormControl.handleSuccess = function (that, data) {
+        if (that.options.hideOnSuccess) {
+            var form = that.locate("form");
+            form.hide();
+        }
+
+        that.handleSuccess(data);
+    };
+
+    gpii.templates.hb.client.templateFormControl.handleError = function (that, data) {
+        if (that.options.hideOnError) {
+            var form = that.locate("form");
+            form.hide();
+        }
+
+        that.handleSuccess(data);
+    };
+
     fluid.defaults("gpii.templates.hb.client.templateFormControl", {
-        gradeNames:    ["gpii.templates.hb.client.templateAware.serverAware", "gpii.template.hb.client.ajaxCapable", "autoInit"],
-        hideOnSuccess: true, // Whether to hide our form if the results are successful
+        gradeNames:    ["gpii.templates.hb.client.templateAware.serverAware", "gpii.templates.hb.client.ajaxCapable", "autoInit"],
+        hideOnSuccess: true,  // Whether to hide our form if the results are successful
+        hideOnError:   false, // Whether to hide our form if the results are unsuccessful
+        model: {
+        },
         components: {
             success: {
-                type:     "gpii.templates.hb.client.templateMessage",
+                type:          "gpii.templates.hb.client.templateMessage",
                 createOnEvent: "{templateFormControl}.events.onMarkupRendered",
-                container: "{templateFormControl}.dom.success",
+                container:     "{templateFormControl}.dom.success",
                 options: {
+                    components: {
+                        renderer: "{templateFormControl}.renderer"
+                    },
                     template: "{templateFormControl}.options.templates.success",
                     model:  {
-                        message: "{templateFormControl}.successMessage"
+                        message: "{templateFormControl}.model.successMessage"
+                    },
+                    listeners: {
+                        "onCreate.renderMarkup": {
+                            func: "fluid.identity"
+                        }
                     }
                 }
             },
@@ -63,9 +92,17 @@
                 createOnEvent: "{templateFormControl}.events.onMarkupRendered",
                 container:     "{templateFormControl}.dom.error",
                 options: {
+                    components: {
+                        renderer: "{templateFormControl}.renderer"
+                    },
                     template: "{templateFormControl}.options.templates.error",
                     model:  {
-                        message: "{templateFormControl}.errorMessage"
+                        message: "{templateFormControl}.model.errorMessage"
+                    },
+                    listeners: {
+                        "onCreate.renderMarkup": {
+                            func: "fluid.identity"
+                        }
                     }
                 }
             }
@@ -76,7 +113,7 @@
                 successMessage: "message"
             },
             error: {
-                errorMessage: "message"
+                errorMessage:   "message"
             }
         },
         selectors: {
@@ -98,6 +135,14 @@
             handleKeyPress: {
                 funcName: "gpii.templates.hb.client.templateFormControl.handleKeyPress",
                 args:     ["{that}", "{arguments}.0"]
+            },
+            handleSuccessLocally: {
+                funcName: "gpii.templates.hb.client.templateFormControl.handleSuccess",
+                args:     ["{that}", "{arguments}.2"]
+            },
+            handleErrorLocally: {
+                funcName: "gpii.templates.hb.client.templateFormControl.handleError",
+                args:     ["{that}", "{arguments}.2"]
             }
         },
         templates: {

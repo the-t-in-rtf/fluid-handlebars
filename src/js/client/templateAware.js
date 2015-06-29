@@ -106,7 +106,6 @@
     });
 
     fluid.registerNamespace("gpii.templates.hb.client.templateAware.serverAware");
-    gpii.templates.hb.client.templateAware.serverAware.noop = function () {};
 
     fluid.defaults("gpii.templates.hb.client.templateAware.serverAware", {
         gradeNames: ["gpii.templates.hb.client.templateAware", "autoInit"],
@@ -116,7 +115,7 @@
                 options: {
                     listeners: {
                         "onTemplatesLoaded.renderMarkup": {
-                            func: "{templateAware}.renderInitialMarkup"
+                            func: "{gpii.templates.hb.client.templateAware.serverAware}.renderInitialMarkup"
                         }
                     }
                 }
@@ -125,12 +124,11 @@
         invokers: {
             noop: {
                 funcName: "gpii.templates.hb.client.templateAware.serverAware.noop"
-
             }
         },
         listeners: {
             "onCreate.renderMarkup": {
-                func: "{that}.noop"
+                func: "fluid.identity"
             }
         }
     });
