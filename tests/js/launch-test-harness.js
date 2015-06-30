@@ -6,7 +6,7 @@ var gpii  = fluid.registerNamespace("gpii");
 
 require("./zombie-test-harness");
 
-gpii.templates.hb.tests.client.harness({
+gpii.templates.tests.client.harness({
     "expressPort" :   6904,
     "baseUrl":        "http://localhost:6904/"
 });

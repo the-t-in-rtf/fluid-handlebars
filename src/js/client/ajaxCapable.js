@@ -32,11 +32,11 @@ If you need to do both (or each multiple times), you should create a parent comp
 (function ($) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.templates.hb.client.ajaxCapable");
+    fluid.registerNamespace("gpii.templates.ajaxCapable");
 
 
     // TODO: Replace this with JSON Schema validation: https://issues.gpii.net/browse/GPII-1176
-    gpii.templates.hb.client.ajaxCapable.checkRequirements = function (that) {
+    gpii.templates.ajaxCapable.checkRequirements = function (that) {
         var errors = [];
 
         if (!that.options.rules || !that.options.rules.error || !that.options.rules.success || !that.options.rules.request) {
@@ -48,7 +48,7 @@ If you need to do both (or each multiple times), you should create a parent comp
         }
     };
 
-    gpii.templates.hb.client.ajaxCapable.makeRequest = function (that) {
+    gpii.templates.ajaxCapable.makeRequest = function (that) {
         var options = fluid.copy(that.options.ajaxOptions);
 
         var transformedModel = fluid.model.transformWithRules(that.model, that.options.rules.request);
@@ -62,7 +62,7 @@ If you need to do both (or each multiple times), you should create a parent comp
         $.ajax(options);
     };
 
-    gpii.templates.hb.client.ajaxCapable.handleSuccess = function (that, data) {
+    gpii.templates.ajaxCapable.handleSuccess = function (that, data) {
         // We assume that we are working with a success unless we have explicit data that suggests otherwise.
         var okData = fluid.model.transformWithRules(data, that.options.rules.ok);
         if (okData.ok === undefined || okData.ok === null || okData.ok) {
@@ -76,13 +76,13 @@ If you need to do both (or each multiple times), you should create a parent comp
         // If the response is not OK, pass it along to be handled as an error instead.
         // NOTE:  The error handling has its own rules for parsing the original response, so we must pass the raw data.
         else {
-            gpii.templates.hb.client.ajaxCapable.handleError(that, data);
+            gpii.templates.ajaxCapable.handleError(that, data);
         }
 
         that.events.requestReceived.fire(that);
     };
 
-    gpii.templates.hb.client.ajaxCapable.handleError = function (that, data) {
+    gpii.templates.ajaxCapable.handleError = function (that, data) {
         var errorData = fluid.model.transformWithRules(data, that.options.rules.error);
 
         // The transformed result is used to update the component's `model`.
@@ -93,7 +93,7 @@ If you need to do both (or each multiple times), you should create a parent comp
         that.events.requestReceived.fire(that);
     };
 
-    fluid.defaults("gpii.templates.hb.client.ajaxCapable", {
+    fluid.defaults("gpii.templates.ajaxCapable", {
         gradeNames:    ["fluid.modelRelayComponent", "autoInit"],
         ajaxOptions: {
             success: "{that}.handleSuccess",
@@ -126,16 +126,16 @@ If you need to do both (or each multiple times), you should create a parent comp
         },
         invokers: {
             makeRequest: {
-                funcName: "gpii.templates.hb.client.ajaxCapable.makeRequest",
+                funcName: "gpii.templates.ajaxCapable.makeRequest",
                 args:     ["{that}"]
             },
             handleSuccess: {
-                funcName: "gpii.templates.hb.client.ajaxCapable.handleSuccess",
+                funcName: "gpii.templates.ajaxCapable.handleSuccess",
                 args:     ["{that}", "{arguments}.2"]  // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
             },
             handleError: {
-                funcName: "gpii.templates.hb.client.ajaxCapable.handleError",
-                args:     ["{that}", "{arguments}.2"] // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
+                funcName: "gpii.templates.ajaxCapable.handleError",
+                args:     ["{that}", "{arguments}."] // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
             }
         }
     });

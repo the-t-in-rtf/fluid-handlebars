@@ -10,9 +10,9 @@
 (function () {
     "use strict";
 
-    fluid.registerNamespace("gpii.templates.hb.client.templateMessage");
-    fluid.defaults("gpii.templates.hb.client.templateMessage", {
-        gradeNames:  ["gpii.templates.hb.client.templateAware", "autoInit"],
+    fluid.registerNamespace("gpii.templates.templateMessage");
+    fluid.defaults("gpii.templates.templateMessage", {
+        gradeNames:  ["gpii.templates.templateAware", "autoInit"],
         template:    "common-message",
         manipulator: "html", // By default, we replace the contents of our container, but not the container itself.
         selectors: {
@@ -28,8 +28,8 @@
         },
         invokers: {
             renderInitialMarkup: {
-                funcName: "gpii.templates.hb.client.templateAware.renderMarkup",
-                args: ["{that}", "viewport", "{that}.options.template", "{that}.model", "{that}.options.manipulator"]
+                func: "{that}.renderMarkup",
+                args: ["viewport", "{that}.options.template", "{that}.model", "{that}.options.manipulator"]
             }
         }
     });

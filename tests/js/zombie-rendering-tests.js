@@ -12,10 +12,10 @@ var Browser = require("zombie");
 
 require("./zombie-test-harness");
 
-fluid.registerNamespace("gpii.templates.hb.tests.client.render");
+fluid.registerNamespace("gpii.templates.tests.client.render");
 
 // All tests should look for rendered content as well as variables, jsonify content, and markdown content
-gpii.templates.hb.tests.client.render.commonTests = function (that, element, $) {
+gpii.templates.tests.client.render.commonTests = function (that, element, $) {
     jqUnit.assertNotNull("The results should not be null.", element.html());
 
     var mdRegexp = /<p><em>this works<\/em><\/p>/i;
@@ -43,7 +43,7 @@ gpii.templates.hb.tests.client.render.commonTests = function (that, element, $) 
     }
 };
 
-gpii.templates.hb.tests.client.render.runTests = function (that) {
+gpii.templates.tests.client.render.runTests = function (that) {
     var browser = Browser.create();
 
     jqUnit.module("Integration tests for combined client and server-side template handling...");
@@ -62,41 +62,41 @@ gpii.templates.hb.tests.client.render.runTests = function (that) {
             jqUnit.assertTrue("An element with content inserted after it should not have changed.", "original content", afterElement.text());
             var nextElement = afterElement.next();
             jqUnit.assertTrue("Content should be inserted after the original element.", nextElement.html().indexOf("from the partial") !== -1);
-            gpii.templates.hb.tests.client.render.commonTests(that, nextElement, browser.window.$);
+            gpii.templates.tests.client.render.commonTests(that, nextElement, browser.window.$);
 
             // Testing the "append" DOM-manipulation function
             var appendElement = browser.window.$(".viewport-append");
             var appendRegexp = /^original content/;
             jqUnit.assertNotNull("The original text should be at the beginning of the results", appendElement.html().match(appendRegexp));
-            gpii.templates.hb.tests.client.render.commonTests(that, appendElement, browser.window.$);
+            gpii.templates.tests.client.render.commonTests(that, appendElement, browser.window.$);
 
             // Testing the "before" DOM-manipulation function
             var beforeElement = browser.window.$(".viewport-before");
             jqUnit.assertEquals("An element with content inserted before it should not have changed.", "original content", beforeElement.text());
             var elementInsertedBefore = beforeElement.prev();
-            gpii.templates.hb.tests.client.render.commonTests(that, elementInsertedBefore, browser.window.$);
+            gpii.templates.tests.client.render.commonTests(that, elementInsertedBefore, browser.window.$);
 
             // Testing the "html" DOM-manipulation function
             var htmlElement = browser.window.$(".viewport-html");
             jqUnit.assertTrue("An element updated with the html method should not contain the original text", htmlElement.text().indexOf("original content") === -1);
-            gpii.templates.hb.tests.client.render.commonTests(that, htmlElement, browser.window.$);
+            gpii.templates.tests.client.render.commonTests(that, htmlElement, browser.window.$);
 
             // Testing the "prepend" DOM-manipulation function
             var prependElement = browser.window.$(".viewport-prepend");
             var prependRegexp = /original content$/;
             jqUnit.assertNotNull("The original text should be at the beginning of the results.", prependElement.text().match(prependRegexp));
-            gpii.templates.hb.tests.client.render.commonTests(that, prependElement, browser.window.$);
+            gpii.templates.tests.client.render.commonTests(that, prependElement, browser.window.$);
 
             // Testing the "replaceWith" DOM-manipulation function
             var replaceWithElement = browser.window.$(".viewport-html");
             jqUnit.assertTrue("An element updated with the replaceWith method should not contain the original text", replaceWithElement.text().indexOf("original content") === -1);
-            gpii.templates.hb.tests.client.render.commonTests(that, replaceWithElement, browser.window.$);
+            gpii.templates.tests.client.render.commonTests(that, replaceWithElement, browser.window.$);
         });
     });
 };
 
-fluid.defaults("gpii.templates.hb.tests.client.render", {
-    gradeNames: ["gpii.templates.hb.tests.client.harness", "autoInit"],
+fluid.defaults("gpii.templates.tests.client.render", {
+    gradeNames: ["gpii.templates.tests.client.harness", "autoInit"],
     "expressPort" :   6994,
     "baseUrl":        "http://localhost:6994/",
     // This is "expected" data that must match the model data found in client-tests.js
@@ -107,10 +107,10 @@ fluid.defaults("gpii.templates.hb.tests.client.render", {
     },
     listeners: {
         "{express}.events.onStarted": {
-            funcName: "gpii.templates.hb.tests.client.render.runTests",
+            funcName: "gpii.templates.tests.client.render.runTests",
             args:     ["{that}"]
         }
     }
 });
 
-gpii.templates.hb.tests.client.render();
+gpii.templates.tests.client.render();

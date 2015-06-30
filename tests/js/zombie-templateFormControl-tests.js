@@ -18,9 +18,9 @@ require("../../");
 require("./zombie-test-harness");
 require("./test-router-error");
 
-fluid.registerNamespace("gpii.templates.hb.tests.client.templateFormControl");
+fluid.registerNamespace("gpii.templates.tests.client.templateFormControl");
 
-gpii.templates.hb.tests.client.templateFormControl.clickAndCheck = function (that, description, url, button, callback) {
+gpii.templates.tests.client.templateFormControl.clickAndCheck = function (that, description, url, button, callback) {
     jqUnit.asyncTest(description, function () {
             var browser = Browser.create();
             browser.on("error", function (error) {
@@ -42,7 +42,7 @@ gpii.templates.hb.tests.client.templateFormControl.clickAndCheck = function (tha
     );
 };
 
-gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
+gpii.templates.tests.client.templateFormControl.runTests = function (that) {
 
     jqUnit.module("Testing templateFormControl component...");
 
@@ -110,14 +110,6 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
         }
     );
 
-    that.clickAndCheck("Use Zombie.js to confirm that forms can be nested and still use a single renderer...", null, function (browser) {
-            jqUnit.start();
-            var nestedComponent = browser.window.nested;
-            jqUnit.assertDeepEq("The outer and inner form should have the same renderer...", nestedComponent.renderer, nestedComponent.inner.renderer);
-        }
-    );
-
-
     // Zombie lacks the ability to simulate keyboard input, you must roll your own.  See: https://github.com/assaf/zombie/issues/705
     // TODO:  Find a way to simulate keyboard input from within Zombie or migrate to an alternative.
     //jqUnit.asyncTest("Use Zombie.js to submit a form by pressing 'enter' in a text field...", function () {
@@ -137,7 +129,7 @@ gpii.templates.hb.tests.client.templateFormControl.runTests = function (that) {
     //});
 };
 
-gpii.templates.hb.tests.client.harness({
+gpii.templates.tests.client.harness({
     expressPort : 6995,
     baseUrl:      "http://localhost:6995/",
     contentUrl:   "http://localhost:6995/content/tests-templateFormControl.html",
@@ -150,13 +142,13 @@ gpii.templates.hb.tests.client.harness({
     successStringExpected: { "message": "A success string is still a success." },
     listeners: {
         "{express}.events.onStarted": {
-            funcName: "gpii.templates.hb.tests.client.templateFormControl.runTests",
+            funcName: "gpii.templates.tests.client.templateFormControl.runTests",
             args:     ["{that}"]
         }
     },
     invokers: {
         clickAndCheck: {
-            funcName: "gpii.templates.hb.tests.client.templateFormControl.clickAndCheck",
+            funcName: "gpii.templates.tests.client.templateFormControl.clickAndCheck",
             // that, description, url, button, callback
             args:     ["{that}", "{arguments}.0", "{that}.options.contentUrl", "{arguments}.1", "{arguments}.2"]
         }

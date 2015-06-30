@@ -21,7 +21,7 @@ var modulesDir = path.resolve(__dirname, "../../node_modules");
 // Main source to be tested
 var srcDir     = path.resolve(__dirname, "../../src");
 
-fluid.defaults("gpii.templates.hb.tests.client.harness", {
+fluid.defaults("gpii.templates.tests.client.harness", {
     gradeNames: ["gpii.express", "autoInit"],
     expressPort: 6994,
     baseUrl: "http://localhost:6994/",
@@ -33,8 +33,15 @@ fluid.defaults("gpii.templates.hb.tests.client.harness", {
         }
     },
     components: {
+        dispatcher: {
+            type: "gpii.express.dispatcher",
+            options: {
+                path: ["/dispatcher/:template", "/dispatcher"],
+                model: "{gpii.express}.model"
+            }
+        },
         inline: {
-            type: "gpii.express.hb.inline",
+            type: "gpii.express.inline",
             options: {
                 path: "/hbs"
             }

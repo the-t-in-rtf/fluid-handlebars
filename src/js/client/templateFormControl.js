@@ -13,11 +13,11 @@
 (function () {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.templates.hb.client.templateFormControl");
+    fluid.registerNamespace("gpii.templates.templateFormControl");
 
 
     // TODO: Replace this with JSON Schema validation: https://issues.gpii.net/browse/GPII-1176
-    gpii.templates.hb.client.templateFormControl.checkRequirements = function (that) {
+    gpii.templates.templateFormControl.checkRequirements = function (that) {
         var errors = [];
 
         if (!that.options.templates || !that.options.templates.initial || !that.options.templates.error || !that.options.templates.success) {
@@ -29,7 +29,7 @@
         }
     };
 
-    gpii.templates.hb.client.templateFormControl.submitForm = function (that, event) {
+    gpii.templates.templateFormControl.submitForm = function (that, event) {
         // We are handling this event and should prevent any further handling.
         if (event) { event.preventDefault(); }
 
@@ -37,13 +37,13 @@
         that.makeRequest();
     };
 
-    gpii.templates.hb.client.templateFormControl.handleKeyPress = function (that, event) {
+    gpii.templates.templateFormControl.handleKeyPress = function (that, event) {
         if (event.keyCode === 13) { // Enter
-            gpii.templates.hb.client.submitForm(that, event);
+            gpii.templates.submitForm(that, event);
         }
     };
 
-    gpii.templates.hb.client.templateFormControl.handleSuccess = function (that, data) {
+    gpii.templates.templateFormControl.handleSuccess = function (that, data) {
         if (that.options.hideOnSuccess) {
             var form = that.locate("form");
             form.hide();
@@ -52,7 +52,7 @@
         that.handleSuccess(data);
     };
 
-    gpii.templates.hb.client.templateFormControl.handleError = function (that, data) {
+    gpii.templates.templateFormControl.handleError = function (that, data) {
         if (that.options.hideOnError) {
             var form = that.locate("form");
             form.hide();
@@ -61,15 +61,15 @@
         that.handleSuccess(data);
     };
 
-    fluid.defaults("gpii.templates.hb.client.templateFormControl", {
-        gradeNames:    ["gpii.templates.hb.client.templateAware.serverAware", "gpii.templates.hb.client.ajaxCapable", "autoInit"],
+    fluid.defaults("gpii.templates.templateFormControl", {
+        gradeNames:    ["gpii.templates.templateAware", "gpii.templates.ajaxCapable", "autoInit"],
         hideOnSuccess: true,  // Whether to hide our form if the results are successful
         hideOnError:   false, // Whether to hide our form if the results are unsuccessful
         model: {
         },
         components: {
             success: {
-                type:          "gpii.templates.hb.client.templateMessage",
+                type:          "gpii.templates.templateMessage",
                 createOnEvent: "{templateFormControl}.events.onMarkupRendered",
                 container:     "{templateFormControl}.dom.success",
                 options: {
@@ -88,7 +88,7 @@
                 }
             },
             error: {
-                type:          "gpii.templates.hb.client.templateMessage",
+                type:          "gpii.templates.templateMessage",
                 createOnEvent: "{templateFormControl}.events.onMarkupRendered",
                 container:     "{templateFormControl}.dom.error",
                 options: {
@@ -125,23 +125,23 @@
         },
         invokers: {
             renderInitialMarkup: {
-                funcName: "gpii.templates.hb.client.templateAware.renderMarkup",
-                args:     ["{that}", "initial", "{that}.options.templates.initial", "{that}.model", "html"]
+                func: "{that}.renderMarkup",
+                args: ["initial", "{that}.options.templates.initial", "{that}.model", "html"]
             },
             submitForm: {
-                funcName: "gpii.templates.hb.client.templateFormControl.submitForm",
+                funcName: "gpii.templates.templateFormControl.submitForm",
                 args:     ["{that}", "{arguments}.0"]
             },
             handleKeyPress: {
-                funcName: "gpii.templates.hb.client.templateFormControl.handleKeyPress",
+                funcName: "gpii.templates.templateFormControl.handleKeyPress",
                 args:     ["{that}", "{arguments}.0"]
             },
             handleSuccessLocally: {
-                funcName: "gpii.templates.hb.client.templateFormControl.handleSuccess",
+                funcName: "gpii.templates.templateFormControl.handleSuccess",
                 args:     ["{that}", "{arguments}.2"]
             },
             handleErrorLocally: {
-                funcName: "gpii.templates.hb.client.templateFormControl.handleError",
+                funcName: "gpii.templates.templateFormControl.handleError",
                 args:     ["{that}", "{arguments}.2"]
             }
         },
@@ -170,11 +170,11 @@
         }
     });
 
-    // An instance of this component that uses a single template renderer.  Please note, you should only have a single
-    // component in your tree with the multiTemplateAware grade.  If you are building your own complex component using
-    // `templateFormControl`, you should use the grade above and add `gpii.templates.hb.client.multiTemplateAware` to
-    // your top-level component.
-    fluid.defaults("gpii.templates.hb.client.templateFormControl.singleRenderer", {
-        gradeNames: ["gpii.templates.hb.client.templateFormControl", "gpii.templates.hb.client.multiTemplateAware", "autoInit"]
-    });
+    //// An instance of this component that uses a single template   Please note, you should only have a single
+    //// component in your tree with the multiTemplateAware grade.  If you are building your own complex component using
+    //// `templateFormControl`, you should use the grade above and add `gpii.templates.multiTemplateAware` to
+    //// your top-level component.
+    //fluid.defaults("gpii.templates.templateFormControl.singleRenderer", {
+    //    gradeNames: ["gpii.templates.templateFormControl", "gpii.templates.multiTemplateAware", "autoInit"]
+    //});
 })(jQuery);

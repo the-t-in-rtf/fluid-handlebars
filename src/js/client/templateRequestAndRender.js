@@ -12,11 +12,10 @@
 (function () {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.templates.hb.client.templateRequestAndRender");
-
+    fluid.registerNamespace("gpii.templates.templateRequestAndRender");
 
     // TODO: Replace this with JSON Schema validation: https://issues.gpii.net/browse/GPII-1176
-    gpii.templates.hb.client.templateRequestAndRender.checkRequirements = function (that) {
+    gpii.templates.templateRequestAndRender.checkRequirements = function (that) {
         var errors = [];
 
         if (!that.options.templates || !that.options.templates.success || !that.options.templates.error) {
@@ -28,16 +27,15 @@
         }
     };
 
-    fluid.defaults("gpii.templates.hb.client.templateRequestAndRender", {
-        gradeNames:    ["gpii.template.hb.client.ajaxCapable", "autoInit"],
-        hideOnSuccess: true, // Whether to hide our form if the results are successful
+    fluid.defaults("gpii.templates.templateRequestAndRender", {
+        gradeNames:    ["gpii.templates.ajaxCapable", "autoInit"],
         ajaxOptions: {
             success: "{that}.handleSuccessFirst",
             error:   "{that}.handleErrorFirst"
         },
         components: {
             success: {
-                type:          "gpii.templates.hb.client.templateMessage",
+                type:          "gpii.templates.templateMessage",
                 createOnEvent: "{renderer}.events.onRequestReceived",
                 container:     "{templateRequestAndRender}.dom.success",
                 options: {
@@ -48,7 +46,7 @@
                 }
             },
             error: {
-                type:          "gpii.templates.hb.client.templateMessage",
+                type:          "gpii.templates.templateMessage",
                 createOnEvent: "{renderer}.events.onRequestReceived",
                 container:     "{templateRequestAndRender}.dom.error",
                 options: {
@@ -73,11 +71,11 @@
         },
         invokers: {
             handleSuccessFirst: {
-                funcName: "gpii.templates.hb.client.templateRequestAndRender.handleSuccessFirst",
+                funcName: "gpii.templates.templateRequestAndRender.handleSuccessFirst",
                 args:     ["{that}"]
             },
             handleErrorFirst: {
-                funcName: "gpii.templates.hb.client.templateRequestAndRender.handleErrorFirst",
+                funcName: "gpii.templates.templateRequestAndRender.handleErrorFirst",
                 args:     ["{that}"]
             }
         },

@@ -2,7 +2,7 @@
 // Base gradeName for handlebars "helper" modules, which can be used on both the client and server side handlebars stacks.
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.templates.hb.helper");
+fluid.registerNamespace("gpii.templates.helper");
 
 // Each "helper" module is expected to replace the `getHelper` invoker with an invoker that returns a helper function, something like the following:
 //
@@ -25,13 +25,13 @@ fluid.registerNamespace("gpii.templates.hb.helper");
 //      }
 //    }
 
-gpii.templates.hb.helper.checkForName = function (that, message) {
+gpii.templates.helper.checkForName = function (that, message) {
     if (!that.options || !that.options.helperName) {
         fluid.fail(message);
     }
 };
 
-fluid.defaults("gpii.templates.hb.helper", {
+fluid.defaults("gpii.templates.helper", {
     gradeNames: ["fluid.eventedComponent", "fluid.modelRelayComponent", "autoInit"],
     invokers: {
         getHelper: {
@@ -41,7 +41,7 @@ fluid.defaults("gpii.templates.hb.helper", {
     },
     listeners: {
         "onCreate.checkForName": {
-            funcName: "gpii.templates.hb.helper.checkForName",
+            funcName: "gpii.templates.helper.checkForName",
             args:       ["{that}", "Your component must have a helperName option to be used as a helper."]
         }
     }

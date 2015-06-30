@@ -26,10 +26,10 @@
         <script type="text/javascript" src="/bc/pagedown/Markdown.Sanitizer.js"></script>
 
         <!-- Bring in client library being tested -->
-        <script type="text/javascript" src="/src/js/client/handlebars.js"></script>
+        <script type="text/javascript" src="/src/js/client/renderer.js"></script>
         <script type="text/javascript" src="/src/js/client/binder.js"></script>
+        <script type="text/javascript" src="/src/js/client/ajaxCapable.js"></script>
         <script type="text/javascript" src="/src/js/client/templateAware.js"></script>
-        <script type="text/javascript" src="/src/js/client/multiTemplateAware.js"></script>
         <script type="text/javascript" src="/src/js/client/templateMessage.js"></script>
         <script type="text/javascript" src="/src/js/client/templateFormControl.js"></script>
         <script type="text/javascript" src="/src/js/common/helper.js"></script>
@@ -67,8 +67,8 @@
 
         <script type="text/javascript">
             <!-- instantiate test components -->
-            var templateAware = gpii.hb.tests.templateAware(".viewport");
-            var contained     = gpii.hb.tests.templateAware.contained(".contained");
+            var templateAware = gpii.tests.templateAware.serverAware(".viewport");
+            var contained     = gpii.tests.templateAware.contained(".contained");
         </script>
     </body>
 </html>

@@ -6,12 +6,12 @@
 "use strict";
 var fluid      = fluid || require("infusion");
 var gpii       = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.express.hb.dispatcher");
+fluid.registerNamespace("gpii.express.dispatcher");
 
 var fs         = require("fs");
 var path       = require("path");
 
-gpii.express.hb.dispatcher.getRouter = function (that) {
+gpii.express.dispatcher.getRouter = function (that) {
     return function (req, res) {
         var template = req.params.template ? req.params.template : that.options.defaultTemplate;
         var templateName = template + ".handlebars";
@@ -38,7 +38,7 @@ gpii.express.hb.dispatcher.getRouter = function (that) {
     };
 };
 
-fluid.defaults("gpii.express.hb.dispatcher", {
+fluid.defaults("gpii.express.dispatcher", {
     gradeNames: ["gpii.express.router", "fluid.standardRelayComponent", "autoInit"],
     method:          "get",
     defaultTemplate: "index",
@@ -52,7 +52,7 @@ fluid.defaults("gpii.express.hb.dispatcher", {
     config:          "{expressConfigHolder}.options.config",
     invokers: {
         "getRouter": {
-            funcName: "gpii.express.hb.dispatcher.getRouter",
+            funcName: "gpii.express.dispatcher.getRouter",
             args: ["{that}"]
         }
     }

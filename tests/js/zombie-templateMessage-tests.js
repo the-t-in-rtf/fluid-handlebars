@@ -9,8 +9,8 @@ var Browser = require("zombie");
 var path    = require("path");
 var jqUnit = require("jqUnit");
 
-fluid.registerNamespace("gpii.hb.tests.templateMessage");
-gpii.hb.tests.templateMessage.runTests = function (that) {
+fluid.registerNamespace("gpii.tests.templateMessage");
+gpii.tests.templateMessage.runTests = function (that) {
     jqUnit.module("Testing template message components (non-networked renderer)...");
     jqUnit.asyncTest("Testing template message components...", function () {
         var browser = Browser.create();
@@ -31,7 +31,7 @@ gpii.hb.tests.templateMessage.runTests = function (that) {
 };
 
 var testFile = "file://" + path.resolve(__dirname, "../html/tests-templateMessage.html");
-fluid.defaults("gpii.hb.tests.templateMessage", {
+fluid.defaults("gpii.tests.templateMessage", {
     gradeNames: ["fluid.eventedComponent", "autoInit"],
     url:        testFile,
     notExpected: "should not be visible",
@@ -41,11 +41,11 @@ fluid.defaults("gpii.hb.tests.templateMessage", {
     },
     listeners: {
         "onCreate.runTests": {
-            funcName: "gpii.hb.tests.templateMessage.runTests",
+            funcName: "gpii.tests.templateMessage.runTests",
             args:     ["{that}"]
         }
     }
 });
 
 
-gpii.hb.tests.templateMessage();
+gpii.tests.templateMessage();

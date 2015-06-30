@@ -1,9 +1,9 @@
 // A client-side module that provides various template handling capabilities, and which wires in any
-// child components with the grade `gpii.templates.hb.helper` as handlebars helpers.
+// child components with the grade `gpii.templates.helper` as handlebars helpers.
 //
-// For tests and other simple uses, you can directly use the `gpii.template.hb.client` grade.  If you are working with
+// For tests and other simple uses, you can directly use the `gpii.templates.renderer` grade.  If you are working with
 // templates provided by the `inline` router included with this package, you should add
-// `gpii.template.hb.client.serverAware` to `options.gradeNames`.
+// `gpii.templates.serverAware` to `options.gradeNames`.
 //
 // Requires Handlebars.js and Pagedown (for markdown rendering)
 
@@ -11,10 +11,10 @@
 (function ($) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.templates.hb.client");
+    fluid.registerNamespace("gpii.templates.renderer");
 
     /** @namespace gpii.templates.hb */
-    gpii.templates.hb.client.addHelper = function (that, component) {
+    gpii.templates.renderer.addHelper = function (that, component) {
         var key = component.options.helperName;
         if (component.getHelper) {
             that.helpers[key] = component.getHelper();
@@ -24,7 +24,7 @@
         }
     };
 
-    gpii.templates.hb.client.registerHelpers = function (that) {
+    gpii.templates.renderer.registerHelpers = function (that) {
         if (Handlebars) {
             Object.keys(that.helpers).forEach(function (key) {
                 Handlebars.registerHelper(key, that.helpers[key]);
@@ -35,12 +35,13 @@
         }
     };
 
-    gpii.templates.hb.client.render = function (that, templateName, context) {
+    gpii.templates.renderer.render = function (that, templateName, context) {
         var templateType = that.templates.partials[templateName] ? "partials" : that.templates.pages[templateName] ? "pages" : that.templates.layouts[templateName] ? "layouts" : null;
         if (!templateType) {
             fluid.fail("Can't find template '" + templateName + "'...");
         }
 
+        // TODO:  Cleanly separate the caching responsibility into a new grade.
         // Cache each compiled template the first time we use it...
         if (!that.compiled[templateType][templateName]) {
             var compiledTemplate = Handlebars.compile(that.templates[templateType][templateName]);
@@ -51,33 +52,33 @@
         return that.compiled[templateType][templateName](context);
     };
 
-    gpii.templates.hb.client.passthrough = function (that, element, key, context, manipulator) {
-        element[manipulator](gpii.templates.hb.client.render(that, key, context));
+    gpii.templates.renderer.passthrough = function (that, element, key, context, manipulator) {
+        element[manipulator](gpii.templates.renderer.render(that, key, context));
     };
 
     ["after", "append", "before", "prepend", "replaceWith", "html"].forEach(function (manipulator) {
-        gpii.templates.hb.client[manipulator] = function (that, element, key, context) {
-            gpii.templates.hb.client.passthrough(that, element, key, context, manipulator);
+        gpii.templates.renderer[manipulator] = function (that, element, key, context) {
+            gpii.templates.renderer.passthrough(that, element, key, context, manipulator);
         };
     });
 
-    gpii.templates.hb.client.loadPartials  = function (that) {
+    gpii.templates.renderer.loadPartials  = function (that) {
         Object.keys(that.templates.partials).forEach(function (key) {
             Handlebars.registerPartial(key, that.templates.partials[key]);
         });
     };
 
-    fluid.defaults("gpii.templates.hb.client", {
+    fluid.defaults("gpii.templates.renderer", {
         gradeNames: ["fluid.eventedComponent", "autoInit"],
         components: {
             "md": {
-                "type": "gpii.templates.hb.helper.md.client"
+                "type": "gpii.templates.helper.md.client"
             },
             "equals": {
-                "type": "gpii.templates.hb.helper.equals"
+                "type": "gpii.templates.helper.equals"
             },
             "jsonify": {
-                "type": "gpii.templates.hb.helper.jsonify"
+                "type": "gpii.templates.helper.jsonify"
             }
         },
         members: {
@@ -96,71 +97,70 @@
         distributeOptions: [
             {
                 record: {
-                    "funcName": "gpii.templates.hb.client.addHelper",
-                    "args": ["{gpii.templates.hb.client}", "{gpii.templates.hb.helper}"]
+                    "funcName": "gpii.templates.renderer.addHelper",
+                    "args": ["{gpii.templates.renderer}", "{gpii.templates.helper}"]
                 },
-                target: "{that > gpii.templates.hb.helper}.options.listeners.onCreate"
+                target: "{that > gpii.templates.helper}.options.listeners.onCreate"
             }
         ],
-        templateUrl: "/hbs",
         invokers: {
             "after": {
-                funcName: "gpii.templates.hb.client.after",
+                funcName: "gpii.templates.renderer.after",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "append": {
-                funcName: "gpii.templates.hb.client.append",
+                funcName: "gpii.templates.renderer.append",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "before": {
-                funcName: "gpii.templates.hb.client.before",
+                funcName: "gpii.templates.renderer.before",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "body": {
-                funcName: "gpii.templates.hb.client.body",
+                funcName: "gpii.templates.renderer.body",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "html": {
-                funcName: "gpii.templates.hb.client.html",
+                funcName: "gpii.templates.renderer.html",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "prepend": {
-                funcName: "gpii.templates.hb.client.prepend",
+                funcName: "gpii.templates.renderer.prepend",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "replaceWith": {
-                funcName: "gpii.templates.hb.client.replaceWith",
+                funcName: "gpii.templates.renderer.replaceWith",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             }
         },
         listeners: {
             "onCreate.registerHelpers": {
-                funcName: "gpii.templates.hb.client.registerHelpers",
+                funcName: "gpii.templates.renderer.registerHelpers",
                 args:     ["{that}", "{arguments}.0"]
             },
             "onCreate.loadPartials": {
-                funcName: "gpii.templates.hb.client.loadPartials",
+                funcName: "gpii.templates.renderer.loadPartials",
                 args:     ["{that}"]
             }
         }
     });
 
 
-    fluid.registerNamespace("gpii.templates.hb.client.serverAware");
-    gpii.templates.hb.client.serverAware.cacheTemplates = function (that, data) {
-        ["layout", "pages", "partials"].forEach(function (key) {
+    fluid.registerNamespace("gpii.templates.renderer.serverAware");
+    gpii.templates.renderer.serverAware.cacheTemplates = function (that, data) {
+        ["layouts", "pages", "partials"].forEach(function (key) {
             if (data.templates[key]) {
                 that.templates[key] = data.templates[key];
             }
         });
 
-        gpii.templates.hb.client.loadPartials(that);
+        gpii.templates.renderer.loadPartials(that);
 
         // Fire a "templates loaded" event so that components can wait for their markup to appear.
         that.events.onTemplatesLoaded.fire(that);
     };
 
-    gpii.templates.hb.client.serverAware.retrieveTemplates = function (that) {
+    gpii.templates.renderer.serverAware.retrieveTemplates = function (that) {
         var settings = {
             url:     that.options.templateUrl,
             success: that.cacheTemplates
@@ -169,16 +169,16 @@
         $.ajax(settings);
     };
 
-    fluid.defaults("gpii.templates.hb.client.serverAware", {
-        gradeNames: ["gpii.templates.hb.client", "autoInit"],
+    fluid.defaults("gpii.templates.renderer.serverAware", {
+        gradeNames: ["gpii.templates.renderer", "autoInit"],
         templateUrl: "/hbs",
         invokers: {
             "cacheTemplates": {
-                funcName: "gpii.templates.hb.client.serverAware.cacheTemplates",
+                funcName: "gpii.templates.renderer.serverAware.cacheTemplates",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
             },
             "retrieveTemplates": {
-                funcName: "gpii.templates.hb.client.serverAware.retrieveTemplates",
+                funcName: "gpii.templates.renderer.serverAware.retrieveTemplates",
                 args: ["{that}", "{arguments}.0"]
             }
         },
