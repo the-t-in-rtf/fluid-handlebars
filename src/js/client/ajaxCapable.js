@@ -119,7 +119,7 @@ If you need to do both (or each multiple times), you should create a parent comp
             },
             handleError: {
                 funcName: "gpii.templates.ajaxCapable.handleError",
-                args:     ["{that}", "{arguments}."] // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
+                args:     ["{that}", "{arguments}.2"] // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
             }
         }
     });
