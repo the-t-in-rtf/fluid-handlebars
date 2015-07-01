@@ -1,23 +1,20 @@
-// Handlebars helper to allow us to compare values used in presentation logic.
+// Handlebars helper to construct a client side component given a list of grades, including all wiring required to
+// ensure that:
 //
-// This can be used to do things like add an extra CSS class to records whose status is "deleted".
+//   1. Only one renderer is created an used in all child components
+//   2. Child components are only created once templates have been loaded.
 //
-// The helper can be accessed in your markup using syntax like:
+// The markup required to use this in a server-side handlebars template is something like:
 //
-// `{{#equals VARIABLE1 VARIABLE2 }}`
-// `  The variables are equal.`
-// `{{/equals}}`
+//   {{{initblock "grade1", "grade2", "grade3"}}}
 //
-// `{{#equals VARIABLE1 "TEXT" }}`
-// `  The variable is equal to the text.`
-// `{{#else}}`
-// `  The variable is not equal to the text.`
-// `{{/equals}}
+// As with `gradeNames` in general, grades that appear earlier in the list of arguments have the most precedence.
+// If you are working with grades that override invokers or other options, you should put the most basic grades at the
+// end of your list of arguments, and any grades that override or add functionality further to the left.  If all three
+// of the grades in this example have an invoker with the same name, the invoker defined in `grade1` would be called.
 //
-// Note in the second example that `else` is supported if the condition is not matched, as with the built-in `{{#if}}` helper.
-//
-// Adapted from the approach outlined in this blog by "bendog":
-// http://doginthehat.com.au/2012/02/comparison-block-helper-for-handlebars-templates/
+// Please note, in the example above that the triple braces are required in order to prevent Handlebars from escaping
+// the generated code and presenting it as text.
 //
 "use strict";
 var fluid = fluid || require("infusion");
@@ -28,24 +25,33 @@ gpii.templates.helper.initBlock.getHelper = function (that) {
     return that.generateInitBlock;
 };
 
-gpii.templates.helper.initBlock.generateInitBlock = function (that, gradeName) {
-    if (!gradeName) {
-        fluid.fail("You must call the 'initBlock' helper with a gradeName.");
+gpii.templates.helper.initBlock.generateInitBlock = function (that, args) {
+    // In addition to the arguments we have passed, Handlebars gives us the "gift" of a final argument of its own
+    // construction.  It is a gift in the same sense that a cat presents a gift of a dead mouse.  We quietly sweep it
+    // into the trash, as one would a dead mouse.
+    var rawGradeNames = args.slice(0, -1);
+
+    // To ensure the same order of precedence as gradeNames, the last argument are used as the `type`, and any earlier
+    // options are used as the `gradeNames`.
+    var type       = rawGradeNames.slice(-1)[0]; // The first grade, which we will use as the `type` of the component.
+    var gradeNames = rawGradeNames.slice(0, -1);
+
+    if (!type) {
+        fluid.fail("You must call the 'initBlock' helper with one or more grade names.");
     }
     else {
-        var options = fluid.copy(that.options.baseOptions);
-        var pageComponent = options.components.requireRenderer.options.components.pageComponent;
-        pageComponent.type = gradeName;
+        var options                       = fluid.copy(that.options.baseOptions);
+        var pageComponent                 = options.components.requireRenderer.options.components.pageComponent;
+        pageComponent.type                = type;
+        pageComponent.options.gradeNames  = gradeNames;
 
-        var generatedModel = fluid.model.transformWithRules(that.model, that.options.rules);
-        pageComponent.options.model = generatedModel;
+        var generatedModel                = fluid.model.transformWithRules(that.model, that.options.rules);
+        pageComponent.options.model       = generatedModel;
 
         var payload = ["<script type=\"text/javascript\">", "var pageComponent = " + that.options.baseGradeName, "(" + JSON.stringify(options, null, 2) + ");", "</script>"].join("\n");
         return payload;
     }
 };
-
-// TODO:  Someone needs to make me aware of the request parameters.  Perhaps a `requestAware` grade?
 
 fluid.defaults("gpii.templates.helper.initBlock", {
     gradeNames: ["gpii.templates.helper", "autoInit"],
@@ -76,7 +82,7 @@ fluid.defaults("gpii.templates.helper.initBlock", {
         },
         "generateInitBlock": {
             "funcName": "gpii.templates.helper.initBlock.generateInitBlock",
-            "args":     ["{that}", "{arguments}.0", "{arguments}.1"]
+            "args":     ["{that}", "{arguments}"]
         }
     }
 });

@@ -6,7 +6,7 @@
 /* global fluid */
 
 fluid.defaults("gpii.tests.initBlock", {
-    gradeNames: ["gpii.templates.templateAware.bornReady", "autoInit"],
+    gradeNames: ["fluid.modelRelayComponent", "autoInit"],
     template:   "index",
     selectors: {
         initial: "" // Update the whole container
