@@ -34,10 +34,11 @@ gpii.templates.helper.initBlock.generateInitBlock = function (that, gradeName) {
     }
     else {
         var options = fluid.copy(that.options.baseOptions);
-        options.components.requireRenderer.options.components.pageComponent.type = gradeName;
+        var pageComponent = options.components.requireRenderer.options.components.pageComponent;
+        pageComponent.type = gradeName;
 
         var generatedModel = fluid.model.transformWithRules(that.model, that.options.rules);
-        options.components.requireRenderer.options.components.pageComponent.options.model = generatedModel;
+        pageComponent.options.model = generatedModel;
 
         var payload = ["<script type=\"text/javascript\">", "var pageComponent = " + that.options.baseGradeName, "(" + JSON.stringify(options, null, 2) + ");", "</script>"].join("\n");
         return payload;

@@ -94,7 +94,7 @@
 
             // If we have model data initially, update the form.  Model values win out over markup.
             var initialModelValue = fluid.get(that.model, path);
-            if (initialModelValue) {
+            if (initialModelValue !== undefined) {
                 fluid.value(element, initialModelValue);
             }
             // If we have no model data, but there are defaults in the markup, using them to update the model.

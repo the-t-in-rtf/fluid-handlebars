@@ -39,7 +39,7 @@
 
     gpii.templates.templateFormControl.handleKeyPress = function (that, event) {
         if (event.keyCode === 13) { // Enter
-            gpii.templates.submitForm(that, event);
+            that.submitForm(event);
         }
     };
 
