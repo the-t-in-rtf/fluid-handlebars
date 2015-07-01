@@ -26,8 +26,8 @@
 
     gpii.templates.renderer.registerHelpers = function (that) {
         if (Handlebars) {
-            Object.keys(that.helpers).forEach(function (key) {
-                Handlebars.registerHelper(key, that.helpers[key]);
+            fluid.each(that.helpers, function (value, key) {
+                Handlebars.registerHelper(key, value);
             });
         }
         else {
@@ -63,8 +63,8 @@
     });
 
     gpii.templates.renderer.loadPartials  = function (that) {
-        Object.keys(that.templates.partials).forEach(function (key) {
-            Handlebars.registerPartial(key, that.templates.partials[key]);
+        fluid.each(that.templates.partials, function (value, key) {
+            Handlebars.registerPartial(key, value);
         });
     };
 
