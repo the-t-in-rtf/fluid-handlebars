@@ -103,13 +103,6 @@ gpii.templates.tests.client.templateFormControl.runTests = function (that) {
         }
     );
 
-    that.clickAndCheck("Use Zombie.js to submit a form that is sent an error with a 200 status code...", "Dither", function (browser) {
-            jqUnit.start();
-            var ambiguityElement = browser.window.$(".readyForAmbiguity");
-            jqUnit.assertTrue("The component should now contain a 'fail' message...", ambiguityElement.text().indexOf("Things seemed to go well") !== -1);
-        }
-    );
-
     // Zombie lacks the ability to simulate keyboard input, you must roll your own.  See: https://github.com/assaf/zombie/issues/705
     // TODO:  Find a way to simulate keyboard input from within Zombie or migrate to an alternative.
     //jqUnit.asyncTest("Use Zombie.js to submit a form by pressing 'enter' in a text field...", function () {

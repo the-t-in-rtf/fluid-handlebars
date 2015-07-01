@@ -13,10 +13,10 @@ fluid.defaults("gpii.tests.templateFormControl", {
         error:   "common-error"
     },
     rules: {
-        success: {
+        successResponseToModel: {
             successMessage: { literalValue: "The response was successful..." }
         },
-        error: {
+        errorResponseToModel: {
             errorMessage: { literalValue: "The response was not successful..." }
         }
     }
@@ -56,7 +56,7 @@ fluid.defaults("gpii.tests.templateFormControl.readyForStringSuccess", {
         url:      "/content/stringSuccess.txt"
     },
     rules: {
-        success: {
+        successResponseToModel: {
             ok:             false,
             successMessage: "responseText"
         }
@@ -104,28 +104,13 @@ fluid.defaults("gpii.tests.templateFormControl.readyForStringFailure", {
         buttonName: "String Fail"
     },
     rules: {
-        error: {
+        errorResponseToModel: {
             ok:           false,
             errorMessage: ""
         }
     },
     templates: {
         initial: "form-failure-initial"
-    }
-});
-
-fluid.registerNamespace("gpii.tests.templateFormControl.readyForAmbiguity");
-fluid.defaults("gpii.tests.templateFormControl.readyForAmbiguity", {
-    gradeNames: ["gpii.tests.templateFormControl", "autoInit"],
-    ajaxOptions: {
-        url: "/content/json/error.json" // An error, delivered with a 200 status code.
-    },
-    model: {
-        buttonName: "Dither"
-    },
-    templates: {
-        initial: "form-ambiguous-initial",
-        error:   "form-ambiguous-error"
     }
 });
 
