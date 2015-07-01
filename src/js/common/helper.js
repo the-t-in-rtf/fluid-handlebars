@@ -25,24 +25,15 @@ fluid.registerNamespace("gpii.templates.helper");
 //      }
 //    }
 
-gpii.templates.helper.checkForName = function (that, message) {
-    if (!that.options || !that.options.helperName) {
-        fluid.fail(message);
-    }
-};
-
 fluid.defaults("gpii.templates.helper", {
-    gradeNames: ["fluid.eventedComponent", "fluid.modelRelayComponent", "autoInit"],
+    gradeNames: ["fluid.eventedComponent", "fluid.modelRelayComponent", "gpii.hasRequiredOptions", "autoInit"],
+    requiredOptions: {
+        helperName: true
+    },
     invokers: {
         getHelper: {
             funcName: "fluid.fail",
             args:     ["You must implement getHelper in your grade before it will function properly as a helper."]
-        }
-    },
-    listeners: {
-        "onCreate.checkForName": {
-            funcName: "gpii.templates.helper.checkForName",
-            args:       ["{that}", "Your component must have a helperName option to be used as a helper."]
         }
     }
 });

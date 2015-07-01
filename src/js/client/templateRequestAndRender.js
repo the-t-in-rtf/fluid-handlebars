@@ -28,7 +28,12 @@
     };
 
     fluid.defaults("gpii.templates.templateRequestAndRender", {
-        gradeNames:    ["gpii.templates.ajaxCapable", "autoInit"],
+        gradeNames:    ["gpii.templates.ajaxCapable", "gpii.hasRequiredOptions", "autoInit"],
+        requiredOptions: {
+            templates:           true,
+            "templates.error":   true,
+            "templates.success": true
+        },
         ajaxOptions: {
             success: "{that}.handleSuccessFirst",
             error:   "{that}.handleErrorFirst"

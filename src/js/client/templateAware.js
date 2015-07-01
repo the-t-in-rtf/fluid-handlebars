@@ -31,12 +31,6 @@
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.templates.templateAware");
 
-    gpii.templates.templateAware.checkRequirements = function (that) {
-        if (!that.options.templateUrl) {
-            fluid.fail("You must supply a template URL in order to use this component.");
-        }
-    };
-
     // A convenience function that can be used to more easily define `renderInitialMarkup` invokers (see example above).
     gpii.templates.templateAware.renderMarkup = function (that, renderer, selector, template, data, manipulator) {
         manipulator = manipulator ? manipulator : "html";
@@ -64,18 +58,19 @@
     };
 
     fluid.defaults("gpii.templates.templateAware", {
-        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
-        templateUrl: "/hbs",
+        gradeNames: ["fluid.viewRelayComponent", "gpii.hasRequiredOptions", "autoInit"],
+        requiredOptions: {
+            templates:           true,
+            "templates.initial": true,
+            "templates.error":   true,
+            "templates.success": true
+        },
         events: {
             refresh: null,
             onMarkupRendered: null,
             onDomBind: null
         },
         listeners: {
-            "onCreate.checkRequirements": {
-                funcName: "gpii.templates.templateAware.checkRequirements",
-                args:     ["{that}"]
-            },
             "refresh.renderMarkup": {
                 func: "{that}.renderInitialMarkup"
             },

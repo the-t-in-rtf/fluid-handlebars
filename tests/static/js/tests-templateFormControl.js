@@ -22,7 +22,6 @@ fluid.defaults("gpii.tests.templateFormControl", {
     }
 });
 
-fluid.registerNamespace("gpii.tests.templateFormControl.readyForSuccess");
 fluid.defaults("gpii.tests.templateFormControl.readyForSuccess", {
     gradeNames: ["gpii.tests.templateFormControl", "autoInit"],
     ajaxOptions: {
@@ -37,7 +36,6 @@ fluid.defaults("gpii.tests.templateFormControl.readyForSuccess", {
     }
 });
 
-fluid.registerNamespace("gpii.tests.templateFormControl.readyForStringifySuccess");
 fluid.defaults("gpii.tests.templateFormControl.readyForStringifySuccess", {
     gradeNames: ["gpii.tests.templateFormControl.readyForSuccess", "autoInit"],
     ajaxOptions: {
@@ -49,7 +47,6 @@ fluid.defaults("gpii.tests.templateFormControl.readyForStringifySuccess", {
     }
 });
 
-fluid.registerNamespace("gpii.tests.templateFormControl.readyForStringSuccess");
 fluid.defaults("gpii.tests.templateFormControl.readyForStringSuccess", {
     gradeNames: ["gpii.tests.templateFormControl.readyForSuccess", "autoInit"],
     ajaxOptions: {
@@ -66,7 +63,6 @@ fluid.defaults("gpii.tests.templateFormControl.readyForStringSuccess", {
     }
 });
 
-fluid.registerNamespace("gpii.tests.templateFormControl.readyForFailure");
 fluid.defaults("gpii.tests.templateFormControl.readyForFailure", {
     gradeNames: ["gpii.tests.templateFormControl", "autoInit"],
     ajaxOptions: {
@@ -80,7 +76,6 @@ fluid.defaults("gpii.tests.templateFormControl.readyForFailure", {
     }
 });
 
-fluid.registerNamespace("gpii.tests.templateFormControl.readyForStringifyFailure");
 fluid.defaults("gpii.tests.templateFormControl.readyForStringifyFailure", {
     gradeNames: ["gpii.tests.templateFormControl", "autoInit"],
     ajaxOptions: {
@@ -94,7 +89,6 @@ fluid.defaults("gpii.tests.templateFormControl.readyForStringifyFailure", {
     }
 });
 
-fluid.registerNamespace("gpii.tests.templateFormControl.readyForStringFailure");
 fluid.defaults("gpii.tests.templateFormControl.readyForStringFailure", {
     gradeNames: ["gpii.tests.templateFormControl", "autoInit"],
     ajaxOptions: {
@@ -115,7 +109,6 @@ fluid.defaults("gpii.tests.templateFormControl.readyForStringFailure", {
 });
 
 
-fluid.registerNamespace("gpii.tests.templateFormControl.readyForKeys");
 fluid.defaults("gpii.tests.templateFormControl.readyForKeys", {
     gradeNames:    ["gpii.tests.templateFormControl", "autoInit"],
     hideOnSuccess: false,

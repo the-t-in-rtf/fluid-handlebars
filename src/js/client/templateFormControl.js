@@ -15,20 +15,6 @@
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.templates.templateFormControl");
 
-
-    // TODO: Replace this with JSON Schema validation: https://issues.gpii.net/browse/GPII-1176
-    gpii.templates.templateFormControl.checkRequirements = function (that) {
-        var errors = [];
-
-        if (!that.options.templates || !that.options.templates.initial || !that.options.templates.error || !that.options.templates.success) {
-            errors.push("You have not configured any templates for use with this component.");
-        }
-
-        if (errors.length > 0) {
-            fluid.fail(errors);
-        }
-    };
-
     gpii.templates.templateFormControl.submitForm = function (that, event) {
         // We are handling this event and should prevent any further handling.
         if (event) { event.preventDefault(); }
@@ -62,9 +48,15 @@
     };
 
     fluid.defaults("gpii.templates.templateFormControl", {
-        gradeNames:    ["gpii.templates.templateAware", "gpii.templates.ajaxCapable", "autoInit"],
+        gradeNames:    ["gpii.templates.templateAware", "gpii.templates.ajaxCapable", "gpii.hasRequiredFields", "autoInit"],
         hideOnSuccess: true,  // Whether to hide our form if the results are successful
         hideOnError:   false, // Whether to hide our form if the results are unsuccessful
+        requiredFields: {
+            templates:           true,
+            "templates.initial": true,
+            "templates.error":   true,
+            "templates.success": true
+        },
         model: {
         },
         components: {
@@ -109,10 +101,10 @@
         },
         // You are expected to add any data from the response you care about to the success and error rules.
         rules: {
-            success: {
+            successResponseToModel: {
                 successMessage: "message"
             },
-            error: {
+            errorResponseToModel: {
                 errorMessage:   "message"
             }
         },
