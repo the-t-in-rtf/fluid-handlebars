@@ -27,6 +27,8 @@ For the second use case, you can start with the `templateFormControl` component.
 If you need to do both (or each multiple times), you should create a parent component that uses as many individual
 `templateRequestAndRender` and `templateFormControl` components as needed.
 
+TODO:  Reconcile this with the larger migration to dataSources.
+
  */
 /* global fluid, jQuery */
 (function ($) {
