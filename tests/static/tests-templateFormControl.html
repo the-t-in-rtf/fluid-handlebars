@@ -59,6 +59,10 @@
 
                 <hr/>
 
+                <div class="readyForGetSuccess">This content should not be visible.</div>
+
+                <hr/>
+
                 <div class="readyForStringifySuccess">This content should not be visible.</div>
 
                 <hr/>
@@ -87,6 +91,7 @@
                 <script type="text/javascript">
                     <!-- instantiate test components -->
                     var success          = gpii.tests.templateFormControl.readyForSuccess(".readyForSuccess");
+                    var getSuccess       = gpii.tests.templateFormControl.readyForGetSuccess(".readyForGetSuccess");
                     var successString    = gpii.tests.templateFormControl.readyForStringSuccess(".readyForStringSuccess");
                     var successStringify = gpii.tests.templateFormControl.readyForStringifySuccess(".readyForStringifySuccess");
                     var failure          = gpii.tests.templateFormControl.readyForFailure(".readyForFailure");

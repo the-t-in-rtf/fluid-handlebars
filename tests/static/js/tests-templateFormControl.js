@@ -25,7 +25,7 @@ fluid.defaults("gpii.tests.templateFormControl", {
 fluid.defaults("gpii.tests.templateFormControl.readyForSuccess", {
     gradeNames: ["gpii.tests.templateFormControl", "autoInit"],
     ajaxOptions: {
-        url: "/content/json/success.json"
+        url:    "/content/json/success.json"
     },
     model: {
         buttonName: "Succeed"
@@ -33,6 +33,16 @@ fluid.defaults("gpii.tests.templateFormControl.readyForSuccess", {
     templates: {
         initial: "form-success-initial",
         success: "form-success"
+    }
+});
+
+fluid.defaults("gpii.tests.templateFormControl.readyForGetSuccess", {
+    gradeNames: ["gpii.tests.templateFormControl.readyForSuccess", "autoInit"],
+    ajaxOptions: {
+        method: "GET"
+    },
+    model: {
+        buttonName: "Get Successful"
     }
 });
 

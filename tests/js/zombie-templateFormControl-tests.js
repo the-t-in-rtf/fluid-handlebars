@@ -66,6 +66,16 @@ gpii.templates.tests.client.templateFormControl.runTests = function (that) {
         }
     );
 
+    that.clickAndCheck("Use Zombie.js to submit a form that GETs a successful AJAX response (as JSON)...", "Get Successful", function (browser) {
+            jqUnit.start();
+            var successElement = browser.window.$(".readyForGetSuccess");
+            jqUnit.assertTrue("The component should now contain a 'success' message...", successElement.html().indexOf("This was a triumph") !== -1);
+
+            var getSuccessComponent = browser.window.getSuccess;
+            jqUnit.assertDeepEq("AJAX results should have been appended to the model data as outlined in our rules...", that.options.expected.record, getSuccessComponent.model.record);
+        }
+    );
+
     that.clickAndCheck("Use Zombie.js to submit a form that receives a successful AJAX response (as stringified JSON)...", "Stringify Succeed", function (browser) {
             jqUnit.start();
             var successElement = browser.window.$(".readyForStringifySuccess");
