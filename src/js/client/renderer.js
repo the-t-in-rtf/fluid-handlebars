@@ -100,7 +100,7 @@
                     "funcName": "gpii.templates.renderer.addHelper",
                     "args": ["{gpii.templates.renderer}", "{gpii.templates.helper}"]
                 },
-                target: "{that > gpii.templates.helper}.options.listeners.onCreate"
+                target: "{that gpii.templates.helper}.options.listeners.onCreate"
             }
         ],
         invokers: {

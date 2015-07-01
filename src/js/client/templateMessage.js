@@ -21,7 +21,7 @@
         model: {
         },
         modelListeners: {
-            "*": {
+            "": {
                 func:          "{that}.renderInitialMarkup",
                 excludeSource: "init"
             }
