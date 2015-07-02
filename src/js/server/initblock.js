@@ -26,6 +26,9 @@ gpii.templates.helper.initBlock.getHelper = function (that) {
 };
 
 gpii.templates.helper.initBlock.generateInitBlock = function (that, args) {
+    // Guard against being handed an `Arguments` object instead of an array.
+    args = fluid.makeArray(args);
+
     // In addition to the arguments we have passed, Handlebars gives us the "gift" of a final argument of its own
     // construction.  It is a gift in the same sense that a cat presents a gift of a dead mouse.  We quietly sweep it
     // into the trash, as one would a dead mouse.
