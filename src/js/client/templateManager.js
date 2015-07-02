@@ -28,6 +28,11 @@
             {
                 source: "{that}.renderer",
                 target: "{that templateAware}.components.renderer"
+            },
+            // Any child `templateAware` components of this one should be "born ready" to render.
+            {
+                record: "gpii.templates.templateAware.bornReady",
+                target: "{that templateAware}.options.gradeNames"
             }
         ]
     });
