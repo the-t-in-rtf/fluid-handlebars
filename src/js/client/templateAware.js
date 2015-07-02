@@ -97,9 +97,8 @@
         }
     });
 
-    // A convenience grade which has everything it needs to render on startup.
+    // A convenience grade which configured a `templateAware` component to render on startup.
     fluid.defaults("gpii.templates.templateAware.bornReady", {
-        gradeNames: ["gpii.templates.templateAware", "autoInit"],
         listeners: {
             "onCreate.renderMarkup": {
                 func: "{that}.renderInitialMarkup"
