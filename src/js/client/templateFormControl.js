@@ -29,22 +29,12 @@
         }
     };
 
-    gpii.templates.templateFormControl.handleSuccess = function (that, data) {
-        if (that.options.hideOnSuccess) {
+    // Add support for hiding content if needed
+    gpii.templates.templateFormControl.hideContentIfNeeded = function (that, success) {
+        if ((success && that.options.hideOnSuccess) || (!success && that.options.hideOnError)) {
             var form = that.locate("form");
             form.hide();
         }
-
-        that.handleSuccess(data);
-    };
-
-    gpii.templates.templateFormControl.handleError = function (that, data) {
-        if (that.options.hideOnError) {
-            var form = that.locate("form");
-            form.hide();
-        }
-
-        that.handleSuccess(data);
     };
 
     fluid.defaults("gpii.templates.templateFormControl", {
@@ -102,10 +92,10 @@
         // You are expected to add any data from the response you care about to the success and error rules.
         rules: {
             successResponseToModel: {
-                successMessage: "message"
+                successMessage: "responseJSON.message"
             },
             errorResponseToModel: {
-                errorMessage:   "message"
+                errorMessage:   "responseJSON.message"
             }
         },
         selectors: {
@@ -127,14 +117,6 @@
             handleKeyPress: {
                 funcName: "gpii.templates.templateFormControl.handleKeyPress",
                 args:     ["{that}", "{arguments}.0"]
-            },
-            handleSuccessLocally: {
-                funcName: "gpii.templates.templateFormControl.handleSuccess",
-                args:     ["{that}", "{arguments}.2"]
-            },
-            handleErrorLocally: {
-                funcName: "gpii.templates.templateFormControl.handleError",
-                args:     ["{that}", "{arguments}.2"]
             }
         },
         templates: {
@@ -158,15 +140,11 @@
                     method: "on",
                     args:   ["submit.submitForm", "{that}.submitForm"]
                 }
-            ]
+            ],
+            "requestReceived.hideContentIfNeeded": {
+                funcName: "gpii.templates.templateFormControl.hideContentIfNeeded",
+                args:     ["{that}", "{arguments}.1"]
+            }
         }
     });
-
-    //// An instance of this component that uses a single template   Please note, you should only have a single
-    //// component in your tree with the multiTemplateAware grade.  If you are building your own complex component using
-    //// `templateFormControl`, you should use the grade above and add `gpii.templates.multiTemplateAware` to
-    //// your top-level component.
-    //fluid.defaults("gpii.templates.templateFormControl.singleRenderer", {
-    //    gradeNames: ["gpii.templates.templateFormControl", "gpii.templates.multiTemplateAware", "autoInit"]
-    //});
 })(jQuery);

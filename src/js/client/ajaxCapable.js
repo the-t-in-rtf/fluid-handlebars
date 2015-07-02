@@ -38,20 +38,25 @@ TODO:  Reconcile this with the larger migration to dataSources.
 
     // Apply all changes in a single transaction.  Also ensures that values flagged with `null` are deleted from the model.
     gpii.templates.ajaxCapable.batchChanges = function (that, changeSet) {
-        var myTransaction = that.applier.initiate();
+        // TODO:  Review with Antranig.  This seems to prevent model relay notifications.
+        //var myTransaction = that.applier.initiate();
+        //
+        //fluid.each(changeSet, function (value, key) {
+        //    var change = { path: key };
+        //    if (value === undefined || value === null) {
+        //        change.type = "DELETE";
+        //    }
+        //    else {
+        //        change.value = value;
+        //    }
+        //    myTransaction.fireChangeRequest(change);
+        //});
+        //
+        //myTransaction.commit();
 
         fluid.each(changeSet, function (value, key) {
-            var change = { path: key };
-            if (value === undefined || value === null) {
-                change.type = "DELETE";
-            }
-            else {
-                change.value = value;
-            }
-            myTransaction.fireChangeRequest(change);
+            that.applier.change(key, value);
         });
-
-        myTransaction.commit();
     };
 
     gpii.templates.ajaxCapable.makeRequest = function (that) {
@@ -73,7 +78,7 @@ TODO:  Reconcile this with the larger migration to dataSources.
 
         gpii.templates.ajaxCapable.batchChanges(that, transformedData);
 
-        that.events.requestReceived.fire(that);
+        that.events.requestReceived.fire(that, true);
     };
 
     gpii.templates.ajaxCapable.handleError = function (that, data) {
@@ -81,7 +86,7 @@ TODO:  Reconcile this with the larger migration to dataSources.
 
         gpii.templates.ajaxCapable.batchChanges(that, errorData);
 
-        that.events.requestReceived.fire(that);
+        that.events.requestReceived.fire(that, false);
     };
 
     fluid.defaults("gpii.templates.ajaxCapable", {
@@ -121,7 +126,7 @@ TODO:  Reconcile this with the larger migration to dataSources.
             },
             handleError: {
                 funcName: "gpii.templates.ajaxCapable.handleError",
-                args:     ["{that}", "{arguments}.2"] // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
+                args:     ["{that}", "{arguments}.0"] // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
             }
         }
     });
