@@ -32,25 +32,20 @@
 
     // Apply all changes in a single transaction.  Also ensures that values flagged with `null` are deleted from the model.
     gpii.templates.ajaxCapable.batchChanges = function (that, changeSet) {
-        // TODO:  Review with Antranig.  This seems to prevent model relay notifications.
-        //var myTransaction = that.applier.initiate();
-        //
-        //fluid.each(changeSet, function (value, key) {
-        //    var change = { path: key };
-        //    if (value === undefined || value === null) {
-        //        change.type = "DELETE";
-        //    }
-        //    else {
-        //        change.value = value;
-        //    }
-        //    myTransaction.fireChangeRequest(change);
-        //});
-        //
-        //myTransaction.commit();
+        var myTransaction = that.applier.initiate();
 
         fluid.each(changeSet, function (value, key) {
-            that.applier.change(key, value);
+            var change = { path: key };
+            if (value === undefined || value === null) {
+                change.type = "DELETE";
+            }
+            else {
+                change.value = value;
+            }
+            myTransaction.fireChangeRequest(change);
         });
+
+        myTransaction.commit();
     };
 
     gpii.templates.ajaxCapable.makeRequest = function (that) {
