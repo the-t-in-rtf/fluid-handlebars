@@ -54,7 +54,7 @@
     };
 
     gpii.templates.ajaxCapable.makeRequest = function (that) {
-        var options = fluid.model.transformWithRules(that.options.ajaxOptions, that.options.rules.ajaxOptions);
+        var options = fluid.model.transformWithRules(that, that.options.rules.ajaxOptions);
 
         var transformedModel = fluid.model.transformWithRules(that.model, that.options.rules.modelToRequestPayload);
 
@@ -112,7 +112,7 @@
             // Rules to control how the raw ajaxOptions are permuted before sending to the server.  This allows things
             // like adding model data to the url.
             ajaxOptions: {
-                "": "" // By default, pass the full list of options from `options.ajaxOptions` on to `jQuery.ajax()`
+                "": "options.ajaxOptions" // By default, pass the full list of options from `options.ajaxOptions` on to `jQuery.ajax()`
             }
 
         },
