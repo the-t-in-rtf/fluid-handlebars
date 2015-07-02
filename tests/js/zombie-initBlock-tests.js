@@ -53,21 +53,36 @@ gpii.templates.tests.client.initBlock.runTests = function (that) {
             jqUnit.assertTrue("The body should contain rendered content that replaces the original source.", body.text().indexOf("This content should not be visible") === -1);
 
             jqUnit.assertTrue("There should be page content...", body.text().indexOf("coming from the page") !== -1);
+
+            var pageComponent = browser.window.pageComponent;
+            var deepComponent = pageComponent.requireRenderer.pageComponent;
+            jqUnit.assertDeepEq("The component model should include query, parameter, default, and dispatcher data...", that.options.expected, deepComponent.model);
         }
     );
 };
 
 gpii.templates.tests.client.harness({
     expressPort : 6995,
-    baseUrl:      "http://localhost:6995/",
-    contentUrl:   "http://localhost:6995/dispatcher/initBlock",
+    baseUrl:    "http://localhost:6995/",
+    contentUrl: "http://localhost:6995/dispatcher/initblock?myvar=bar",
     expected: {
-        record: {
-            foo: "bar",
-            baz: "qux"
-        }
+        "hasDataFromGrade": true,
+        "req": {
+            "query": {
+                "myvar": "bar"
+            },
+            "params": {
+                "template": "initblock"
+            }
+        },
+        "json": {
+            "foo": "bar",
+            "baz": "quux",
+            "qux": "quux"
+        },
+        "myvar": "modelvariable",
+        "markdown": "*this works*"
     },
-    successStringExpected: { "message": "A success string is still a success." },
     listeners: {
         "{express}.events.onStarted": {
             funcName: "gpii.templates.tests.client.initBlock.runTests",

@@ -92,7 +92,7 @@
             },
             renderMarkup: {
                 funcName: "gpii.templates.templateAware.renderMarkup",
-                args:     ["{that}", "{renderer}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
+                args:     ["{that}", "{renderer}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             }
         }
     });

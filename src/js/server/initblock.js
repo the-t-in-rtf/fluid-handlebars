@@ -29,9 +29,13 @@ gpii.templates.helper.initBlock.generateInitBlock = function (that, args) {
     // Guard against being handed an `Arguments` object instead of an array.
     args = fluid.makeArray(args);
 
-    // In addition to the arguments we have passed, Handlebars gives us the "gift" of a final argument of its own
-    // construction.  It is a gift in the same sense that a cat presents a gift of a dead mouse.  We quietly sweep it
-    // into the trash, as one would a dead mouse.
+    // In addition to the arguments we have passed, Handlebars gives us a final argument of its own construction.
+    // This object contains the context data exposed to Handlebars.  We transform the data inluded in the context using
+    // the rules outlined in `options.contextToModelRules` and use that as the generated component's model.
+    var handlebarsContextData = args.slice(-1)[0].data.root;
+    var generatedComponentModel = fluid.model.transformWithRules(handlebarsContextData, that.options.contextToModelRules);
+
+    // Everything except for the final argument is a gradeName that we can work with.
     var rawGradeNames = args.slice(0, -1);
 
     // To ensure the same order of precedence as gradeNames, the last argument are used as the `type`, and any earlier
@@ -47,11 +51,10 @@ gpii.templates.helper.initBlock.generateInitBlock = function (that, args) {
         var pageComponent                 = options.components.requireRenderer.options.components.pageComponent;
         pageComponent.type                = type;
         pageComponent.options.gradeNames  = gradeNames;
+        pageComponent.options.model       = generatedComponentModel;
 
-        var generatedModel                = fluid.model.transformWithRules(that.model, that.options.rules);
-        pageComponent.options.model       = generatedModel;
+        var payload = ["<script type=\"text/javascript\">", "var gpii=fluid.registerNamespace(\"gpii\");", "var pageComponent = " + that.options.baseGradeName, "(" + JSON.stringify(options, null, 2) + ");", "</script>"].join("\n");
 
-        var payload = ["<script type=\"text/javascript\">", "var pageComponent = " + that.options.baseGradeName, "(" + JSON.stringify(options, null, 2) + ");", "</script>"].join("\n");
         return payload;
     }
 };
@@ -61,7 +64,11 @@ fluid.defaults("gpii.templates.helper.initBlock", {
     mergePolicy: {
         "baseOptions": "noexpand,nomerge"
     },
-    rules: {},
+    contextToModelRules: {
+        // The dispatcher tries to pass us these by default.
+        user: "user",
+        req:  "req"
+    },
     baseGradeName: "gpii.templates.templateManager",
     baseOptions: {
         components: {

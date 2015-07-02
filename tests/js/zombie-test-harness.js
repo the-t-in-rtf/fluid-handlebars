@@ -37,7 +37,13 @@ fluid.defaults("gpii.templates.tests.client.harness", {
             type: "gpii.express.dispatcher",
             options: {
                 path: ["/dispatcher/:template", "/dispatcher"],
-                model: "{gpii.express}.model"
+                rules: {
+                    contextToExpose: {
+                        myvar:         { literalValue: "modelvariable" },
+                        markdown:      { literalValue: "*this works*" },
+                        json:          { literalValue: { foo: "bar", baz: "quux", qux: "quux" } }
+                    }
+                }
             }
         },
         inline: {
@@ -75,7 +81,20 @@ fluid.defaults("gpii.templates.tests.client.harness", {
             }
         },
         handlebars: {
-            type: "gpii.express.hb"
+            type: "gpii.express.hb",
+            options: {
+                components: {
+                    initBlock: {
+                        options: {
+                            contextToModelRules: {
+                                myvar:    "myvar",
+                                markdown: "markdown",
+                                json:     "json"
+                            }
+                        }
+                    }
+                }
+            }
         },
         error: {
             type: "gpii.templates.tests.router.error"
