@@ -5,28 +5,12 @@
   1.  Retrieving the data once the renderer is ready.
   2.  Rendering the payload when the response is received.
 
-  For more details on the request and response cycle, see the `templateRequestAndUpdate` grade.
+  For more details on the request and response cycle, see the `ajaxCapable` grade.
 
  */
 /* global fluid, jQuery */
 (function () {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.templates.templateRequestAndRender");
-
-    // TODO: Replace this with JSON Schema validation: https://issues.gpii.net/browse/GPII-1176
-    gpii.templates.templateRequestAndRender.checkRequirements = function (that) {
-        var errors = [];
-
-        if (!that.options.templates || !that.options.templates.success || !that.options.templates.error) {
-            errors.push("You have not configured any templates for use with this component.");
-        }
-
-        if (errors.length > 0) {
-            fluid.fail(errors);
-        }
-    };
-
     fluid.defaults("gpii.templates.templateRequestAndRender", {
         gradeNames:    ["gpii.templates.ajaxCapable", "gpii.hasRequiredOptions", "autoInit"],
         requiredOptions: {

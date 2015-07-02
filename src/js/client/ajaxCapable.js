@@ -1,35 +1,29 @@
 /*
 
-  A component to standardize the process of retrieving data and then updating the model when the results are received.
+ A component to standardize the process of retrieving data and then updating the model when the results are received.
 
- The component sends a request when its `request` invoker is called.  The request data consists of the component's
- model, transformed according to the rules specified in `options.rules.request`.
+ The component sends a request when its `makeRequest` invoker is called.  The request parameters are:
+
+   1.  The request data, which is the result of transforming the model according to the rules specified in
+       `options.rules.modelToRequestPayload`.
+
+   2.  The ajax options, which is the result of transforming `options.ajaxOptions` according to the rules specified in
+       `options.rules.ajaxOptions`.
 
  The remaining request options are controlled using `options.ajaxOptions`, which are options in the format used by
  `jQuery.ajax()`.  Once the request is sent, the following workflow applies:
 
    1.  If the AJAX request returns an error or the result contains a "falsy" `ok` variable, the error is transformed
-       using the rules found in `options.rules.error`, and the results are applied to the component's model using the
-       change applier.
-   2.  If the AJAX request is successful, the results are transformed using the rules found in `options.rules.success`,
-       and applied to the model using the change applier.
+       using the rules found in `options.rules.errorResponseToModel`, and the results are applied to the component's
+       model using the change applier.
+
+   2.  If the AJAX request is successful, the results are transformed using the rules found in
+       `options.rules.successResponseToModel`, and applied to the model using the change applier.
 
  This component does not handle any rendering, you are expected to do that yourself, or use a grade that handles that.
- With that in mind, there are grades for two common use cases:
-
-   1.  Retrieve required data on startup and then render the page.
-   2.  Submit the model to a REST endpoint and refresh the model with the results.
-
-For the first use case, you can start with the 'retrieveAndRender` component included with this package.
-
-For the second use case, you can start with the `templateFormControl` component.
-
-If you need to do both (or each multiple times), you should create a parent component that uses as many individual
-`templateRequestAndRender` and `templateFormControl` components as needed.
-
-TODO:  Reconcile this with the larger migration to dataSources.
 
  */
+// TODO:  Reconcile this with the larger migration to dataSources.
 /* global fluid, jQuery */
 (function ($) {
     "use strict";
@@ -60,7 +54,7 @@ TODO:  Reconcile this with the larger migration to dataSources.
     };
 
     gpii.templates.ajaxCapable.makeRequest = function (that) {
-        var options = fluid.copy(that.options.ajaxOptions);
+        var options = fluid.model.transformWithRules(that.options.ajaxOptions, that.options.rules.ajaxOptions);
 
         var transformedModel = fluid.model.transformWithRules(that.model, that.options.rules.modelToRequestPayload);
 
@@ -113,7 +107,14 @@ TODO:  Reconcile this with the larger migration to dataSources.
             // Rules to control how our model is parsed before making a request
             modelToRequestPayload: {
                 "": ""    // By default, pass the model with no alterations.
+            },
+
+            // Rules to control how the raw ajaxOptions are permuted before sending to the server.  This allows things
+            // like adding model data to the url.
+            ajaxOptions: {
+                "": "" // By default, pass the full list of options from `options.ajaxOptions` on to `jQuery.ajax()`
             }
+
         },
         invokers: {
             makeRequest: {
