@@ -39,9 +39,10 @@ fluid.defaults("gpii.templates.tests.client.harness", {
                 path: ["/dispatcher/:template", "/dispatcher"],
                 rules: {
                     contextToExpose: {
-                        myvar:         { literalValue: "modelvariable" },
-                        markdown:      { literalValue: "*this works*" },
-                        json:          { literalValue: { foo: "bar", baz: "quux", qux: "quux" } }
+                        myvar:    { literalValue: "modelvariable" },
+                        markdown: { literalValue: "*this works*" },
+                        json:     { literalValue: { foo: "bar", baz: "quux", qux: "quux" } },
+                        req:      { params: "req.params", query: "req.query"}
                     }
                 }
             }
@@ -86,10 +87,13 @@ fluid.defaults("gpii.templates.tests.client.harness", {
                 components: {
                     initBlock: {
                         options: {
-                            contextToModelRules: {
-                                myvar:    "myvar",
-                                markdown: "markdown",
-                                json:     "json"
+                            contextToOptionsRules: {
+                                model: {
+                                    req:      "req",
+                                    myvar:    "myvar",
+                                    markdown: "markdown",
+                                    json:     "json"
+                                }
                             }
                         }
                     }

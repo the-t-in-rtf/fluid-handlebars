@@ -1,10 +1,18 @@
-// Handlebars helper to construct a client side component given a list of grades, including all wiring required to
-// ensure that:
+// # What is this?
 //
-//   1. Only one renderer is created an used in all child components
+// The `initBlock` Handlebars helper constructs a client side component given a list of grades, including all
+// wiring required to ensure that:
+//
+//   1. Only one renderer is created and used in all child components
 //   2. Child components are only created once templates have been loaded.
 //
-// The markup required to use this in a server-side handlebars template is something like:
+// The end result is a nested structure, starting with a `pageComponent` variable that has a global renderer.  This
+// component has a `requireRenderer` child component, which is created only when the templates are available, and holds
+// a `pageComponent` component constructed from the grades passed to the helper (see below).
+//
+// # Usage
+//
+// The markup required to use this in a Handlebars template is something like:
 //
 //   {{{initblock "grade1", "grade2", "grade3"}}}
 //
@@ -14,11 +22,36 @@
 // of the grades in this example have an invoker with the same name, the invoker defined in `grade1` would be called.
 //
 // Please note, in the example above that the triple braces are required in order to prevent Handlebars from escaping
-// the generated code and presenting it as text.
+// the generated code and presenting it as text.  Note also that this helper is only meant to be used on the server
+// side, and will not work at all with the client side Handlebars infrastructure.
+//
+// # Adding context data to the generated component's options
+//
+// As this is a server-side component, it may be aware of things that you'd like to expose as part of your options.
+// The process of doing this is two-fold:
+//
+// 1.  When configuring your `gpii.express.dispatcher` grade, you should configure it to expose the data you're
+//     interested in to the Handlebars context.
+//
+// 2.  When configuring the `initBlock` component (typically found as a child component of a `gpii.express.hb`
+//     instance), you can add rules in `options.contextToOptionsRules` to control what (if any) parts of the Handlebars
+//     context are added to the generated component's options.  These rules might look something like:
+//
+//     contextToOptionsRules: {
+//       req:  "req",     // Pass the request object to the component's options, if available.
+//       model: {
+//         user: "user" // There are so many components that will listen for a user that we pass it by default if it's available.
+//       }
+//     }
+//
+// These will be merged with any existing options you have added for the nested pageComponent component in
+// `options.baseOptions`, and will take precedence over any information found there.
 //
 "use strict";
-var fluid = fluid || require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
+var fluid  = fluid || require("infusion");
+var gpii   = fluid.registerNamespace("gpii");
+var jQuery = fluid.registerNamespace("jQuery");
+
 fluid.registerNamespace("gpii.templates.helper.initBlock");
 
 gpii.templates.helper.initBlock.getHelper = function (that) {
@@ -33,7 +66,7 @@ gpii.templates.helper.initBlock.generateInitBlock = function (that, args) {
     // This object contains the context data exposed to Handlebars.  We transform the data inluded in the context using
     // the rules outlined in `options.contextToModelRules` and use that as the generated component's model.
     var handlebarsContextData = args.slice(-1)[0].data.root;
-    var generatedComponentModel = fluid.model.transformWithRules(handlebarsContextData, that.options.contextToModelRules);
+    var generatedOptions      = fluid.model.transformWithRules(handlebarsContextData, that.options.contextToOptionsRules);
 
     // Everything except for the final argument is a gradeName that we can work with.
     var rawGradeNames = args.slice(0, -1);
@@ -51,8 +84,11 @@ gpii.templates.helper.initBlock.generateInitBlock = function (that, args) {
         var pageComponent                 = options.components.requireRenderer.options.components.pageComponent;
         pageComponent.type                = type;
         pageComponent.options.gradeNames  = gradeNames;
-        pageComponent.options.model       = generatedComponentModel;
 
+        // Merge the generate component options into the current hierarchy
+        jQuery.extend(pageComponent.options, generatedOptions);
+
+        // TODO:  This may prevent instantiating multiple components in a single page.  Review this practice as needed.
         var payload = ["<script type=\"text/javascript\">", "var gpii=fluid.registerNamespace(\"gpii\");", "var pageComponent = " + that.options.baseGradeName, "(" + JSON.stringify(options, null, 2) + ");", "</script>"].join("\n");
 
         return payload;
@@ -64,11 +100,7 @@ fluid.defaults("gpii.templates.helper.initBlock", {
     mergePolicy: {
         "baseOptions": "noexpand,nomerge"
     },
-    contextToModelRules: {
-        // The dispatcher tries to pass us these by default.
-        user: "user",
-        req:  "req"
-    },
+    contextToOptionsRules: {},
     baseGradeName: "gpii.templates.templateManager",
     baseOptions: {
         components: {
