@@ -7,18 +7,26 @@
    1.  The request data, which is the result of transforming the model according to the rules specified in
        `options.rules.modelToRequestPayload`.
 
-   2.  The ajax options, which is the result of transforming `options.ajaxOptions` according to the rules specified in
+   2.  The ajax options, which are the result of transforming `options.ajaxOptions` according to the rules specified in
        `options.rules.ajaxOptions`.
 
- The remaining request options are controlled using `options.ajaxOptions`, which are options in the format used by
- `jQuery.ajax()`.  Once the request is sent, the following workflow applies:
+       The end result is expected to contain options in the format used by `jQuery.ajax()`,
+       with the exception of the `json: true` option, which is a nicety to improve handling of JSON data payloads.
 
-   1.  If the AJAX request returns an error or the result contains a "falsy" `ok` variable, the error is transformed
+       The rules used to prepare the final AJAX options are expanded before each request, so that you can use IoC
+       references that refer to the current state of the component.
+
+ Once the request is sent, the following workflow applies:
+
+   1.  If the AJAX request returns an error, the `handleError` invoker is called.  The error is transformed
        using the rules found in `options.rules.errorResponseToModel`, and the results are applied to the component's
        model using the change applier.
 
-   2.  If the AJAX request is successful, the results are transformed using the rules found in
-       `options.rules.successResponseToModel`, and applied to the model using the change applier.
+   2.  If the AJAX request is successful, the `handleSuccess` invoker is called.  The response data is transformed
+       using the rules found in `options.rules.successResponseToModel`, and applied to the model using the change
+       applier.
+
+ All model changes are batched, i.e. the entire set of changes results in a single transaction.
 
  This component does not handle any rendering, you are expected to do that yourself, or use a grade that handles that.
 
@@ -49,17 +57,18 @@
     };
 
     gpii.templates.ajaxCapable.makeRequest = function (that) {
-        var options = fluid.model.transformWithRules(that, that.options.rules.ajaxOptions);
+        var rules = fluid.expandOptions(that.options.rules.ajaxOptions, that);
+        var transformedAjaxOptions = fluid.model.transformWithRules(that.options.ajaxOptions, rules);
 
         var transformedModel = fluid.model.transformWithRules(that.model, that.options.rules.modelToRequestPayload);
 
         // We have added a `json` option not supported by `jQuery.ajax()` itself, which makes it easier to pass JSON data.
-        if (options.json) {
-            options.contentType = "application/json";
+        if (transformedAjaxOptions.json) {
+            transformedAjaxOptions.contentType = "application/json";
         }
 
-        options.data = options.json ? JSON.stringify(transformedModel) : transformedModel;
-        $.ajax(options);
+        transformedAjaxOptions.data = transformedAjaxOptions.json ? JSON.stringify(transformedModel) : transformedModel;
+        $.ajax(transformedAjaxOptions);
     };
 
     gpii.templates.ajaxCapable.handleSuccess = function (that, data) {
@@ -107,7 +116,7 @@
             // Rules to control how the raw ajaxOptions are permuted before sending to the server.  This allows things
             // like adding model data to the url.
             ajaxOptions: {
-                "": "options.ajaxOptions" // By default, pass the full list of options from `options.ajaxOptions` on to `jQuery.ajax()`
+                "": "" // By default, pass the full list of options from `options.ajaxOptions` on to `jQuery.ajax()`
             }
 
         },
