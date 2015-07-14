@@ -29,12 +29,12 @@ var fs     = require("fs");
 var path   = require("path");
 
 fluid.registerNamespace("gpii.express.inline.request");
-gpii.express.inline.request.sendResponse = function (that) {
+gpii.express.inline.request.handleRequest = function (that) {
     if (that.options.templates) {
-        gpii.express.requestAware.sendResponse(that, 200, { ok: true, templates: that.options.templates });
+        that.sendResponse(200, { ok: true, templates: that.options.templates });
     }
     else {
-        gpii.express.requestAware.sendResponse(that, 500, { ok: false, message: that.options.messages.noTemplates});
+        that.sendResponse(500, { ok: false, message: that.options.messages.noTemplates});
     }
 };
 
@@ -44,9 +44,9 @@ fluid.defaults("gpii.express.inline.request", {
     messages: {
         noTemplates: "No templates were found."
     },
-    listeners: {
-        "onCreate.sendResponse": {
-            funcName: "gpii.express.inline.request.sendResponse",
+    invokers: {
+        "handleRequest": {
+            funcName: "gpii.express.inline.request.handleRequest",
             args:     ["{that}"]
         }
     }
