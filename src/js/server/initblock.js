@@ -63,7 +63,7 @@ gpii.templates.helper.initBlock.generateInitBlock = function (that, args) {
     args = fluid.makeArray(args);
 
     // In addition to the arguments we have passed, Handlebars gives us a final argument of its own construction.
-    // This object contains the context data exposed to Handlebars.  We transform the data inluded in the context using
+    // This object contains the context data exposed to Handlebars.  We transform the data included in the context using
     // the rules outlined in `options.contextToModelRules` and use that as the generated component's model.
     var handlebarsContextData = args.slice(-1)[0].data.root;
     var generatedOptions      = fluid.model.transformWithRules(handlebarsContextData, that.options.contextToOptionsRules);

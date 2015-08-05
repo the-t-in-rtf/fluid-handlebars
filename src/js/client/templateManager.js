@@ -5,7 +5,7 @@
 // 3. Makes any child grades that extend the `templateAware` grade delay their creation until templates are loaded.
 //
 // For this to work as expected and for components to be created in the right order, you should only add components
-// to `components.requireRender`.
+// to `components.requireRenderer`.
 //
 /* global fluid, jQuery */
 (function () {
