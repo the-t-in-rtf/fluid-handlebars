@@ -1,7 +1,6 @@
 "use strict";
 // Base gradeName for handlebars "helper" modules, which can be used on both the client and server side handlebars stacks.
 var fluid = fluid || require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.templates.helper");
 
 // Each "helper" module is expected to replace the `getHelper` invoker with an invoker that returns a helper function, something like the following:
