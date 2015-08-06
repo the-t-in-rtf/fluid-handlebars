@@ -4,7 +4,6 @@
 (function () {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.templates.templateAware");
 
     // A static function to check for the existing of required options data and fail, typically called on startup.
     //
@@ -14,13 +13,13 @@
     //   "path.relative.to.that.options": true
     // }
     //
-    gpii.checkRequiredOptions = function (that, location) {
+    gpii.checkRequiredOptions = function (options, requiredFields, location, suffix) {
         var errors = [];
 
-        fluid.each(that.options.requiredFields, function (value, path) {
-            var requiredValue = fluid.get(that.options, path);
+        fluid.each(requiredFields, function (value, path) {
+            var requiredValue = fluid.get(options, path);
             if (requiredValue === undefined) {
-                errors.push("You have not supplied the required option '" + path + "' to a '" + location + "' component...");
+                errors.push("You have not supplied the required option '" + path + "' to a '" + location + "' " + suffix + "...");
             }
         });
 
@@ -34,7 +33,7 @@
         listeners: {
             "onCreate.checkRequiredOptions": {
                 funcName: "gpii.checkRequiredOptions",
-                args:     ["{that}", "{that}.typeName"]
+                args:     ["{that}.options", "{that}.options.requiredFields", "{arguments}.0", "component"]
             }
         }
     });
