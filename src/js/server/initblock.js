@@ -47,6 +47,25 @@
 // These will be merged with any existing options you have added for the nested pageComponent component in
 // `options.baseOptions`, and will take precedence over any information found there.
 //
+// The generated code will only work if you have included Fluid itself and any client-side code your grades depend on.
+// At a minimum, you will need to include the following client-side scripts from this package:
+//
+// * src/js/client/hasRequiredOptions.js
+// * src/js/client/ajaxCapable.js
+// * src/js/client/binder.js
+// * src/js/client/md-client.js
+// * src/js/client/renderer.js
+// * src/js/client/templateManager.js
+// * src/js/client/templateAware.js
+//
+// Most of the examples in this package make use of one or more of the following grades as well:
+//
+// * src/js/client/templateFormControl.js
+// * src/js/client/templateMessage.js
+// * src/js/client/templateRequestAndRender.js
+//
+// For more details, review each of those and the tests in this package.
+//
 "use strict";
 var fluid  = fluid || require("infusion");
 var gpii   = fluid.registerNamespace("gpii");
