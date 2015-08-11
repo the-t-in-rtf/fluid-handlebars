@@ -26,9 +26,15 @@
        using the rules found in `options.rules.successResponseToModel`, and applied to the model using the change
        applier.
 
- All model changes are batched, i.e. the entire set of changes results in a single transaction.
+A few more things to note:
 
- This component does not handle any rendering, you are expected to do that yourself, or use a grade that handles that.
+   1.  All model changes are batched, i.e. the entire set of changes results in a single transaction.
+
+   2.  `null` values in transformation results will be stripped from the existing model.  `undefined` values are
+       stripped out by `fluid.model.transformWithRules`, during the transformation process, and will not result in any
+       model change.
+
+   3.  This component does not handle any rendering, you are expected to do that yourself, or use a grade that does so.
 
  */
 // TODO:  Reconcile this with the larger migration to dataSources.
