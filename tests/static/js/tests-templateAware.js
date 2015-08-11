@@ -4,10 +4,8 @@
 // This is a test component that is meant to be included in a client-side document.
 //
 /* global fluid */
-fluid.registerNamespace("gpii.hb.tests.templateAware");
-
-fluid.defaults("gpii.hb.tests.templateAware", {
-    gradeNames: ["gpii.templates.hb.client.templateAware.serverAware", "autoInit"],
+fluid.defaults("gpii.tests.templateAware", {
+    gradeNames: ["gpii.templates.templateAware", "autoInit"],
     template:   "index",
     selectors: {
         initial: "" // Update the whole container
@@ -19,21 +17,19 @@ fluid.defaults("gpii.hb.tests.templateAware", {
     },
     invokers: {
         renderInitialMarkup: {
-            funcName: "gpii.templates.hb.client.templateAware.renderMarkup",
-            args: [
-                "{that}",
-                "initial",
-                "{that}.options.template",
-                "{that}.model",
-                "html"
-            ]
+            func: "{that}.renderMarkup",
+            args: [ "initial", "{that}.options.template", "{that}.model", "html"]
         }
     }
 });
 
-fluid.registerNamespace("gpii.hb.tests.templateAware.contained");
-fluid.defaults("gpii.hb.tests.templateAware.contained", {
-    gradeNames: ["gpii.hb.tests.templateAware", "autoInit"],
+// Grade for tests that are independent of the `initBlock` component.
+fluid.defaults("gpii.tests.templateAware.serverAware", {
+    gradeNames: ["gpii.tests.templateAware", "gpii.templates.templateAware.serverAware", "autoInit"]
+});
+
+fluid.defaults("gpii.tests.templateAware.contained", {
+    gradeNames: ["gpii.tests.templateAware.serverAware", "autoInit"],
     template:  "form-contained-initial",
     selectors: {
         initial: ".contained-inner" // Update an interior element without disturbing the root container.

@@ -2,9 +2,9 @@
 /* globals fluid */
 "use strict";
 
-fluid.registerNamespace("gpii.hb.tests.binder");
+fluid.registerNamespace("gpii.tests.binder");
 // Base grade for all components
-fluid.defaults("gpii.hb.tests.binder.base", {
+fluid.defaults("gpii.tests.binder.base", {
     gradeNames: ["fluid.viewComponent", "autoInit"],
     model: {
         initFromModel:    "initialized from model" // The markup will be initialized with this value.
@@ -24,8 +24,8 @@ fluid.defaults("gpii.hb.tests.binder.base", {
 });
 
 // Component to test "long notation"
-fluid.defaults("gpii.hb.tests.binder.long", {
-    gradeNames: ["gpii.hb.tests.binder.base", "autoInit"],
+fluid.defaults("gpii.tests.binder.long", {
+    gradeNames: ["gpii.tests.binder.base", "autoInit"],
     bindings: {
         initFromModel: {
             selector: "initFromModel",
@@ -48,8 +48,8 @@ fluid.defaults("gpii.hb.tests.binder.long", {
 
 
 // Component to test "short notation"
-fluid.defaults("gpii.hb.tests.binder.short", {
-    gradeNames: ["gpii.hb.tests.binder.base", "autoInit"],
+fluid.defaults("gpii.tests.binder.short", {
+    gradeNames: ["gpii.tests.binder.base", "autoInit"],
     bindings: {
         initFromModel:    "initFromModel",
         initFromMarkup:   "initFromMarkup",
@@ -64,8 +64,8 @@ fluid.defaults("gpii.hb.tests.binder.short", {
 //   The syntax used in the next example is no longer preferred, but is tested to confirm that older components
 //   can work with the new binder during the transition.
 //
-fluid.defaults("gpii.hb.tests.binder.array", {
-    gradeNames: ["gpii.hb.tests.binder.base", "autoInit"],
+fluid.defaults("gpii.tests.binder.array", {
+    gradeNames: ["gpii.tests.binder.base", "autoInit"],
     bindings: [
         {
             selector: "initFromModel",
@@ -87,8 +87,8 @@ fluid.defaults("gpii.hb.tests.binder.array", {
 });
 
 // Component to test support for radio buttons
-fluid.defaults("gpii.hb.tests.binder.radio", {
-    gradeNames: ["gpii.hb.tests.binder.base", "autoInit"],
+fluid.defaults("gpii.tests.binder.radio", {
+    gradeNames: ["gpii.tests.binder.base", "autoInit"],
     bindings: {
         initFromModel: {
             selector: "initFromModel",

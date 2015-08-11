@@ -2,10 +2,10 @@
 // Test rendering functions independently of the `testAware` infrastructure.
 //
 // This is a test component that is meant to be included in a client-side document.
-/* global fluid, gpii, jqUnit */
-fluid.registerNamespace("gpii.hb.clientTests");
+/* global fluid, gpii */
+fluid.registerNamespace("gpii.clientTests");
 
-gpii.hb.clientTests.transformUsingTemplates = function (that) {
+gpii.clientTests.transformUsingTemplates = function (that) {
     that.renderer.after(that.locate("viewport-after"), that.options.templateName, that.model);
     that.renderer.append(that.locate("viewport-append"), that.options.templateName, that.model);
     that.renderer.before(that.locate("viewport-before"), that.options.templateName, that.model);
@@ -14,8 +14,8 @@ gpii.hb.clientTests.transformUsingTemplates = function (that) {
     that.renderer.replaceWith(that.locate("viewport-replaceWith"), that.options.replaceWithTemplateName, that.model);
 };
 
-fluid.defaults("gpii.hb.clientTests", {
-    gradeNames: ["fluid.viewRelayComponent", "autoInit"],
+fluid.defaults("gpii.clientTests", {
+    gradeNames: ["gpii.templates.templateAware.serverAware", "autoInit"],
     model: {
         myvar:                   "modelvariable",
         markdown:                "*this works*",
@@ -31,14 +31,9 @@ fluid.defaults("gpii.hb.clientTests", {
         "viewport-prepend":     ".viewport-prepend",
         "viewport-replaceWith": ".viewport-replaceWith"
     },
-    components: {
-        renderer: {
-            type: "gpii.templates.hb.client.serverAware"
-        }
-    },
-    listeners: {
-        "{renderer}.events.onTemplatesLoaded": {
-            funcName: "gpii.hb.clientTests.transformUsingTemplates",
+    invokers: {
+        "renderInitialMarkup": {
+            funcName: "gpii.clientTests.transformUsingTemplates",
             args:     ["{that}"]
         }
     }

@@ -29,11 +29,7 @@ var testServer = gpii.express({
             }
         }
     },
-    "model": {
-        myvar:    "modelvariable",
-        json:     { "foo": "bar" },
-        markdown: "*this works*"
-    },
+    json: { foo: "bar", baz: "quux", qux: "quux" },
     components: {
         "json": {
             "type": "gpii.express.middleware.bodyparser.json"
@@ -48,13 +44,20 @@ var testServer = gpii.express({
             "type": "gpii.express.middleware.session"
         },
         inline: {
-            type: "gpii.express.hb.inline"
+            type: "gpii.express.inline"
         },
         dispatcher: {
-            type: "gpii.express.hb.dispatcher",
+            type: "gpii.express.dispatcher",
             options: {
                 path: ["/dispatcher/:template", "/dispatcher"],
-                model: "{gpii.express}.model"
+                rules: {
+                    contextToExpose: {
+                        myvar:    { literalValue: "modelvariable" },
+                        markdown: { literalValue: "*this works*" },
+                        json:     { literalValue: "{express}.options.json" },
+                        req:      { params: "req.params", query: "req.query"}
+                    }
+                }
             }
         },
         handlebars: {
@@ -116,7 +119,7 @@ testServer.runTests = function () {
                 jqUnit.assertNotNull("There should be partial content in the body...",        body.match(/from the partial/));
 
                 var mdRegexp = /<p><em>this works<\/em><\/p>/i;
-                jqUnit.assertNotNull("The results should contain transformed markdown.", body.match(mdRegexp));
+                jqUnit.assertNotNull("The results should contain transformed markdown.",      body.match(mdRegexp));
 
                 jqUnit.assertNotNull("There should be model variable content in the body...", body.match(/modelvariable/));
                 jqUnit.assertNotNull("There should be query variable content in the body...", body.match(/queryvariable/));
@@ -148,7 +151,7 @@ testServer.runTests = function () {
                 for (var a = 1; a < matches.length; a++) {
                     var jsonString = matches[a];
                     var data = JSON.parse(jsonString);
-                    jqUnit.assertDeepEq("The JSON data should match the model", testServer.dispatcher.model.json, data);
+                    jqUnit.assertDeepEq("The JSON data should match the model", testServer.options.json, data);
 
                 }
             });

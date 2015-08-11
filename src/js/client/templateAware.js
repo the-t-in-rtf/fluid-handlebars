@@ -10,10 +10,10 @@
      using the `templates` component.  Replace this with an empty function if you want to disable the initial render
      once template content is loaded.
 
-     This grade provides a convenience function that you can use when defining your `renderMarkup` controller, as in:
+     This grade provides a convenience invoker that you can use when defining your `renderMarkup` controller, as in:
 
      renderInitialMarkup: {
-        funcName: "gpii.templates.hb.client.templateAware.renderMarkup",
+        func: "{that}.renderMarkup",
         args: [
           "{that}",
           "{that}.options.selectors.selector",
@@ -29,28 +29,27 @@
 (function () {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.templates.hb.client.templateAware");
+    fluid.registerNamespace("gpii.templates.templateAware");
 
-    gpii.templates.hb.client.templateAware.checkRequirements = function (that) {
-        if (!that.options.templateUrl) {
-            fluid.fail("You must supply a template URL in order to use this component.");
+    // A convenience function that can be used to more easily define `renderInitialMarkup` invokers (see example above).
+    gpii.templates.templateAware.renderMarkup = function (that, renderer, selector, template, data, manipulator) {
+        manipulator = manipulator ? manipulator : "html";
+        var element = that.locate(selector);
+        if (renderer) {
+            renderer[manipulator](element, template, data);
+            that.events.onMarkupRendered.fire(that);
+        }
+        else {
+            fluid.fail("I cannot render content without a renderer.");
         }
     };
 
-    // A convenience function that can be used to more easily define `renderInitialMarkup` invokers (see example above).
-    gpii.templates.hb.client.templateAware.renderMarkup = function (that, selector, template, data, manipulator) {
-        manipulator = manipulator ? manipulator : "html";
-        var element = that.locate(selector);
-        that.renderer[manipulator](element, template, data);
-        that.events.onMarkupRendered.fire(that);
-    };
-
     // When overriding this, you should fire an `onMarkupRendered` event to ensure that bindings can be applied.
-    gpii.templates.hb.client.templateAware.noRenderFunctionDefined = function () {
+    gpii.templates.templateAware.noRenderFunctionDefined = function () {
         fluid.fail("You are expected to define a renderInitialMarkup invoker when implementing a templateAware component.");
     };
 
-    gpii.templates.hb.client.templateAware.refreshDom = function (that) {
+    gpii.templates.templateAware.refreshDom = function (that) {
         // Adapted from: https://github.com/fluid-project/infusion/blob/master/src/framework/preferences/js/Panels.js#L147
         var userJQuery = that.container.constructor;
         that.container = userJQuery(that.container.selector, that.container.context);
@@ -58,16 +57,13 @@
         that.events.onDomBind.fire(that);
     };
 
-    fluid.defaults("gpii.templates.hb.client.templateAware", {
-        gradeNames: ["fluid.viewRelayComponent", "autoInit"],
-        templateUrl: "/hbs",
-        components: {
-            renderer: {
-                type: "gpii.templates.hb.client",
-                options: {
-                    templateUrl: "{templateAware}.options.templateUrl"
-                }
-            }
+    fluid.defaults("gpii.templates.templateAware", {
+        gradeNames: ["fluid.viewRelayComponent", "gpii.hasRequiredOptions", "autoInit"],
+        requiredOptions: {
+            templates:           true,
+            "templates.initial": true,
+            "templates.error":   true,
+            "templates.success": true
         },
         events: {
             refresh: null,
@@ -75,13 +71,6 @@
             onDomBind: null
         },
         listeners: {
-            "onCreate.checkRequirements": {
-                funcName: "gpii.templates.hb.client.templateAware.checkRequirements",
-                args:     ["{that}"]
-            },
-            "onCreate.renderMarkup": {
-                func: "{that}.renderInitialMarkup"
-            },
             "refresh.renderMarkup": {
                 func: "{that}.renderInitialMarkup"
             },
@@ -90,45 +79,43 @@
                 args:     ["{that}"]
             },
             "onMarkupRendered.refreshDom": {
-                funcName: "gpii.templates.hb.client.templateAware.refreshDom",
+                funcName: "gpii.templates.templateAware.refreshDom",
                 args:     ["{that}"]
             }
         },
         invokers: {
+            // TODO: Use `fluid.notImplemented` once it's available: https://issues.fluidproject.org/browse/FLUID-5733
             renderInitialMarkup: {
-                funcName: "gpii.templates.hb.client.templateAware.noRenderFunctionDefined"
+                funcName: "gpii.templates.templateAware.noRenderFunctionDefined"
             },
             renderMarkup: {
-                funcName: "gpii.templates.hb.client.templateAware.renderMarkup",
-                args:     ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
+                funcName: "gpii.templates.templateAware.renderMarkup",
+                args:     ["{that}", "{renderer}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             }
         }
     });
 
-    fluid.registerNamespace("gpii.templates.hb.client.templateAware.serverAware");
+    // A convenience grade which configured a `templateAware` component to render on startup.
+    fluid.defaults("gpii.templates.templateAware.bornReady", {
+        listeners: {
+            "onCreate.renderMarkup": {
+                func: "{that}.renderInitialMarkup"
+            }
+        }
+    });
 
-    fluid.defaults("gpii.templates.hb.client.templateAware.serverAware", {
-        gradeNames: ["gpii.templates.hb.client.templateAware", "autoInit"],
+    fluid.defaults("gpii.templates.templateAware.serverAware", {
+        gradeNames: ["gpii.templates.templateAware", "autoInit"],
         components: {
             renderer: {
-                type: "gpii.templates.hb.client.serverAware",
+                type: "gpii.templates.renderer.serverAware",
                 options: {
                     listeners: {
                         "onTemplatesLoaded.renderMarkup": {
-                            func: "{gpii.templates.hb.client.templateAware.serverAware}.renderInitialMarkup"
+                            func: "{gpii.templates.templateAware.serverAware}.renderInitialMarkup"
                         }
                     }
                 }
-            }
-        },
-        invokers: {
-            noop: {
-                funcName: "gpii.templates.hb.client.templateAware.serverAware.noop"
-            }
-        },
-        listeners: {
-            "onCreate.renderMarkup": {
-                func: "fluid.identity"
             }
         }
     });

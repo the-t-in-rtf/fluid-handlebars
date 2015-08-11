@@ -5,11 +5,12 @@
 //
 /* global fluid */
 
-fluid.defaults("gpii.hb.tests.templateMessage", {
-    gradeNames: ["gpii.templates.hb.client.templateMessage", "autoInit"],
+fluid.defaults("gpii.tests.templateMessage", {
+    gradeNames: ["gpii.templates.templateMessage", "gpii.templates.templateAware.bornReady", "autoInit"],
     template:   "common-success",
     components: {
         renderer: {
+            type: "gpii.templates.renderer",
             options: {
                 members: {
                     templates: {
@@ -23,14 +24,14 @@ fluid.defaults("gpii.hb.tests.templateMessage", {
     }
 });
 
-fluid.defaults("gpii.hb.tests.templateMessage.initialized", {
-    gradeNames: ["gpii.hb.tests.templateMessage", "autoInit"],
+fluid.defaults("gpii.tests.templateMessage.initialized", {
+    gradeNames: ["gpii.tests.templateMessage", "autoInit"],
     model: {
         message: "I was born with silver model data in my mouth."
     }
 });
 
-fluid.defaults("gpii.hb.tests.templateMessage.updated", {
-    gradeNames: ["gpii.hb.tests.templateMessage", "autoInit"],
+fluid.defaults("gpii.tests.templateMessage.updated", {
+    gradeNames: ["gpii.tests.templateMessage", "autoInit"],
     model:      {}
 });
