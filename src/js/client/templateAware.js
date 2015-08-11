@@ -84,11 +84,9 @@
             }
         },
         invokers: {
-            noRenderFunctionDefined: {
-                funcName: "gpii.templates.templateAware.noRenderFunctionDefined"
-            },
+            // TODO: Use `fluid.notImplemented` once it's available: https://issues.fluidproject.org/browse/FLUID-5733
             renderInitialMarkup: {
-                func: "{that}.noRenderFunctionDefined"
+                funcName: "gpii.templates.templateAware.noRenderFunctionDefined"
             },
             renderMarkup: {
                 funcName: "gpii.templates.templateAware.renderMarkup",
