@@ -21,7 +21,7 @@ var modulesDir = path.resolve(__dirname, "../../node_modules");
 // Main source to be tested
 var srcDir     = path.resolve(__dirname, "../../src");
 
-fluid.defaults("gpii.templates.hb.tests.client.harness", {
+fluid.defaults("gpii.templates.tests.client.harness", {
     gradeNames: ["gpii.express", "autoInit"],
     expressPort: 6994,
     baseUrl: "http://localhost:6994/",
@@ -33,8 +33,22 @@ fluid.defaults("gpii.templates.hb.tests.client.harness", {
         }
     },
     components: {
+        dispatcher: {
+            type: "gpii.express.dispatcher",
+            options: {
+                path: ["/dispatcher/:template", "/dispatcher"],
+                rules: {
+                    contextToExpose: {
+                        myvar:    { literalValue: "modelvariable" },
+                        markdown: { literalValue: "*this works*" },
+                        json:     { literalValue: { foo: "bar", baz: "quux", qux: "quux" } },
+                        req:      { params: "req.params", query: "req.query"}
+                    }
+                }
+            }
+        },
         inline: {
-            type: "gpii.express.hb.inline",
+            type: "gpii.express.inline",
             options: {
                 path: "/hbs"
             }
@@ -68,7 +82,23 @@ fluid.defaults("gpii.templates.hb.tests.client.harness", {
             }
         },
         handlebars: {
-            type: "gpii.express.hb"
+            type: "gpii.express.hb",
+            options: {
+                components: {
+                    initBlock: {
+                        options: {
+                            contextToOptionsRules: {
+                                model: {
+                                    req:      "req",
+                                    myvar:    "myvar",
+                                    markdown: "markdown",
+                                    json:     "json"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         },
         error: {
             type: "gpii.templates.tests.router.error"

@@ -18,9 +18,9 @@ require("./zombie-test-harness");
 // We will reuse a function from the rendering tests to confirm that the component is doing its work.
 require("./zombie-rendering-tests");
 
-fluid.registerNamespace("gpii.templates.hb.tests.client.templateAware");
+fluid.registerNamespace("gpii.templates.tests.client.templateAware");
 
-gpii.templates.hb.tests.client.templateAware.runTests = function (that) {
+gpii.templates.tests.client.templateAware.runTests = function (that) {
 
     jqUnit.module("Testing templateAware component...");
 
@@ -36,7 +36,7 @@ gpii.templates.hb.tests.client.templateAware.runTests = function (that) {
 
             // Reuse the rendering tests to confirm that the templateAware wiring is correct
             var viewport = browser.window.$(".viewport");
-            gpii.templates.hb.tests.client.render.commonTests(that, viewport, browser.window.$);
+            gpii.templates.tests.client.render.commonTests(that, viewport, browser.window.$);
 
             var contained = browser.window.$(".contained");
             jqUnit.assertTrue("Content outside of the inner container should not have been disturbed...", contained.html().indexOf("This content should not be overwritten.") !== -1);
@@ -45,7 +45,7 @@ gpii.templates.hb.tests.client.templateAware.runTests = function (that) {
     });
 };
 
-gpii.templates.hb.tests.client.harness({
+gpii.templates.tests.client.harness({
     "expressPort" :   6995,
     "baseUrl":        "http://localhost:6995/",
     expected: {
@@ -55,7 +55,7 @@ gpii.templates.hb.tests.client.harness({
     },
     listeners: {
         "{express}.events.onStarted": {
-            funcName: "gpii.templates.hb.tests.client.templateAware.runTests",
+            funcName: "gpii.templates.tests.client.templateAware.runTests",
             args:     ["{that}"]
         }
     }

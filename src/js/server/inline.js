@@ -24,51 +24,49 @@
 "use strict";
 var fluid  = fluid || require("infusion");
 var gpii = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.express.hb.inline");
+fluid.registerNamespace("gpii.express.inline");
 var fs     = require("fs");
 var path   = require("path");
 
-fluid.registerNamespace("gpii.express.hb.inline.request");
-gpii.express.hb.inline.request.sendResponse = function (that) {
+fluid.registerNamespace("gpii.express.inline.request");
+gpii.express.inline.request.handleRequest = function (that) {
     if (that.options.templates) {
-        gpii.express.requestAware.sendResponse(that, 200, { ok: true, templates: that.options.templates });
+        that.sendResponse(200, { ok: true, templates: that.options.templates });
     }
     else {
-        gpii.express.requestAware.sendResponse(that, 500, { ok: false, message: that.options.messages.noTemplates});
+        that.sendResponse(500, { ok: false, message: that.options.messages.noTemplates});
     }
 };
 
-fluid.defaults("gpii.express.hb.inline.request", {
+fluid.defaults("gpii.express.inline.request", {
     gradeNames: ["gpii.express.requestAware", "autoInit"],
     templates: "{inline}.templates",
     messages: {
         noTemplates: "No templates were found."
     },
-    listeners: {
-        "onCreate.sendResponse": {
-            funcName: "gpii.express.hb.inline.request.sendResponse",
+    invokers: {
+        "handleRequest": {
+            funcName: "gpii.express.inline.request.handleRequest",
             args:     ["{that}"]
         }
     }
 });
 
-gpii.express.hb.inline.loadTemplates =  function (that, dir) {
+gpii.express.inline.loadTemplates =  function (that, dir) {
     // Start with the "views" directory and work our way down
     var dirContents = fs.readdirSync(dir);
     dirContents.forEach(function (entry) {
         var subDirPath = path.resolve(dir, entry);
         var stats = fs.statSync(subDirPath);
         if (stats.isDirectory() && that.options.allowedTemplateDirs.indexOf[entry] !== -1) {
-            gpii.express.hb.inline.scanTemplateSubdir(that, entry, subDirPath);
+            gpii.express.inline.scanTemplateSubdir(that, entry, subDirPath);
         }
     });
-
-    //that.options.dynamicComponents.requestHandler.options.templates = that.templates;
 
     that.events.templatesLoaded.fire(that);
 };
 
-gpii.express.hb.inline.scanTemplateSubdir = function (that, key, dirPath) {
+gpii.express.inline.scanTemplateSubdir = function (that, key, dirPath) {
     var dirContents = fs.readdirSync(dirPath);
     dirContents.forEach(function (entry) {
         var entryPath = path.resolve(dirPath, entry);
@@ -84,7 +82,7 @@ gpii.express.hb.inline.scanTemplateSubdir = function (that, key, dirPath) {
     });
 };
 
-fluid.defaults("gpii.express.hb.inline", {
+fluid.defaults("gpii.express.inline", {
     gradeNames:          ["gpii.express.requestAware.router", "autoInit"],
     path:                "/inline",
     hbsExtensionRegexp:  /^(.+)\.(?:hbs|handlebars)$/,
@@ -100,10 +98,10 @@ fluid.defaults("gpii.express.hb.inline", {
     events: {
         templatesLoaded: null
     },
-    requestAwareGrades: ["gpii.express.hb.inline.request"],
+    requestAwareGrades: ["gpii.express.inline.request"],
     listeners: {
         "onCreate.loadTemplates": {
-            funcName: "gpii.express.hb.inline.loadTemplates",
+            funcName: "gpii.express.inline.loadTemplates",
             args:     [ "{that}", "{that}.options.config.express.views" ]
         }
     }

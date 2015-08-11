@@ -26,11 +26,11 @@
         <script type="text/javascript" src="/bc/pagedown/Markdown.Sanitizer.js"></script>
 
         <!-- Bring in client library being tested -->
-        <script type="text/javascript" src="/src/js/client/handlebars.js"></script>
+        <script type="text/javascript" src="/src/js/client/hasRequiredOptions.js"></script>
+        <script type="text/javascript" src="/src/js/client/renderer.js"></script>
         <script type="text/javascript" src="/src/js/client/binder.js"></script>
         <script type="text/javascript" src="/src/js/client/ajaxCapable.js"></script>
         <script type="text/javascript" src="/src/js/client/templateAware.js"></script>
-        <script type="text/javascript" src="/src/js/client/multiTemplateAware.js"></script>
         <script type="text/javascript" src="/src/js/client/templateMessage.js"></script>
         <script type="text/javascript" src="/src/js/client/templateFormControl.js"></script>
         <script type="text/javascript" src="/src/js/common/helper.js"></script>
@@ -59,6 +59,10 @@
 
                 <hr/>
 
+                <div class="readyForGetSuccess">This content should not be visible.</div>
+
+                <hr/>
+
                 <div class="readyForStringifySuccess">This content should not be visible.</div>
 
                 <hr/>
@@ -79,27 +83,21 @@
 
                 <hr/>
 
-                <div class="readyForAmbiguity">This content should not be visible.</div>
-
-                <hr/>
-
                 <div class="readyForKeys">This content should not be visible.</div>
 
                 <hr/>
 
-                <div class="readyForNested">This content should not be visible.</div>
 
                 <script type="text/javascript">
                     <!-- instantiate test components -->
-                    var success          = gpii.hb.tests.templateFormControl.readyForSuccess(".readyForSuccess");
-                    var successString    = gpii.hb.tests.templateFormControl.readyForStringSuccess(".readyForStringSuccess");
-                    var successStringify = gpii.hb.tests.templateFormControl.readyForStringifySuccess(".readyForStringifySuccess");
-                    var failure          = gpii.hb.tests.templateFormControl.readyForFailure(".readyForFailure");
-                    var stringifyFailure = gpii.hb.tests.templateFormControl.readyForStringifyFailure(".readyForStringifyFailure");
-                    var stringFailure    = gpii.hb.tests.templateFormControl.readyForStringFailure(".readyForStringFailure");
-                    var ambiguous        = gpii.hb.tests.templateFormControl.readyForAmbiguity(".readyForAmbiguity");
-                    var keyed            = gpii.hb.tests.templateFormControl.readyForKeys(".readyForKeys");
-                    var nested           = gpii.hb.tests.templateFormControl.readyForNested(".readyForNested");
+                    var success          = gpii.tests.templateFormControl.readyForSuccess(".readyForSuccess");
+                    var getSuccess       = gpii.tests.templateFormControl.readyForGetSuccess(".readyForGetSuccess");
+                    var successString    = gpii.tests.templateFormControl.readyForStringSuccess(".readyForStringSuccess");
+                    var successStringify = gpii.tests.templateFormControl.readyForStringifySuccess(".readyForStringifySuccess");
+                    var failure          = gpii.tests.templateFormControl.readyForFailure(".readyForFailure");
+                    var stringifyFailure = gpii.tests.templateFormControl.readyForStringifyFailure(".readyForStringifyFailure");
+                    var stringFailure    = gpii.tests.templateFormControl.readyForStringFailure(".readyForStringFailure");
+                    var keyed            = gpii.tests.templateFormControl.readyForKeys(".readyForKeys");
                 </script>
             </div>
         </div>

@@ -21,8 +21,8 @@ var Browser = require("zombie");
 var path    = require("path");
 var jqUnit = require("jqUnit");
 
-fluid.registerNamespace("gpii.hb.tests.binder");
-gpii.hb.tests.binder.runTests = function (that) {
+fluid.registerNamespace("gpii.tests.binder");
+gpii.tests.binder.runTests = function (that) {
     jqUnit.module("Testing binder separately from template handling...");
     fluid.each(that.options.componentNames, function (componentName) {
         jqUnit.asyncTest("Testing component '" + componentName + "'...", function () {
@@ -64,7 +64,7 @@ gpii.hb.tests.binder.runTests = function (that) {
 };
 
 var testFile = "file://" + path.resolve(__dirname, "../html/tests-binder.html");
-fluid.defaults("gpii.hb.tests.binder", {
+fluid.defaults("gpii.tests.binder", {
     gradeNames: ["fluid.eventedComponent", "autoInit"],
     url:        testFile,
     componentNames: ["long", "short", "array", "textarea", "select", "radio"],
@@ -74,11 +74,11 @@ fluid.defaults("gpii.hb.tests.binder", {
     },
     listeners: {
         "onCreate.runTests": {
-            funcName: "gpii.hb.tests.binder.runTests",
+            funcName: "gpii.tests.binder.runTests",
             args:     ["{that}"]
         }
     }
 });
 
 
-gpii.hb.tests.binder();
+gpii.tests.binder();
