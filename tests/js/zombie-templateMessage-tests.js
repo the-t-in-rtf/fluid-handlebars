@@ -31,7 +31,7 @@ gpii.hb.tests.templateMessage.runTests = function (that) {
     });
 };
 
-gpii.templates.hb.tests.client.harness({
+gpii.templates.tests.client.harness({
     "expressPort" :   6904,
     "url":            "http://localhost:6904/content/tests-templateMessage.html",
     // This is "expected" data that must match the model data found in client-tests.js

@@ -48,7 +48,7 @@ fluid.defaults("gpii.templates.tests.client.harness", {
             }
         },
         inline: {
-            type: "gpii.express.inline",
+            type: "gpii.express.hb.inline",
             options: {
                 path: "/hbs"
             }

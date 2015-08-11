@@ -67,7 +67,7 @@ gpii.hb.tests.binder.runTests = function (that) {
     });
 };
 
-gpii.templates.hb.tests.client.harness({
+gpii.templates.tests.client.harness({
     "expressPort" : 6984,
     "url":          "http://localhost:6984/content/tests-binder.html",
     componentNames: ["long", "short", "array", "textarea", "select", "radio"],

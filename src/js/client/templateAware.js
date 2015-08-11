@@ -85,9 +85,10 @@
         },
         invokers: {
             // TODO: Use `fluid.notImplemented` once it's available: https://issues.fluidproject.org/browse/FLUID-5733
-            renderInitialMarkup: {
-                funcName: "gpii.templates.templateAware.noRenderFunctionDefined"
-            },
+            // TODO: Review with Antranig, for whatever reason I cannot override this succesfully in child grades.
+            //renderInitialMarkup: {
+            //    funcName: "gpii.templates.templateAware.noRenderFunctionDefined"
+            //},
             renderMarkup: {
                 funcName: "gpii.templates.templateAware.renderMarkup",
                 args:     ["{that}", "{renderer}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]

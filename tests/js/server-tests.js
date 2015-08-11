@@ -44,7 +44,7 @@ var testServer = gpii.express({
             "type": "gpii.express.middleware.session"
         },
         inline: {
-            type: "gpii.express.inline"
+            type: "gpii.express.hb.inline"
         },
         dispatcher: {
             type: "gpii.express.dispatcher",
