@@ -44,8 +44,8 @@ fluid.defaults("gpii.express.hb.inline.request", {
     messages: {
         noTemplates: "No templates were found."
     },
-    listeners: {
-        "onCreate.sendResponse": {
+    invokers: {
+        "handleRequest": {
             funcName: "gpii.express.hb.inline.request.sendResponse",
             args:     ["{that}"]
         }

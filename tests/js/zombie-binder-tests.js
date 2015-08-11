@@ -11,15 +11,19 @@
 // We will use the latter in these tests and using `jqUnit` assertions.  The page itself will use jQuery to manipulate
 // all controls, Zombie is only inspecting the final results.
 //
-// TODO:  Revisit opening a standalone file with Zombie once we have a better pattern for using it with server content.
+// We have to load this via a `gpii.express` instance because file URLs don't work on windows:
+//
+// https://github.com/assaf/zombie/issues/915
+
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 fluid.setLogging(true);
 
 var Browser = require("zombie");
-var path    = require("path");
 var jqUnit = require("jqUnit");
+
+require("./zombie-test-harness");
 
 fluid.registerNamespace("gpii.hb.tests.binder");
 gpii.hb.tests.binder.runTests = function (that) {
@@ -63,22 +67,18 @@ gpii.hb.tests.binder.runTests = function (that) {
     });
 };
 
-var testFile = "file://" + path.resolve(__dirname, "../html/tests-binder.html");
-fluid.defaults("gpii.hb.tests.binder", {
-    gradeNames: ["fluid.eventedComponent", "autoInit"],
-    url:        testFile,
+gpii.templates.hb.tests.client.harness({
+    "expressPort" : 6984,
+    "url":          "http://localhost:6984/content/tests-binder.html",
     componentNames: ["long", "short", "array", "textarea", "select", "radio"],
     expectedOnInit: {
         initFromModel:    "initialized from model",
         initFromMarkup:   "initialized from markup"
     },
     listeners: {
-        "onCreate.runTests": {
+        "{express}.events.onStarted": {
             funcName: "gpii.hb.tests.binder.runTests",
             args:     ["{that}"]
         }
     }
 });
-
-
-gpii.hb.tests.binder();

@@ -2,7 +2,10 @@
 //
 // The client-side template handling requires a server to provide the template content.
 //
-// TODO:  Sit down with Antranig to make Zombie components, so that it can be used with the Kettle test infrastructure.
+// We have to load this via a `gpii.express` instance because file URLs don't work on windows:
+//
+// https://github.com/assaf/zombie/issues/915
+//
 "use strict";
 var fluid = fluid || require("infusion");
 

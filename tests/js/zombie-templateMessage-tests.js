@@ -6,8 +6,9 @@ var gpii  = fluid.registerNamespace("gpii");
 fluid.setLogging(true);
 
 var Browser = require("zombie");
-var path    = require("path");
 var jqUnit = require("jqUnit");
+
+require("./zombie-test-harness");
 
 fluid.registerNamespace("gpii.hb.tests.templateMessage");
 gpii.hb.tests.templateMessage.runTests = function (that) {
@@ -30,22 +31,20 @@ gpii.hb.tests.templateMessage.runTests = function (that) {
     });
 };
 
-var testFile = "file://" + path.resolve(__dirname, "../html/tests-templateMessage.html");
-fluid.defaults("gpii.hb.tests.templateMessage", {
-    gradeNames: ["fluid.eventedComponent", "autoInit"],
-    url:        testFile,
+gpii.templates.hb.tests.client.harness({
+    "expressPort" :   6904,
+    "url":            "http://localhost:6904/content/tests-templateMessage.html",
+    // This is "expected" data that must match the model data found in client-tests.js
     notExpected: "should not be visible",
     expected: {
         initialized: "born with silver model data in my mouth",
         updated:     "some have data thrust upon them"
     },
     listeners: {
-        "onCreate.runTests": {
+        "{express}.events.onStarted": {
             funcName: "gpii.hb.tests.templateMessage.runTests",
             args:     ["{that}"]
         }
     }
 });
 
-
-gpii.hb.tests.templateMessage();
