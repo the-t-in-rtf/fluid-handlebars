@@ -67,27 +67,20 @@ gpii.hb.tests.binder.runTests = function (that) {
     });
 };
 
-var when = require("when");
-require("./lib/resolve-utils");
-module.exports = when.promise(function (resolve) {
-    gpii.templates.tests.client.harness({
-        "expressPort" : 6984,
-        "url":          "http://localhost:6984/content/tests-binder.html",
-        componentNames: ["long", "short", "array", "textarea", "select", "radio"],
-        expectedOnInit: {
-            initFromModel:    "initialized from model",
-            initFromMarkup:   "initialized from markup"
-        },
-        listeners: {
-            "{express}.events.onStarted": {
-                funcName: "gpii.hb.tests.binder.runTests",
-                args:     ["{that}"]
-            },
-            "onDestroy.resolvePromise": {
-                funcName: "gpii.templates.tests.resolver.getDelayedResolutionFunction",
-                args:    [resolve]
-            }
+var binderComponent = gpii.templates.tests.client.harness({
+    "expressPort" : 6984,
+    "url":          "http://localhost:6984/content/tests-binder.html",
+    componentNames: ["long", "short", "array", "textarea", "select", "radio"],
+    expectedOnInit: {
+        initFromModel:    "initialized from model",
+        initFromMarkup:   "initialized from markup"
+    },
+    listeners: {
+        "{express}.events.onStarted": {
+            funcName: "gpii.hb.tests.binder.runTests",
+            args:     ["{that}"]
         }
-    });
+    }
 });
+module.exports = binderComponent.promise;
 

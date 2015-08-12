@@ -31,28 +31,22 @@ gpii.hb.tests.templateMessage.runTests = function (that) {
     });
 };
 
-var when = require("when");
-require("./lib/resolve-utils");
-module.exports = when.promise(function (resolve) {
-    gpii.templates.tests.client.harness({
-        "expressPort" :   6914,
-        "url":            "http://localhost:6914/content/tests-templateMessage.html",
-        // This is "expected" data that must match the model data found in client-tests.js
-        notExpected: "should not be visible",
-        expected: {
-            initialized: "born with silver model data in my mouth",
-            updated:     "some have data thrust upon them"
-        },
-        listeners: {
-            "{express}.events.onStarted": {
-                funcName: "gpii.hb.tests.templateMessage.runTests",
-                args:     ["{that}"]
-            },
-            "onDestroy.resolvePromise": {
-                funcName: "gpii.templates.tests.resolver.getDelayedResolutionFunction",
-                args:    [resolve]
-            }
+var templateMessageComponent = gpii.templates.tests.client.harness({
+    "expressPort" :   6914,
+    "url":            "http://localhost:6914/content/tests-templateMessage.html",
+    // This is "expected" data that must match the model data found in client-tests.js
+    notExpected: "should not be visible",
+    expected: {
+        initialized: "born with silver model data in my mouth",
+        updated:     "some have data thrust upon them"
+    },
+    listeners: {
+        "{express}.events.onStarted": {
+            funcName: "gpii.hb.tests.templateMessage.runTests",
+            args:     ["{that}"]
         }
-    });
+    }
 });
+
+module.exports = templateMessageComponent.promise;
 
