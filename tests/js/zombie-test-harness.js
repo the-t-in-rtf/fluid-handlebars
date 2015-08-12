@@ -28,13 +28,13 @@ var srcDir     = path.resolve(__dirname, "../../src");
 fluid.registerNamespace("gpii.templates.tests.client.harness");
 
 gpii.templates.tests.client.harness.constructPromise = function (that) {
-    that.promise = when.promise(function () {});
+    that.afterDestroyPromise = when.promise(function () {});
 };
 
 gpii.templates.tests.client.harness.waitAndResolve = function (that, timeout) {
     timeout = timeout ? timeout : 500;
     return function () {
-        setTimeout(that.promise.resolve, timeout);
+        setTimeout(that.afterDestroyPromise.resolve, timeout);
     };
 };
 
@@ -50,8 +50,7 @@ fluid.defaults("gpii.templates.tests.client.harness", {
         }
     },
     members: {
-        promise:  false,
-        resolver: false
+        afterDestroyPromise: false
     },
     listeners: {
         "onCreate.constructPromise": {

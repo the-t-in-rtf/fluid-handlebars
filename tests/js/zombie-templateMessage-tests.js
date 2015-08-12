@@ -48,5 +48,5 @@ var templateMessageComponent = gpii.templates.tests.client.harness({
     }
 });
 
-module.exports = templateMessageComponent.promise;
+module.exports = templateMessageComponent.afterDestroyPromise;
 

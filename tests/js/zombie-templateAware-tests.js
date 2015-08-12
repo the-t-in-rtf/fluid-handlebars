@@ -63,4 +63,4 @@ var templateAwareComponent = gpii.templates.tests.client.harness({
         }
     }
 });
-module.exports = templateAwareComponent.promise;
+module.exports = templateAwareComponent.afterDestroyPromise;

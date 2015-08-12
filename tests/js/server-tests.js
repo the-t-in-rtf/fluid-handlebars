@@ -138,7 +138,7 @@ module.exports = when.promise(function (resolve) {
                 funcName: "gpii.templates.tests.server.runTests",
                 args:     ["{that}"]
             },
-            "onDestroy.resolvePromise": {
+            "afterDestroy.resolvePromise": {
                 funcName: "gpii.templates.tests.resolver.getDelayedResolutionFunction",
                 args:    [resolve]
             }

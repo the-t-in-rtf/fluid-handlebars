@@ -82,5 +82,5 @@ var binderComponent = gpii.templates.tests.client.harness({
         }
     }
 });
-module.exports = binderComponent.promise;
+module.exports = binderComponent.afterDestroyPromise;
 

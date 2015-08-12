@@ -157,4 +157,4 @@ var templateFormControlComponent = gpii.templates.tests.client.harness({
     }
 });
 
-module.exports = templateFormControlComponent.promise;
+module.exports = templateFormControlComponent.afterDestroyPromise;

@@ -97,4 +97,4 @@ var initBlockComponent = gpii.templates.tests.client.harness({
     }
 });
 
-module.exports = initBlockComponent.promise;
+module.exports = initBlockComponent.afterDestroyPromise;

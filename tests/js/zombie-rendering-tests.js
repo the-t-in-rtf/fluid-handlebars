@@ -111,4 +111,4 @@ var renderingComponent = gpii.templates.tests.client.harness({
         }
     }
 });
-module.exports = renderingComponent.promise;
+module.exports = renderingComponent.afterDestroyPromise;
