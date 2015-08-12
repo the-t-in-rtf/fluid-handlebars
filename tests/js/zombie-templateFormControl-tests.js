@@ -16,7 +16,6 @@ require("gpii-express");
 
 require("../../");
 require("./zombie-test-harness");
-require("./test-router-error");
 
 fluid.registerNamespace("gpii.templates.tests.client.templateFormControl");
 
@@ -132,28 +131,36 @@ gpii.templates.tests.client.templateFormControl.runTests = function (that) {
     //});
 };
 
-gpii.templates.tests.client.harness({
-    expressPort : 6995,
-    baseUrl:      "http://localhost:6995/",
-    contentUrl:   "http://localhost:6995/content/tests-templateFormControl.html",
-    expected: {
-        record: {
-            foo: "bar",
-            baz: "qux"
+var when = require("when");
+require("./lib/resolve-utils");
+module.exports = when.promise(function (resolve) {
+    gpii.templates.tests.client.harness({
+        expressPort : 6993,
+        baseUrl:      "http://localhost:6993/",
+        contentUrl:   "http://localhost:6993/content/tests-templateFormControl.html",
+        expected: {
+            record: {
+                foo: "bar",
+                baz: "qux"
+            }
+        },
+        successStringExpected: { "message": "A success string is still a success." },
+        listeners: {
+            "{express}.events.onStarted": {
+                funcName: "gpii.templates.tests.client.templateFormControl.runTests",
+                args:     ["{that}"]
+            },
+            "onDestroy.resolvePromise": {
+                funcName: "gpii.templates.tests.resolver.getDelayedResolutionFunction",
+                args:    [resolve]
+            }
+        },
+        invokers: {
+            clickAndCheck: {
+                funcName: "gpii.templates.tests.client.templateFormControl.clickAndCheck",
+                // that, description, url, button, callback
+                args:     ["{that}", "{arguments}.0", "{that}.options.contentUrl", "{arguments}.1", "{arguments}.2"]
+            }
         }
-    },
-    successStringExpected: { "message": "A success string is still a success." },
-    listeners: {
-        "{express}.events.onStarted": {
-            funcName: "gpii.templates.tests.client.templateFormControl.runTests",
-            args:     ["{that}"]
-        }
-    },
-    invokers: {
-        clickAndCheck: {
-            funcName: "gpii.templates.tests.client.templateFormControl.clickAndCheck",
-            // that, description, url, button, callback
-            args:     ["{that}", "{arguments}.0", "{that}.options.contentUrl", "{arguments}.1", "{arguments}.2"]
-        }
-    }
+    });
 });

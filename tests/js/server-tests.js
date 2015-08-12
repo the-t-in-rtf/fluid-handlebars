@@ -15,58 +15,8 @@ require("../../");
 
 var viewDir = path.resolve(__dirname, "../views");
 
-// Set up a test instance of express with all of "our" modules.
-//
-// We include the standard middleware from gpii.express to ensure that it does not cause problems with any of "our" modules...
-var testServer = gpii.express({
-    config:  {
-        "express": {
-            "port" :   6984,
-            "baseUrl": "http://localhost:6984/",
-            "views":   viewDir,
-            "session": {
-                "secret": "Printer, printer take a hint-ter."
-            }
-        }
-    },
-    json: { foo: "bar", baz: "quux", qux: "quux" },
-    components: {
-        "json": {
-            "type": "gpii.express.middleware.bodyparser.json"
-        },
-        "urlencoded": {
-            "type": "gpii.express.middleware.bodyparser.urlencoded"
-        },
-        "cookieparser": {
-            "type": "gpii.express.middleware.cookieparser"
-        },
-        "session": {
-            "type": "gpii.express.middleware.session"
-        },
-        inline: {
-            type: "gpii.express.hb.inline"
-        },
-        dispatcher: {
-            type: "gpii.express.dispatcher",
-            options: {
-                path: ["/dispatcher/:template", "/dispatcher"],
-                rules: {
-                    contextToExpose: {
-                        myvar:    { literalValue: "modelvariable" },
-                        markdown: { literalValue: "*this works*" },
-                        json:     { literalValue: "{express}.options.json" },
-                        req:      { params: "req.params", query: "req.query"}
-                    }
-                }
-            }
-        },
-        handlebars: {
-            type: "gpii.express.hb"
-        }
-    }
-});
-
-testServer.isSaneResponse = function (jqUnit, error, response, body) {
+fluid.registerNamespace("gpii.templates.tests.server");
+gpii.templates.tests.server.isSaneResponse = function (jqUnit, error, response, body) {
     jqUnit.assertNull("There should be no errors.", error);
 
     jqUnit.assertEquals("The response should have a reasonable status code", 200, response.statusCode);
@@ -77,14 +27,14 @@ testServer.isSaneResponse = function (jqUnit, error, response, body) {
     jqUnit.assertNotNull("There should be a body.", body);
 };
 
-testServer.runTests = function () {
+gpii.templates.tests.server.runTests = function (that) {
     jqUnit.module("Tests for inlining of templates...");
 
     jqUnit.asyncTest("Confirm that template content is inlined...", function () {
-        request.get(testServer.options.config.express.baseUrl + "inline", function (error, response, body) {
+        request.get(that.options.config.express.baseUrl + "inline", function (error, response, body) {
             jqUnit.start();
 
-            testServer.isSaneResponse(jqUnit, error, response, body);
+            gpii.templates.tests.server.isSaneResponse(jqUnit, error, response, body);
 
             if (body) {
                 var data = typeof body === "string" ? JSON.parse(body) : body;
@@ -109,10 +59,10 @@ testServer.runTests = function () {
 
     pages.forEach(function (page) {
         jqUnit.asyncTest("Test template handling dispatcher for page '" + page + "' ...", function () {
-            request.get(testServer.options.config.express.baseUrl + "dispatcher/" + page + "?myvar=queryvariable", function (error, response, body) {
+            request.get(that.options.config.express.baseUrl + "dispatcher/" + page + "?myvar=queryvariable", function (error, response, body) {
                 jqUnit.start();
 
-                testServer.isSaneResponse(jqUnit, error, response, body);
+                gpii.templates.tests.server.isSaneResponse(jqUnit, error, response, body);
 
                 jqUnit.assertNotNull("There should be layout content in the body...",         body.match(/from the layout/));
                 jqUnit.assertNotNull("There should be page content in the body...",           body.match(/from the page/));
@@ -151,7 +101,7 @@ testServer.runTests = function () {
                 for (var a = 1; a < matches.length; a++) {
                     var jsonString = matches[a];
                     var data = JSON.parse(jsonString);
-                    jqUnit.assertDeepEq("The JSON data should match the model", testServer.options.json, data);
+                    jqUnit.assertDeepEq("The JSON data should match the model", that.options.json, data);
 
                 }
             });
@@ -159,7 +109,7 @@ testServer.runTests = function () {
     });
 
     jqUnit.asyncTest("Test 404 handling for dispatcher...", function () {
-        request.get(testServer.options.config.express.baseUrl + "dispatcher/bogus", function (error, response) {
+        request.get(that.options.config.express.baseUrl + "dispatcher/bogus", function (error, response) {
             jqUnit.start();
 
             jqUnit.assertNull("There should be no errors...", error);
@@ -168,6 +118,64 @@ testServer.runTests = function () {
     });
 };
 
-testServer.runTests();
-
-
+var when = require("when");
+require("./lib/resolve-utils");
+module.exports = when.promise(function (resolve) {
+    gpii.express({
+        config:  {
+            "express": {
+                "port" :   6904,
+                "baseUrl": "http://localhost:6904/",
+                "views":   viewDir,
+                "session": {
+                    "secret": "Printer, printer take a hint-ter."
+                }
+            }
+        },
+        json: { foo: "bar", baz: "quux", qux: "quux" },
+        listeners: {
+            "onCreate.runTests": {
+                funcName: "gpii.templates.tests.server.runTests",
+                args:     ["{that}"]
+            },
+            "onDestroy.resolvePromise": {
+                funcName: "gpii.templates.tests.resolver.getDelayedResolutionFunction",
+                args:    [resolve]
+            }
+        },
+        components: {
+            "json": {
+                "type": "gpii.express.middleware.bodyparser.json"
+            },
+            "urlencoded": {
+                "type": "gpii.express.middleware.bodyparser.urlencoded"
+            },
+            "cookieparser": {
+                "type": "gpii.express.middleware.cookieparser"
+            },
+            "session": {
+                "type": "gpii.express.middleware.session"
+            },
+            inline: {
+                type: "gpii.express.hb.inline"
+            },
+            dispatcher: {
+                type: "gpii.express.dispatcher",
+                options: {
+                    path: ["/dispatcher/:template", "/dispatcher"],
+                    rules: {
+                        contextToExpose: {
+                            myvar:    { literalValue: "modelvariable" },
+                            markdown: { literalValue: "*this works*" },
+                            json:     { literalValue: "{express}.options.json" },
+                            req:      { params: "req.params", query: "req.query"}
+                        }
+                    }
+                }
+            },
+            handlebars: {
+                type: "gpii.express.hb"
+            }
+        }
+    });
+});

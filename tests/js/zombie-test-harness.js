@@ -1,13 +1,15 @@
 /*
     Test harness common to all Zombie tests.  Loads all required server-side components.
  */
+"use strict";
 var fluid = fluid || require("infusion");
 var path  = require("path");
 
 require("gpii-express");
+require("when");
 
 require("../../");
-require("./test-router-error");
+require("./lib/test-router-error");
 
 // Test content (HTML, JS, templates)
 var testDir    = path.resolve(__dirname, "..");

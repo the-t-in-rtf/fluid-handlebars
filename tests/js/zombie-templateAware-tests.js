@@ -48,18 +48,27 @@ gpii.templates.tests.client.templateAware.runTests = function (that) {
     });
 };
 
-gpii.templates.tests.client.harness({
-    "expressPort" :   6995,
-    "baseUrl":        "http://localhost:6995/",
-    expected: {
-        myvar:    "modelvariable",
-        markdown: "*this works*",
-        json:     { foo: "bar", baz: "quux", qux: "quux" }
-    },
-    listeners: {
-        "{express}.events.onStarted": {
-            funcName: "gpii.templates.tests.client.templateAware.runTests",
-            args:     ["{that}"]
+var when = require("when");
+require("./lib/resolve-utils");
+module.exports = when.promise(function (resolve) {
+    gpii.templates.tests.client.harness({
+        "expressPort" :   6895,
+        "baseUrl":        "http://localhost:6895/",
+        expected: {
+            myvar:    "modelvariable",
+            markdown: "*this works*",
+            json:     { foo: "bar", baz: "quux", qux: "quux" }
+        },
+        listeners: {
+            "{express}.events.onStarted": {
+                funcName: "gpii.templates.tests.client.templateAware.runTests",
+                args:     ["{that}"]
+            },
+            "onDestroy.resolvePromise": {
+                funcName: "gpii.templates.tests.resolver.getDelayedResolutionFunction",
+                args:    [resolve]
+            }
         }
-    }
+    });
 });
+

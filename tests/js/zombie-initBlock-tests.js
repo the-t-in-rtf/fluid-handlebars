@@ -14,7 +14,6 @@ require("gpii-express");
 
 require("../../");
 require("./zombie-test-harness");
-require("./test-router-error");
 
 fluid.registerNamespace("gpii.templates.tests.client.initBlock");
 
@@ -61,39 +60,47 @@ gpii.templates.tests.client.initBlock.runTests = function (that) {
     );
 };
 
-gpii.templates.tests.client.harness({
-    expressPort : 6995,
-    baseUrl:    "http://localhost:6995/",
-    contentUrl: "http://localhost:6995/dispatcher/initblock?myvar=bar",
-    expected: {
-        "hasDataFromGrade": true,
-        "req": {
-            "query": {
-                "myvar": "bar"
+var when = require("when");
+require("./lib/resolve-utils");
+module.exports = when.promise(function (resolve) {
+    gpii.templates.tests.client.harness({
+        expressPort : 6995,
+        baseUrl:    "http://localhost:6995/",
+        contentUrl: "http://localhost:6995/dispatcher/initblock?myvar=bar",
+        expected: {
+            "hasDataFromGrade": true,
+            "req": {
+                "query": {
+                    "myvar": "bar"
+                },
+                "params": {
+                    "template": "initblock"
+                }
             },
-            "params": {
-                "template": "initblock"
+            "json": {
+                "foo": "bar",
+                "baz": "quux",
+                "qux": "quux"
+            },
+            "myvar": "modelvariable",
+            "markdown": "*this works*"
+        },
+        listeners: {
+            "{express}.events.onStarted": {
+                funcName: "gpii.templates.tests.client.initBlock.runTests",
+                args:     ["{that}"]
+            },
+            "onDestroy.resolvePromise": {
+                funcName: "gpii.templates.tests.resolver.getDelayedResolutionFunction",
+                args:    [resolve]
             }
         },
-        "json": {
-            "foo": "bar",
-            "baz": "quux",
-            "qux": "quux"
-        },
-        "myvar": "modelvariable",
-        "markdown": "*this works*"
-    },
-    listeners: {
-        "{express}.events.onStarted": {
-            funcName: "gpii.templates.tests.client.initBlock.runTests",
-            args:     ["{that}"]
+        invokers: {
+            clickAndCheck: {
+                funcName: "gpii.templates.tests.client.initBlock.clickAndCheck",
+                // that, description, url, button, callback
+                args:     ["{that}", "{arguments}.0", "{that}.options.contentUrl", "{arguments}.1", "{arguments}.2"]
+            }
         }
-    },
-    invokers: {
-        clickAndCheck: {
-            funcName: "gpii.templates.tests.client.initBlock.clickAndCheck",
-            // that, description, url, button, callback
-            args:     ["{that}", "{arguments}.0", "{that}.options.contentUrl", "{arguments}.1", "{arguments}.2"]
-        }
-    }
+    });
 });
