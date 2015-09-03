@@ -23,7 +23,7 @@ gpii.templates.helper.jsonify.getJsonifyFunction = function () {
 };
 
 fluid.defaults("gpii.templates.helper.jsonify", {
-    gradeNames: ["gpii.templates.helper", "autoInit"],
+    gradeNames: ["gpii.templates.helper"],
     helperName: "jsonify",
     invokers: {
         "getHelper": {

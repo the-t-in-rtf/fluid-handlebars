@@ -69,7 +69,7 @@
     };
 
     fluid.defaults("gpii.templates.renderer", {
-        gradeNames: ["fluid.eventedComponent", "autoInit"],
+        gradeNames: ["fluid.component"],
         components: {
             "md": {
                 "type": "gpii.templates.helper.md.client"
@@ -114,10 +114,6 @@
             },
             "before": {
                 funcName: "gpii.templates.renderer.before",
-                args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
-            },
-            "body": {
-                funcName: "gpii.templates.renderer.body",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             },
             "html": {
@@ -170,7 +166,7 @@
     };
 
     fluid.defaults("gpii.templates.renderer.serverAware", {
-        gradeNames: ["gpii.templates.renderer", "autoInit"],
+        gradeNames: ["gpii.templates.renderer"],
         templateUrl: "/hbs",
         invokers: {
             "cacheTemplates": {

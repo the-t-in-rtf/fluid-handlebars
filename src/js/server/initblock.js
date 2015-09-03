@@ -115,7 +115,7 @@ gpii.templates.helper.initBlock.generateInitBlock = function (that, args) {
 };
 
 fluid.defaults("gpii.templates.helper.initBlock", {
-    gradeNames: ["gpii.templates.helper", "autoInit"],
+    gradeNames: ["gpii.templates.helper"],
     mergePolicy: {
         "baseOptions": "noexpand,nomerge"
     },

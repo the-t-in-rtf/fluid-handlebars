@@ -39,7 +39,7 @@ gpii.templates.tests.client.harness.waitAndResolve = function (that, timeout) {
 };
 
 fluid.defaults("gpii.templates.tests.client.harness", {
-    gradeNames: ["gpii.express", "autoInit"],
+    gradeNames: ["gpii.express"],
     expressPort: 6994,
     baseUrl: "http://localhost:6994/",
     config:  {

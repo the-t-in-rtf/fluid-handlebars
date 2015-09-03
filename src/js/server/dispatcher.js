@@ -20,7 +20,7 @@ fluid.registerNamespace("gpii.express.dispatcher");
 var fs         = require("fs");
 var path       = require("path");
 
-gpii.express.dispatcher.getRouter = function (that) {
+gpii.express.dispatcher.getHandler = function (that) {
     return function (req, res) {
         var template = req.params.template ? req.params.template : that.options.defaultTemplate;
         var templateName = template + ".handlebars";
@@ -50,7 +50,7 @@ gpii.express.dispatcher.getRouter = function (that) {
 };
 
 fluid.defaults("gpii.express.dispatcher", {
-    gradeNames: ["gpii.express.router", "fluid.standardRelayComponent", "autoInit"],
+    gradeNames: ["gpii.express.router", "fluid.modelComponent"],
     method:     "get",
     rules: {
         contextToExpose: {
@@ -71,8 +71,8 @@ fluid.defaults("gpii.express.dispatcher", {
     //
     config:          "{expressConfigHolder}.options.config",
     invokers: {
-        "getRouter": {
-            funcName: "gpii.express.dispatcher.getRouter",
+        "getHandler": {
+            funcName: "gpii.express.dispatcher.getHandler",
             args: ["{that}"]
         }
     }

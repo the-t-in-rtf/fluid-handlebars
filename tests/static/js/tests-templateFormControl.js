@@ -7,7 +7,7 @@
 fluid.registerNamespace("gpii.tests.templateFormControl");
 
 fluid.defaults("gpii.tests.templateFormControl", {
-    gradeNames: ["gpii.templates.templateFormControl", "gpii.templates.templateAware.serverAware", "autoInit"],
+    gradeNames: ["gpii.templates.templateFormControl", "gpii.templates.templateAware.serverAware"],
     templates: {
         success: "common-success",
         error:   "common-error"
@@ -23,7 +23,7 @@ fluid.defaults("gpii.tests.templateFormControl", {
 });
 
 fluid.defaults("gpii.tests.templateFormControl.readyForSuccess", {
-    gradeNames: ["gpii.tests.templateFormControl", "autoInit"],
+    gradeNames: ["gpii.tests.templateFormControl"],
     ajaxOptions: {
         url:    "/content/json/success.json"
     },
@@ -37,7 +37,7 @@ fluid.defaults("gpii.tests.templateFormControl.readyForSuccess", {
 });
 
 fluid.defaults("gpii.tests.templateFormControl.readyForGetSuccess", {
-    gradeNames: ["gpii.tests.templateFormControl.readyForSuccess", "autoInit"],
+    gradeNames: ["gpii.tests.templateFormControl.readyForSuccess"],
     ajaxOptions: {
         method: "GET"
     },
@@ -47,7 +47,7 @@ fluid.defaults("gpii.tests.templateFormControl.readyForGetSuccess", {
 });
 
 fluid.defaults("gpii.tests.templateFormControl.readyForStringifySuccess", {
-    gradeNames: ["gpii.tests.templateFormControl.readyForSuccess", "autoInit"],
+    gradeNames: ["gpii.tests.templateFormControl.readyForSuccess"],
     ajaxOptions: {
         url:      "/content/stringifySuccess.txt",
         dataType: "json"
@@ -58,7 +58,7 @@ fluid.defaults("gpii.tests.templateFormControl.readyForStringifySuccess", {
 });
 
 fluid.defaults("gpii.tests.templateFormControl.readyForStringSuccess", {
-    gradeNames: ["gpii.tests.templateFormControl.readyForSuccess", "autoInit"],
+    gradeNames: ["gpii.tests.templateFormControl.readyForSuccess"],
     ajaxOptions: {
         url:      "/content/stringSuccess.txt"
     },
@@ -74,7 +74,7 @@ fluid.defaults("gpii.tests.templateFormControl.readyForStringSuccess", {
 });
 
 fluid.defaults("gpii.tests.templateFormControl.readyForFailure", {
-    gradeNames: ["gpii.tests.templateFormControl", "autoInit"],
+    gradeNames: ["gpii.tests.templateFormControl"],
     ajaxOptions: {
         url: "/error"
     },
@@ -87,7 +87,7 @@ fluid.defaults("gpii.tests.templateFormControl.readyForFailure", {
 });
 
 fluid.defaults("gpii.tests.templateFormControl.readyForStringifyFailure", {
-    gradeNames: ["gpii.tests.templateFormControl", "autoInit"],
+    gradeNames: ["gpii.tests.templateFormControl"],
     ajaxOptions: {
         url: "/errorJsonString"
     },
@@ -100,7 +100,7 @@ fluid.defaults("gpii.tests.templateFormControl.readyForStringifyFailure", {
 });
 
 fluid.defaults("gpii.tests.templateFormControl.readyForStringFailure", {
-    gradeNames: ["gpii.tests.templateFormControl", "autoInit"],
+    gradeNames: ["gpii.tests.templateFormControl"],
     ajaxOptions: {
         url: "/errorString"
     },
@@ -120,7 +120,7 @@ fluid.defaults("gpii.tests.templateFormControl.readyForStringFailure", {
 
 
 fluid.defaults("gpii.tests.templateFormControl.readyForKeys", {
-    gradeNames:    ["gpii.tests.templateFormControl", "autoInit"],
+    gradeNames:    ["gpii.tests.templateFormControl"],
     hideOnSuccess: false,
     ajaxOptions: {
         url: "/content/json/success.json"

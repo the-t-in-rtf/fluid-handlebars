@@ -15,7 +15,7 @@ gpii.templates.helper.md.server.initConverter = function (that) {
 };
 
 fluid.defaults("gpii.templates.helper.md.server", {
-    gradeNames: ["gpii.templates.helper.md", "autoInit"],
+    gradeNames: ["gpii.templates.helper.md"],
     listeners: {
         onCreate: [
             {

@@ -94,7 +94,7 @@ A few more things to note:
     };
 
     fluid.defaults("gpii.templates.ajaxCapable", {
-        gradeNames:    ["fluid.modelRelayComponent", "autoInit"],
+        gradeNames:    ["fluid.modelComponent"],
         ajaxOptions: {
             success: "{that}.handleSuccess",
             error:   "{that}.handleError"

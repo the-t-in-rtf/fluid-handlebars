@@ -58,7 +58,7 @@
     };
 
     fluid.defaults("gpii.templates.templateAware", {
-        gradeNames: ["fluid.viewRelayComponent", "gpii.hasRequiredOptions", "autoInit"],
+        gradeNames: ["fluid.viewComponent", "gpii.hasRequiredOptions"],
         requiredOptions: {
             templates:           true,
             "templates.initial": true,
@@ -106,7 +106,7 @@
     });
 
     fluid.defaults("gpii.templates.templateAware.serverAware", {
-        gradeNames: ["gpii.templates.templateAware", "autoInit"],
+        gradeNames: ["gpii.templates.templateAware"],
         components: {
             renderer: {
                 type: "gpii.templates.renderer.serverAware",

@@ -39,7 +39,7 @@ gpii.templates.helper.equals.getEqualsFunction = function () {
 };
 
 fluid.defaults("gpii.templates.helper.equals", {
-    gradeNames: ["gpii.templates.helper", "autoInit"],
+    gradeNames: ["gpii.templates.helper"],
     helperName: "equals",
     invokers: {
         "getHelper": {

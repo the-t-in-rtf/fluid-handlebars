@@ -31,15 +31,15 @@ var path   = require("path");
 fluid.registerNamespace("gpii.express.hb.inline.request");
 gpii.express.hb.inline.request.sendResponse = function (that) {
     if (that.options.templates) {
-        gpii.express.requestAware.sendResponse(that, 200, { ok: true, templates: that.options.templates });
+        gpii.express.handler.sendResponse(that, 200, { ok: true, templates: that.options.templates });
     }
     else {
-        gpii.express.requestAware.sendResponse(that, 500, { ok: false, message: that.options.messages.noTemplates});
+        gpii.express.handler.sendResponse(that, 500, { ok: false, message: that.options.messages.noTemplates});
     }
 };
 
 fluid.defaults("gpii.express.hb.inline.request", {
-    gradeNames: ["gpii.express.requestAware", "autoInit"],
+    gradeNames: ["gpii.express.requestAware"],
     templates: "{inline}.templates",
     messages: {
         noTemplates: "No templates were found."
@@ -85,7 +85,7 @@ gpii.express.hb.inline.scanTemplateSubdir = function (that, key, dirPath) {
 };
 
 fluid.defaults("gpii.express.hb.inline", {
-    gradeNames:          ["gpii.express.requestAware.router", "autoInit"],
+    gradeNames:          ["gpii.express.requestAware.router"],
     path:                "/inline",
     hbsExtensionRegexp:  /^(.+)\.(?:hbs|handlebars)$/,
     allowedTemplateDirs: ["layouts", "partials", "pages"],
@@ -100,7 +100,7 @@ fluid.defaults("gpii.express.hb.inline", {
     events: {
         templatesLoaded: null
     },
-    requestAwareGrades: ["gpii.express.hb.inline.request"],
+    handlerGrades: ["gpii.express.hb.inline.request"],
     listeners: {
         "onCreate.loadTemplates": {
             funcName: "gpii.express.hb.inline.loadTemplates",

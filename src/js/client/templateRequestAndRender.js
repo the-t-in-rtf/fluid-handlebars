@@ -12,7 +12,7 @@
 (function () {
     "use strict";
     fluid.defaults("gpii.templates.templateRequestAndRender", {
-        gradeNames:    ["gpii.templates.ajaxCapable", "gpii.hasRequiredOptions", "autoInit"],
+        gradeNames:    ["gpii.templates.ajaxCapable", "gpii.hasRequiredOptions"],
         requiredOptions: {
             templates:           true,
             "templates.error":   true,

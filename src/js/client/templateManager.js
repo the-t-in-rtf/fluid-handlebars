@@ -11,7 +11,7 @@
 (function () {
     "use strict";
     fluid.defaults("gpii.templates.templateManager", {
-        gradeNames: ["fluid.littleComponent", "autoInit"],
+        gradeNames: ["fluid.component"],
         components: {
             renderer: {
                 type: "gpii.templates.renderer.serverAware"
@@ -20,7 +20,7 @@
             // to ensure that they are created once the renderer is available.
             requireRenderer: {
                 createOnEvent: "{renderer}.events.onTemplatesLoaded",
-                type: "fluid.eventedComponent"
+                type: "fluid.component"
             }
         },
         distributeOptions: [
