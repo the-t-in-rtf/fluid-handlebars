@@ -29,7 +29,7 @@
     };
 
     fluid.defaults("gpii.hasRequiredOptions", {
-        gradeNames: ["fluid.eventedComponent", "autoInit"],
+        gradeNames: ["fluid.component"],
         listeners: {
             "onCreate.checkRequiredOptions": {
                 funcName: "gpii.checkRequiredOptions",

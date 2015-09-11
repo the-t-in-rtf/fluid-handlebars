@@ -39,7 +39,7 @@ gpii.templates.helper.md.configureConverter = function (that) {
 };
 
 fluid.defaults("gpii.templates.helper.md", {
-    gradeNames: ["gpii.templates.helper", "autoInit"],
+    gradeNames: ["gpii.templates.helper"],
     helperName: "md",
     members: {
         converter: null

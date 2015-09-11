@@ -19,7 +19,7 @@
     };
 
     fluid.defaults("gpii.templates.helper.md.client", {
-        gradeNames: ["gpii.templates.helper.md", "autoInit"],
+        gradeNames: ["gpii.templates.helper.md"],
         listeners: {
             onCreate: [
                 {

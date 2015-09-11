@@ -58,7 +58,7 @@
     };
 
     fluid.defaults("gpii.templates.templateAware", {
-        gradeNames: ["fluid.viewRelayComponent", "gpii.hasRequiredOptions", "autoInit"],
+        gradeNames: ["fluid.viewComponent", "gpii.hasRequiredOptions"],
         requiredOptions: {
             templates:           true,
             "templates.initial": true,
@@ -85,7 +85,7 @@
         },
         invokers: {
             // TODO: Use `fluid.notImplemented` once it's available: https://issues.fluidproject.org/browse/FLUID-5733
-            // TODO: Review with Antranig, for whatever reason I cannot override this succesfully in child grades.
+            // TODO: Review with Antranig, for whatever reason I cannot override this successfully in child grades.
             //renderInitialMarkup: {
             //    funcName: "gpii.templates.templateAware.noRenderFunctionDefined"
             //},
@@ -106,7 +106,7 @@
     });
 
     fluid.defaults("gpii.templates.templateAware.serverAware", {
-        gradeNames: ["gpii.templates.templateAware", "autoInit"],
+        gradeNames: ["gpii.templates.templateAware"],
         components: {
             renderer: {
                 type: "gpii.templates.renderer.serverAware",

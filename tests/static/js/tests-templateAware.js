@@ -5,7 +5,7 @@
 //
 /* global fluid */
 fluid.defaults("gpii.tests.templateAware", {
-    gradeNames: ["gpii.templates.templateAware", "autoInit"],
+    gradeNames: ["gpii.templates.templateAware"],
     template:   "index",
     selectors: {
         initial: "" // Update the whole container
@@ -25,11 +25,11 @@ fluid.defaults("gpii.tests.templateAware", {
 
 // Grade for tests that are independent of the `initBlock` component.
 fluid.defaults("gpii.tests.templateAware.serverAware", {
-    gradeNames: ["gpii.tests.templateAware", "gpii.templates.templateAware.serverAware", "autoInit"]
+    gradeNames: ["gpii.tests.templateAware", "gpii.templates.templateAware.serverAware"]
 });
 
 fluid.defaults("gpii.tests.templateAware.contained", {
-    gradeNames: ["gpii.tests.templateAware.serverAware", "autoInit"],
+    gradeNames: ["gpii.tests.templateAware.serverAware"],
     template:  "form-contained-initial",
     selectors: {
         initial: ".contained-inner" // Update an interior element without disturbing the root container.

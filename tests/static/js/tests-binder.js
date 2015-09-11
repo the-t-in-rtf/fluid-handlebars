@@ -5,7 +5,7 @@
 fluid.registerNamespace("gpii.tests.binder");
 // Base grade for all components
 fluid.defaults("gpii.tests.binder.base", {
-    gradeNames: ["fluid.viewComponent", "autoInit"],
+    gradeNames: ["fluid.viewComponent"],
     model: {
         initFromModel:    "initialized from model" // The markup will be initialized with this value.
     },
@@ -25,7 +25,7 @@ fluid.defaults("gpii.tests.binder.base", {
 
 // Component to test "long notation"
 fluid.defaults("gpii.tests.binder.long", {
-    gradeNames: ["gpii.tests.binder.base", "autoInit"],
+    gradeNames: ["gpii.tests.binder.base"],
     bindings: {
         initFromModel: {
             selector: "initFromModel",
@@ -49,7 +49,7 @@ fluid.defaults("gpii.tests.binder.long", {
 
 // Component to test "short notation"
 fluid.defaults("gpii.tests.binder.short", {
-    gradeNames: ["gpii.tests.binder.base", "autoInit"],
+    gradeNames: ["gpii.tests.binder.base"],
     bindings: {
         initFromModel:    "initFromModel",
         initFromMarkup:   "initFromMarkup",
@@ -65,7 +65,7 @@ fluid.defaults("gpii.tests.binder.short", {
 //   can work with the new binder during the transition.
 //
 fluid.defaults("gpii.tests.binder.array", {
-    gradeNames: ["gpii.tests.binder.base", "autoInit"],
+    gradeNames: ["gpii.tests.binder.base"],
     bindings: [
         {
             selector: "initFromModel",
@@ -88,7 +88,7 @@ fluid.defaults("gpii.tests.binder.array", {
 
 // Component to test support for radio buttons
 fluid.defaults("gpii.tests.binder.radio", {
-    gradeNames: ["gpii.tests.binder.base", "autoInit"],
+    gradeNames: ["gpii.tests.binder.base"],
     bindings: {
         initFromModel: {
             selector: "initFromModel",

@@ -6,7 +6,7 @@
 /* global fluid */
 
 fluid.defaults("gpii.templates.tests.templateMessage", {
-    gradeNames: ["gpii.templates.templateMessage", "gpii.templates.templateAware.bornReady", "autoInit"],
+    gradeNames: ["gpii.templates.templateMessage", "gpii.templates.templateAware.bornReady"],
     template:   "common-success",
     components: {
         renderer: {
@@ -25,13 +25,13 @@ fluid.defaults("gpii.templates.tests.templateMessage", {
 });
 
 fluid.defaults("gpii.templates.tests.templateMessage.initialized", {
-    gradeNames: ["gpii.templates.tests.templateMessage", "autoInit"],
+    gradeNames: ["gpii.templates.tests.templateMessage"],
     model: {
         message: "I was born with silver model data in my mouth."
     }
 });
 
 fluid.defaults("gpii.templates.tests.templateMessage.updated", {
-    gradeNames: ["gpii.templates.tests.templateMessage", "autoInit"],
+    gradeNames: ["gpii.templates.tests.templateMessage"],
     model:      {}
 });

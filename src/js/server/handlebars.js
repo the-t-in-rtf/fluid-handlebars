@@ -44,7 +44,7 @@ gpii.express.configureExpress = function (that, express) {
 };
 
 fluid.defaults("gpii.express.hb", {
-    gradeNames: ["fluid.eventedComponent", "fluid.modelRelayComponent", "autoInit"],
+    gradeNames: ["fluid.modelComponent"],
     config:     "{expressConfigHolder}.options.config",
     express:    "{gpii.express}.express",
     members: {

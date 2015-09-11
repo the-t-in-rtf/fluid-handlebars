@@ -25,7 +25,7 @@ fluid.registerNamespace("gpii.templates.helper");
 //    }
 
 fluid.defaults("gpii.templates.helper", {
-    gradeNames: ["fluid.eventedComponent", "fluid.modelRelayComponent", "gpii.hasRequiredOptions", "autoInit"],
+    gradeNames: ["fluid.modelComponent", "gpii.hasRequiredOptions"],
     requiredOptions: {
         helperName: true
     },
