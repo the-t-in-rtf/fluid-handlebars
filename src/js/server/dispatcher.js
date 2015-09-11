@@ -20,7 +20,7 @@ fluid.registerNamespace("gpii.express.dispatcher");
 var fs         = require("fs");
 var path       = require("path");
 
-gpii.express.dispatcher.handler = function (that, req, res) {
+gpii.express.dispatcher.route = function (that, req, res) {
     var template = req.params.template ? req.params.template : that.options.defaultTemplate;
     var templateName = template + ".handlebars";
 
@@ -69,8 +69,8 @@ fluid.defaults("gpii.express.dispatcher", {
     //
     config:          "{expressConfigHolder}.options.config",
     invokers: {
-        "handler": {
-            funcName: "gpii.express.dispatcher.handler",
+        route: {
+            funcName: "gpii.express.dispatcher.route",
             args: ["{that}", "{arguments}.0", "{arguments}.1"]
         }
     }
