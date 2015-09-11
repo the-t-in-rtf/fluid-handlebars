@@ -4,10 +4,8 @@ var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.templates.tests.router.error");
 
-gpii.templates.tests.router.error.getHandler = function (that) {
-    return function (req, res) {
-        res.status(that.options.statusCode).send(that.options.body);
-    };
+gpii.templates.tests.router.error.handler = function (that, req, res) {
+    res.status(that.options.statusCode).send(that.options.body);
 };
 
 fluid.defaults("gpii.templates.tests.router.error", {
@@ -17,9 +15,9 @@ fluid.defaults("gpii.templates.tests.router.error", {
     statusCode: 500,
     body:       { message: "Something has gone horribly wrong as planned."},
     invokers: {
-        "getHandler": {
-            funcName: "gpii.templates.tests.router.error.getHandler",
-            args: ["{that}"]
+        "handler": {
+            funcName: "gpii.templates.tests.router.error.handler",
+            args:     ["{that}", "{arguments}.0", "{arguments}.1"]
         }
     }
 });

@@ -20,33 +20,31 @@ fluid.registerNamespace("gpii.express.dispatcher");
 var fs         = require("fs");
 var path       = require("path");
 
-gpii.express.dispatcher.getHandler = function (that) {
-    return function (req, res) {
-        var template = req.params.template ? req.params.template : that.options.defaultTemplate;
-        var templateName = template + ".handlebars";
+gpii.express.dispatcher.handler = function (that, req, res) {
+    var template = req.params.template ? req.params.template : that.options.defaultTemplate;
+    var templateName = template + ".handlebars";
 
-        var viewDir          = that.options.config.express.views;
-        var templateRelPath  = path.join("pages", templateName);
-        var layoutFilename   = templateName;
-        var layoutFullPath   = path.join(viewDir, "layouts", layoutFilename);
-        if (!fs.existsSync(layoutFullPath)) {
-            layoutFilename = "main.handlebars";
-        }
+    var viewDir          = that.options.config.express.views;
+    var templateRelPath  = path.join("pages", templateName);
+    var layoutFilename   = templateName;
+    var layoutFullPath   = path.join(viewDir, "layouts", layoutFilename);
+    if (!fs.existsSync(layoutFullPath)) {
+        layoutFilename = "main.handlebars";
+    }
 
-        var templateFullPath = path.join(viewDir, templateRelPath);
-        if (fs.existsSync(templateFullPath)) {
-            var contextToExpose = fluid.model.transformWithRules({ model: that.model, req: req }, that.options.rules.contextToExpose);
+    var templateFullPath = path.join(viewDir, templateRelPath);
+    if (fs.existsSync(templateFullPath)) {
+        var contextToExpose = fluid.model.transformWithRules({ model: that.model, req: req }, that.options.rules.contextToExpose);
 
-            // We have to add the layout to the context in order to use a custom layout.
-            contextToExpose.layout = layoutFilename;
+        // We have to add the layout to the context in order to use a custom layout.
+        contextToExpose.layout = layoutFilename;
 
-            res.render(templateRelPath, contextToExpose);
-        }
-        else {
-            var errorRelPath = path.join(viewDir, "pages", "error.handlebars");
-            res.status(404).render(errorRelPath, {message: "The template you requested ('" + templateName + "') was not found."});
-        }
-    };
+        res.render(templateRelPath, contextToExpose);
+    }
+    else {
+        var errorRelPath = path.join(viewDir, "pages", "error.handlebars");
+        res.status(404).render(errorRelPath, {message: "The template you requested ('" + templateName + "') was not found."});
+    }
 };
 
 fluid.defaults("gpii.express.dispatcher", {
@@ -71,9 +69,9 @@ fluid.defaults("gpii.express.dispatcher", {
     //
     config:          "{expressConfigHolder}.options.config",
     invokers: {
-        "getHandler": {
-            funcName: "gpii.express.dispatcher.getHandler",
-            args: ["{that}"]
+        "handler": {
+            funcName: "gpii.express.dispatcher.handler",
+            args: ["{that}", "{arguments}.0", "{arguments}.1"]
         }
     }
 });
