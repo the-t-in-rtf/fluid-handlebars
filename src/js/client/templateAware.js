@@ -58,7 +58,7 @@
     };
 
     fluid.defaults("gpii.templates.templateAware", {
-        gradeNames: ["fluid.viewComponent", "gpii.hasRequiredOptions"],
+        gradeNames: ["gpii.hasRequiredOptions", "fluid.viewComponent"],
         requiredOptions: {
             templates:           true,
             "templates.initial": true,
