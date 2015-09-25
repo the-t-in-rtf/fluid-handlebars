@@ -49,15 +49,16 @@
         },
         model: {
         },
+        distributeOptions: {
+            source: "{that}.options.invokers.getRenderer",
+            target: "{that templateAware}.options.invokers.getRenderer"
+        },
         components: {
             success: {
                 type:          "gpii.templates.templateMessage",
                 createOnEvent: "{templateFormControl}.events.onMarkupRendered",
                 container:     "{templateFormControl}.dom.success",
                 options: {
-                    components: {
-                        renderer: "{templateFormControl}.renderer"
-                    },
                     template: "{templateFormControl}.options.templates.success",
                     model:  {
                         message: "{templateFormControl}.model.successMessage"
@@ -74,9 +75,6 @@
                 createOnEvent: "{templateFormControl}.events.onMarkupRendered",
                 container:     "{templateFormControl}.dom.error",
                 options: {
-                    components: {
-                        renderer: "{templateFormControl}.renderer"
-                    },
                     template: "{templateFormControl}.options.templates.error",
                     model:  {
                         message: "{templateFormControl}.model.errorMessage"
@@ -117,6 +115,9 @@
             handleKeyPress: {
                 funcName: "gpii.templates.templateFormControl.handleKeyPress",
                 args:     ["{that}", "{arguments}.0"]
+            },
+            getRenderer: {
+                funcName: "fluid.notImplemented"
             }
         },
         templates: {
