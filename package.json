@@ -16,7 +16,7 @@
     "grunt-jsonlint": "1.0.4",
     "grunt-gpii": "git://github.com/GPII/grunt-gpii.git#58ae055833f437a9e91baedb9f39a22c5fdd727f",
     "handlebars": "4.0.0",
-    "infusion": "git://github.com/fluid-project/infusion.git#282f1a318718eed0b0ec060fb8b4ad254417fd7e",
+    "infusion": "git://github.com/fluid-project/infusion.git#a1e3d601478e57276d4143fca5bcbe00f9c6b0cd",
     "marked": "0.3.5",
     "pagedown": "1.1.0",
     "underscore-node": "0.1.2",
