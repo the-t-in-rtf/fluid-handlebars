@@ -9,21 +9,21 @@
     "postinstall": "grunt dedupe-infusion && bower install"
   },
   "dependencies": {
-    "express-handlebars": "1.1.0",
+    "express-handlebars": "1.2.2",
     "grunt": "~0.4.4",
     "grunt-shell": "0.6.4",
     "grunt-contrib-jshint": "~0.9.0",
     "grunt-jsonlint": "1.0.4",
     "grunt-gpii": "git://github.com/GPII/grunt-gpii.git#58ae055833f437a9e91baedb9f39a22c5fdd727f",
-    "handlebars": "2.0.0",
+    "handlebars": "4.0.0",
     "infusion": "git://github.com/fluid-project/infusion.git#282f1a318718eed0b0ec060fb8b4ad254417fd7e",
-    "marked": "0.3.2",
+    "marked": "0.3.5",
     "pagedown": "1.1.0",
     "underscore-node": "0.1.2",
     "when": "^3.7.3"
   },
   "devDependencies": {
-    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express.git#4750af51a1fbe886a260d89097e58c1c624ab4f7",
+    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express.git#ffc96bad77180b31f34654f268597caa93570683",
     "jqUnit": "git://github.com/fluid-project/node-jqUnit.git#b7ef53aac1ca365bf23d35d255fae874faa88b70",
     "request": "2.51.0",
     "tough-cookie": "0.12.1",
