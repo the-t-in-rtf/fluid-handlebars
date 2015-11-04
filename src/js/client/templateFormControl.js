@@ -38,7 +38,7 @@
     };
 
     fluid.defaults("gpii.templates.templateFormControl", {
-        gradeNames:    ["gpii.templates.templateAware", "gpii.templates.ajaxCapable", "gpii.hasRequiredFields"],
+        gradeNames:    ["gpii.templates.ajaxCapable", "gpii.hasRequiredFields", "gpii.templates.templateAware"],
         hideOnSuccess: true,  // Whether to hide our form if the results are successful
         hideOnError:   false, // Whether to hide our form if the results are unsuccessful
         requiredFields: {
