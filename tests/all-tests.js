@@ -3,6 +3,7 @@ var sequence = require("when/sequence");
 
 var tests = [
     "./js/server-tests.js",
+    "./js/singleTemplateRouter-tests.js",
     "./js/standaloneRenderer-tests.js",
     "./js/zombie-binder-tests.js",
     "./js/zombie-initBlock-tests.js",

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "express-handlebars": "1.2.2",
+    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express.git#74a1a6aee4d95da786b1e15b574bf934a66efe3f",
     "grunt": "~0.4.4",
     "grunt-shell": "0.6.4",
     "grunt-contrib-jshint": "~0.9.0",
@@ -23,8 +24,9 @@
     "when": "^3.7.3"
   },
   "devDependencies": {
-    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express.git#ffc96bad77180b31f34654f268597caa93570683",
     "jqUnit": "git://github.com/fluid-project/node-jqUnit.git#b7ef53aac1ca365bf23d35d255fae874faa88b70",
+    "jsdom": "3.1.2",
+    "kettle": "git://github.com/amb26/kettle.git#33e2826e78315c6d29b13c8ba810f54fef29e8ac",
     "request": "2.51.0",
     "tough-cookie": "0.12.1",
     "zombie": "3.0.15"

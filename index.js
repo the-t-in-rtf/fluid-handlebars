@@ -12,6 +12,7 @@ require("./src/js/server/inline");
 require("./src/js/server/md-server");
 require("./src/js/server/handlebars");
 require("./src/js/server/initblock");
+require("./src/js/server/singleTemplateRouter");
 require("./src/js/server/standaloneRenderer");
 
 
