@@ -3,12 +3,13 @@
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
-require("../../index");
+require("../../../index");
+require("../lib/promiseWrapper");
 
-var jqUnit = require("jqUnit");
+var jqUnit = require("node-jqunit");
 var path   = require("path");
 
-var templateDir = path.resolve(__dirname, "../templates/primary");
+var templateDir = path.resolve(__dirname, "../../templates/primary");
 
 fluid.registerNamespace("gpii.handlebars.tests.standaloneRenderer");
 gpii.handlebars.tests.standaloneRenderer.runTests = function (that) {
@@ -20,8 +21,7 @@ gpii.handlebars.tests.standaloneRenderer.runTests = function (that) {
     });
 };
 
-fluid.defaults("gpii.handlebars.tests.standaloneRenderer", {
-    gradeNames: ["fluid.component"],
+var testComponent = gpii.templates.tests.promiseWrapper({
     mergePolicy: {
         tests: "noexpand,nomerge"
     },
@@ -77,4 +77,4 @@ fluid.defaults("gpii.handlebars.tests.standaloneRenderer", {
     }
 });
 
-gpii.handlebars.tests.standaloneRenderer();
+module.exports = testComponent.afterDestroyPromise;

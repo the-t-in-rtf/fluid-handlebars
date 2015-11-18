@@ -4,14 +4,15 @@
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
-require("../../index");
+require("../../../index");
+require("../lib/promiseWrapper");
 
-var jqUnit = require("jqUnit");
+var jqUnit = require("node-jqunit");
 var fs     = require("fs");
 var path   = require("path");
 var jsdom  = require("jsdom");
 
-var jqueryPath = path.resolve(__dirname, "../../node_modules/infusion/src/lib/jquery/core/js/jquery.js");
+var jqueryPath = path.resolve(__dirname, "../../../node_modules/infusion/src/lib/jquery/core/js/jquery.js");
 var jqueryContent = fs.readFileSync(jqueryPath, "utf8");
 
 var express = require("gpii-express");
@@ -20,7 +21,7 @@ express.loadTestingSupport();
 var kettle = require("kettle");
 kettle.loadTestingSupport();
 
-var templateDir = path.resolve(__dirname, "../templates/primary");
+var templateDir = path.resolve(__dirname, "../../templates/primary");
 
 fluid.registerNamespace("gpii.templates.tests.singleTemplateRouter");
 
@@ -74,9 +75,11 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.request", {
     path:       "{testEnvironment}.options.baseUrl"
 });
 
+var promise = fluid.promise();
 
 fluid.defaults("gpii.templates.tests.singleTemplateRouter.caseHolder", {
     gradeNames: ["gpii.express.tests.caseHolder"],
+    promise:    promise,
     rawModules: [
         {
             tests: [
@@ -105,8 +108,11 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.caseHolder", {
                             listener: "gpii.templates.tests.singleTemplateRouter.verifyResults",
                             event:    "{dataRequest}.events.onComplete",
                             args:     ["{dataRequest}.nativeResponse", "{arguments}.0", 200, {"#req-myvar": "query data"}]
+                        },
+                        // Our last test should resolve the promise we return.  This is a horrible kludge to allow an IoC test to play nicely with Zombie.
+                        {
+                            func: "{caseHolder}.options.promise.resolve"
                         }
-
                     ]
                 }
             ]
@@ -172,10 +178,10 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.environment", {
             }
         },
         caseHolder: {
-            type: "gpii.templates.tests.singleTemplateRouter.caseHolder"
+            type: "gpii.templates.tests.singleTemplateRouter.caseHolder",
         }
     }
 });
 
-// TODO: confirm working with `all-tests.js` and add any required boilerplate as needed
 gpii.templates.tests.singleTemplateRouter.environment();
+module.exports = promise;

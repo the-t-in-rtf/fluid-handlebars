@@ -11,6 +11,7 @@ var when = require("when");
 
 require("../../");
 require("./lib/test-router-error");
+require("./lib/promiseWrapper");
 
 // Test content (HTML, JS, templates)
 var testDir    = path.resolve(__dirname, "..");
@@ -28,22 +29,8 @@ var modulesDir = path.resolve(__dirname, "../../node_modules");
 // Main source to be tested
 var srcDir     = path.resolve(__dirname, "../../src");
 
-
-fluid.registerNamespace("gpii.templates.tests.client.harness");
-
-gpii.templates.tests.client.harness.constructPromise = function (that) {
-    that.afterDestroyPromise = when.promise(function () {});
-};
-
-gpii.templates.tests.client.harness.waitAndResolve = function (that, timeout) {
-    timeout = timeout ? timeout : 500;
-    return function () {
-        setTimeout(that.afterDestroyPromise.resolve, timeout);
-    };
-};
-
 fluid.defaults("gpii.templates.tests.client.harness", {
-    gradeNames:  ["gpii.express"],
+    gradeNames:  ["gpii.express", "gpii.templates.tests.promiseWrapper"],
     expressPort: 6994,
     baseUrl:     "http://localhost:6994/",
     config:  {
@@ -51,19 +38,6 @@ fluid.defaults("gpii.templates.tests.client.harness", {
             port:    "{that}.options.expressPort",
             baseUrl: "{that}.options.baseUrl",
             views:   views
-        }
-    },
-    members: {
-        afterDestroyPromise: false
-    },
-    listeners: {
-        "onCreate.constructPromise": {
-            funcName: "gpii.templates.tests.client.harness.constructPromise",
-            args:     ["{that}"]
-        },
-        "afterDestroy.resolvePromise": {
-            funcName: "gpii.templates.tests.client.harness.waitAndResolve",
-            args:     ["{that}"]
         }
     },
     components: {

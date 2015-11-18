@@ -6,9 +6,9 @@ var gpii  = fluid.registerNamespace("gpii");
 fluid.setLogging(true);
 
 var Browser = require("zombie");
-var jqUnit = require("jqUnit");
+var jqUnit = require("node-jqunit");
 
-require("./zombie-test-harness");
+require("../test-harness");
 
 fluid.registerNamespace("gpii.hb.tests.templateMessage");
 gpii.hb.tests.templateMessage.runTests = function (that) {

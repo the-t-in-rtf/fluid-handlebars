@@ -7,15 +7,16 @@ var gpii = fluid.registerNamespace("gpii");
 
 var path = require("path");
 
-var jqUnit  = fluid.require("jqUnit");
+var jqUnit  = fluid.require("node-jqunit");
 var request = require("request");
 
 require("gpii-express");
-require("../../");
+require("../../../index");
+require("../lib/promiseWrapper");
 
 var viewDirs = [
-    path.resolve(__dirname, "../templates/primary"),
-    path.resolve(__dirname, "../templates/secondary")
+    path.resolve(__dirname, "../../templates/primary"),
+    path.resolve(__dirname, "../../templates/secondary")
 ];
 
 fluid.registerNamespace("gpii.templates.tests.server");
@@ -143,67 +144,61 @@ gpii.templates.tests.server.runTests = function (that) {
             gpii.templates.tests.server.bodyMatches("The partial should have come from the primary...", body, /partial served from the primary template directory/);
         });
     });
-
 };
 
-var when = require("when");
-require("./lib/resolve-utils");
-module.exports = when.promise(function (resolve) {
-    gpii.express({
-        config:  {
-            "express": {
-                "port" :   6904,
-                "baseUrl": "http://localhost:6904/",
-                "views":   viewDirs,
-                "session": {
-                    "secret": "Printer, printer take a hint-ter."
-                }
-            }
-        },
-        json: { foo: "bar", baz: "quux", qux: "quux" },
-        listeners: {
-            "onCreate.runTests": {
-                funcName: "gpii.templates.tests.server.runTests",
-                args:     ["{that}"]
-            },
-            "afterDestroy.resolvePromise": {
-                funcName: "gpii.templates.tests.resolver.getDelayedResolutionFunction",
-                args:    [resolve]
-            }
-        },
-        components: {
-            "json": {
-                "type": "gpii.express.middleware.bodyparser.json"
-            },
-            "urlencoded": {
-                "type": "gpii.express.middleware.bodyparser.urlencoded"
-            },
-            "cookieparser": {
-                "type": "gpii.express.middleware.cookieparser"
-            },
+var testComponent = gpii.express({
+    gradeNames: ["gpii.templates.tests.promiseWrapper"],
+    config:  {
+        "express": {
+            "port" :   6904,
+            "baseUrl": "http://localhost:6904/",
+            "views":   viewDirs,
             "session": {
-                "type": "gpii.express.middleware.session"
-            },
-            inline: {
-                type: "gpii.express.hb.inline"
-            },
-            dispatcher: {
-                type: "gpii.express.dispatcher",
-                options: {
-                    path: ["/dispatcher/:template", "/dispatcher"],
-                    rules: {
-                        contextToExpose: {
-                            myvar:    { literalValue: "modelvariable" },
-                            markdown: { literalValue: "*this works*" },
-                            json:     { literalValue: "{express}.options.json" },
-                            req:      { params: "req.params", query: "req.query"}
-                        }
-                    }
-                }
-            },
-            handlebars: {
-                type: "gpii.express.hb"
+                "secret": "Printer, printer take a hint-ter."
             }
         }
-    });
+    },
+    json: { foo: "bar", baz: "quux", qux: "quux" },
+    listeners: {
+        "onCreate.runTests": {
+            funcName: "gpii.templates.tests.server.runTests",
+            args:     ["{that}"]
+        }
+    },
+    components: {
+        "json": {
+            "type": "gpii.express.middleware.bodyparser.json"
+        },
+        "urlencoded": {
+            "type": "gpii.express.middleware.bodyparser.urlencoded"
+        },
+        "cookieparser": {
+            "type": "gpii.express.middleware.cookieparser"
+        },
+        "session": {
+            "type": "gpii.express.middleware.session"
+        },
+        inline: {
+            type: "gpii.express.hb.inline"
+        },
+        dispatcher: {
+            type: "gpii.express.dispatcher",
+            options: {
+                path: ["/dispatcher/:template", "/dispatcher"],
+                rules: {
+                    contextToExpose: {
+                        myvar:    { literalValue: "modelvariable" },
+                        markdown: { literalValue: "*this works*" },
+                        json:     { literalValue: "{express}.options.json" },
+                        req:      { params: "req.params", query: "req.query"}
+                    }
+                }
+            }
+        },
+        handlebars: {
+            type: "gpii.express.hb"
+        }
+    }
 });
+
+module.exports = testComponent.afterDestroyPromise;

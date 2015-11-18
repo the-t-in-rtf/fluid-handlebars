@@ -7,13 +7,13 @@ var fluid = fluid || require("infusion");
 
 var gpii  = fluid.registerNamespace("gpii");
 
-var jqUnit  = fluid.require("jqUnit");
+var jqUnit  = fluid.require("node-jqunit");
 var Browser = require("zombie");
 
 require("gpii-express");
 
-require("../../");
-require("./zombie-test-harness");
+require("../../../index");
+require("../test-harness");
 
 fluid.registerNamespace("gpii.templates.tests.client.initBlock");
 

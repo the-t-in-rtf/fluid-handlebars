@@ -11,15 +11,15 @@ var fluid = fluid || require("infusion");
 
 var gpii  = fluid.registerNamespace("gpii");
 
-var jqUnit  = fluid.require("jqUnit");
+var jqUnit  = fluid.require("node-jqunit");
 var Browser = require("zombie");
 
 require("gpii-express");
-require("../../");
-require("./zombie-test-harness");
+require("../../../index");
+require("../test-harness");
 
 // We will reuse a function from the rendering tests to confirm that the component is doing its work.
-require("./zombie-rendering-tests");
+require("./browser-rendering-tests");
 
 fluid.registerNamespace("gpii.templates.tests.client.templateAware");
 
