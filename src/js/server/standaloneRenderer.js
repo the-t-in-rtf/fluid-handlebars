@@ -35,27 +35,42 @@ gpii.handlebars.standaloneRenderer.init = function (that) {
         fluid.fail("Cannot initialize template handling without a 'templateDir' option...");
     }
     else {
-        // Register all partials found in the "partials" subdirectory relative to `options.templateDir`;
-        var partialDir = path.resolve(that.options.templateDir, "partials");
-        fluid.each(fs.readdirSync(partialDir), function (filename) {
-            var partialPath = path.resolve(partialDir, filename);
-            var partialContent = fs.readFileSync(partialPath, "utf8");
-            var templateKey = filename.replace(/\.(handlebars|hbs)$/i, "");
-            Handlebars.registerPartial(templateKey, partialContent);
-        });
+        var templateDirs = fluid.makeArray(that.options.templateDir);
+        fluid.each(templateDirs, function (templateDir) {
+            // Register all partials found in the "partials" subdirectory relative to `options.templateDir`;
+            var partialDir = path.resolve(templateDir, "partials");
+            fluid.each(fs.readdirSync(partialDir), function (filename) {
+                var partialPath = path.resolve(partialDir, filename);
+                var partialContent = fs.readFileSync(partialPath, "utf8");
+                var templateKey = filename.replace(/\.(handlebars|hbs)$/i, "");
+                Handlebars.registerPartial(templateKey, partialContent);
+            });
 
-        // Register all helper modules (child components of this module).
-        fluid.each(that.helpers, function (fn, key) {
-            Handlebars.registerHelper(key, fn);
+            // Register all helper modules (child components of this module).
+            fluid.each(that.helpers, function (fn, key) {
+                Handlebars.registerHelper(key, fn);
+            });
         });
     }
 };
 
 gpii.handlebars.standaloneRenderer.render = function (that, templateKey, context) {
     if (!that.compiledTemplates[templateKey]) {
-        var templatePath = path.resolve(that.options.templateDir, "./pages", templateKey + that.options.handlebarsSuffix);
-        var templateContent = fs.readFileSync(templatePath, "utf8");
-        that.compiledTemplates[templateKey] = Handlebars.compile(templateContent);
+        var templateDirs = fluid.makeArray(that.options.templateDir);
+        var templatePath = false;
+        fluid.each(templateDirs, function (templateDir) {
+            var candidatePath = path.resolve(templateDir, "./pages", templateKey + that.options.handlebarsSuffix);
+            if (fs.existsSync(candidatePath)) {
+                templatePath = candidatePath;
+            }
+        });
+        if (templatePath) {
+            var templateContent = fs.readFileSync(templatePath, "utf8");
+            that.compiledTemplates[templateKey] = Handlebars.compile(templateContent);
+        }
+        else {
+            fluid.fail("Can't find template '" + templateKey + "' in any of your template directories...");
+        }
     }
 
     var template = that.compiledTemplates[templateKey];
