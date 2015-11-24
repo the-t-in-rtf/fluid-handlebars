@@ -13,14 +13,13 @@ fluid.registerNamespace("gpii.templates.helper.md");
 
 gpii.templates.helper.md.getMdFunction = function (that) {
     return function (context) {
-        if (!context) {
-            fluid.fail("No context was provided, ignoring markdown helper call.");
-        }
-        else if (that && that.options && that.converter) {
-            return that.converter.makeHtml(context);
-        }
-        else {
-            fluid.fail("Can't convert markdown content because the converter could not be found.");
+        if (context) {
+            if (that && that.converter) {
+                return that.converter.makeHtml(context);
+            }
+            else {
+                fluid.log("Can't convert markdown content because the converter could not be found.");
+            }
         }
 
         // If we can't evolve the output, we just pass it through.
