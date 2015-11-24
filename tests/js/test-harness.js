@@ -97,6 +97,7 @@ fluid.defaults("gpii.templates.tests.client.harness", {
                         options: {
                             contextToOptionsRules: {
                                 model: {
+                                    "":       "notfound",
                                     req:      "req",
                                     myvar:    "myvar",
                                     markdown: "markdown",

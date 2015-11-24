@@ -119,7 +119,7 @@ fluid.defaults("gpii.templates.helper.initBlock", {
     mergePolicy: {
         "baseOptions": "noexpand,nomerge"
     },
-    contextToOptionsRules: {},
+    contextToOptionsRules: { "": "" }, // By default, expose everything that's available.
     baseGradeName: "gpii.templates.templateManager",
     baseOptions: {
         components: {
