@@ -15,7 +15,8 @@ gpii.templates.helper.md.getMdFunction = function (that) {
     return function (context) {
         if (context) {
             if (that && that.converter) {
-                return that.converter.makeHtml(context);
+                // We need to ensure that this is a string, as Pagedown cannot handle anything else.
+                return that.converter.makeHtml(String(context));
             }
             else {
                 fluid.log("Can't convert markdown content because the converter could not be found.");
@@ -30,7 +31,13 @@ gpii.templates.helper.md.getMdFunction = function (that) {
 gpii.templates.helper.md.configureConverter = function (that) {
     if (that.converter) {
         // Double all single carriage returns so that they result in new paragraphs, at least for now
-        that.converter.hooks.chain("preConversion", function (text) { return text.replace(/[\r\n]+/g, "\n\n"); });
+        that.converter.hooks.chain("preConversion", function (text) {
+            if (typeof text === "string") {
+                return text.replace(/[\r\n]+/g, "\n\n");
+            }
+
+            return text;
+        });
     }
     else {
         fluid.fail("Could not initialize pagedown converter.  Markdown content will not be parsed.");

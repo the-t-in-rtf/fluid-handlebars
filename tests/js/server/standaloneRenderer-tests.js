@@ -64,6 +64,12 @@ var testComponent = gpii.templates.tests.promiseWrapper({
             expected:    "\n"
         },
         {
+            name:        "Testing 'md' helper with non-string content...",
+            templateKey: "helpers-md",
+            context:     { markdown: 1},
+            expected:    "<p>1</p>\n"
+        },
+        {
             name:        "Testing 'jsonify' helper...",
             templateKey: "helpers-jsonify",
             context:     { json: { foo: "bar"}},
