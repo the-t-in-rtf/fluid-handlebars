@@ -19,7 +19,7 @@ gpii.templates.helper.md.getMdFunction = function (that) {
                 return that.converter.makeHtml(String(context));
             }
             else {
-                fluid.log("Can't convert markdown content because the converter could not be found.");
+                fluid.fail("Can't convert markdown content because the converter could not be found.");
             }
         }
 
