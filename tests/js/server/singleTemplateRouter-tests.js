@@ -15,8 +15,8 @@ var jsdom  = require("jsdom");
 var jqueryPath = path.resolve(__dirname, "../../../node_modules/infusion/src/lib/jquery/core/js/jquery.js");
 var jqueryContent = fs.readFileSync(jqueryPath, "utf8");
 
-var express = require("gpii-express");
-express.loadTestingSupport();
+require("gpii-express");
+gpii.express.loadTestingSupport();
 
 var kettle = require("kettle");
 kettle.loadTestingSupport();
