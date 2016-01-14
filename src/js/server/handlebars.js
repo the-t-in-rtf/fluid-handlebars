@@ -9,10 +9,9 @@ var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.hb");
 
 var exphbs = require("express-handlebars");
-var path   = require("path");
-var fs     = require("fs");
 
 require("handlebars");
+require("./lib/first-matching-path");
 
 gpii.express.addHelper = function (that, component) {
     var key = component.options.helperName;
@@ -27,22 +26,18 @@ gpii.express.addHelper = function (that, component) {
 gpii.express.configureExpress = function (that, express) {
     if (that.options.config.express.views) {
         var viewDirs     = fluid.makeArray(that.options.config.express.views);
-        var layoutDir    = null;
+
+        // Add any partial directories we find.
         var partialsDirs = [];
         fluid.each(viewDirs, function (viewDir) {
-            // We can only use the first layouts directory until this issue is resolved in express-handlebars:
-            //
-            // https://github.com/ericf/express-handlebars/issues/112
-            if (!layoutDir) {
-                var layoutPath = path.resolve(viewDir, "layouts");
-                if (fs.existsSync(layoutPath)) {
-                    layoutDir = layoutPath;
-                }
-            }
-
             // We add entries in reverse order to preserve the same inheritance we see with pages.
             partialsDirs.unshift(viewDir + "/partials/");
         });
+
+        // We can only use the first layouts directory until this issue is resolved in express-handlebars:
+        //
+        // https://github.com/ericf/express-handlebars/issues/112
+        var layoutDir = fluid.find(viewDirs, gpii.express.hb.getPathSearchFn("layouts"));
 
         var handlebarsConfig = {
             defaultLayout: "main",

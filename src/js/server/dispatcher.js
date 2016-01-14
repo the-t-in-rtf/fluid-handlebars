@@ -17,7 +17,8 @@ var fluid      = fluid || require("infusion");
 var gpii       = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.dispatcher");
 
-var fs         = require("fs");
+require("./lib/first-matching-path");
+
 var path       = require("path");
 
 gpii.express.dispatcher.route = function (that, req, res) {
@@ -26,20 +27,9 @@ gpii.express.dispatcher.route = function (that, req, res) {
 
     var layoutName   = templateName;
 
-    var layoutExists   = false;
-    var templateExists = false;
     var viewDirs = fluid.makeArray(that.options.config.express.views);
-    fluid.each(viewDirs, function (viewDir) {
-        var layoutPath = path.join(viewDir, "layouts", templateName);
-        if (fs.existsSync(layoutPath)) {
-            layoutExists = true;
-        }
-
-        var templatePath = path.join(viewDir, "pages", templateName);
-        if (fs.existsSync(templatePath)) {
-            templateExists = true;
-        }
-    });
+    var layoutExists   =  fluid.find(viewDirs, gpii.express.hb.getPathSearchFn(["layouts", templateName]));
+    var templateExists =  fluid.find(viewDirs, gpii.express.hb.getPathSearchFn(["pages", templateName]));
 
     if (!layoutExists) {
         layoutName = that.options.defaultLayout;
