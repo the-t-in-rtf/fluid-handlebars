@@ -66,8 +66,6 @@ gpii.express.hb.inline.loadTemplates =  function (that, views) {
         });
     });
 
-    //that.options.dynamicComponents.requestHandler.options.templates = that.templates;
-
     that.events.templatesLoaded.fire(that);
 };
 
