@@ -1,5 +1,3 @@
-// TODO:  If we find ourselves using this component more often than in just mailing, move it to `gpii-handlebars`.
-//
 // A standalone handlebars renderer designed for use in rendering mail templates.
 //
 // Although this does not itself require express, it can work with any helper functions that extend the
