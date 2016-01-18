@@ -1,69 +1,70 @@
 // Test `initBlock` server-side Handlebars helper.
 //
-// TODO:  Sit down with Antranig to make Zombie components, so that these tests can use the Kettle test infrastructure.
 "use strict";
 var fluid = require("infusion");
-//fluid.setLogging(true);
-
 var gpii  = fluid.registerNamespace("gpii");
 
-var jqUnit  = fluid.require("node-jqunit");
-var Browser = require("zombie");
+require("gpii-test-browser");
+gpii.tests.browser.loadTestingSupport();
 
-require("gpii-express");
-
+require("./lib/fixtures");
 require("../../../index");
-require("../test-harness");
 
-fluid.registerNamespace("gpii.templates.tests.client.initBlock");
-
-gpii.templates.tests.client.initBlock.clickAndCheck = function (that, description, url, button, callback) {
-    jqUnit.asyncTest(description, function () {
-            var browser = Browser.create();
-            browser.on("error", function (error) {
-                jqUnit.start();
-                jqUnit.fail("There should be no errors:" + error);
-                jqUnit.stop();
-            });
-            browser.visit(url, function () {
-                if (button) {
-                    browser.pressButton(button, function () {
-                        callback(browser);
-                    });
-                }
-                else {
-                    callback(browser);
-                }
-            });
-        }
-    );
+fluid.registerNamespace("gpii.templates.tests.browser.initBlock");
+gpii.templates.tests.browser.initBlock.selectorContains = function (selector, subString) {
+    /* globals document */
+    var mainString = document.querySelector(selector).innerHTML;
+    return mainString.indexOf(subString) !== -1;
 };
 
-gpii.templates.tests.client.initBlock.runTests = function (that) {
+fluid.defaults("gpii.templates.tests.browser.initBlock.caseHolder", {
+    gradeNames: ["gpii.templates.tests.browser.caseHolder"],
+    rawModules: [{
+        tests: [
+            {
+                name: "Confirm the page was rendered and that the initBlock component was created correctly...",
+                sequence: [
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.goto",
+                        args: ["{gpii.templates.tests.browser.environment}.options.url"]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args:     [gpii.tests.browser.tests.getGlobalValue, "pageComponent.requireRenderer.pageComponent.model"]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertDeepEq",
+                        args:     ["The component model should include query, parameter, default, and dispatcher data...", "{gpii.templates.tests.browser.environment}.options.expected", "{arguments}.0"]
+                    },
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.templates.tests.browser.initBlock.selectorContains, "body", "This content should not be visible"]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertFalse",
+                        args:     ["The original body content should have been replaced...", "{arguments}.0"]
+                    },
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.templates.tests.browser.initBlock.selectorContains, "body", "coming from the page"]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertTrue",
+                        args:     ["The body should contain template output...", "{arguments}.0"]
+                    }
+                ]
+            }
+        ]
+    }]
+});
 
-    jqUnit.module("Testing initBlock component...");
-
-    that.clickAndCheck("Use Zombie.js to verify the initial form rendering...", null, function (browser) {
-            // The client side has already manipulated a bunch of stuff by the time we see it, we're just inspecting the results.
-            jqUnit.start();
-
-            // Testing the "replaceWith" DOM-manipulation function
-            var body = browser.window.$("body");
-            jqUnit.assertTrue("The body should contain rendered content that replaces the original source.", body.text().indexOf("This content should not be visible") === -1);
-
-            jqUnit.assertTrue("There should be page content...", body.text().indexOf("coming from the page") !== -1);
-
-            var pageComponent = browser.window.pageComponent;
-            var deepComponent = pageComponent.requireRenderer.pageComponent;
-            jqUnit.assertDeepEq("The component model should include query, parameter, default, and dispatcher data...", that.options.expected, deepComponent.model);
-        }
-    );
-};
-
-var initBlockComponent = gpii.templates.tests.client.harness({
-    expressPort : 6995,
-    baseUrl:    "http://localhost:6995/",
-    contentUrl: "http://localhost:6995/dispatcher/initblock?myvar=bar",
+gpii.templates.tests.browser.environment({
+    "port": 6995,
+    "path": "dispatcher/initblock?myvar=bar",
     expected: {
         "hasDataFromGrade": true,
         "req": {
@@ -82,19 +83,9 @@ var initBlockComponent = gpii.templates.tests.client.harness({
         "myvar": "modelvariable",
         "markdown": "*this works*"
     },
-    listeners: {
-        "{express}.events.onStarted": {
-            funcName: "gpii.templates.tests.client.initBlock.runTests",
-            args:     ["{that}"]
-        }
-    },
-    invokers: {
-        clickAndCheck: {
-            funcName: "gpii.templates.tests.client.initBlock.clickAndCheck",
-            // that, description, url, button, callback
-            args:     ["{that}", "{arguments}.0", "{that}.options.contentUrl", "{arguments}.1", "{arguments}.2"]
+    components: {
+        caseHolder: {
+            type: "gpii.templates.tests.browser.initBlock.caseHolder"
         }
     }
 });
-
-module.exports = initBlockComponent.afterDestroyPromise;

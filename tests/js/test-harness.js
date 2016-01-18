@@ -9,7 +9,6 @@ require("gpii-express");
 
 require("../../");
 require("./lib/test-router-error");
-require("./lib/promiseWrapper");
 
 // Test content (HTML, JS, templates)
 var testDir    = path.resolve(__dirname, "..");
@@ -28,12 +27,17 @@ var modulesDir = path.resolve(__dirname, "../../node_modules");
 var srcDir     = path.resolve(__dirname, "../../src");
 
 fluid.defaults("gpii.templates.tests.client.harness", {
-    gradeNames:  ["gpii.express", "gpii.templates.tests.promiseWrapper"],
-    expressPort: 6994,
-    baseUrl:     "http://localhost:6994/",
+    gradeNames:  ["gpii.express"],
+    port: 6994,
+    baseUrl: {
+        expander: {
+            funcName: "fluid.stringTemplate",
+            args: ["http://localhost:%port/", { port: "{that}.options.port"}]
+        }
+    },
     config:  {
         express: {
-            port:    "{that}.options.expressPort",
+            port:    "{that}.options.port",
             baseUrl: "{that}.options.baseUrl",
             views:   views
         }
