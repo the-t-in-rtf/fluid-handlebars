@@ -81,16 +81,7 @@
                 that.applier.modelChanged.addListener(path, function (change) {
                     fluid.log("Changing value based on model update.");
 
-                    // This syntax is required until Fluid is updated per the following pull request:
-                    //
-                    //   https://github.com/fluid-project/infusion/pull/591
-                    //
-                    // For a description of a similar problem caused by the same behavior, see:
-                    //
-                    //   https://issues.fluidproject.org/browse/FLUID-4739
-                    //
-                    var value = change[path] ? change[path] : change;
-                    fluid.value(element, value);
+                    fluid.value(element, change);
                 });
 
                 // If we have model data initially, update the form.  Model values win out over markup.
