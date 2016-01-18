@@ -4,7 +4,6 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../../index");
-require("../lib/promiseWrapper");
 
 var jqUnit = require("node-jqunit");
 var path   = require("path");
@@ -24,7 +23,7 @@ gpii.handlebars.tests.standaloneRenderer.runTests = function (that) {
     });
 };
 
-var testComponent = gpii.templates.tests.promiseWrapper({
+fluid.component({
     mergePolicy: {
         tests: "noexpand,nomerge"
     },
@@ -97,5 +96,3 @@ var testComponent = gpii.templates.tests.promiseWrapper({
         }
     }
 });
-
-module.exports = testComponent.afterDestroyPromise;

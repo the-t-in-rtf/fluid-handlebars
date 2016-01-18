@@ -5,7 +5,6 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../../index");
-require("../lib/promiseWrapper");
 
 var jqUnit = require("node-jqunit");
 var fs     = require("fs");
@@ -75,11 +74,8 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.request", {
     path:       "{testEnvironment}.options.baseUrl"
 });
 
-var promise = fluid.promise();
-
 fluid.defaults("gpii.templates.tests.singleTemplateRouter.caseHolder", {
     gradeNames: ["gpii.express.tests.caseHolder"],
-    promise:    promise,
     rawModules: [
         {
             tests: [
@@ -108,10 +104,6 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.caseHolder", {
                             listener: "gpii.templates.tests.singleTemplateRouter.verifyResults",
                             event:    "{dataRequest}.events.onComplete",
                             args:     ["{dataRequest}.nativeResponse", "{arguments}.0", 200, {"#req-myvar": "query data"}]
-                        },
-                        // Our last test should resolve the promise we return.  This is a horrible kludge to allow an IoC test to play nicely with Zombie.
-                        {
-                            func: "{caseHolder}.options.promise.resolve"
                         }
                     ]
                 }
@@ -184,4 +176,3 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.environment", {
 });
 
 gpii.templates.tests.singleTemplateRouter.environment();
-module.exports = promise;

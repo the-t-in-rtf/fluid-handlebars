@@ -12,7 +12,6 @@ var request = require("request");
 
 require("gpii-express");
 require("../../../index");
-require("../lib/promiseWrapper");
 
 var viewDirs = [
     path.resolve(__dirname, "../../templates/primary"),
@@ -146,8 +145,7 @@ gpii.templates.tests.server.runTests = function (that) {
     });
 };
 
-var testComponent = gpii.express({
-    gradeNames: ["gpii.templates.tests.promiseWrapper"],
+gpii.express({
     config:  {
         "express": {
             "port" :   6904,
@@ -200,5 +198,3 @@ var testComponent = gpii.express({
         }
     }
 });
-
-module.exports = testComponent.afterDestroyPromise;

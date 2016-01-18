@@ -1,16 +1,6 @@
 "use strict";
-var sequence = require("when/sequence");
-var tests = [
-    "./dispatcher-and-inline-tests.js",
-    "./first-matching-path-tests.js",
-    // TODO:  I cannot get this to play nicely with the promise-based Zombie tests.  Discuss with Antranig.
-    //"./singleTemplateRouter-tests",
-    "./standaloneRenderer-tests"
-];
 
-var promises = [];
-tests.forEach(function (testFile) {
-    promises.push(require(testFile));
-});
-
-module.exports = sequence(promises);
+require("./dispatcher-and-inline-tests.js");
+require("./first-matching-path-tests.js");
+require("./singleTemplateRouter-tests");
+require("./standaloneRenderer-tests");
