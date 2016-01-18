@@ -1,6 +1,6 @@
 // Tests for the standalone renderer used with this package.
 "use strict";
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../../index");

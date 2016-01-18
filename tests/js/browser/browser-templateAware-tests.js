@@ -7,7 +7,7 @@
 // https://github.com/assaf/zombie/issues/915
 //
 "use strict";
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 
 var gpii  = fluid.registerNamespace("gpii");
 

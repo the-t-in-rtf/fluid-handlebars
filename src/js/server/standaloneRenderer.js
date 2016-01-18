@@ -11,7 +11,7 @@
 //  2. All other templates are expected to be stored in a `pages` subdirectory relative to `options.templateDir`.
 //
 "use strict";
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.handlebars.standaloneRenderer");
 

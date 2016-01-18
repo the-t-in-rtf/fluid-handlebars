@@ -178,7 +178,7 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.environment", {
             }
         },
         caseHolder: {
-            type: "gpii.templates.tests.singleTemplateRouter.caseHolder",
+            type: "gpii.templates.tests.singleTemplateRouter.caseHolder"
         }
     }
 });

@@ -2,12 +2,10 @@
     Test harness common to all Zombie tests.  Loads all required server-side components.
  */
 "use strict";
-var fluid = fluid || require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
+var fluid = require("infusion");
 var path  = require("path");
 
 require("gpii-express");
-var when = require("when");
 
 require("../../");
 require("./lib/test-router-error");

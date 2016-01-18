@@ -1,6 +1,6 @@
 // Test "inline" router from the other side, ensuring that inheritance, etc. works correctly.
 "use strict";
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 
 var gpii  = fluid.registerNamespace("gpii");
 

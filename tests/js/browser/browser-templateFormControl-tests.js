@@ -4,7 +4,7 @@
 //
 // TODO:  Sit down with Antranig to make Zombie components, so that these tests can use the Kettle test infrastructure.
 "use strict";
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 //fluid.setLogging(true);
 
 var gpii  = fluid.registerNamespace("gpii");

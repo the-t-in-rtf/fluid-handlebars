@@ -1,6 +1,6 @@
 "use strict";
 // Test "templateMessage" components using Zombie and filesystem content.
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
 fluid.setLogging(true);

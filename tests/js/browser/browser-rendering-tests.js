@@ -2,7 +2,7 @@
 //
 // The client-side template handling requires a server to provide the template content.
 "use strict";
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 fluid.setLogging(true);
 
 var gpii  = fluid.registerNamespace("gpii");
