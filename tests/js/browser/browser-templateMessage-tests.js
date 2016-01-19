@@ -1,52 +1,67 @@
+// Test "templateMessage" components using `gpii-test-browser`.
+//
 "use strict";
-// Test "templateMessage" components using Zombie and filesystem content.
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
-fluid.setLogging(true);
+require("./includes.js");
 
-var Browser = require("zombie");
-var jqUnit = require("node-jqunit");
+fluid.defaults("gpii.templates.tests.browser.templateMessage.caseHolder", {
+    gradeNames: ["gpii.templates.tests.browser.caseHolder"],
+    rawModules: [{
+        tests: [
+            {
+                name: "Confirm that the templateMessage component is initialized and rendered correctly...",
+                sequence: [
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.goto",
+                        args: ["{gpii.templates.tests.browser.environment}.options.url"]
+                    },
+                    {
+                        event: "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.templates.tests.browser.elementMatches, "body", "{gpii.templates.tests.browser.environment}.options.notExpected"]
+                    },
+                    {
+                        event: "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertFalse",
+                        args: ["The placeholder text should no longer be present...", "{arguments}.0"]
+                    },
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.templates.tests.browser.elementMatches, "body", "{gpii.templates.tests.browser.environment}.options.expected.initialized"]
+                    },
+                    {
+                        event: "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertTrue",
+                        args: ["A component with initial model data should display as expected...", "{arguments}.0"]
+                    },
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.templates.tests.browser.elementMatches, "body", "{gpii.templates.tests.browser.environment}.options.expected.updated"]
+                    },
+                    {
+                        event: "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertTrue",
+                        args: ["A component with updated model data should display as expected...", "{arguments}.0"]
+                    }
+                ]
+            }
+        ]
+    }]
+});
 
-require("../test-harness");
-
-fluid.registerNamespace("gpii.hb.tests.templateMessage");
-gpii.hb.tests.templateMessage.runTests = function (that) {
-    jqUnit.module("Testing template message components (non-networked renderer)...");
-    jqUnit.asyncTest("Testing template message components...", function () {
-        var browser = Browser.create();
-        browser.on("error", function (error) {
-            jqUnit.start();
-            jqUnit.fail("There should be no errors:" + error);
-        });
-
-        browser.visit(that.options.url, function () {
-            jqUnit.start();
-
-            var body = browser.window.$("body");
-            jqUnit.assertTrue("The placeholder text should no longer be present...", body.text().indexOf(that.options.notExpected) === -1);
-            jqUnit.assertTrue("A component with initial model data should display as expected...", body.text().indexOf(that.options.expected.initialized) !== -1);
-            jqUnit.assertTrue("A component with updated model data should display as expected...", body.text().indexOf(that.options.expected.updated) !== -1);
-        });
-    });
-};
-
-var templateMessageComponent = gpii.templates.tests.client.harness({
-    "expressPort" :   6914,
-    "url":            "http://localhost:6914/content/tests-templateMessage.html",
-    // This is "expected" data that must match the model data found in client-tests.js
+gpii.templates.tests.browser.environment({
+    "port": 6914,
+    "path": "content/tests-templateMessage.html",
     notExpected: "should not be visible",
     expected: {
         initialized: "born with silver model data in my mouth",
         updated:     "some have data thrust upon them"
     },
-    listeners: {
-        "{express}.events.onStarted": {
-            funcName: "gpii.hb.tests.templateMessage.runTests",
-            args:     ["{that}"]
+    components: {
+        caseHolder: {
+            type: "gpii.templates.tests.browser.templateMessage.caseHolder"
         }
     }
 });
-
-module.exports = templateMessageComponent.afterDestroyPromise;
-
