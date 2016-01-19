@@ -45,8 +45,13 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onClickComplete",
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     [500]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.templates.tests.browser.elementMatches, ".readyForSuccess", "This was a triumph"]
+                        args:     [gpii.templates.tests.browser.elementMatches, ".readyForSuccess .success", "This was a triumph"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -78,7 +83,11 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onClickComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     [500]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.templates.tests.browser.elementMatches, ".readyForStringifySuccess .success", "This was a triumph"]
                     },
                     {
@@ -111,6 +120,11 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onClickComplete",
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     [500]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.templates.tests.browser.elementMatches, ".readyForStringSuccess .alert-box.success", "This was a triumph"]
                     },
@@ -135,6 +149,11 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onClickComplete",
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     [500]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.templates.tests.browser.elementMatches, ".readyForFailure", "Something went wrong"]
                     },
@@ -159,6 +178,11 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onClickComplete",
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     [500]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.templates.tests.browser.elementMatches, ".readyForStringifyFailure", "Something went wrong"]
                     },
@@ -183,6 +207,11 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onClickComplete",
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     [500]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.templates.tests.browser.elementMatches, ".readyForStringFailure", "Something went wrong"]
                     },
