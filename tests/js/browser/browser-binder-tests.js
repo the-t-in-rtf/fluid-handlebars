@@ -3,10 +3,7 @@
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
-require("gpii-test-browser");
-gpii.tests.browser.loadTestingSupport();
-
-require("./lib/fixtures");
+require("./includes.js");
 
 fluid.registerNamespace("gpii.templates.tests.browser.binder");
 // TODO:  If we find ourselves making model changes often, move this to `gpii-test-browser` and polish it up for wider use.

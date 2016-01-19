@@ -4,11 +4,7 @@
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
-require("gpii-test-browser");
-gpii.tests.browser.loadTestingSupport();
-
-require("./lib/fixtures");
-require("../../../index");
+require("./includes.js");
 
 fluid.registerNamespace("gpii.templates.tests.browser.initBlock");
 gpii.templates.tests.browser.initBlock.selectorContains = function (selector, subString) {
