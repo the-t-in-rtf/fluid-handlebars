@@ -1,66 +1,117 @@
-// Test "template aware" client-side components from within a simulated browser.
-//
-// The client-side template handling requires a server to provide the template content.
-//
-// We have to load this via a `gpii.express` instance because file URLs don't work on windows:
-//
-// https://github.com/assaf/zombie/issues/915
+// Test "template aware" client-side components using `gpii-test-browser`.
 //
 "use strict";
 var fluid = require("infusion");
-
 var gpii  = fluid.registerNamespace("gpii");
 
-var jqUnit  = fluid.require("node-jqunit");
-var Browser = require("zombie");
+require("./includes.js");
 
-require("gpii-express");
-require("../../../index");
-require("../test-harness");
+fluid.defaults("gpii.templates.tests.browser.templateAware.caseHolder", {
+    gradeNames: ["gpii.templates.tests.browser.caseHolder"],
+    rawModules: [{
+        tests: [
+            {
+                name: "Confirm that the templateAware component is rendered...",
+                sequence: [
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.goto",
+                        args: ["{gpii.templates.tests.browser.environment}.options.url"]
+                    },
+                    {
+                        event: "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.templates.tests.browser.getElementHtml, ".viewport", "next"]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertNotNull",
+                        args:     ["The element should have html content...", "{arguments}.0"]
+                    },
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.templates.tests.browser.elementMatches, ".viewport", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown"]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertTrue",
+                        args:     ["The element should contain rendered markdown...", "{arguments}.0"]
+                    },
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.templates.tests.browser.elementMatches, ".viewport", "{gpii.templates.tests.browser.environment}.options.patterns.variable"]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertTrue",
+                        args:     ["The element should contain rendered variable content...", "{arguments}.0"]
+                    },
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [ gpii.templates.tests.browser.equalThingsAreTrue, ".viewport"]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertTrue",
+                        args:     ["Equal comparisons should display the correct text (true)...", "{arguments}.0"]
+                    },
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [ gpii.templates.tests.browser.unequalThingsAreFalse, ".viewport"]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertTrue",
+                        args:     ["Unequal comparisons should display the correct text (false)...", "{arguments}.0"]
+                    },
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.templates.tests.browser.elementMatches, ".viewport", "{gpii.templates.tests.browser.environment}.options.patterns.originalContent"]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertFalse",
+                        args:     ["The original content should no longer be found...", "{arguments}.0"]
+                    },
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.templates.tests.browser.elementMatches, ".contained", "This content should not be overwritten."]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertTrue",
+                        args:     ["Content outside of the inner container should not have been disturbed...", "{arguments}.0"]
+                    },
+                    {
+                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.templates.tests.browser.elementMatches, ".contained", "A place for everything, and everything in its place."]
+                    },
+                    {
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        listener: "jqUnit.assertTrue",
+                        args:     ["The original content of the inner container should have been updated...", "{arguments}.0"]
+                    }
+                ]
+            }
+        ]
+    }]
+});
 
-// We will reuse a function from the rendering tests to confirm that the component is doing its work.
-require("./browser-rendering-tests");
-
-fluid.registerNamespace("gpii.templates.tests.client.templateAware");
-
-gpii.templates.tests.client.templateAware.runTests = function (that) {
-
-    jqUnit.module("Testing templateAware component...");
-
-    jqUnit.asyncTest("Use Zombie.js to verify that the templateAware component is rendered...", function () {
-        var browser = Browser.create();
-        browser.on("error", function (error) {
-            jqUnit.start();
-            jqUnit.fail("There should be no errors:" + error);
-        });
-        browser.visit(that.options.config.express.baseUrl + "content/tests-templateAware.html").then(function () {
-            // The client side has already manipulated a bunch of stuff by the time we see it, we're just inspecting the results.
-            jqUnit.start();
-
-            // Reuse the rendering tests to confirm that the templateAware wiring is correct
-            var viewport = browser.window.$(".viewport");
-            gpii.templates.tests.client.render.commonTests(that, viewport, browser.window.$);
-
-            var contained = browser.window.$(".contained");
-            jqUnit.assertTrue("Content outside of the inner container should not have been disturbed...", contained.html().indexOf("This content should not be overwritten.") !== -1);
-            jqUnit.assertTrue("The original content of the inner container should have been updated...", contained.html().indexOf("A place for everything, and everything in its place.") !== -1);
-        });
-    });
-};
-
-var templateAwareComponent = gpii.templates.tests.client.harness({
-    "expressPort" :   6895,
-    "baseUrl":        "http://localhost:6895/",
+gpii.templates.tests.browser.environment({
+    "port": 6895,
+    "path": "content/tests-templateAware.html",
     expected: {
         myvar:    "modelvariable",
         markdown: "*this works*",
         json:     { foo: "bar", baz: "quux", qux: "quux" }
     },
-    listeners: {
-        "{express}.events.onStarted": {
-            funcName: "gpii.templates.tests.client.templateAware.runTests",
-            args:     ["{that}"]
+    patterns: {
+        originalContent:  "This content should not be visible",
+        renderedMarkdown: "<p><em>this works<\/em><\/p>",
+        variable:         "modelvariable"
+    },
+    components: {
+        caseHolder: {
+            type: "gpii.templates.tests.browser.templateAware.caseHolder"
         }
     }
 });
-module.exports = templateAwareComponent.afterDestroyPromise;
