@@ -20,14 +20,19 @@ fluid.defaults("gpii.templates.tests.browser.caseHolder", {
             event: "{gpii.templates.tests.browser.environment}.events.onBrowserReady"
         }
     ],
-    // Manually kill off our browser instances when the tests are finished.
+    // Manually kill off our fixtures when the tests are finished, and wait for them to die.
+    // TODO:  Review with Antranig, this does not seem to prevent "address in use" errors within a single test fixture,
+    // but only when running through `all-tests.js`.
     sequenceEnd: [
+        {
+            func: "{gpii.templates.tests.browser.environment}.harness.destroy"
+        },
         {
             func: "{gpii.templates.tests.browser.environment}.browser.end"
         },
         {
             listener: "fluid.identity",
-            event: "{gpii.templates.tests.browser.environment}.browser.events.onEndComplete"
+            event: "{gpii.templates.tests.browser.environment}.events.onAllDone"
         }
     ]
 });
@@ -39,8 +44,16 @@ fluid.defaults("gpii.templates.tests.browser.environment", {
     path: "",
     events: {
         constructFixtures: null,
+        onBrowserDone:  null,
         onBrowserReady: null,
+        onHarnessDone:  null,
         onHarnessReady: null,
+        onAllDone: {
+            events: {
+                onBrowserDone: "onBrowserDone",
+                onHarnessDone: "onHarnessDone"
+            }
+        },
         onReady: {
             events: {
                 onHarnessReady: "onHarnessReady",
@@ -60,13 +73,16 @@ fluid.defaults("gpii.templates.tests.browser.environment", {
             createOnEvent: "constructFixtures",
             options: {
                 listeners: {
-                    "onReady.notifyEnvironment": {
-                        func: "{gpii.templates.tests.browser.environment}.events.onBrowserReady.fire"
+                    "onEndComplete.notifyEnvironment": {
+                        func: "{gpii.templates.tests.browser.environment}.events.onBrowserDone.fire"
                     },
                     // As we are not testing browser error states, we can safely tie all browser errors to a call to `fluid.fail`.
                     "onError.fail": {
                         func: "fluid.fail",
                         args: ["An unexpected browser error was encountered...", { expander: { funcName: "JSON.stringify", args: ["{arguments}.0"]}}]
+                    },
+                    "onReady.notifyEnvironment": {
+                        func: "{gpii.templates.tests.browser.environment}.events.onBrowserReady.fire"
                     }
                 }
             }
@@ -79,10 +95,11 @@ fluid.defaults("gpii.templates.tests.browser.environment", {
                 listeners: {
                     "onStarted.notifyEnvironment": {
                         func: "{gpii.templates.tests.browser.environment}.events.onHarnessReady.fire"
+                    },
+                    "afterDestroy.notifyEnvironment": {
+                        func: "{gpii.templates.tests.browser.environment}.events.onHarnessDone.fire"
                     }
                 }
             }
         }
-    }
-
 });

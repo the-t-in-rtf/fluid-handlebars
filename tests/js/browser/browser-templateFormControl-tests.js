@@ -194,7 +194,7 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                 ]
             },
             {
-                name: "Submit a form that receives an unsuccessful AJAX response (as stringified JSON)...",
+                name: "Submit a form that receives an unsuccessful AJAX response (as a String)...",
                 sequence: [
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.goto",

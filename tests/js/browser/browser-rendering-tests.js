@@ -417,7 +417,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
 });
 
 gpii.templates.tests.browser.environment({
-    "port": 6595,
+    "port": 6596,
     "path": "content/tests-rendering.html",
     patterns: {
         originalContent:            "^original content$",

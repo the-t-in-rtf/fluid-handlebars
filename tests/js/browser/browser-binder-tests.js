@@ -469,7 +469,7 @@ fluid.defaults("gpii.templates.tests.browser.binder.caseHolder", {
 });
 
 gpii.templates.tests.browser.environment({
-    "port": 6984,
+    "port": 6874,
     "path": "content/tests-binder.html",
     toSet: {
         fromMarkup: "updated using form controls",
