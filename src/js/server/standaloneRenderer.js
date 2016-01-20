@@ -13,7 +13,7 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.handlebars.standaloneRenderer");
 
-var Handlebars = require("handlebars");
+var handlebars = require("handlebars");
 
 var fs   = require("fs");
 var path = require("path");
@@ -41,12 +41,12 @@ gpii.handlebars.standaloneRenderer.init = function (that) {
                 var partialPath = path.resolve(partialDir, filename);
                 var partialContent = fs.readFileSync(partialPath, "utf8");
                 var templateKey = filename.replace(/\.(handlebars|hbs)$/i, "");
-                Handlebars.registerPartial(templateKey, partialContent);
+                handlebars.registerPartial(templateKey, partialContent);
             });
 
             // Register all helper modules (child components of this module).
             fluid.each(that.helpers, function (fn, key) {
-                Handlebars.registerHelper(key, fn);
+                handlebars.registerHelper(key, fn);
             });
         });
     }
@@ -64,7 +64,7 @@ gpii.handlebars.standaloneRenderer.render = function (that, templateKey, context
         });
         if (templatePath) {
             var templateContent = fs.readFileSync(templatePath, "utf8");
-            that.compiledTemplates[templateKey] = Handlebars.compile(templateContent);
+            that.compiledTemplates[templateKey] = handlebars.compile(templateContent);
         }
         else {
             fluid.fail("Can't find template '" + templateKey + "' in any of your template directories...");
