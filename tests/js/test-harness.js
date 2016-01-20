@@ -3,28 +3,11 @@
  */
 "use strict";
 var fluid = require("infusion");
-var path  = require("path");
 
 require("gpii-express");
 
 require("../../");
 require("./lib/test-router-error");
-
-// Test content (HTML, JS, templates)
-var testDir    = path.resolve(__dirname, "..");
-var contentDir = path.join(testDir, "static");
-
-var views = [
-    path.join(testDir, "templates/primary"),
-    path.join(testDir, "templates/secondary")
-];
-
-// Dependencies
-var bcDir      = path.resolve(__dirname, "../../bower_components");
-var modulesDir = path.resolve(__dirname, "../../node_modules");
-
-// Main source to be tested
-var srcDir     = path.resolve(__dirname, "../../src");
 
 fluid.defaults("gpii.templates.tests.client.harness", {
     gradeNames:  ["gpii.express"],
@@ -39,7 +22,7 @@ fluid.defaults("gpii.templates.tests.client.harness", {
         express: {
             port:    "{that}.options.port",
             baseUrl: "{that}.options.baseUrl",
-            views:   views
+            views:   ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"]
         }
     },
     components: {
@@ -67,28 +50,28 @@ fluid.defaults("gpii.templates.tests.client.harness", {
             type: "gpii.express.router.static",
             options: {
                 path:    "/bc",
-                content: bcDir
+                content: "%gpii-handlebars/bower_components"
             }
         },
         js: {
             type: "gpii.express.router.static",
             options: {
                 path:    "/src",
-                content: srcDir
+                content: "%gpii-handlebars/src"
             }
         },
         modules: {
             type: "gpii.express.router.static",
             options: {
                 path:    "/modules",
-                content: modulesDir
+                content: "%gpii-handlebars/node_modules"
             }
         },
         content: {
             type: "gpii.express.router.static",
             options: {
                 path:    "/content",
-                content: contentDir
+                content: "%gpii-handlebars/tests/static"
             }
         },
         handlebars: {

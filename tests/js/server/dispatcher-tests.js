@@ -5,60 +5,17 @@ fluid.setLogging(true);
 
 var gpii = fluid.registerNamespace("gpii");
 
-var path = require("path");
-
 var jqUnit  = fluid.require("node-jqunit");
 var request = require("request");
 
 require("gpii-express");
 require("../../../index");
-
-var viewDirs = [
-    path.resolve(__dirname, "../../templates/primary"),
-    path.resolve(__dirname, "../../templates/secondary")
-];
+require("./lib/sanity");
 
 fluid.registerNamespace("gpii.templates.tests.server");
-gpii.templates.tests.server.bodyMatches = function (message, body, pattern, shouldNotMatch) {
-    var matches = body.match(pattern);
-    if (shouldNotMatch) {
-        jqUnit.assertNull(message, matches);
-    }
-    else {
-        jqUnit.assertNotNull(message, matches);
-    }
-};
 
-gpii.templates.tests.server.isSaneResponse = function (jqUnit, error, response, body) {
-    jqUnit.assertNull("There should be no errors.", error);
-
-    jqUnit.assertEquals("The response should have a reasonable status code", 200, response.statusCode);
-    if (response.statusCode !== 200) {
-        console.log(JSON.stringify(body, null, 2));
-    }
-
-    jqUnit.assertNotNull("There should be a body.", body);
-};
 
 gpii.templates.tests.server.runTests = function (that) {
-    jqUnit.module("Tests for inlining of templates...");
-
-    jqUnit.asyncTest("Confirm that template content is inlined...", function () {
-        request.get(that.options.config.express.baseUrl + "inline", function (error, response, body) {
-            jqUnit.start();
-
-            gpii.templates.tests.server.isSaneResponse(jqUnit, error, response, body);
-
-            if (body) {
-                var data = typeof body === "string" ? JSON.parse(body) : body;
-                jqUnit.assertNotNull("There should be templates returned...", data.templates);
-                ["layouts", "pages", "partials"].forEach(function (key) {
-                    jqUnit.assertTrue("There should be at least some content for each template type...", Object.keys(data.templates[key]).length > 0);
-                });
-            }
-        });
-    });
-
     jqUnit.module("Tests for dispatcher...");
 
     // Test the following variations:
@@ -75,7 +32,7 @@ gpii.templates.tests.server.runTests = function (that) {
             request.get(that.options.config.express.baseUrl + "dispatcher/" + page + "?myvar=queryvariable", function (error, response, body) {
                 jqUnit.start();
 
-                gpii.templates.tests.server.isSaneResponse(jqUnit, error, response, body);
+                gpii.templates.tests.server.isSaneResponse(error, response, body);
 
                 gpii.templates.tests.server.bodyMatches("There should be layout content in the body...", body, /from the layout/);
                 gpii.templates.tests.server.bodyMatches("There should be page content in the body...", body, /from the page/);
@@ -150,7 +107,7 @@ gpii.express({
         "express": {
             "port" :   6904,
             "baseUrl": "http://localhost:6904/",
-            "views":   viewDirs,
+            views:   ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
             "session": {
                 "secret": "Printer, printer take a hint-ter."
             }
@@ -158,7 +115,7 @@ gpii.express({
     },
     json: { foo: "bar", baz: "quux", qux: "quux" },
     listeners: {
-        "onCreate.runTests": {
+        "onStarted.runTests": {
             funcName: "gpii.templates.tests.server.runTests",
             args:     ["{that}"]
         }
@@ -169,15 +126,6 @@ gpii.express({
         },
         "urlencoded": {
             "type": "gpii.express.middleware.bodyparser.urlencoded"
-        },
-        "cookieparser": {
-            "type": "gpii.express.middleware.cookieparser"
-        },
-        "session": {
-            "type": "gpii.express.middleware.session"
-        },
-        inline: {
-            type: "gpii.express.hb.inline"
         },
         dispatcher: {
             type: "gpii.express.dispatcher",

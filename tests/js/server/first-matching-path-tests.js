@@ -54,7 +54,7 @@ jqUnit.test("A string should be useable in a search...", function () {
     jqUnit.assertEquals("The path should be found...", path.resolve(baseDir, "tests"), matches);
 });
 
-jqUnit.test("A bogus strings should not result in a match...", function () {
+jqUnit.test("A bogus string should not result in a match...", function () {
     var matches = fluid.find([srcDir, testDir], gpii.express.hb.getPathSearchFn("bogus"));
     jqUnit.assertUndefined("The path should not be found...", matches);
 });

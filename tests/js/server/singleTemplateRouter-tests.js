@@ -20,8 +20,6 @@ gpii.express.loadTestingSupport();
 var kettle = require("kettle");
 kettle.loadTestingSupport();
 
-var templateDir = path.resolve(__dirname, "../../templates/primary");
-
 fluid.registerNamespace("gpii.templates.tests.singleTemplateRouter");
 
 // Verify the results of a request.  Accepts the following values:
@@ -145,7 +143,7 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.environment", {
                     express: {
                         port:    "{testEnvironment}.options.expressPort",
                         baseUrl: "{testEnvironment}.options.baseUrl",
-                        views:   templateDir
+                        views:   ["%gpii-handlebars/tests/templates/primary"]
                     }
                 },
                 components: {

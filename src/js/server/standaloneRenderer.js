@@ -8,6 +8,12 @@
 //  1. Any templates in the `partials` subdirectory relative to `options.templateDir` will be registered as partials for use in `{{>partial}}` statements.
 //  2. All other templates are expected to be stored in a `pages` subdirectory relative to `options.templateDir`.
 //
+// The most important configuration option is `options.templateDir`, which can either be a string or an array of strings
+// representing the location of one or more template directories.  As with the `gpii.express` `views` option, the
+// string values will usually be unresolved references to a directory within a package, as in:
+//
+// `%npm-package-name/path/within/package`
+//
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
@@ -29,34 +35,27 @@ gpii.handlebars.standaloneRenderer.addHelper = function (that, component) {
 };
 
 gpii.handlebars.standaloneRenderer.init = function (that) {
-    if (!that.options.templateDir) {
-        fluid.fail("Cannot initialize template handling without a 'templateDir' option...");
-    }
-    else {
-        var templateDirs = fluid.makeArray(that.options.templateDir);
-        fluid.each(templateDirs, function (templateDir) {
-            // Register all partials found in the "partials" subdirectory relative to `options.templateDir`;
-            var partialDir = path.resolve(templateDir, "partials");
-            fluid.each(fs.readdirSync(partialDir), function (filename) {
-                var partialPath = path.resolve(partialDir, filename);
-                var partialContent = fs.readFileSync(partialPath, "utf8");
-                var templateKey = filename.replace(/\.(handlebars|hbs)$/i, "");
-                handlebars.registerPartial(templateKey, partialContent);
-            });
-
-            // Register all helper modules (child components of this module).
-            fluid.each(that.helpers, function (fn, key) {
-                handlebars.registerHelper(key, fn);
-            });
+    fluid.each(that.templateDirs, function (templateDir) {
+        // Register all partials found in the "partials" subdirectory relative to `options.templateDir`;
+        var partialDir = path.resolve(templateDir, "partials");
+        fluid.each(fs.readdirSync(partialDir), function (filename) {
+            var partialPath = path.resolve(partialDir, filename);
+            var partialContent = fs.readFileSync(partialPath, "utf8");
+            var templateKey = filename.replace(/\.(handlebars|hbs)$/i, "");
+            handlebars.registerPartial(templateKey, partialContent);
         });
-    }
+
+        // Register all helper modules (child components of this module).
+        fluid.each(that.helpers, function (fn, key) {
+            handlebars.registerHelper(key, fn);
+        });
+    });
 };
 
 gpii.handlebars.standaloneRenderer.render = function (that, templateKey, context) {
     if (!that.compiledTemplates[templateKey]) {
-        var templateDirs = fluid.makeArray(that.options.templateDir);
         var templatePath = false;
-        fluid.each(templateDirs, function (templateDir) {
+        fluid.each(that.templateDirs, function (templateDir) {
             var candidatePath = path.resolve(templateDir, "./pages", templateKey + that.options.handlebarsSuffix);
             if (fs.existsSync(candidatePath)) {
                 templatePath = candidatePath;
@@ -79,7 +78,21 @@ fluid.defaults("gpii.handlebars.standaloneRenderer", {
     gradeNames: ["fluid.modelComponent"],
     members: {
         helpers:           {},
-        compiledTemplates: {}
+        compiledTemplates: {},
+        templateDirs: {
+            expander: {
+                funcName: "fluid.transform",
+                args: [
+                    {
+                        expander: {
+                            funcName: "fluid.makeArray",
+                            args: ["{that}.options.templateDir"]
+                        }
+                    },
+                    fluid.module.resolvePath
+                ]
+            }
+        }
     },
     handlebarsSuffix: ".handlebars",
     distributeOptions: [

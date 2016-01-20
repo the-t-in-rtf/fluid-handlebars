@@ -1,4 +1,8 @@
-// A convenience file to include all server-side components at once
+// Include all server side components and register our working directory.
+//
+"use strict";
+var fluid = require("infusion");
+fluid.module.register("gpii-handlebars", __dirname, require);
 
 // Common base components for both server and client side
 require("./src/js/common/helper");

@@ -21,15 +21,14 @@ require("./lib/first-matching-path");
 
 var path       = require("path");
 
-gpii.express.dispatcher.route = function (that, req, res) {
+gpii.express.dispatcher.route = function (that, expressComponent, req, res) {
     var template     = req.params.template ? req.params.template : that.options.defaultTemplate;
     var templateName = template + ".handlebars";
 
     var layoutName   = templateName;
 
-    var viewDirs = fluid.makeArray(that.options.config.express.views);
-    var layoutExists   =  fluid.find(viewDirs, gpii.express.hb.getPathSearchFn(["layouts", templateName]));
-    var templateExists =  fluid.find(viewDirs, gpii.express.hb.getPathSearchFn(["pages", templateName]));
+    var layoutExists   =  fluid.find(expressComponent.views, gpii.express.hb.getPathSearchFn(["layouts", templateName]));
+    var templateExists =  fluid.find(expressComponent.views, gpii.express.hb.getPathSearchFn(["pages", templateName]));
 
     if (!layoutExists) {
         layoutName = that.options.defaultLayout;
@@ -74,11 +73,10 @@ fluid.defaults("gpii.express.dispatcher", {
     // This will ensure that the root content handling (which defaults to using `index.handlebars`) responds to the
     // root of the path.
     //
-    config:          "{expressConfigHolder}.options.config",
     invokers: {
         route: {
             funcName: "gpii.express.dispatcher.route",
-            args: ["{that}", "{arguments}.0", "{arguments}.1"]
+            args: ["{that}", "{gpii.express}", "{arguments}.0", "{arguments}.1"]
         }
     }
 });

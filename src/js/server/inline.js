@@ -53,8 +53,7 @@ fluid.defaults("gpii.express.hb.inline.request", {
 });
 
 gpii.express.hb.inline.loadTemplates =  function (that, views) {
-    var viewDirs = fluid.makeArray(views);
-    fluid.each(viewDirs, function (viewDir) {
+    fluid.each(views, function (viewDir) {
         // Start with each "views" directory and work our way down
         var dirContents = fs.readdirSync(viewDir);
         dirContents.forEach(function (entry) {
@@ -92,7 +91,6 @@ fluid.defaults("gpii.express.hb.inline", {
     path:                "/inline",
     hbsExtensionRegexp:  /^(.+)\.(?:hbs|handlebars)$/,
     allowedTemplateDirs: ["layouts", "partials", "pages"],
-    config:              "{expressConfigHolder}.options.config",
     members: {
         templates: {
             layouts:  {},
@@ -107,7 +105,7 @@ fluid.defaults("gpii.express.hb.inline", {
     listeners: {
         "onCreate.loadTemplates": {
             funcName: "gpii.express.hb.inline.loadTemplates",
-            args:     [ "{that}", "{that}.options.config.express.views" ]
+            args:     [ "{that}", "{gpii.express}.views" ]
         }
     }
 });

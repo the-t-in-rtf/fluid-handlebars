@@ -6,12 +6,6 @@ var gpii  = fluid.registerNamespace("gpii");
 require("../../../index");
 
 var jqUnit = require("node-jqunit");
-var path   = require("path");
-
-var templateDir = [
-    path.resolve(__dirname, "../../templates/primary"),
-    path.resolve(__dirname, "../../templates/secondary")
-];
 
 fluid.registerNamespace("gpii.handlebars.tests.standaloneRenderer");
 gpii.handlebars.tests.standaloneRenderer.runTests = function (that) {
@@ -91,7 +85,7 @@ fluid.component({
         renderer: {
             type: "gpii.handlebars.standaloneRenderer",
             options: {
-                templateDir: templateDir
+                templateDir: "%gpii-handlebars/tests/templates/primary"
             }
         }
     }

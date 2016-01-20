@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "express-handlebars": "1.2.2",
-    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#bac064166bac3d59bebdbfc2bb4b7c33eaafeca1",
+    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#d7b995bc5d210439699c269ce8ef327280167550",
     "handlebars": "4.0.0",
     "infusion": "2.0.0-dev.20151211T025229Z.eabb4fc",
     "marked": "0.3.5",

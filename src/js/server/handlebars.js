@@ -23,13 +23,11 @@ gpii.express.addHelper = function (that, component) {
     }
 };
 
-gpii.express.configureExpress = function (that, express) {
-    if (that.options.config.express.views) {
-        var viewDirs     = fluid.makeArray(that.options.config.express.views);
-
+gpii.express.configureExpress = function (that, expressComponent) {
+    if (expressComponent.views) {
         // Add any partial directories we find.
         var partialsDirs = [];
-        fluid.each(viewDirs, function (viewDir) {
+        fluid.each(expressComponent.views, function (viewDir) {
             // We add entries in reverse order to preserve the same inheritance we see with pages.
             partialsDirs.unshift(viewDir + "/partials/");
         });
@@ -37,7 +35,7 @@ gpii.express.configureExpress = function (that, express) {
         // We can only use the first layouts directory until this issue is resolved in express-handlebars:
         //
         // https://github.com/ericf/express-handlebars/issues/112
-        var layoutDir = fluid.find(viewDirs, gpii.express.hb.getPathSearchFn("layouts"));
+        var layoutDir = fluid.find(expressComponent.views, gpii.express.hb.getPathSearchFn("layouts"));
 
         var handlebarsConfig = {
             defaultLayout: "main",
@@ -47,21 +45,20 @@ gpii.express.configureExpress = function (that, express) {
 
         handlebarsConfig.helpers = that.helpers;
 
-        express.set("views", that.options.config.express.views);
+        expressComponent.express.set("views", expressComponent.views);
 
         var hbs = exphbs.create(handlebarsConfig);
-        express.engine("handlebars", hbs.engine);
-        express.set("view engine", "handlebars");
+        expressComponent.express.engine("handlebars", hbs.engine);
+        expressComponent.express.set("view engine", "handlebars");
     }
     else {
-        fluid.fail("Cannot initialize template handling without a 'config.express.views' option");
+        fluid.fail("Cannot initialize template handling unless at least one template directory location is configured...");
     }
 };
 
 fluid.defaults("gpii.express.hb", {
-    gradeNames: ["fluid.modelComponent"],
-    config:     "{expressConfigHolder}.options.config",
-    express:    "{gpii.express}.express",
+    gradeNames:       ["fluid.modelComponent"],
+    config:           "{expressConfigHolder}.options.config",
     members: {
         helpers: {}
     },
@@ -92,7 +89,7 @@ fluid.defaults("gpii.express.hb", {
     listeners: {
         "{gpii.express}.events.onStarted": {
             funcName: "gpii.express.configureExpress",
-            args:     ["{that}", "{arguments}.0"]
+            args:     ["{that}", "{gpii.express}"]
         }
     }
 });
