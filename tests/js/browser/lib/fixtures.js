@@ -79,7 +79,12 @@ fluid.defaults("gpii.templates.tests.browser.environment", {
                     // As we are not testing browser error states, we can safely tie all browser errors to a call to `fluid.fail`.
                     "onError.fail": {
                         func: "fluid.fail",
-                        args: ["An unexpected browser error was encountered...", { expander: { funcName: "JSON.stringify", args: ["{arguments}.0"]}}]
+                        args: ["An unexpected browser error was encountered...", {
+                            expander: {
+                                funcName: "JSON.stringify",
+                                args: ["{arguments}.0"]
+                            }
+                        }]
                     },
                     "onReady.notifyEnvironment": {
                         func: "{gpii.templates.tests.browser.environment}.events.onBrowserReady.fire"
@@ -102,4 +107,5 @@ fluid.defaults("gpii.templates.tests.browser.environment", {
                 }
             }
         }
+    }
 });

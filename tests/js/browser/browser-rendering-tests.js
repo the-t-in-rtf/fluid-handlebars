@@ -19,7 +19,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.templates.tests.browser.getElementHtml, ".viewport-after", "next"]
+                        args:     [gpii.tests.browser.tests.getElementHtml, ".viewport-after", "next"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -28,7 +28,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-after", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown", "next"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-after", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown", "next"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -37,7 +37,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-after", "{gpii.templates.tests.browser.environment}.options.patterns.variable", "next"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-after", "{gpii.templates.tests.browser.environment}.options.patterns.variable", "next"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -64,7 +64,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-after", "{gpii.templates.tests.browser.environment}.options.patterns.originalContent"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-after", "{gpii.templates.tests.browser.environment}.options.patterns.originalContent"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -73,7 +73,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-after", "{gpii.templates.tests.browser.environment}.options.patterns.partialContent", "next"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-after", "{gpii.templates.tests.browser.environment}.options.patterns.partialContent", "next"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -92,7 +92,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.templates.tests.browser.getElementHtml, ".viewport-append"]
+                        args:     [gpii.tests.browser.tests.getElementHtml, ".viewport-append"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -101,7 +101,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-append", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-append", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -110,7 +110,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-append", "{gpii.templates.tests.browser.environment}.options.patterns.variable"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-append", "{gpii.templates.tests.browser.environment}.options.patterns.variable"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -137,7 +137,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-append", "{gpii.templates.tests.browser.environment}.options.patterns.originalContentAtBeginning"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-append", "{gpii.templates.tests.browser.environment}.options.patterns.originalContentAtBeginning"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -156,7 +156,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.templates.tests.browser.getElementHtml, ".viewport-before", "prev"]
+                        args:     [gpii.tests.browser.tests.getElementHtml, ".viewport-before", "prev"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -165,7 +165,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-before", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown", "prev"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-before", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown", "prev"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -174,7 +174,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-before", "{gpii.templates.tests.browser.environment}.options.patterns.variable", "prev"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-before", "{gpii.templates.tests.browser.environment}.options.patterns.variable", "prev"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -201,7 +201,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-before", "{gpii.templates.tests.browser.environment}.options.patterns.originalContent"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-before", "{gpii.templates.tests.browser.environment}.options.patterns.originalContent"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -210,7 +210,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-before", "{gpii.templates.tests.browser.environment}.options.patterns.partialContent", "prev"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-before", "{gpii.templates.tests.browser.environment}.options.patterns.partialContent", "prev"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -229,7 +229,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.templates.tests.browser.getElementHtml, ".viewport-html"]
+                        args:     [gpii.tests.browser.tests.getElementHtml, ".viewport-html"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -238,7 +238,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-html", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-html", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -247,7 +247,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-html", "{gpii.templates.tests.browser.environment}.options.patterns.variable"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-html", "{gpii.templates.tests.browser.environment}.options.patterns.variable"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -274,7 +274,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-html", "{gpii.templates.tests.browser.environment}.options.patterns.originalContent"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-html", "{gpii.templates.tests.browser.environment}.options.patterns.originalContent"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -293,7 +293,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.templates.tests.browser.getElementHtml, ".viewport-prepend"]
+                        args:     [gpii.tests.browser.tests.getElementHtml, ".viewport-prepend"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -302,7 +302,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-prepend", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-prepend", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -311,7 +311,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-prepend", "{gpii.templates.tests.browser.environment}.options.patterns.variable"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-prepend", "{gpii.templates.tests.browser.environment}.options.patterns.variable"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -338,7 +338,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-prepend", "{gpii.templates.tests.browser.environment}.options.patterns.originalContentAtEnd"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-prepend", "{gpii.templates.tests.browser.environment}.options.patterns.originalContentAtEnd"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -358,7 +358,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.templates.tests.browser.getElementHtml, ".viewport-replaceWith.replaced"]
+                        args:     [gpii.tests.browser.tests.getElementHtml, ".viewport-replaceWith.replaced"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -367,7 +367,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-replaceWith.replaced", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-replaceWith.replaced", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -376,7 +376,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-replaceWith.replaced", "{gpii.templates.tests.browser.environment}.options.patterns.variable"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-replaceWith.replaced", "{gpii.templates.tests.browser.environment}.options.patterns.variable"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -403,7 +403,7 @@ fluid.defaults("gpii.templates.tests.browser.renderer.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, ".viewport-replaceWith.replaced", "{gpii.templates.tests.browser.environment}.options.patterns.originalContent"]
+                        args: [gpii.tests.browser.tests.elementMatches, ".viewport-replaceWith.replaced", "{gpii.templates.tests.browser.environment}.options.patterns.originalContent"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",

@@ -7,7 +7,7 @@
 //
 // Requires Handlebars.js and Pagedown (for markdown rendering)
 
-/* global fluid, jQuery, Handlebars */
+/* global fluid, jQuery, handlebars */
 (function ($) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");

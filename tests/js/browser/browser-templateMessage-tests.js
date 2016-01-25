@@ -20,7 +20,7 @@ fluid.defaults("gpii.templates.tests.browser.templateMessage.caseHolder", {
                     {
                         event: "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, "body", "{gpii.templates.tests.browser.environment}.options.notExpected"]
+                        args: [gpii.tests.browser.tests.elementMatches, "body", "{gpii.templates.tests.browser.environment}.options.notExpected"]
                     },
                     {
                         event: "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -29,7 +29,7 @@ fluid.defaults("gpii.templates.tests.browser.templateMessage.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, "body", "{gpii.templates.tests.browser.environment}.options.expected.initialized"]
+                        args: [gpii.tests.browser.tests.elementMatches, "body", "{gpii.templates.tests.browser.environment}.options.expected.initialized"]
                     },
                     {
                         event: "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -38,7 +38,7 @@ fluid.defaults("gpii.templates.tests.browser.templateMessage.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.templates.tests.browser.elementMatches, "body", "{gpii.templates.tests.browser.environment}.options.expected.updated"]
+                        args: [gpii.tests.browser.tests.elementMatches, "body", "{gpii.templates.tests.browser.environment}.options.expected.updated"]
                     },
                     {
                         event: "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
