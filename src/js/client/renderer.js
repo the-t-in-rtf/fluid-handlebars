@@ -7,7 +7,7 @@
 //
 // Requires Handlebars.js and Pagedown (for markdown rendering)
 
-/* global fluid, jQuery, handlebars */
+/* global fluid, jQuery, Handlebars */
 (function ($) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
@@ -25,9 +25,9 @@
     };
 
     gpii.templates.renderer.registerHelpers = function (that) {
-        if (handlebars) {
+        if (Handlebars) {
             fluid.each(that.helpers, function (value, key) {
-                handlebars.registerHelper(key, value);
+                Handlebars.registerHelper(key, value);
             });
         }
         else {
@@ -44,7 +44,7 @@
         // TODO:  Cleanly separate the caching responsibility into a new grade.
         // Cache each compiled template the first time we use it...
         if (!that.compiled[templateType][templateName]) {
-            var compiledTemplate = handlebars.compile(that.templates[templateType][templateName]);
+            var compiledTemplate = Handlebars.compile(that.templates[templateType][templateName]);
 
             that.compiled[templateType][templateName] = compiledTemplate;
         }
@@ -64,7 +64,7 @@
 
     gpii.templates.renderer.loadPartials  = function (that) {
         fluid.each(that.templates.partials, function (value, key) {
-            handlebars.registerPartial(key, value);
+            Handlebars.registerPartial(key, value);
         });
     };
 
