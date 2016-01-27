@@ -8,11 +8,9 @@ require("../../../index");
 
 var jqUnit = require("node-jqunit");
 var fs     = require("fs");
-var path   = require("path");
 var jsdom  = require("jsdom");
 
-var jqueryPath = path.resolve(__dirname, "../../../node_modules/infusion/src/lib/jquery/core/js/jquery.js");
-var jqueryContent = fs.readFileSync(jqueryPath, "utf8");
+var jqueryContent = fs.readFileSync(fluid.module.resolvePath("%infusion/src/lib/jquery/core/js/jquery.js"), "utf8");
 
 require("gpii-express");
 gpii.express.loadTestingSupport();
