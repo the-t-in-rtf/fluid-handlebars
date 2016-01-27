@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "express-handlebars": "1.2.2",
-    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#d7b995bc5d210439699c269ce8ef327280167550",
+    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#0db27dbacbfde918a49920f129371ecab3e9d837",
     "handlebars": "4.0.5",
     "infusion": "2.0.0-dev.20151211T025229Z.eabb4fc",
     "marked": "0.3.5",
@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "node-jqunit": "~1.1.3",
-    "gpii-test-browser": "git://github.com/the-t-in-rtf/gpii-test-browser#0d0e49c019b8ed90ef9c5b016f0a32972a143c7f",
+    "gpii-test-browser": "git://github.com/the-t-in-rtf/gpii-test-browser#9dacecc71d464ab344d3ac1262c9ad65e8a5865c",
     "grunt": "~0.4.4",
     "grunt-shell": "0.6.4",
     "grunt-contrib-jshint": "~0.9.0",
