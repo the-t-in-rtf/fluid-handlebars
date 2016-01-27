@@ -24,6 +24,8 @@ var handlebars = require("handlebars");
 var fs   = require("fs");
 var path = require("path");
 
+require("gpii-express"); // required to pick up `resolvePaths` function used below.
+
 gpii.handlebars.standaloneRenderer.addHelper = function (that, component) {
     var key = component.options.helperName;
     if (component.getHelper) {
@@ -79,20 +81,7 @@ fluid.defaults("gpii.handlebars.standaloneRenderer", {
     members: {
         helpers:           {},
         compiledTemplates: {},
-        templateDirs: {
-            expander: {
-                funcName: "fluid.transform",
-                args: [
-                    {
-                        expander: {
-                            funcName: "fluid.makeArray",
-                            args: ["{that}.options.templateDir"]
-                        }
-                    },
-                    fluid.module.resolvePath
-                ]
-            }
-        }
+        templateDirs: "@expand:gpii.express.expandPaths({that}.options.templateDir)"
     },
     handlebarsSuffix: ".handlebars",
     distributeOptions: [
