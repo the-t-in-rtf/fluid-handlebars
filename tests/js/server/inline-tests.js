@@ -10,7 +10,7 @@ var request = require("request");
 
 require("gpii-express");
 require("../../../index");
-require("./lib/sanity.js")
+require("./lib/sanity.js");
 
 fluid.registerNamespace("gpii.templates.tests.server.inline");
 gpii.templates.tests.server.inline.runTests = function (that) {

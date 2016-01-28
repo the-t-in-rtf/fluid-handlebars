@@ -87,7 +87,8 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                         args:     [500]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.tests.browser.tests.elementMatches, ".readyForStringifySuccess .success", "This was a triumph"]
                     },
                     {
