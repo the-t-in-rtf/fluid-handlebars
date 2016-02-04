@@ -10,7 +10,7 @@ var jqUnit = require("node-jqunit");
 
 // We use these to confirm that paths are actually resolved.
 var baseDir = fluid.module.resolvePath("%gpii-handlebars");
-var path    = require("path");
+var srcDir  = fluid.module.resolvePath("%gpii-handlebars/src");
 
 require("../../../index");
 require("../../../src/js/server/lib/resolver");
@@ -36,12 +36,12 @@ fluid.defaults("gpii.hb.tests.resolver", {
         {
             message: "A string should resolve correctly...",
             original: "%gpii-handlebars/src",
-            expected: [path.resolve(baseDir, "src")]
+            expected: [srcDir]
         },
         {
             message: "An array should resolve correctly...",
             original: ["%gpii-handlebars/src", "%gpii-handlebars"],
-            expected: [path.resolve(baseDir, "src"), baseDir]
+            expected: [srcDir, baseDir]
         },
         {
             message: "A full path passed as a string should not be changed...",
@@ -75,6 +75,10 @@ fluid.defaults("gpii.hb.tests.resolver", {
         }
     ],
     listeners: {
+        "onCreate.setModule": {
+            funcName: "jqUnit.module",
+            args:     ["Testing the 'resolver' static function..."]
+        },
         "onCreate.runTests": {
             funcName: "fluid.each",
             args:     ["{that}.options.tests", gpii.hb.tests.resolver.singleTest]

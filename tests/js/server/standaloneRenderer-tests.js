@@ -12,7 +12,7 @@ gpii.handlebars.tests.standaloneRenderer.runTests = function (that) {
     fluid.each(that.options.tests, function (testOptions) {
         jqUnit.test(testOptions.name, function () {
             var output = that.renderer.render(testOptions.templateKey, testOptions.context);
-            jqUnit.assertEquals("The output should be as expected...", testOptions.expected, output);
+            jqUnit.assertEquals("The output should be as expected...", testOptions.expected, output.trim());
         });
     });
 };
@@ -48,19 +48,19 @@ fluid.component({
             name:        "Testing 'md' helper with valid content...",
             templateKey: "helpers-md",
             context:     { markdown: "This *works*" },
-            expected:    "<p>This <em>works</em></p>\n"
+            expected:    "<p>This <em>works</em></p>"
         },
         {
             name:        "Testing 'md' helper with no matching content...",
             templateKey: "helpers-md",
             context:     {},
-            expected:    "\n"
+            expected:    ""
         },
         {
             name:        "Testing 'md' helper with non-string content...",
             templateKey: "helpers-md",
             context:     { markdown: 1},
-            expected:    "<p>1</p>\n"
+            expected:    "<p>1</p>"
         },
         {
             name:        "Testing 'jsonify' helper...",
