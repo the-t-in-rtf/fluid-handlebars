@@ -9,7 +9,7 @@ To add this library to your server-side dependencies, add it to your `package.js
 ```
   ...
   "dependencies": {
-    "gpii-handlebars": "git://github.com/the-t-in-rtf/gpii-handlebars.git",
+    "gpii-handlebars": "git://github.com/GPII/gpii-handlebars.git",
   },
   ...
 ```
