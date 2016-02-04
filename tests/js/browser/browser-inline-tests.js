@@ -44,7 +44,7 @@ gpii.templates.tests.browser.inline.hasSecondaryPartial = function () {
 };
 
 fluid.defaults("gpii.templates.tests.browser.inline.caseHolder", {
-    gradeNames: ["gpii.templates.tests.browser.caseHolder"],
+    gradeNames: ["gpii.tests.browser.caseHolder.withExpress"],
     rawModules: [{
         tests: [{
             name: "Confirm that template content delivered by the 'inline' router is correct and usable from a templateAware component...",

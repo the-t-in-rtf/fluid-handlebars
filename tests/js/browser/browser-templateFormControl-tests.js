@@ -9,7 +9,7 @@ require("./includes.js");
 fluid.registerNamespace("gpii.templates.tests.client.templateFormControl");
 
 fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
-    gradeNames: ["gpii.templates.tests.browser.caseHolder"],
+    gradeNames: ["gpii.tests.browser.caseHolder.withExpress"],
     rawModules: [{
         tests: [
             {

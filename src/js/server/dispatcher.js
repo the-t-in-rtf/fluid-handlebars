@@ -18,17 +18,20 @@ var gpii       = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.dispatcher");
 
 require("./lib/first-matching-path");
+require("./lib/resolver");
 
 var path       = require("path");
 
-gpii.express.dispatcher.route = function (that, expressComponent, req, res) {
+gpii.express.dispatcher.route = function (that, req, res) {
     var template     = req.params.template ? req.params.template : that.options.defaultTemplate;
     var templateName = template + ".handlebars";
 
     var layoutName   = templateName;
 
-    var layoutExists   =  fluid.find(expressComponent.views, gpii.express.hb.getPathSearchFn(["layouts", templateName]));
-    var templateExists =  fluid.find(expressComponent.views, gpii.express.hb.getPathSearchFn(["pages", templateName]));
+    var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
+
+    var layoutExists   =  fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn(["layouts", templateName]));
+    var templateExists =  fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn(["pages", templateName]));
 
     if (!layoutExists) {
         layoutName = that.options.defaultLayout;
@@ -76,7 +79,7 @@ fluid.defaults("gpii.express.dispatcher", {
     invokers: {
         route: {
             funcName: "gpii.express.dispatcher.route",
-            args: ["{that}", "{gpii.express}", "{arguments}.0", "{arguments}.1"]
+            args: ["{that}", "{arguments}.0", "{arguments}.1"]
         }
     }
 });

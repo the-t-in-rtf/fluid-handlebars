@@ -1,7 +1,6 @@
 // Test all server side modules (including basic template rendering)...
 "use strict";
 var fluid = require("infusion");
-fluid.setLogging(true);
 
 var gpii = fluid.registerNamespace("gpii");
 

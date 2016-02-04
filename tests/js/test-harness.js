@@ -21,15 +21,16 @@ fluid.defaults("gpii.templates.tests.client.harness", {
     config:  {
         express: {
             port:    "{that}.options.port",
-            baseUrl: "{that}.options.baseUrl",
-            views:   ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"]
+            baseUrl: "{that}.options.baseUrl"
         }
     },
+    templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
     components: {
         dispatcher: {
             type: "gpii.express.dispatcher",
             options: {
                 path: ["/dispatcher/:template", "/dispatcher"],
+                templateDirs: "{harness}.options.templateDirs",
                 rules: {
                     contextToExpose: {
                         myvar:    { literalValue: "modelvariable" },
@@ -43,7 +44,8 @@ fluid.defaults("gpii.templates.tests.client.harness", {
         inline: {
             type: "gpii.express.hb.inline",
             options: {
-                path: "/hbs"
+                path: "/hbs",
+                templateDirs: "{harness}.options.templateDirs"
             }
         },
         bc: {
@@ -77,6 +79,7 @@ fluid.defaults("gpii.templates.tests.client.harness", {
         handlebars: {
             type: "gpii.express.hb",
             options: {
+                templateDirs: "{harness}.options.templateDirs",
                 components: {
                     initBlock: {
                         options: {

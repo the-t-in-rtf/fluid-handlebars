@@ -1,8 +1,12 @@
-// A module that add support for handlebars itself to an express module.
+// A module that add support for handlebars itself to an express module. It is designed to be used by adding it to a
+// `gpii.express` instance as a child component.
 //
-// This is designed to be used by adding it to a `gpii.express` instance as a child component.
+// `options.templateDirs` is a list of view directories that contain handlebars layouts, pages, and partials.  These can
+// either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`.
 //
-// Any "helper" functions should extend the `gpii.express.helper` grade, and should be added as child components of an instance of this grade.
+// Any "helper" functions should extend the `gpii.express.helper` grade, and should be added as child components of an 
+// instance of this grade.
+//
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
@@ -12,6 +16,7 @@ var exphbs = require("express-handlebars");
 
 require("handlebars");
 require("./lib/first-matching-path");
+require("./lib/resolver");
 
 gpii.express.addHelper = function (that, component) {
     var key = component.options.helperName;
@@ -24,10 +29,12 @@ gpii.express.addHelper = function (that, component) {
 };
 
 gpii.express.configureExpress = function (that, expressComponent) {
-    if (expressComponent.views) {
+    var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
+
+    if (resolvedTemplateDirs.length > 0) {
         // Add any partial directories we find.
         var partialsDirs = [];
-        fluid.each(expressComponent.views, function (viewDir) {
+        fluid.each(resolvedTemplateDirs, function (viewDir) {
             // We add entries in reverse order to preserve the same inheritance we see with pages.
             partialsDirs.unshift(viewDir + "/partials/");
         });
@@ -35,7 +42,7 @@ gpii.express.configureExpress = function (that, expressComponent) {
         // We can only use the first layouts directory until this issue is resolved in express-handlebars:
         //
         // https://github.com/ericf/express-handlebars/issues/112
-        var layoutDir = fluid.find(expressComponent.views, gpii.express.hb.getPathSearchFn("layouts"));
+        var layoutDir = fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn("layouts"));
 
         var handlebarsConfig = {
             defaultLayout: "main",
@@ -45,7 +52,7 @@ gpii.express.configureExpress = function (that, expressComponent) {
 
         handlebarsConfig.helpers = that.helpers;
 
-        expressComponent.express.set("views", expressComponent.views);
+        expressComponent.express.set("views", resolvedTemplateDirs);
 
         var hbs = exphbs.create(handlebarsConfig);
         expressComponent.express.engine("handlebars", hbs.engine);
@@ -60,7 +67,8 @@ fluid.defaults("gpii.express.hb", {
     gradeNames:       ["fluid.modelComponent"],
     config:           "{expressConfigHolder}.options.config",
     members: {
-        helpers: {}
+        helpers: {},
+        templateDirs: []
     },
     model: {},    // We should have an empty model, as the dispatcher expects to expose that.
     distributeOptions: [

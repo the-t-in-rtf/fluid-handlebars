@@ -7,7 +7,7 @@ var gpii  = fluid.registerNamespace("gpii");
 require("./includes.js");
 
 fluid.defaults("gpii.templates.tests.browser.templateAware.caseHolder", {
-    gradeNames: ["gpii.templates.tests.browser.caseHolder"],
+    gradeNames: ["gpii.tests.browser.caseHolder.withExpress"],
     rawModules: [{
         tests: [
             {

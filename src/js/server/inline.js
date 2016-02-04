@@ -28,6 +28,8 @@ fluid.registerNamespace("gpii.express.hb.inline");
 var fs     = require("fs");
 var path   = require("path");
 
+require("./lib/resolver");
+
 fluid.registerNamespace("gpii.express.hb.inline.request");
 gpii.express.hb.inline.request.sendResponse = function (that) {
     if (that.options.templates) {
@@ -52,12 +54,14 @@ fluid.defaults("gpii.express.hb.inline.request", {
     }
 });
 
-gpii.express.hb.inline.loadTemplates =  function (that, views) {
-    fluid.each(views, function (viewDir) {
+gpii.express.hb.inline.loadTemplates =  function (that) {
+    var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
+
+    fluid.each(resolvedTemplateDirs, function (templateDir) {
         // Start with each "views" directory and work our way down
-        var dirContents = fs.readdirSync(viewDir);
+        var dirContents = fs.readdirSync(templateDir);
         dirContents.forEach(function (entry) {
-            var subDirPath = path.resolve(viewDir, entry);
+            var subDirPath = path.resolve(templateDir, entry);
             var stats = fs.statSync(subDirPath);
             if (stats.isDirectory() && that.options.allowedTemplateDirs.indexOf[entry] !== -1) {
                 gpii.express.hb.inline.scanTemplateSubdir(that, entry, subDirPath);
@@ -105,7 +109,7 @@ fluid.defaults("gpii.express.hb.inline", {
     listeners: {
         "onCreate.loadTemplates": {
             funcName: "gpii.express.hb.inline.loadTemplates",
-            args:     [ "{that}", "{gpii.express}.views" ]
+            args:     ["{that}"]
         }
     }
 });

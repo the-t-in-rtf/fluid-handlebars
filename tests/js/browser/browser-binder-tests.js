@@ -14,7 +14,7 @@ gpii.templates.tests.browser.binder.applyChange = function (componentPath, model
 
 
 fluid.defaults("gpii.templates.tests.browser.binder.caseHolder", {
-    gradeNames: ["gpii.templates.tests.browser.caseHolder"],
+    gradeNames: ["gpii.tests.browser.caseHolder.withExpress"],
     rawModules: [{
         tests: [
             // The form values are set on startup and are thus checked all at once.
@@ -26,7 +26,7 @@ fluid.defaults("gpii.templates.tests.browser.binder.caseHolder", {
                         args: ["{gpii.templates.tests.browser.environment}.options.url"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onGotoComplete",
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.tests.browser.tests.lookupFunction, ".viewport-long [name='init-from-model']", "value"]
                     },
@@ -485,4 +485,3 @@ gpii.templates.tests.browser.environment({
         }
     }
 });
-
