@@ -106,7 +106,6 @@ gpii.express({
         "express": {
             "port" :   6904,
             "baseUrl": "http://localhost:6904/",
-            views:   ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
             "session": {
                 "secret": "Printer, printer take a hint-ter."
             }
@@ -130,6 +129,7 @@ gpii.express({
             type: "gpii.express.dispatcher",
             options: {
                 path: ["/dispatcher/:template", "/dispatcher"],
+                templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
                 rules: {
                     contextToExpose: {
                         myvar:    { literalValue: "modelvariable" },
@@ -141,7 +141,10 @@ gpii.express({
             }
         },
         handlebars: {
-            type: "gpii.express.hb"
+            type: "gpii.express.hb",
+            options: {
+                templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"]
+            }
         }
     }
 });

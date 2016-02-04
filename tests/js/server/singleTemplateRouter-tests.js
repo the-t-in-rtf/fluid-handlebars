@@ -140,8 +140,7 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.environment", {
                 config: {
                     express: {
                         port:    "{testEnvironment}.options.expressPort",
-                        baseUrl: "{testEnvironment}.options.baseUrl",
-                        views:   ["%gpii-handlebars/tests/templates/primary"]
+                        baseUrl: "{testEnvironment}.options.baseUrl"
                     }
                 },
                 components: {
@@ -155,7 +154,10 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.environment", {
                         }
                     },
                     handlebars: {
-                        type: "gpii.express.hb"
+                        type: "gpii.express.hb",
+                        options: {
+                            templateDirs:   ["%gpii-handlebars/tests/templates/primary"]
+                        }
                     }
                 },
                 listeners: {

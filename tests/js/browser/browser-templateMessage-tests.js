@@ -52,7 +52,7 @@ fluid.defaults("gpii.templates.tests.browser.templateMessage.caseHolder", {
 });
 
 gpii.templates.tests.browser.environment({
-    "port": 6914,
+    "port": 6924,
     "path": "content/tests-templateMessage.html",
     notExpected: "should not be visible",
     expected: {

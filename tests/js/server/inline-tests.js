@@ -37,7 +37,6 @@ gpii.express({
         "express": {
             "port" :   6914,
             "baseUrl": "http://localhost:6914/",
-            views:   ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
             "session": {
                 "secret": "Printer, printer take a hint-ter."
             }
@@ -52,7 +51,10 @@ gpii.express({
     },
     components: {
         inline: {
-            type: "gpii.express.hb.inline"
+            type: "gpii.express.hb.inline",
+            options: {
+                templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"]
+            }
         }
     }
 });
