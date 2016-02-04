@@ -12,13 +12,16 @@ fluid.registerNamespace("gpii.templates.helper.jsonify");
 
 gpii.templates.helper.jsonify.getJsonifyFunction = function () {
     return function (context) {
-        try {
-            return JSON.stringify(context, null, 2);
+        if (context) {
+            try {
+                return JSON.stringify(context, null, 2);
+            }
+            catch (e) {
+                fluid.fail("Can't convert JSON object to string: " + e);
+            }
         }
-        catch (e) {
-            fluid.fail("Can't convert JSON object to string: " + e);
-            return context;
-        }
+
+        return context;
     };
 };
 

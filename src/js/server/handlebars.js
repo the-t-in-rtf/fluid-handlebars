@@ -1,15 +1,22 @@
-// A module that add support for handlebars itself to an express module.
+// A module that add support for handlebars itself to an express module. It is designed to be used by adding it to a
+// `gpii.express` instance as a child component.
 //
-// This is designed to be used by adding it to a `gpii.express` instance as a child component.
+// `options.templateDirs` is a list of view directories that contain handlebars layouts, pages, and partials.  These can
+// either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`.
 //
-// Any "helper" functions should extend the `gpii.express.helper` grade, and should be added as child components of an instance of this grade.
+// Any "helper" functions should extend the `gpii.express.helper` grade, and should be added as child components of an 
+// instance of this grade.
+//
 "use strict";
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.hb");
 
 var exphbs = require("express-handlebars");
+
 require("handlebars");
+require("./lib/first-matching-path");
+require("./lib/resolver");
 
 gpii.express.addHelper = function (that, component) {
     var key = component.options.helperName;
@@ -21,34 +28,47 @@ gpii.express.addHelper = function (that, component) {
     }
 };
 
-gpii.express.configureExpress = function (that, express) {
-    if (that.options.config.express.views) {
-        var viewRoot = that.options.config.express.views;
+gpii.express.configureExpress = function (that, expressComponent) {
+    var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
+
+    if (resolvedTemplateDirs.length > 0) {
+        // Add any partial directories we find.
+        var partialsDirs = [];
+        fluid.each(resolvedTemplateDirs, function (viewDir) {
+            // We add entries in reverse order to preserve the same inheritance we see with pages.
+            partialsDirs.unshift(viewDir + "/partials/");
+        });
+
+        // We can only use the first layouts directory until this issue is resolved in express-handlebars:
+        //
+        // https://github.com/ericf/express-handlebars/issues/112
+        var layoutDir = fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn("layouts"));
+
         var handlebarsConfig = {
             defaultLayout: "main",
-            layoutsDir:    viewRoot + "/layouts/",
-            partialsDir:   viewRoot + "/partials/"
+            layoutsDir:    layoutDir,
+            partialsDir:   partialsDirs
         };
 
         handlebarsConfig.helpers = that.helpers;
 
-        express.set("views", viewRoot);
+        expressComponent.express.set("views", resolvedTemplateDirs);
 
         var hbs = exphbs.create(handlebarsConfig);
-        express.engine("handlebars", hbs.engine);
-        express.set("view engine", "handlebars");
+        expressComponent.express.engine("handlebars", hbs.engine);
+        expressComponent.express.set("view engine", "handlebars");
     }
     else {
-        fluid.fail("Cannot initialize template handling without a 'config.express.views' option");
+        fluid.fail("Cannot initialize template handling unless at least one template directory location is configured...");
     }
 };
 
 fluid.defaults("gpii.express.hb", {
-    gradeNames: ["fluid.modelComponent"],
-    config:     "{expressConfigHolder}.options.config",
-    express:    "{gpii.express}.express",
+    gradeNames:       ["fluid.modelComponent"],
+    config:           "{expressConfigHolder}.options.config",
     members: {
-        helpers: {}
+        helpers: {},
+        templateDirs: []
     },
     model: {},    // We should have an empty model, as the dispatcher expects to expose that.
     distributeOptions: [
@@ -77,7 +97,7 @@ fluid.defaults("gpii.express.hb", {
     listeners: {
         "{gpii.express}.events.onStarted": {
             funcName: "gpii.express.configureExpress",
-            args:     ["{that}", "{arguments}.0"]
+            args:     ["{that}", "{gpii.express}"]
         }
     }
 });

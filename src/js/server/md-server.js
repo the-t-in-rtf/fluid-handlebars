@@ -2,7 +2,7 @@
 //
 // This is designed to be included as a child component of `gpii.express.hb`
 "use strict";
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.templates.helper.md.server");
 

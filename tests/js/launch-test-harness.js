@@ -1,10 +1,10 @@
 // Launch the test harness as a standalone server to assist in browser debugging.
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 fluid.setLogging(true);
 
 var gpii  = fluid.registerNamespace("gpii");
 
-require("./zombie-test-harness");
+require("./test-harness");
 
 gpii.templates.tests.client.harness({
     "expressPort" :   6904,

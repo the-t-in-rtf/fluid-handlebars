@@ -26,8 +26,8 @@
         distributeOptions: [
             // Any child components of this one should use our renderer
             {
-                source: "{that}.renderer",
-                target: "{that templateAware}.components.renderer"
+                record: "{gpii.templates.templateManager}.renderer",
+                target: "{that templateAware}.options.components.renderer"
             },
             // Any child `templateAware` components of this one should be "born ready" to render.
             {

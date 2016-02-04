@@ -1,6 +1,6 @@
 // Throw an error message to test client-side error handling.
 "use strict";
-var fluid = fluid || require("infusion");
+var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.templates.tests.router.error");
 

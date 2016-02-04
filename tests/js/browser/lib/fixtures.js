@@ -1,0 +1,23 @@
+/*
+
+    The test fixtures used for browser testing.
+
+ */
+"use strict";
+var fluid = require("infusion");
+
+require("../../test-harness");
+
+// A standard express + Browser environment from the `gpii-test-browser` package, with our harness options wired
+// into the standard express component.
+//
+fluid.defaults("gpii.templates.tests.browser.environment", {
+    gradeNames: ["gpii.tests.browser.environment.withExpress"],
+    port: 6984,
+    path: "",
+    components: {
+        express: {
+            type: "gpii.templates.tests.client.harness"
+        }
+    }
+});

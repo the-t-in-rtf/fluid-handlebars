@@ -2,71 +2,35 @@
     Test harness common to all Zombie tests.  Loads all required server-side components.
  */
 "use strict";
-var fluid = fluid || require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
-var path  = require("path");
+var fluid = require("infusion");
 
 require("gpii-express");
-var when = require("when");
 
 require("../../");
 require("./lib/test-router-error");
 
-// Test content (HTML, JS, templates)
-var testDir    = path.resolve(__dirname, "..");
-var contentDir = path.join(testDir, "static");
-var viewDir    = path.join(testDir, "views");
-
-// Dependencies
-var bcDir      = path.resolve(__dirname, "../../bower_components");
-var modulesDir = path.resolve(__dirname, "../../node_modules");
-
-// Main source to be tested
-var srcDir     = path.resolve(__dirname, "../../src");
-
-
-fluid.registerNamespace("gpii.templates.tests.client.harness");
-
-gpii.templates.tests.client.harness.constructPromise = function (that) {
-    that.afterDestroyPromise = when.promise(function () {});
-};
-
-gpii.templates.tests.client.harness.waitAndResolve = function (that, timeout) {
-    timeout = timeout ? timeout : 500;
-    return function () {
-        setTimeout(that.afterDestroyPromise.resolve, timeout);
-    };
-};
-
 fluid.defaults("gpii.templates.tests.client.harness", {
-    gradeNames: ["gpii.express"],
-    expressPort: 6994,
-    baseUrl: "http://localhost:6994/",
+    gradeNames:  ["gpii.express"],
+    port: 6994,
+    baseUrl: {
+        expander: {
+            funcName: "fluid.stringTemplate",
+            args: ["http://localhost:%port/", { port: "{that}.options.port"}]
+        }
+    },
     config:  {
         express: {
-            "port" :   "{that}.options.expressPort",
-            baseUrl: "{that}.options.baseUrl",
-            views:   viewDir
+            port:    "{that}.options.port",
+            baseUrl: "{that}.options.baseUrl"
         }
     },
-    members: {
-        afterDestroyPromise: false
-    },
-    listeners: {
-        "onCreate.constructPromise": {
-            funcName: "gpii.templates.tests.client.harness.constructPromise",
-            args:     ["{that}"]
-        },
-        "afterDestroy.resolvePromise": {
-            funcName: "gpii.templates.tests.client.harness.waitAndResolve",
-            args:     ["{that}"]
-        }
-    },
+    templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
     components: {
         dispatcher: {
             type: "gpii.express.dispatcher",
             options: {
                 path: ["/dispatcher/:template", "/dispatcher"],
+                templateDirs: "{harness}.options.templateDirs",
                 rules: {
                     contextToExpose: {
                         myvar:    { literalValue: "modelvariable" },
@@ -80,45 +44,48 @@ fluid.defaults("gpii.templates.tests.client.harness", {
         inline: {
             type: "gpii.express.hb.inline",
             options: {
-                path: "/hbs"
+                path: "/hbs",
+                templateDirs: "{harness}.options.templateDirs"
             }
         },
         bc: {
             type: "gpii.express.router.static",
             options: {
                 path:    "/bc",
-                content: bcDir
+                content: "%gpii-handlebars/bower_components"
             }
         },
         js: {
             type: "gpii.express.router.static",
             options: {
                 path:    "/src",
-                content: srcDir
+                content: "%gpii-handlebars/src"
             }
         },
         modules: {
             type: "gpii.express.router.static",
             options: {
                 path:    "/modules",
-                content: modulesDir
+                content: "%gpii-handlebars/node_modules"
             }
         },
         content: {
             type: "gpii.express.router.static",
             options: {
                 path:    "/content",
-                content: contentDir
+                content: "%gpii-handlebars/tests/static"
             }
         },
         handlebars: {
             type: "gpii.express.hb",
             options: {
+                templateDirs: "{harness}.options.templateDirs",
                 components: {
                     initBlock: {
                         options: {
                             contextToOptionsRules: {
                                 model: {
+                                    "":       "notfound",
                                     req:      "req",
                                     myvar:    "myvar",
                                     markdown: "markdown",

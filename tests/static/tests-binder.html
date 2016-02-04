@@ -28,11 +28,53 @@
         <link rel="stylesheet" href="/bc/foundation/css/foundation.css"/>
     </head>
     <body>
+        <button class="avert-your-focus">Change Focus by Clicking This</button>
+
         <div class="row">
             <div class="column medium-12">
                 <h1>Binder Test Suite</h1>
 
                 <p>This page provides test components that can be opened using any browser as a file.</p>
+
+                <hr/>
+
+                <!-- markup for "radio" form control tests -->
+                <h2>Radio Form Elements</h2>
+                <div class="viewport-radio">
+                    <form>
+                        <h3>Model Update</h3>
+                        <p>
+                            <input type="radio" id="update-from-model-markup" name="update-from-model" value="updated using form controls"/>
+                            <label for="update-from-model-markup">markup</label>
+                            <input type="radio" id="update-from-model-applier" name="update-from-model" value="updated using applier"/>
+                            <label for="update-from-model-applier">applier</label>
+                        </p>
+
+                        <h3>Markup Update</h3>
+                        <p>
+                            <input type="radio" id="update-from-markup-markup" name="update-from-markup" value="updated using form controls"/>
+                            <label for="update-from-markup-markup">markup</label>
+                            <input type="radio" id="update-from-markup-applier" name="update-from-markup" value="updated using applier"/>
+                            <label for="update-from-model-applier">applier</label>
+                        </p>
+
+                        <h3>Model Init</h3>
+                        <p>
+                            <input type="radio" id="init-from-model-markup" name="init-from-model" value="Set in markup."/>
+                            <label for="init-from-model-markup">markup</label>
+                            <input type="radio" id="init-from-model-model" name="init-from-model" value="initialized from model"/>
+                            <label for="init-from-model-model">model</label>
+                        </p>
+
+                        <h3>Markup Init</h3>
+                        <p>
+                            <input type="radio" id="init-from-markup-markup" name="init-from-markup" value="initialized from markup" checked="true"/>
+                            <label for="init-from-markup-markup">markup</label>
+                            <input type="radio" id="init-from-markup-applier" name="init-from-markup" value="initialized from model"/>
+                            <label for="init-from-markup-applier">applier</label>
+                        </p>
+                    </form>
+                </div>
 
                 <hr/>
 
@@ -88,16 +130,6 @@
                 <h2>Select Form Elements</h2>
                 <div class="viewport-select">
                     <form>
-                        <select name="init-from-model">
-                            <option value="default">default</option>
-                            <option value="initialized from model">initialized from model</option>
-                        </select>
-
-                        <select name="init-from-markup">
-                            <option value="default">default</option>
-                            <option value="initialized from markup" selected="true">initialized from markup</option>
-                        </select>
-
                         <select name="update-from-model">
                             <option value="">default</option>
                             <option value="updated using applier">updated using applier</option>
@@ -107,44 +139,16 @@
                             <option value="">default</option>
                             <option value="updated using form controls">updated using form controls</option>
                         </select>
-                    </form>
-                </div>
 
-                <!-- markup for "radio" form control tests -->
-                <h2>Radio Form Elements</h2>
-                <div class="viewport-radio">
-                    <form>
-                        <h3>Model Init</h3>
-                        <p>
-                            <input type="radio" id="init-from-model-markup" name="init-from-model" value="Set in markup."/>
-                            <label for="init-from-model-markup">markup</label>
-                            <input type="radio" id="init-from-model-model" name="init-from-model" value="initialized from model"/>
-                            <label for="init-from-model-model">model</label>
-                        </p>
+                        <select name="init-from-model">
+                            <option value="default">default</option>
+                            <option value="initialized from model">initialized from model</option>
+                        </select>
 
-                        <h3>Markup Init</h3>
-                        <p>
-                            <input type="radio" id="init-from-markup-markup" name="init-from-markup" value="initialized from markup" checked="true"/>
-                            <label for="init-from-markup-markup">markup</label>
-                            <input type="radio" id="init-from-markup-applier" name="init-from-markup" value="initialized from model"/>
-                            <label for="init-from-markup-applier">applier</label>
-                        </p>
-
-                        <h3>Model Update</h3>
-                        <p>
-                            <input type="radio" id="update-from-model-markup" name="update-from-model" value="updated using form controls"/>
-                            <label for="update-from-model-markup">markup</label>
-                            <input type="radio" id="update-from-model-applier" name="update-from-model" value="updated using applier"/>
-                            <label for="update-from-model-applier">applier</label>
-                        </p>
-
-                        <h3>Markup Update</h3>
-                        <p>
-                            <input type="radio" id="update-from-markup-markup" name="update-from-markup" value="updated using form controls"/>
-                            <label for="update-from-markup-markup">markup</label>
-                            <input type="radio" id="update-from-markup-applier" name="update-from-markup" value="updated using applier"/>
-                            <label for="update-from-model-applier">applier</label>
-                        </p>
+                        <select name="init-from-markup">
+                            <option value="default">default</option>
+                            <option value="initialized from markup" selected="true">initialized from markup</option>
+                        </select>
                     </form>
                 </div>
             </div>

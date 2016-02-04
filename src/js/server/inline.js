@@ -22,11 +22,13 @@
  */
 
 "use strict";
-var fluid  = fluid || require("infusion");
+var fluid  = require("infusion");
 var gpii = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.hb.inline");
 var fs     = require("fs");
 var path   = require("path");
+
+require("./lib/resolver");
 
 fluid.registerNamespace("gpii.express.hb.inline.request");
 gpii.express.hb.inline.request.sendResponse = function (that) {
@@ -52,18 +54,20 @@ fluid.defaults("gpii.express.hb.inline.request", {
     }
 });
 
-gpii.express.hb.inline.loadTemplates =  function (that, dir) {
-    // Start with the "views" directory and work our way down
-    var dirContents = fs.readdirSync(dir);
-    dirContents.forEach(function (entry) {
-        var subDirPath = path.resolve(dir, entry);
-        var stats = fs.statSync(subDirPath);
-        if (stats.isDirectory() && that.options.allowedTemplateDirs.indexOf[entry] !== -1) {
-            gpii.express.hb.inline.scanTemplateSubdir(that, entry, subDirPath);
-        }
-    });
+gpii.express.hb.inline.loadTemplates =  function (that) {
+    var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
 
-    //that.options.dynamicComponents.requestHandler.options.templates = that.templates;
+    fluid.each(resolvedTemplateDirs, function (templateDir) {
+        // Start with each "views" directory and work our way down
+        var dirContents = fs.readdirSync(templateDir);
+        dirContents.forEach(function (entry) {
+            var subDirPath = path.resolve(templateDir, entry);
+            var stats = fs.statSync(subDirPath);
+            if (stats.isDirectory() && that.options.allowedTemplateDirs.indexOf[entry] !== -1) {
+                gpii.express.hb.inline.scanTemplateSubdir(that, entry, subDirPath);
+            }
+        });
+    });
 
     that.events.templatesLoaded.fire(that);
 };
@@ -77,8 +81,10 @@ gpii.express.hb.inline.scanTemplateSubdir = function (that, key, dirPath) {
             var matches = that.options.hbsExtensionRegexp.exec(entry);
             if (matches) {
                 var templateName = matches[1];
-                var templateContent = fs.readFileSync(entryPath, {encoding: "utf8"});
-                that.templates[key][templateName] = templateContent;
+                if (!that.templates[key][templateName]) {
+                    var templateContent = fs.readFileSync(entryPath, {encoding: "utf8"});
+                    that.templates[key][templateName] = templateContent;
+                }
             }
         }
     });
@@ -89,7 +95,6 @@ fluid.defaults("gpii.express.hb.inline", {
     path:                "/inline",
     hbsExtensionRegexp:  /^(.+)\.(?:hbs|handlebars)$/,
     allowedTemplateDirs: ["layouts", "partials", "pages"],
-    config:              "{expressConfigHolder}.options.config",
     members: {
         templates: {
             layouts:  {},
@@ -104,7 +109,7 @@ fluid.defaults("gpii.express.hb.inline", {
     listeners: {
         "onCreate.loadTemplates": {
             funcName: "gpii.express.hb.inline.loadTemplates",
-            args:     [ "{that}", "{that}.options.config.express.views" ]
+            args:     ["{that}"]
         }
     }
 });

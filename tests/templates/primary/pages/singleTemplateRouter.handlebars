@@ -1,0 +1,8 @@
+<p>This template exercises the singleTemplateRouter grade and confirms that it renders content and exposes request data as expected:</p>
+
+
+<h1>Request Data</h1>
+{{#if req.query.myvar}}<div id="req-myvar">{{req.query.myvar}}</div>{{/if}}
+
+<h1>Query</h1>
+{{jsonify req.query}}

@@ -67,7 +67,7 @@
 // For more details, review each of those and the tests in this package.
 //
 "use strict";
-var fluid  = fluid || require("infusion");
+var fluid  = require("infusion");
 var gpii   = fluid.registerNamespace("gpii");
 var jQuery = fluid.registerNamespace("jQuery");
 
@@ -119,7 +119,7 @@ fluid.defaults("gpii.templates.helper.initBlock", {
     mergePolicy: {
         "baseOptions": "noexpand,nomerge"
     },
-    contextToOptionsRules: {},
+    contextToOptionsRules: { "": "" }, // By default, expose everything that's available.
     baseGradeName: "gpii.templates.templateManager",
     baseOptions: {
         components: {
