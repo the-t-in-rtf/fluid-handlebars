@@ -85,7 +85,7 @@ fluid.component({
         renderer: {
             type: "gpii.handlebars.standaloneRenderer",
             options: {
-                templateDir: "%gpii-handlebars/tests/templates/primary"
+                templateDirs: "%gpii-handlebars/tests/templates/primary"
             }
         }
     }
