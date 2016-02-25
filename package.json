@@ -1,7 +1,7 @@
 {
   "name": "gpii-handlebars",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
   "license": "BSD-3-Clause",
   "repository": "https://github.com/GPII/gpii-handlebars",
   "scripts": {
