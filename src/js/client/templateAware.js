@@ -75,7 +75,7 @@
                 func: "{that}.renderInitialMarkup"
             },
             "onDomBind.applyBinding": {
-                funcName: "gpii.templates.binder.applyBinding",
+                funcName: "gpii.binder.applyBinding",
                 args:     ["{that}"]
             },
             "onMarkupRendered.refreshDom": {

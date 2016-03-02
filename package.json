@@ -1,7 +1,7 @@
 {
   "name": "gpii-handlebars",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
   "license": "BSD-3-Clause",
   "repository": "https://github.com/GPII/gpii-handlebars",
   "scripts": {
@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "express-handlebars": "1.2.2",
-    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#ded2eca3853c8a572c955a8dd17ac4cc6366f6b3",
+    "gpii-binder": "git://github.com/the-t-in-rtf/gpii-binder#c83ff8cde8ba37c72f7e26bebf81c44d1a681c36",
+    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#d4eee18a0f2286624fe70c7e0565a51a9fda3d0e",
     "handlebars": "4.0.5",
     "infusion": "2.0.0-dev.20151211T025229Z.eabb4fc",
     "marked": "0.3.5",

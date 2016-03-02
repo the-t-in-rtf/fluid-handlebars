@@ -5,10 +5,10 @@
 //
 // The directory conventions used with express are partially supported, as follows:
 //
-//  1. Any templates in the `partials` subdirectory relative to `options.templateDir` will be registered as partials for use in `{{>partial}}` statements.
-//  2. All other templates are expected to be stored in a `pages` subdirectory relative to `options.templateDir`.
+//  1. Any templates in the `partials` subdirectory relative to `options.templateDirs` will be registered as partials for use in `{{>partial}}` statements.
+//  2. All other templates are expected to be stored in a `pages` subdirectory relative to `options.templateDirs`.
 //
-// The most important configuration option is `options.templateDir`, which can either be a string or an array of strings
+// The most important configuration option is `options.templateDirs`, which can either be a string or an array of strings
 // representing the location of one or more template directories.  As with the `gpii.express` `views` option, the
 // string values will usually be unresolved references to a directory within a package, as in:
 //
@@ -38,7 +38,7 @@ gpii.handlebars.standaloneRenderer.addHelper = function (that, component) {
 
 gpii.handlebars.standaloneRenderer.init = function (that) {
     fluid.each(that.templateDirs, function (templateDir) {
-        // Register all partials found in the "partials" subdirectory relative to `options.templateDir`;
+        // Register all partials found in the "partials" subdirectory relative to `options.templateDirs`;
         var partialDir = path.resolve(templateDir, "partials");
         fluid.each(fs.readdirSync(partialDir), function (filename) {
             var partialPath = path.resolve(partialDir, filename);
@@ -81,7 +81,7 @@ fluid.defaults("gpii.handlebars.standaloneRenderer", {
     members: {
         helpers:           {},
         compiledTemplates: {},
-        templateDirs: "@expand:gpii.express.expandPaths({that}.options.templateDir)"
+        templateDirs: "@expand:gpii.express.expandPaths({that}.options.templateDirs)"
     },
     handlebarsSuffix: ".handlebars",
     distributeOptions: [

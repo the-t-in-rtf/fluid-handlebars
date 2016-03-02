@@ -1,19 +1,30 @@
 {
   "name": "gpii-handlebars",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "homepage": "gpii-handlebars",
   "authors": [
     "Tony <tony@raisingthefloor.org>"
   ],
   "description": "A helper library to assist in pulling in handlebars content both on the server and client side.  See README.md file for more details.",
   "moduleType": [
-    "amd"
+    "globals"
   ],
-  "license": "See LICENSE file for details.",
-  "private": true,
+  "license": "BSD-3-Clause",
+  "private": false,
   "main": [
-    "./src/js/client/fluid-hb.js",
-    "./src/js/common/fluid-hb-common.js"
+    "./src/js/common/equals.js",
+    "./src/js/common/helper.js",
+    "./src/js/common/jsonify.js",
+    "./src/js/common/md-common.js",
+    "./src/js/client/ajaxCapable.js",
+    "./src/js/client/hasRequiredOptions.js",
+    "./src/js/client/md-client.js",
+    "./src/js/client/renderer.js",
+    "./src/js/client/templateAware.js",
+    "./src/js/client/templateFormControl.js",
+    "./src/js/client/templateManager.js",
+    "./src/js/client/templateMessage.js",
+    "./src/js/client/templateRequestAndRender.js"
   ],
   "ignore": [
     "**/.*",
