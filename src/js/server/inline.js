@@ -93,6 +93,7 @@ gpii.express.hb.inline.scanTemplateSubdir = function (that, key, dirPath) {
 fluid.defaults("gpii.express.hb.inline", {
     gradeNames:          ["gpii.express.requestAware.router"],
     path:                "/inline",
+    namespace:           "inline", // Namespace to allow other routers to put themselves in the chain before or after us.
     hbsExtensionRegexp:  /^(.+)\.(?:hbs|handlebars)$/,
     allowedTemplateDirs: ["layouts", "partials", "pages"],
     members: {

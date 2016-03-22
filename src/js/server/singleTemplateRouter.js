@@ -44,6 +44,7 @@ gpii.express.singleTemplateRouter.renderForm = function (that, request, response
 
 fluid.defaults("gpii.express.singleTemplateRouter", {
     gradeNames:      ["gpii.express.router"],
+    namespace:       "singleTemplateRouter", // Namespace to make it easier for other routers to put themselves in the chain before or after us.
     path:            "/",
     method:          "get",
     rules: {
