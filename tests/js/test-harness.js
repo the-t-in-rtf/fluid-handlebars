@@ -18,12 +18,6 @@ fluid.defaults("gpii.templates.tests.client.harness", {
             args: ["http://localhost:%port/", { port: "{that}.options.port"}]
         }
     },
-    config:  {
-        express: {
-            port:    "{that}.options.port",
-            baseUrl: "{that}.options.baseUrl"
-        }
-    },
     templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
     components: {
         dispatcher: {

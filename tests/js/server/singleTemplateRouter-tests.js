@@ -137,12 +137,8 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.environment", {
             type:          "gpii.express",
             createOnEvent: "constructServer",
             options: {
-                config: {
-                    express: {
-                        port:    "{testEnvironment}.options.expressPort",
-                        baseUrl: "{testEnvironment}.options.baseUrl"
-                    }
-                },
+                port:    "{testEnvironment}.options.expressPort",
+                baseUrl: "{testEnvironment}.options.baseUrl",
                 components: {
                     urlencoded: {
                         type: "gpii.express.middleware.bodyparser.urlencoded"
