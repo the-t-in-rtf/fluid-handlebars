@@ -49,6 +49,7 @@ gpii.express.dispatcher.route = function (that, req, res) {
 
 fluid.defaults("gpii.express.dispatcher", {
     gradeNames:      ["gpii.express.router", "fluid.modelComponent"],
+    namespace:       "dispatcher", // Namespace to allow other routers to put themselves in the chain before or after us.
     method:          "get",
     defaultTemplate: "index",
     defaultLayout:   "main.handlebars",

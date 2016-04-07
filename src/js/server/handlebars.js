@@ -66,6 +66,7 @@ gpii.express.configureExpress = function (that, expressComponent) {
 fluid.defaults("gpii.express.hb", {
     gradeNames:       ["fluid.modelComponent"],
     config:           "{expressConfigHolder}.options.config",
+    namespace:        "handlebars", // Namespace to allow other middleware to put themselves in the chain before or after us.
     members: {
         helpers: {},
         templateDirs: []

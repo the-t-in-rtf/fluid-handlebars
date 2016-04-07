@@ -16,7 +16,7 @@ gpii.templates.tests.server.inline.runTests = function (that) {
     jqUnit.module("Tests for inlining of templates...");
 
     jqUnit.asyncTest("Confirm that template content is inlined...", function () {
-        request.get(that.options.config.express.baseUrl + "inline", function (error, response, body) {
+        request.get(that.options.baseUrl + "inline", function (error, response, body) {
             jqUnit.start();
 
             gpii.templates.tests.server.isSaneResponse(error, response, body);
@@ -33,15 +33,8 @@ gpii.templates.tests.server.inline.runTests = function (that) {
 };
 
 gpii.express({
-    config:  {
-        "express": {
-            "port" :   6914,
-            "baseUrl": "http://localhost:6914/",
-            "session": {
-                "secret": "Printer, printer take a hint-ter."
-            }
-        }
-    },
+    "port" :   6914,
+    "baseUrl": "http://localhost:6914/",
     json: { foo: "bar", baz: "quux", qux: "quux" },
     listeners: {
         "onStarted.runTests": {

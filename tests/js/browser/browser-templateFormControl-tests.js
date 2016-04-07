@@ -20,7 +20,14 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                         args: ["{gpii.templates.tests.browser.environment}.options.url"]
                     },
                     {
-                        event: "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        // Give the page time to render to avoid intermittent errors
+                        // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     ["{testEnvironment}.options.waitAfterLoad"]
+                    },
+                    {
+                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
                         args: [gpii.tests.browser.tests.elementMatches, "body", "This content should not be visible"]
                     },
@@ -40,6 +47,13 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        // Give the page time to render to avoid intermittent errors
+                        // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     ["{testEnvironment}.options.waitAfterLoad"]
+                    },
+                    {
+                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.templates.tests.browser.environment}.browser.click",
                         args:     [".readyForSuccess input[type='submit']"]
                     },
@@ -78,6 +92,13 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        // Give the page time to render to avoid intermittent errors
+                        // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     ["{testEnvironment}.options.waitAfterLoad"]
+                    },
+                    {
+                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.templates.tests.browser.environment}.browser.click",
                         args:     [".readyForStringifySuccess input[type='submit']"]
                     },
@@ -116,6 +137,13 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        // Give the page time to render to avoid intermittent errors
+                        // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     ["{testEnvironment}.options.waitAfterLoad"]
+                    },
+                    {
+                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.templates.tests.browser.environment}.browser.click",
                         args:     [".readyForStringSuccess input[type='submit']"]
                     },
@@ -145,6 +173,13 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        // Give the page time to render to avoid intermittent errors
+                        // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     ["{testEnvironment}.options.waitAfterLoad"]
+                    },
+                    {
+                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.templates.tests.browser.environment}.browser.click",
                         args:     [".readyForFailure input[type='submit']"]
                     },
@@ -174,6 +209,13 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        // Give the page time to render to avoid intermittent errors
+                        // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     ["{testEnvironment}.options.waitAfterLoad"]
+                    },
+                    {
+                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.templates.tests.browser.environment}.browser.click",
                         args:     [".readyForStringifyFailure input[type='submit']"]
                     },
@@ -203,6 +245,13 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        // Give the page time to render to avoid intermittent errors
+                        // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
+                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        args:     ["{testEnvironment}.options.waitAfterLoad"]
+                    },
+                    {
+                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
                         listener: "{gpii.templates.tests.browser.environment}.browser.click",
                         args:     [".readyForStringFailure input[type='submit']"]
                     },
@@ -231,6 +280,7 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
 gpii.templates.tests.browser.environment({
     "port": 6993,
     "path": "content/tests-templateFormControl.html",
+    waitAfterLoad: 150,
     expected: {
         record: {
             foo: "bar",

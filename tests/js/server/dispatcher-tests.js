@@ -28,7 +28,7 @@ gpii.templates.tests.server.runTests = function (that) {
 
     pages.forEach(function (page) {
         jqUnit.asyncTest("Test template handling dispatcher for page '" + page + "' ...", function () {
-            request.get(that.options.config.express.baseUrl + "dispatcher/" + page + "?myvar=queryvariable", function (error, response, body) {
+            request.get(that.options.baseUrl + "dispatcher/" + page + "?myvar=queryvariable", function (error, response, body) {
                 jqUnit.start();
 
                 gpii.templates.tests.server.isSaneResponse(error, response, body);
@@ -72,7 +72,7 @@ gpii.templates.tests.server.runTests = function (that) {
     });
 
     jqUnit.asyncTest("Test 404 handling for dispatcher...", function () {
-        request.get(that.options.config.express.baseUrl + "dispatcher/bogus", function (error, response) {
+        request.get(that.options.baseUrl + "dispatcher/bogus", function (error, response) {
             jqUnit.start();
 
             jqUnit.assertNull("There should be no errors...", error);
@@ -81,7 +81,7 @@ gpii.templates.tests.server.runTests = function (that) {
     });
 
     jqUnit.asyncTest("Test multiple view directories with dispatcher...", function () {
-        request.get(that.options.config.express.baseUrl + "dispatcher/secondary", function (error, response, body) {
+        request.get(that.options.baseUrl + "dispatcher/secondary", function (error, response, body) {
             jqUnit.start();
 
             gpii.templates.tests.server.bodyMatches("The default layout should have been used...", body, /Main Layout/);
@@ -91,7 +91,7 @@ gpii.templates.tests.server.runTests = function (that) {
     });
 
     jqUnit.asyncTest("Test overriding of content when using multiple view directories with dispatcher...", function () {
-        request.get(that.options.config.express.baseUrl + "dispatcher/overridden", function (error, response, body) {
+        request.get(that.options.baseUrl + "dispatcher/overridden", function (error, response, body) {
             jqUnit.start();
 
             gpii.templates.tests.server.bodyMatches("The layout should have come from the primary...", body, /layout found in the primary template directory/);
@@ -102,15 +102,8 @@ gpii.templates.tests.server.runTests = function (that) {
 };
 
 gpii.express({
-    config:  {
-        "express": {
-            "port" :   6904,
-            "baseUrl": "http://localhost:6904/",
-            "session": {
-                "secret": "Printer, printer take a hint-ter."
-            }
-        }
-    },
+    "port" :   6904,
+    "baseUrl": "http://localhost:6904/",
     json: { foo: "bar", baz: "quux", qux: "quux" },
     listeners: {
         "onStarted.runTests": {
@@ -120,14 +113,28 @@ gpii.express({
     },
     components: {
         "json": {
-            "type": "gpii.express.middleware.bodyparser.json"
+            "type": "gpii.express.middleware.bodyparser.json",
+            options: {
+                priority: "first"
+            }
         },
         "urlencoded": {
-            "type": "gpii.express.middleware.bodyparser.urlencoded"
+            "type": "gpii.express.middleware.bodyparser.urlencoded",
+            options: {
+                priority: "after:json"
+            }
+        },
+        handlebars: {
+            type: "gpii.express.hb",
+            options: {
+                priority: "after:urlencoded",
+                templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"]
+            }
         },
         dispatcher: {
             type: "gpii.express.dispatcher",
             options: {
+                priority: "last",
                 path: ["/dispatcher/:template", "/dispatcher"],
                 templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
                 rules: {
@@ -138,12 +145,6 @@ gpii.express({
                         req:      { params: "req.params", query: "req.query"}
                     }
                 }
-            }
-        },
-        handlebars: {
-            type: "gpii.express.hb",
-            options: {
-                templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"]
             }
         }
     }
