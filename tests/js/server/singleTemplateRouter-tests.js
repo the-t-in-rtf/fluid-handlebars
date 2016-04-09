@@ -71,7 +71,7 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.request", {
 });
 
 fluid.defaults("gpii.templates.tests.singleTemplateRouter.caseHolder", {
-    gradeNames: ["gpii.express.tests.caseHolder"],
+    gradeNames: ["gpii.tests.express.caseHolder"],
     rawModules: [
         {
             tests: [
