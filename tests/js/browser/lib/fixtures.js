@@ -12,12 +12,12 @@ require("../../test-harness");
 // into the standard express component.
 //
 fluid.defaults("gpii.templates.tests.browser.environment", {
-    gradeNames: ["gpii.tests.browser.environment.withExpress"],
+    gradeNames: ["gpii.test.browser.environment.withExpress"],
     port: 6984,
     path: "",
     components: {
         express: {
-            type: "gpii.templates.tests.client.harness"
+            type: "gpii.templates.test.client.harness"
         }
     }
 });

@@ -24,14 +24,14 @@
 "use strict";
 var fluid  = require("infusion");
 var gpii = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.express.hb.inline");
+fluid.registerNamespace("gpii.templates.inlineTemplateBundlingMiddleware");
 var fs     = require("fs");
 var path   = require("path");
 
 require("./lib/resolver");
 
-fluid.registerNamespace("gpii.express.hb.inline.request");
-gpii.express.hb.inline.request.sendResponse = function (that) {
+fluid.registerNamespace("gpii.templates.inlineTemplateBundlingMiddleware.request");
+gpii.templates.inlineTemplateBundlingMiddleware.request.sendResponse = function (that) {
     if (that.options.templates) {
         gpii.express.handler.sendResponse(that, that.response, 200, { ok: true, templates: that.options.templates });
     }
@@ -40,21 +40,21 @@ gpii.express.hb.inline.request.sendResponse = function (that) {
     }
 };
 
-fluid.defaults("gpii.express.hb.inline.request", {
-    gradeNames: ["gpii.express.requestAware"],
+fluid.defaults("gpii.templates.inlineTemplateBundlingMiddleware.request", {
+    gradeNames: ["gpii.express.handler"],
     templates: "{inline}.templates",
     messages: {
         noTemplates: "No templates were found."
     },
     invokers: {
         "handleRequest": {
-            funcName: "gpii.express.hb.inline.request.sendResponse",
+            funcName: "gpii.templates.inlineTemplateBundlingMiddleware.request.sendResponse",
             args:     ["{that}"]
         }
     }
 });
 
-gpii.express.hb.inline.loadTemplates =  function (that) {
+gpii.templates.inlineTemplateBundlingMiddleware.loadTemplates =  function (that) {
     var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
 
     fluid.each(resolvedTemplateDirs, function (templateDir) {
@@ -64,7 +64,7 @@ gpii.express.hb.inline.loadTemplates =  function (that) {
             var subDirPath = path.resolve(templateDir, entry);
             var stats = fs.statSync(subDirPath);
             if (stats.isDirectory() && that.options.allowedTemplateDirs.indexOf[entry] !== -1) {
-                gpii.express.hb.inline.scanTemplateSubdir(that, entry, subDirPath);
+                gpii.templates.inlineTemplateBundlingMiddleware.scanTemplateSubdir(that, entry, subDirPath);
             }
         });
     });
@@ -72,7 +72,7 @@ gpii.express.hb.inline.loadTemplates =  function (that) {
     that.events.templatesLoaded.fire(that);
 };
 
-gpii.express.hb.inline.scanTemplateSubdir = function (that, key, dirPath) {
+gpii.templates.inlineTemplateBundlingMiddleware.scanTemplateSubdir = function (that, key, dirPath) {
     var dirContents = fs.readdirSync(dirPath);
     dirContents.forEach(function (entry) {
         var entryPath = path.resolve(dirPath, entry);
@@ -90,8 +90,8 @@ gpii.express.hb.inline.scanTemplateSubdir = function (that, key, dirPath) {
     });
 };
 
-fluid.defaults("gpii.express.hb.inline", {
-    gradeNames:          ["gpii.express.requestAware.router"],
+fluid.defaults("gpii.templates.inlineTemplateBundlingMiddleware", {
+    gradeNames:          ["gpii.express.middleware.requestAware"],
     path:                "/inline",
     namespace:           "inline", // Namespace to allow other routers to put themselves in the chain before or after us.
     hbsExtensionRegexp:  /^(.+)\.(?:hbs|handlebars)$/,
@@ -106,10 +106,10 @@ fluid.defaults("gpii.express.hb.inline", {
     events: {
         templatesLoaded: null
     },
-    handlerGrades: ["gpii.express.hb.inline.request"],
+    handlerGrades: ["gpii.templates.inlineTemplateBundlingMiddleware.request"],
     listeners: {
         "onCreate.loadTemplates": {
-            funcName: "gpii.express.hb.inline.loadTemplates",
+            funcName: "gpii.templates.inlineTemplateBundlingMiddleware.loadTemplates",
             args:     ["{that}"]
         }
     }

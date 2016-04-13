@@ -19,7 +19,7 @@ gpii.templates.tests.server.inline.runTests = function (that) {
         request.get(that.options.baseUrl + "inline", function (error, response, body) {
             jqUnit.start();
 
-            gpii.templates.tests.server.isSaneResponse(error, response, body);
+            gpii.templates.test.server.isSaneResponse(error, response, body);
 
             if (body) {
                 var data = typeof body === "string" ? JSON.parse(body) : body;
@@ -44,7 +44,7 @@ gpii.express({
     },
     components: {
         inline: {
-            type: "gpii.express.hb.inline",
+            type: "gpii.templates.inlineTemplateBundlingMiddleware",
             options: {
                 templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"]
             }

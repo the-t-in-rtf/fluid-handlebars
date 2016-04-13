@@ -14,7 +14,7 @@ gpii.templates.tests.browser.initBlock.selectorContains = function (selector, su
 };
 
 fluid.defaults("gpii.templates.tests.browser.initBlock.caseHolder", {
-    gradeNames: ["gpii.tests.browser.caseHolder.withExpress"],
+    gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
         tests: [
             {
@@ -27,7 +27,7 @@ fluid.defaults("gpii.templates.tests.browser.initBlock.caseHolder", {
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args:     [gpii.tests.browser.tests.getGlobalValue, "pageComponent.requireRenderer.pageComponent.model"]
+                        args:     [gpii.test.browser.getGlobalValue, "pageComponent.requireRenderer.pageComponent.model"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",

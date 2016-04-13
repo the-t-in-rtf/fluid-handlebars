@@ -7,7 +7,7 @@ var gpii  = fluid.registerNamespace("gpii");
 require("./includes.js");
 
 fluid.defaults("gpii.templates.tests.browser.templateAware.caseHolder", {
-    gradeNames: ["gpii.tests.browser.caseHolder.withExpress"],
+    gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
         tests: [
             {
@@ -20,7 +20,7 @@ fluid.defaults("gpii.templates.tests.browser.templateAware.caseHolder", {
                     {
                         event: "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
                         listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.tests.browser.tests.getElementHtml, ".viewport", "next"]
+                        args: [gpii.test.browser.getElementHtml, ".viewport", "next"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -29,7 +29,7 @@ fluid.defaults("gpii.templates.tests.browser.templateAware.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.tests.browser.tests.elementMatches, ".viewport", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown"]
+                        args: [gpii.test.browser.elementMatches, ".viewport", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -38,7 +38,7 @@ fluid.defaults("gpii.templates.tests.browser.templateAware.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.tests.browser.tests.elementMatches, ".viewport", "{gpii.templates.tests.browser.environment}.options.patterns.variable"]
+                        args: [gpii.test.browser.elementMatches, ".viewport", "{gpii.templates.tests.browser.environment}.options.patterns.variable"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -65,7 +65,7 @@ fluid.defaults("gpii.templates.tests.browser.templateAware.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.tests.browser.tests.elementMatches, ".viewport", "{gpii.templates.tests.browser.environment}.options.patterns.originalContent"]
+                        args: [gpii.test.browser.elementMatches, ".viewport", "{gpii.templates.tests.browser.environment}.options.patterns.originalContent"]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -74,7 +74,7 @@ fluid.defaults("gpii.templates.tests.browser.templateAware.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.tests.browser.tests.elementMatches, ".contained", "This content should not be overwritten."]
+                        args: [gpii.test.browser.elementMatches, ".contained", "This content should not be overwritten."]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -83,7 +83,7 @@ fluid.defaults("gpii.templates.tests.browser.templateAware.caseHolder", {
                     },
                     {
                         func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.tests.browser.tests.elementMatches, ".contained", "A place for everything, and everything in its place."]
+                        args: [gpii.test.browser.elementMatches, ".contained", "A place for everything, and everything in its place."]
                     },
                     {
                         event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",

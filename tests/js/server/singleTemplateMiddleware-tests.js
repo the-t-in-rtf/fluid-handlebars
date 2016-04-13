@@ -18,7 +18,7 @@ gpii.express.loadTestingSupport();
 var kettle = require("kettle");
 kettle.loadTestingSupport();
 
-fluid.registerNamespace("gpii.templates.tests.singleTemplateRouter");
+fluid.registerNamespace("gpii.templates.tests.singleTemplateMiddleware");
 
 // Verify the results of a request.  Accepts the following values:
 //
@@ -35,7 +35,7 @@ fluid.registerNamespace("gpii.templates.tests.singleTemplateRouter");
 //
 // `notExpected`: An array of selectors that should either not be found or that should not contain any output.
 //
-gpii.templates.tests.singleTemplateRouter.verifyResults = function (response, body, statusCode, expected, notExpected) {
+gpii.templates.tests.singleTemplateMiddleware.verifyResults = function (response, body, statusCode, expected, notExpected) {
     jqUnit.assertEquals("The status code should be as expected...", statusCode, response.statusCode);
 
 
@@ -64,14 +64,14 @@ gpii.templates.tests.singleTemplateRouter.verifyResults = function (response, bo
     });
 };
 
-fluid.defaults("gpii.templates.tests.singleTemplateRouter.request", {
+fluid.defaults("gpii.templates.tests.singleTemplateMiddleware.request", {
     gradeNames: ["kettle.test.request.http"],
     port:       "{testEnvironment}.options.expressPort",
     path:       "{testEnvironment}.options.baseUrl"
 });
 
-fluid.defaults("gpii.templates.tests.singleTemplateRouter.caseHolder", {
-    gradeNames: ["gpii.tests.express.caseHolder"],
+fluid.defaults("gpii.templates.tests.singleTemplateMiddleware.caseHolder", {
+    gradeNames: ["gpii.test.express.caseHolder"],
     rawModules: [
         {
             tests: [
@@ -83,7 +83,7 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.caseHolder", {
                             func: "{noDataRequest}.send"
                         },
                         {
-                            listener: "gpii.templates.tests.singleTemplateRouter.verifyResults",
+                            listener: "gpii.templates.tests.singleTemplateMiddleware.verifyResults",
                             event:    "{noDataRequest}.events.onComplete",
                             args:     ["{noDataRequest}.nativeResponse", "{arguments}.0", 200, false, ["#req-myvar"]]
                         }
@@ -97,7 +97,7 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.caseHolder", {
                             func: "{dataRequest}.send"
                         },
                         {
-                            listener: "gpii.templates.tests.singleTemplateRouter.verifyResults",
+                            listener: "gpii.templates.tests.singleTemplateMiddleware.verifyResults",
                             event:    "{dataRequest}.events.onComplete",
                             args:     ["{dataRequest}.nativeResponse", "{arguments}.0", 200, {"#req-myvar": "query data"}]
                         }
@@ -108,10 +108,10 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.caseHolder", {
     ],
     components: {
         noDataRequest: {
-            type: "gpii.templates.tests.singleTemplateRouter.request"
+            type: "gpii.templates.tests.singleTemplateMiddleware.request"
         },
         dataRequest: {
-            type: "gpii.templates.tests.singleTemplateRouter.request",
+            type: "gpii.templates.tests.singleTemplateMiddleware.request",
             options: {
                 path: {
                     expander: {
@@ -124,7 +124,7 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.caseHolder", {
     }
 });
 
-fluid.defaults("gpii.templates.tests.singleTemplateRouter.environment", {
+fluid.defaults("gpii.templates.tests.singleTemplateMiddleware.environment", {
     gradeNames:  ["fluid.test.testEnvironment"],
     expressPort: 6494,
     baseUrl:     "http://localhost:6494/",
@@ -143,10 +143,10 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.environment", {
                     urlencoded: {
                         type: "gpii.express.middleware.bodyparser.urlencoded"
                     },
-                    singleTemplateRouter: {
-                        type: "gpii.express.singleTemplateRouter",
+                    singleTemplateMiddleware: {
+                        type: "gpii.express.singleTemplateMiddleware",
                         options: {
-                            templateKey: "pages/singleTemplateRouter"
+                            templateKey: "pages/singleTemplateMiddleware"
                         }
                     },
                     handlebars: {
@@ -164,9 +164,9 @@ fluid.defaults("gpii.templates.tests.singleTemplateRouter.environment", {
             }
         },
         caseHolder: {
-            type: "gpii.templates.tests.singleTemplateRouter.caseHolder"
+            type: "gpii.templates.tests.singleTemplateMiddleware.caseHolder"
         }
     }
 });
 
-gpii.templates.tests.singleTemplateRouter.environment();
+gpii.templates.tests.singleTemplateMiddleware.environment();

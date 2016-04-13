@@ -44,7 +44,7 @@ gpii.templates.tests.browser.inline.hasSecondaryPartial = function () {
 };
 
 fluid.defaults("gpii.templates.tests.browser.inline.caseHolder", {
-    gradeNames: ["gpii.tests.browser.caseHolder.withExpress"],
+    gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
         tests: [{
             name: "Confirm that template content delivered by the 'inline' router is correct and usable from a templateAware component...",
@@ -56,7 +56,7 @@ fluid.defaults("gpii.templates.tests.browser.inline.caseHolder", {
                 {
                     event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
                     listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                    args:     [gpii.tests.browser.tests.getGlobalValue, "templateAware"]
+                    args:     [gpii.test.browser.getGlobalValue, "templateAware"]
                 },
                 {
                     event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -65,7 +65,7 @@ fluid.defaults("gpii.templates.tests.browser.inline.caseHolder", {
                 },
                 {
                     func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                    args: [gpii.tests.browser.tests.getGlobalValue, "templateAware.renderer"]
+                    args: [gpii.test.browser.getGlobalValue, "templateAware.renderer"]
                 },
                 {
                     event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
@@ -74,7 +74,7 @@ fluid.defaults("gpii.templates.tests.browser.inline.caseHolder", {
                 },
                 {
                     func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                    args: [gpii.tests.browser.tests.getGlobalValue, "templateAware.renderer.templates"]
+                    args: [gpii.test.browser.getGlobalValue, "templateAware.renderer.templates"]
                 },
                 {
                     event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",

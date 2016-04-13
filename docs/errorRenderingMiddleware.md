@@ -10,7 +10,7 @@ renderer associated with your `gpii.express` instance to deliver an error.  To u
 | ------------- | ---------- | ----------- |
 | `contentType` | `{Array}`  | An array of `{String}` values this handler accepts.  Defaults to `text/html`.|
 | `namespace`   | `{String}` | The namespace other component can use to order themselves relative to this grade.  |
-| `priority`    | `{String}` | The priority this component has relative to its peers.  See the (Fluid priority documentation)[http://docs.fluidproject.org/infusion/development/Priorities.html] for details. |
+| `priority`    | `{String}` | The priority this component has relative to its peers.  See the [Fluid priority documentation](http://docs.fluidproject.org/infusion/development/Priorities.html) for details. |
 | `statusCode`  | `{Number}` | The [HTTP status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) to send to the user.  Defaults to `500` (server error). |
 | `templateKey` | `{String}` | The Handlebars template key to use in rendering our response.  Is resolved relative to `options.templateDirs` in your `gpii.handlebars` instance ([see those docs for details](handlebars.md)).  Note that this must include the containing directory, name, i.e. `pages/templateName`|
 

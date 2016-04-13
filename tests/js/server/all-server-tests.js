@@ -5,5 +5,5 @@ require("./inline-tests.js");
 require("./errorRenderingMiddleware-tests");
 require("./first-matching-path-tests.js");
 require("./resolver-tests.js");
-require("./singleTemplateRouter-tests");
+require("./singleTemplateMiddleware-tests");
 require("./standaloneRenderer-tests");

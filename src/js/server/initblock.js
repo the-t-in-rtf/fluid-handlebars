@@ -30,7 +30,7 @@
 // As this is a server-side component, it may be aware of things that you'd like to expose as part of your options.
 // The process of doing this is two-fold:
 //
-// 1.  When configuring your `gpii.express.dispatcher` grade, you should configure it to expose the data you're
+// 1.  When configuring your `gpii.templates.dispatcherMiddleware` grade, you should configure it to expose the data you're
 //     interested in to the Handlebars context.
 //
 // 2.  When configuring the `initBlock` component (typically found as a child component of a `gpii.express.hb`
