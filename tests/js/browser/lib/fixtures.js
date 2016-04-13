@@ -11,13 +11,13 @@ require("../../test-harness");
 // A standard express + Browser environment from the `gpii-test-browser` package, with our harness options wired
 // into the standard express component.
 //
-fluid.defaults("gpii.handlebars.tests.browser.environment", {
+fluid.defaults("gpii.test.handlebars.browser.environment", {
     gradeNames: ["gpii.test.browser.environment.withExpress"],
     port: 6984,
     path: "",
     components: {
         express: {
-            type: "gpii.handlebars.test.client.harness"
+            type: "gpii.test.handlebars.client.harness"
         }
     }
 });

@@ -6,7 +6,7 @@ var gpii  = fluid.registerNamespace("gpii");
 
 require("./includes.js");
 
-fluid.defaults("gpii.handlebars.tests.browser.templateMessage.caseHolder", {
+fluid.defaults("gpii.tests.handlebars.browser.templateMessage.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
         tests: [
@@ -14,34 +14,34 @@ fluid.defaults("gpii.handlebars.tests.browser.templateMessage.caseHolder", {
                 name: "Confirm that the templateMessage component is initialized and rendered correctly...",
                 sequence: [
                     {
-                        func: "{gpii.handlebars.tests.browser.environment}.browser.goto",
-                        args: ["{gpii.handlebars.tests.browser.environment}.options.url"]
+                        func: "{gpii.test.handlebars.browser.environment}.browser.goto",
+                        args: ["{gpii.test.handlebars.browser.environment}.options.url"]
                     },
                     {
-                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onLoaded",
-                        listener: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.test.browser.elementMatches, "body", "{gpii.handlebars.tests.browser.environment}.options.notExpected"]
+                        event: "{gpii.test.handlebars.browser.environment}.browser.events.onLoaded",
+                        listener: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
+                        args: [gpii.test.browser.elementMatches, "body", "{gpii.test.handlebars.browser.environment}.options.notExpected"]
                     },
                     {
-                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event: "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertFalse",
                         args: ["The placeholder text should no longer be present...", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.test.browser.elementMatches, "body", "{gpii.handlebars.tests.browser.environment}.options.expected.initialized"]
+                        func: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
+                        args: [gpii.test.browser.elementMatches, "body", "{gpii.test.handlebars.browser.environment}.options.expected.initialized"]
                     },
                     {
-                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event: "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args: ["A component with initial model data should display as expected...", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.test.browser.elementMatches, "body", "{gpii.handlebars.tests.browser.environment}.options.expected.updated"]
+                        func: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
+                        args: [gpii.test.browser.elementMatches, "body", "{gpii.test.handlebars.browser.environment}.options.expected.updated"]
                     },
                     {
-                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event: "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args: ["A component with updated model data should display as expected...", "{arguments}.0"]
                     }
@@ -51,7 +51,7 @@ fluid.defaults("gpii.handlebars.tests.browser.templateMessage.caseHolder", {
     }]
 });
 
-gpii.handlebars.tests.browser.environment({
+gpii.test.handlebars.browser.environment({
     "port": 6924,
     "path": "content/tests-templateMessage.html",
     notExpected: "should not be visible",
@@ -61,7 +61,7 @@ gpii.handlebars.tests.browser.environment({
     },
     components: {
         caseHolder: {
-            type: "gpii.handlebars.tests.browser.templateMessage.caseHolder"
+            type: "gpii.tests.handlebars.browser.templateMessage.caseHolder"
         }
     }
 });

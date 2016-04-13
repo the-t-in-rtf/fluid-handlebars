@@ -9,7 +9,7 @@ require("gpii-express");
 require("../../");
 require("./lib/test-router-error");
 
-fluid.defaults("gpii.handlebars.test.client.harness", {
+fluid.defaults("gpii.test.handlebars.client.harness", {
     gradeNames:  ["gpii.express"],
     port: 6994,
     baseUrl: {
@@ -93,17 +93,17 @@ fluid.defaults("gpii.handlebars.test.client.harness", {
             }
         },
         error: {
-            type: "gpii.handlebars.test.jsonErrorPitcher"
+            type: "gpii.test.handlebars.jsonErrorPitcher"
         },
         errorJsonString: {
-            type: "gpii.handlebars.test.jsonErrorPitcher",
+            type: "gpii.test.handlebars.jsonErrorPitcher",
             options: {
                 path: "/errorJsonString",
                 body: JSON.stringify({ok: false, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
             }
         },
         errorString: {
-            type: "gpii.handlebars.test.jsonErrorPitcher",
+            type: "gpii.test.handlebars.jsonErrorPitcher",
             options: {
                 path: "/errorString",
                 body: "There was a problem.  I'm telling you about it with a string response, hopefully this doesn't cause another problem."

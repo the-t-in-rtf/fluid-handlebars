@@ -11,15 +11,15 @@ require("gpii-express");
 require("../../../index");
 require("./lib/sanity.js");
 
-fluid.registerNamespace("gpii.handlebars.tests.server.inline");
-gpii.handlebars.tests.server.inline.runTests = function (that) {
+fluid.registerNamespace("gpii.tests.handlebars.server.inline");
+gpii.tests.handlebars.server.inline.runTests = function (that) {
     jqUnit.module("Tests for inlining of templates...");
 
     jqUnit.asyncTest("Confirm that template content is inlined...", function () {
         request.get(that.options.baseUrl + "inline", function (error, response, body) {
             jqUnit.start();
 
-            gpii.handlebars.test.server.isSaneResponse(error, response, body);
+            gpii.test.handlebars.server.isSaneResponse(error, response, body);
 
             if (body) {
                 var data = typeof body === "string" ? JSON.parse(body) : body;
@@ -38,7 +38,7 @@ gpii.express({
     json: { foo: "bar", baz: "quux", qux: "quux" },
     listeners: {
         "onStarted.runTests": {
-            funcName: "gpii.handlebars.tests.server.inline.runTests",
+            funcName: "gpii.tests.handlebars.server.inline.runTests",
             args:     ["{that}"]
         }
     },

@@ -18,7 +18,7 @@ gpii.express.loadTestingSupport();
 var kettle = require("kettle");
 kettle.loadTestingSupport();
 
-fluid.registerNamespace("gpii.handlebars.tests.singleTemplateMiddleware");
+fluid.registerNamespace("gpii.tests.handlebars.singleTemplateMiddleware");
 
 // Verify the results of a request.  Accepts the following values:
 //
@@ -35,7 +35,7 @@ fluid.registerNamespace("gpii.handlebars.tests.singleTemplateMiddleware");
 //
 // `notExpected`: An array of selectors that should either not be found or that should not contain any output.
 //
-gpii.handlebars.tests.singleTemplateMiddleware.verifyResults = function (response, body, statusCode, expected, notExpected) {
+gpii.tests.handlebars.singleTemplateMiddleware.verifyResults = function (response, body, statusCode, expected, notExpected) {
     jqUnit.assertEquals("The status code should be as expected...", statusCode, response.statusCode);
 
 
@@ -64,13 +64,13 @@ gpii.handlebars.tests.singleTemplateMiddleware.verifyResults = function (respons
     });
 };
 
-fluid.defaults("gpii.handlebars.tests.singleTemplateMiddleware.request", {
+fluid.defaults("gpii.tests.handlebars.singleTemplateMiddleware.request", {
     gradeNames: ["kettle.test.request.http"],
     port:       "{testEnvironment}.options.expressPort",
     path:       "{testEnvironment}.options.baseUrl"
 });
 
-fluid.defaults("gpii.handlebars.tests.singleTemplateMiddleware.caseHolder", {
+fluid.defaults("gpii.tests.handlebars.singleTemplateMiddleware.caseHolder", {
     gradeNames: ["gpii.test.express.caseHolder"],
     rawModules: [
         {
@@ -83,7 +83,7 @@ fluid.defaults("gpii.handlebars.tests.singleTemplateMiddleware.caseHolder", {
                             func: "{noDataRequest}.send"
                         },
                         {
-                            listener: "gpii.handlebars.tests.singleTemplateMiddleware.verifyResults",
+                            listener: "gpii.tests.handlebars.singleTemplateMiddleware.verifyResults",
                             event:    "{noDataRequest}.events.onComplete",
                             args:     ["{noDataRequest}.nativeResponse", "{arguments}.0", 200, false, ["#req-myvar"]]
                         }
@@ -97,7 +97,7 @@ fluid.defaults("gpii.handlebars.tests.singleTemplateMiddleware.caseHolder", {
                             func: "{dataRequest}.send"
                         },
                         {
-                            listener: "gpii.handlebars.tests.singleTemplateMiddleware.verifyResults",
+                            listener: "gpii.tests.handlebars.singleTemplateMiddleware.verifyResults",
                             event:    "{dataRequest}.events.onComplete",
                             args:     ["{dataRequest}.nativeResponse", "{arguments}.0", 200, {"#req-myvar": "query data"}]
                         }
@@ -108,10 +108,10 @@ fluid.defaults("gpii.handlebars.tests.singleTemplateMiddleware.caseHolder", {
     ],
     components: {
         noDataRequest: {
-            type: "gpii.handlebars.tests.singleTemplateMiddleware.request"
+            type: "gpii.tests.handlebars.singleTemplateMiddleware.request"
         },
         dataRequest: {
-            type: "gpii.handlebars.tests.singleTemplateMiddleware.request",
+            type: "gpii.tests.handlebars.singleTemplateMiddleware.request",
             options: {
                 path: {
                     expander: {
@@ -124,7 +124,7 @@ fluid.defaults("gpii.handlebars.tests.singleTemplateMiddleware.caseHolder", {
     }
 });
 
-fluid.defaults("gpii.handlebars.tests.singleTemplateMiddleware.environment", {
+fluid.defaults("gpii.tests.handlebars.singleTemplateMiddleware.environment", {
     gradeNames:  ["fluid.test.testEnvironment"],
     expressPort: 6494,
     baseUrl:     "http://localhost:6494/",
@@ -164,9 +164,9 @@ fluid.defaults("gpii.handlebars.tests.singleTemplateMiddleware.environment", {
             }
         },
         caseHolder: {
-            type: "gpii.handlebars.tests.singleTemplateMiddleware.caseHolder"
+            type: "gpii.tests.handlebars.singleTemplateMiddleware.caseHolder"
         }
     }
 });
 
-gpii.handlebars.tests.singleTemplateMiddleware.environment();
+gpii.tests.handlebars.singleTemplateMiddleware.environment();

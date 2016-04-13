@@ -6,7 +6,7 @@ var gpii  = fluid.registerNamespace("gpii");
 
 require("./test-harness");
 
-gpii.handlebars.test.client.harness({
+gpii.test.handlebars.client.harness({
     "expressPort" :   6904,
     "baseUrl":        "http://localhost:6904/"
 });
