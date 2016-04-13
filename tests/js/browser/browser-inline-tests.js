@@ -5,9 +5,9 @@ var gpii  = fluid.registerNamespace("gpii");
 
 require("./includes.js");
 
-fluid.registerNamespace("gpii.templates.tests.browser.inline");
+fluid.registerNamespace("gpii.handlebars.tests.browser.inline");
 
-gpii.templates.tests.browser.inline.hasTemplateDirs = function () {
+gpii.handlebars.tests.browser.inline.hasTemplateDirs = function () {
     /* globals window */
     var templates = window.templateAware.renderer.templates;
 
@@ -27,93 +27,93 @@ gpii.templates.tests.browser.inline.hasTemplateDirs = function () {
 };
 
 /* globals window */
-gpii.templates.tests.browser.inline.preservesPrimaryPage = function () {
+gpii.handlebars.tests.browser.inline.preservesPrimaryPage = function () {
     return window.templateAware.renderer.templates.pages.overridden.indexOf("primary") !== -1;
 };
 
-gpii.templates.tests.browser.inline.preservesPrimaryPartial = function () {
+gpii.handlebars.tests.browser.inline.preservesPrimaryPartial = function () {
     return window.templateAware.renderer.templates.partials["overridden-partial"].indexOf("primary") !== -1;
 };
 
-gpii.templates.tests.browser.inline.hasSecondaryPage = function () {
+gpii.handlebars.tests.browser.inline.hasSecondaryPage = function () {
     return window.templateAware.renderer.templates.pages.secondary.length > 0;
 };
 
-gpii.templates.tests.browser.inline.hasSecondaryPartial = function () {
+gpii.handlebars.tests.browser.inline.hasSecondaryPartial = function () {
     return window.templateAware.renderer.templates.partials["secondary-partial"].length > 0;
 };
 
-fluid.defaults("gpii.templates.tests.browser.inline.caseHolder", {
+fluid.defaults("gpii.handlebars.tests.browser.inline.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
         tests: [{
             name: "Confirm that template content delivered by the 'inline' router is correct and usable from a templateAware component...",
             sequence: [
                 {
-                    func: "{gpii.templates.tests.browser.environment}.browser.goto",
-                    args: ["{gpii.templates.tests.browser.environment}.options.url"]
+                    func: "{gpii.handlebars.tests.browser.environment}.browser.goto",
+                    args: ["{gpii.handlebars.tests.browser.environment}.options.url"]
                 },
                 {
-                    event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
-                    listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                    event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onLoaded",
+                    listener: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                     args:     [gpii.test.browser.getGlobalValue, "templateAware"]
                 },
                 {
-                    event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                    event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                     listener: "jqUnit.assertNotNull",
                     args:     ["There should be a global variable for the client-side component...", "{arguments}.0"]
                 },
                 {
-                    func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                    func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                     args: [gpii.test.browser.getGlobalValue, "templateAware.renderer"]
                 },
                 {
-                    event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                    event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                     listener: "jqUnit.assertNotNull",
                     args:     ["The client side component should have a renderer...", "{arguments}.0"]
                 },
                 {
-                    func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                    func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                     args: [gpii.test.browser.getGlobalValue, "templateAware.renderer.templates"]
                 },
                 {
-                    event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                    event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                     listener: "jqUnit.assertNotNull",
                     args:     ["The renderer should have templates...", "{arguments}.0"]
                 },
                 {
-                    func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                    args: [gpii.templates.tests.browser.inline.preservesPrimaryPage]
+                    func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
+                    args: [gpii.handlebars.tests.browser.inline.preservesPrimaryPage]
                 },
                 {
-                    event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                    event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                     listener: "jqUnit.assertTrue",
                     args:     ["A page that exists in the both the secondary and primary directory should not have been overridden...", "{arguments}.0"]
                 },
                 {
-                    func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                    args: [gpii.templates.tests.browser.inline.preservesPrimaryPartial]
+                    func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
+                    args: [gpii.handlebars.tests.browser.inline.preservesPrimaryPartial]
                 },
                 {
-                    event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                    event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                     listener: "jqUnit.assertTrue",
                     args:     ["A partial that exists in the both the secondary and primary directory should not have been overridden...", "{arguments}.0"]
                 },
                 {
-                    func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                    args: [gpii.templates.tests.browser.inline.hasSecondaryPage]
+                    func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
+                    args: [gpii.handlebars.tests.browser.inline.hasSecondaryPage]
                 },
                 {
-                    event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                    event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                     listener: "jqUnit.assertTrue",
                     args:     ["A page that only exists in the secondary directory should be available...", "{arguments}.0"]
                 },
                 {
-                    func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                    args: [gpii.templates.tests.browser.inline.hasSecondaryPartial]
+                    func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
+                    args: [gpii.handlebars.tests.browser.inline.hasSecondaryPartial]
                 },
                 {
-                    event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                    event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                     listener: "jqUnit.assertTrue",
                     args:     ["A partial that only exists in the secondary directory should be available...", "{arguments}.0"]
                 }
@@ -122,12 +122,12 @@ fluid.defaults("gpii.templates.tests.browser.inline.caseHolder", {
     }]
 });
 
-gpii.templates.tests.browser.environment({
+gpii.handlebars.tests.browser.environment({
     "port": 6595,
     "path": "content/tests-templateAware.html",
     components: {
         caseHolder: {
-            type: "gpii.templates.tests.browser.inline.caseHolder"
+            type: "gpii.handlebars.tests.browser.inline.caseHolder"
         }
     }
 });

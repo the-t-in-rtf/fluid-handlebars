@@ -13,9 +13,9 @@
 (function () {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.templates.templateFormControl");
+    fluid.registerNamespace("gpii.handlebars.templateFormControl");
 
-    gpii.templates.templateFormControl.submitForm = function (that, event) {
+    gpii.handlebars.templateFormControl.submitForm = function (that, event) {
         // We are handling this event and should prevent any further handling.
         if (event) { event.preventDefault(); }
 
@@ -23,22 +23,22 @@
         that.makeRequest();
     };
 
-    gpii.templates.templateFormControl.handleKeyPress = function (that, event) {
+    gpii.handlebars.templateFormControl.handleKeyPress = function (that, event) {
         if (event.keyCode === 13) { // Enter
             that.submitForm(event);
         }
     };
 
     // Add support for hiding content if needed
-    gpii.templates.templateFormControl.hideContentIfNeeded = function (that, success) {
+    gpii.handlebars.templateFormControl.hideContentIfNeeded = function (that, success) {
         if ((success && that.options.hideOnSuccess) || (!success && that.options.hideOnError)) {
             var form = that.locate("form");
             form.hide();
         }
     };
 
-    fluid.defaults("gpii.templates.templateFormControl", {
-        gradeNames:    ["gpii.templates.ajaxCapable", "gpii.hasRequiredFields", "gpii.templates.templateAware"],
+    fluid.defaults("gpii.handlebars.templateFormControl", {
+        gradeNames:    ["gpii.handlebars.ajaxCapable", "gpii.hasRequiredFields", "gpii.handlebars.templateAware"],
         hideOnSuccess: true,  // Whether to hide our form if the results are successful
         hideOnError:   false, // Whether to hide our form if the results are unsuccessful
         requiredFields: {
@@ -51,7 +51,7 @@
         },
         components: {
             success: {
-                type:          "gpii.templates.templateMessage",
+                type:          "gpii.handlebars.templateMessage",
                 createOnEvent: "{templateFormControl}.events.onMarkupRendered",
                 container:     "{templateFormControl}.dom.success",
                 options: {
@@ -70,7 +70,7 @@
                 }
             },
             error: {
-                type:          "gpii.templates.templateMessage",
+                type:          "gpii.handlebars.templateMessage",
                 createOnEvent: "{templateFormControl}.events.onMarkupRendered",
                 container:     "{templateFormControl}.dom.error",
                 options: {
@@ -111,11 +111,11 @@
                 args: ["initial", "{that}.options.templates.initial", "{that}.model", "html"]
             },
             submitForm: {
-                funcName: "gpii.templates.templateFormControl.submitForm",
+                funcName: "gpii.handlebars.templateFormControl.submitForm",
                 args:     ["{that}", "{arguments}.0"]
             },
             handleKeyPress: {
-                funcName: "gpii.templates.templateFormControl.handleKeyPress",
+                funcName: "gpii.handlebars.templateFormControl.handleKeyPress",
                 args:     ["{that}", "{arguments}.0"]
             }
         },
@@ -142,7 +142,7 @@
                 }
             ],
             "requestReceived.hideContentIfNeeded": {
-                funcName: "gpii.templates.templateFormControl.hideContentIfNeeded",
+                funcName: "gpii.handlebars.templateFormControl.hideContentIfNeeded",
                 args:     ["{that}", "{arguments}.1"]
             }
         }

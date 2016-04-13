@@ -6,7 +6,7 @@ var gpii  = fluid.registerNamespace("gpii");
 
 require("./includes.js");
 
-fluid.defaults("gpii.templates.tests.browser.templateAware.caseHolder", {
+fluid.defaults("gpii.handlebars.tests.browser.templateAware.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
         tests: [
@@ -14,79 +14,79 @@ fluid.defaults("gpii.templates.tests.browser.templateAware.caseHolder", {
                 name: "Confirm that the templateAware component is rendered...",
                 sequence: [
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.goto",
-                        args: ["{gpii.templates.tests.browser.environment}.options.url"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.goto",
+                        args: ["{gpii.handlebars.tests.browser.environment}.options.url"]
                     },
                     {
-                        event: "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onLoaded",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                         args: [gpii.test.browser.getElementHtml, ".viewport", "next"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertNotNull",
                         args:     ["The element should have html content...", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.test.browser.elementMatches, ".viewport", "{gpii.templates.tests.browser.environment}.options.patterns.renderedMarkdown"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.test.browser.elementMatches, ".viewport", "{gpii.handlebars.tests.browser.environment}.options.patterns.renderedMarkdown"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["The element should contain rendered markdown...", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.test.browser.elementMatches, ".viewport", "{gpii.templates.tests.browser.environment}.options.patterns.variable"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.test.browser.elementMatches, ".viewport", "{gpii.handlebars.tests.browser.environment}.options.patterns.variable"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["The element should contain rendered variable content...", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [ gpii.templates.tests.browser.equalThingsAreTrue, ".viewport"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
+                        args: [ gpii.handlebars.tests.browser.equalThingsAreTrue, ".viewport"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["Equal comparisons should display the correct text (true)...", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [ gpii.templates.tests.browser.unequalThingsAreFalse, ".viewport"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
+                        args: [ gpii.handlebars.tests.browser.unequalThingsAreFalse, ".viewport"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["Unequal comparisons should display the correct text (false)...", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
-                        args: [gpii.test.browser.elementMatches, ".viewport", "{gpii.templates.tests.browser.environment}.options.patterns.originalContent"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
+                        args: [gpii.test.browser.elementMatches, ".viewport", "{gpii.handlebars.tests.browser.environment}.options.patterns.originalContent"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertFalse",
                         args:     ["The original content should no longer be found...", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                         args: [gpii.test.browser.elementMatches, ".contained", "This content should not be overwritten."]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["Content outside of the inner container should not have been disturbed...", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                         args: [gpii.test.browser.elementMatches, ".contained", "A place for everything, and everything in its place."]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["The original content of the inner container should have been updated...", "{arguments}.0"]
                     }
@@ -96,7 +96,7 @@ fluid.defaults("gpii.templates.tests.browser.templateAware.caseHolder", {
     }]
 });
 
-gpii.templates.tests.browser.environment({
+gpii.handlebars.tests.browser.environment({
     "port": 6895,
     "path": "content/tests-templateAware.html",
     expected: {
@@ -111,7 +111,7 @@ gpii.templates.tests.browser.environment({
     },
     components: {
         caseHolder: {
-            type: "gpii.templates.tests.browser.templateAware.caseHolder"
+            type: "gpii.handlebars.tests.browser.templateAware.caseHolder"
         }
     }
 });

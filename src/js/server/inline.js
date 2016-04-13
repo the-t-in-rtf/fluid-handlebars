@@ -24,14 +24,14 @@
 "use strict";
 var fluid  = require("infusion");
 var gpii = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.templates.inlineTemplateBundlingMiddleware");
+fluid.registerNamespace("gpii.handlebars.inlineTemplateBundlingMiddleware");
 var fs     = require("fs");
 var path   = require("path");
 
 require("./lib/resolver");
 
-fluid.registerNamespace("gpii.templates.inlineTemplateBundlingMiddleware.request");
-gpii.templates.inlineTemplateBundlingMiddleware.request.sendResponse = function (that) {
+fluid.registerNamespace("gpii.handlebars.inlineTemplateBundlingMiddleware.request");
+gpii.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse = function (that) {
     if (that.options.templates) {
         gpii.express.handler.sendResponse(that, that.response, 200, { ok: true, templates: that.options.templates });
     }
@@ -40,7 +40,7 @@ gpii.templates.inlineTemplateBundlingMiddleware.request.sendResponse = function 
     }
 };
 
-fluid.defaults("gpii.templates.inlineTemplateBundlingMiddleware.request", {
+fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware.request", {
     gradeNames: ["gpii.express.handler"],
     templates: "{inline}.templates",
     messages: {
@@ -48,13 +48,13 @@ fluid.defaults("gpii.templates.inlineTemplateBundlingMiddleware.request", {
     },
     invokers: {
         "handleRequest": {
-            funcName: "gpii.templates.inlineTemplateBundlingMiddleware.request.sendResponse",
+            funcName: "gpii.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse",
             args:     ["{that}"]
         }
     }
 });
 
-gpii.templates.inlineTemplateBundlingMiddleware.loadTemplates =  function (that) {
+gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates =  function (that) {
     var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
 
     fluid.each(resolvedTemplateDirs, function (templateDir) {
@@ -64,7 +64,7 @@ gpii.templates.inlineTemplateBundlingMiddleware.loadTemplates =  function (that)
             var subDirPath = path.resolve(templateDir, entry);
             var stats = fs.statSync(subDirPath);
             if (stats.isDirectory() && that.options.allowedTemplateDirs.indexOf[entry] !== -1) {
-                gpii.templates.inlineTemplateBundlingMiddleware.scanTemplateSubdir(that, entry, subDirPath);
+                gpii.handlebars.inlineTemplateBundlingMiddleware.scanTemplateSubdir(that, entry, subDirPath);
             }
         });
     });
@@ -72,7 +72,7 @@ gpii.templates.inlineTemplateBundlingMiddleware.loadTemplates =  function (that)
     that.events.templatesLoaded.fire(that);
 };
 
-gpii.templates.inlineTemplateBundlingMiddleware.scanTemplateSubdir = function (that, key, dirPath) {
+gpii.handlebars.inlineTemplateBundlingMiddleware.scanTemplateSubdir = function (that, key, dirPath) {
     var dirContents = fs.readdirSync(dirPath);
     dirContents.forEach(function (entry) {
         var entryPath = path.resolve(dirPath, entry);
@@ -90,7 +90,7 @@ gpii.templates.inlineTemplateBundlingMiddleware.scanTemplateSubdir = function (t
     });
 };
 
-fluid.defaults("gpii.templates.inlineTemplateBundlingMiddleware", {
+fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware", {
     gradeNames:          ["gpii.express.middleware.requestAware"],
     path:                "/inline",
     namespace:           "inline", // Namespace to allow other routers to put themselves in the chain before or after us.
@@ -106,10 +106,10 @@ fluid.defaults("gpii.templates.inlineTemplateBundlingMiddleware", {
     events: {
         templatesLoaded: null
     },
-    handlerGrades: ["gpii.templates.inlineTemplateBundlingMiddleware.request"],
+    handlerGrades: ["gpii.handlebars.inlineTemplateBundlingMiddleware.request"],
     listeners: {
         "onCreate.loadTemplates": {
-            funcName: "gpii.templates.inlineTemplateBundlingMiddleware.loadTemplates",
+            funcName: "gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates",
             args:     ["{that}"]
         }
     }

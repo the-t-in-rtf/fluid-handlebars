@@ -15,7 +15,7 @@ gpii.clientTests.transformUsingTemplates = function (that) {
 };
 
 fluid.defaults("gpii.clientTests", {
-    gradeNames: ["gpii.templates.templateAware.serverAware"],
+    gradeNames: ["gpii.handlebars.templateAware.serverAware"],
     model: {
         myvar:                   "modelvariable",
         markdown:                "*this works*",

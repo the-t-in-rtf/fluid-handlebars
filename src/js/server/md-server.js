@@ -4,22 +4,22 @@
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.templates.helper.md.server");
+fluid.registerNamespace("gpii.handlebars.helper.md.server");
 
 var pagedown = require("pagedown");
 
-gpii.templates.helper.md.server.initConverter = function (that) {
+gpii.handlebars.helper.md.server.initConverter = function (that) {
     var converter = pagedown.getSanitizingConverter();
     that.converter = converter;
     that.events.converterAvailable.fire();
 };
 
-fluid.defaults("gpii.templates.helper.md.server", {
-    gradeNames: ["gpii.templates.helper.md"],
+fluid.defaults("gpii.handlebars.helper.md.server", {
+    gradeNames: ["gpii.handlebars.helper.md"],
     listeners: {
         onCreate: [
             {
-                funcName: "gpii.templates.helper.md.server.initConverter",
+                funcName: "gpii.handlebars.helper.md.server.initConverter",
                 args:     ["{that}"]
             }
         ]

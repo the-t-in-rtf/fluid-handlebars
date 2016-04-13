@@ -1,14 +1,14 @@
 // A client-side module that provides the ability to parse markdown in handlebars.
-// This is intended to be added as a child component of a grade that wires in helpers, such as `gpii.templates.renderer`
+// This is intended to be added as a child component of a grade that wires in helpers, such as `gpii.handlebars.renderer`
 //
 // Requires Pagedown (for markdown rendering)
 /* global fluid, jQuery, Markdown */
 (function () {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.templates.helper.md.client");
+    fluid.registerNamespace("gpii.handlebars.helper.md.client");
 
-    gpii.templates.helper.md.client.initConverter = function (that) {
+    gpii.handlebars.helper.md.client.initConverter = function (that) {
         if (Markdown && Markdown.getSanitizingConverter) {
             that.converter = Markdown.getSanitizingConverter();
             that.events.converterAvailable.fire();
@@ -18,12 +18,12 @@
         }
     };
 
-    fluid.defaults("gpii.templates.helper.md.client", {
-        gradeNames: ["gpii.templates.helper.md"],
+    fluid.defaults("gpii.handlebars.helper.md.client", {
+        gradeNames: ["gpii.handlebars.helper.md"],
         listeners: {
             onCreate: [
                 {
-                    funcName: "gpii.templates.helper.md.client.initConverter",
+                    funcName: "gpii.handlebars.helper.md.client.initConverter",
                     args:     ["{that}"]
                 }
             ]

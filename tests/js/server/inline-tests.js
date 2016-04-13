@@ -11,15 +11,15 @@ require("gpii-express");
 require("../../../index");
 require("./lib/sanity.js");
 
-fluid.registerNamespace("gpii.templates.tests.server.inline");
-gpii.templates.tests.server.inline.runTests = function (that) {
+fluid.registerNamespace("gpii.handlebars.tests.server.inline");
+gpii.handlebars.tests.server.inline.runTests = function (that) {
     jqUnit.module("Tests for inlining of templates...");
 
     jqUnit.asyncTest("Confirm that template content is inlined...", function () {
         request.get(that.options.baseUrl + "inline", function (error, response, body) {
             jqUnit.start();
 
-            gpii.templates.test.server.isSaneResponse(error, response, body);
+            gpii.handlebars.test.server.isSaneResponse(error, response, body);
 
             if (body) {
                 var data = typeof body === "string" ? JSON.parse(body) : body;
@@ -38,13 +38,13 @@ gpii.express({
     json: { foo: "bar", baz: "quux", qux: "quux" },
     listeners: {
         "onStarted.runTests": {
-            funcName: "gpii.templates.tests.server.inline.runTests",
+            funcName: "gpii.handlebars.tests.server.inline.runTests",
             args:     ["{that}"]
         }
     },
     components: {
         inline: {
-            type: "gpii.templates.inlineTemplateBundlingMiddleware",
+            type: "gpii.handlebars.inlineTemplateBundlingMiddleware",
             options: {
                 templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"]
             }

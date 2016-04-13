@@ -6,9 +6,9 @@ var gpii  = fluid.registerNamespace("gpii");
 
 require("./includes.js");
 
-fluid.registerNamespace("gpii.templates.tests.client.templateFormControl");
+fluid.registerNamespace("gpii.handlebars.tests.client.templateFormControl");
 
-fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
+fluid.defaults("gpii.handlebars.tests.browser.templateFormControl.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
         tests: [
@@ -16,23 +16,23 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                 name: "Confirm that the initial form is rendered...",
                 sequence: [
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.goto",
-                        args: ["{gpii.templates.tests.browser.environment}.options.url"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.goto",
+                        args: ["{gpii.handlebars.tests.browser.environment}.options.url"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onLoaded",
                         // Give the page time to render to avoid intermittent errors
                         // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     ["{testEnvironment}.options.waitAfterLoad"]
                     },
                     {
-                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                         args: [gpii.test.browser.elementMatches, "body", "This content should not be visible"]
                     },
                     {
-                        event: "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertFalse",
                         args: ["The body should contain rendered content that replaces the original source...", "{arguments}.0"]
                     }
@@ -42,44 +42,44 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                 name: "Submit a form that receives a successful AJAX response (as JSON)...",
                 sequence: [
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.goto",
-                        args: ["{gpii.templates.tests.browser.environment}.options.url"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.goto",
+                        args: ["{gpii.handlebars.tests.browser.environment}.options.url"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onLoaded",
                         // Give the page time to render to avoid intermittent errors
                         // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     ["{testEnvironment}.options.waitAfterLoad"]
                     },
                     {
-                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.click",
+                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.click",
                         args:     [".readyForSuccess input[type='submit']"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onClickComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onClickComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     [500]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.test.browser.elementMatches, ".readyForSuccess .success", "This was a triumph"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["A success message should now be displayed...", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                         args: [gpii.test.browser.getGlobalValue, "success.model.record"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertDeepEq",
-                        args:     ["AJAX results should have been appended to the model data as outlined in our rules...", "{gpii.templates.tests.browser.environment}.options.expected.record", "{arguments}.0"]
+                        args:     ["AJAX results should have been appended to the model data as outlined in our rules...", "{gpii.handlebars.tests.browser.environment}.options.expected.record", "{arguments}.0"]
                     }
                 ]
             },
@@ -87,44 +87,44 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                 name: "Submit a form that receives a successful AJAX response (as stringified JSON)...",
                 sequence: [
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.goto",
-                        args: ["{gpii.templates.tests.browser.environment}.options.url"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.goto",
+                        args: ["{gpii.handlebars.tests.browser.environment}.options.url"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onLoaded",
                         // Give the page time to render to avoid intermittent errors
                         // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     ["{testEnvironment}.options.waitAfterLoad"]
                     },
                     {
-                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.click",
+                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.click",
                         args:     [".readyForStringifySuccess input[type='submit']"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onClickComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onClickComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     [500]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.test.browser.elementMatches, ".readyForStringifySuccess .success", "This was a triumph"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["A success message should now be displayed...", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                         args: [gpii.test.browser.getGlobalValue, "successStringify.model.record"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertDeepEq",
-                        args:     ["AJAX results should have been appended to the model data as outlined in our rules...", "{gpii.templates.tests.browser.environment}.options.expected.record", "{arguments}.0"]
+                        args:     ["AJAX results should have been appended to the model data as outlined in our rules...", "{gpii.handlebars.tests.browser.environment}.options.expected.record", "{arguments}.0"]
                     }
                 ]
             },
@@ -132,33 +132,33 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                 name: "Submit a form that receives a successful AJAX response (as a raw string)...",
                 sequence: [
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.goto",
-                        args: ["{gpii.templates.tests.browser.environment}.options.url"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.goto",
+                        args: ["{gpii.handlebars.tests.browser.environment}.options.url"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onLoaded",
                         // Give the page time to render to avoid intermittent errors
                         // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     ["{testEnvironment}.options.waitAfterLoad"]
                     },
                     {
-                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.click",
+                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.click",
                         args:     [".readyForStringSuccess input[type='submit']"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onClickComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onClickComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     [500]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.test.browser.elementMatches, ".readyForStringSuccess .alert-box.success", "This was a triumph"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["A success message should now be displayed...", "{arguments}.0"]
                     }
@@ -168,33 +168,33 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                 name: "Submit a form that receives an unsuccessful AJAX response (as JSON)...",
                 sequence: [
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.goto",
-                        args: ["{gpii.templates.tests.browser.environment}.options.url"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.goto",
+                        args: ["{gpii.handlebars.tests.browser.environment}.options.url"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onLoaded",
                         // Give the page time to render to avoid intermittent errors
                         // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     ["{testEnvironment}.options.waitAfterLoad"]
                     },
                     {
-                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.click",
+                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.click",
                         args:     [".readyForFailure input[type='submit']"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onClickComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onClickComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     [500]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.test.browser.elementMatches, ".readyForFailure", "Something went wrong"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["A failure message should now be displayed...", "{arguments}.0"]
                     }
@@ -204,33 +204,33 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                 name: "Submit a form that receives an unsuccessful AJAX response (as stringified JSON)...",
                 sequence: [
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.goto",
-                        args: ["{gpii.templates.tests.browser.environment}.options.url"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.goto",
+                        args: ["{gpii.handlebars.tests.browser.environment}.options.url"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onLoaded",
                         // Give the page time to render to avoid intermittent errors
                         // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     ["{testEnvironment}.options.waitAfterLoad"]
                     },
                     {
-                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.click",
+                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.click",
                         args:     [".readyForStringifyFailure input[type='submit']"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onClickComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onClickComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     [500]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.test.browser.elementMatches, ".readyForStringifyFailure", "Something went wrong"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["A failure message should now be displayed...", "{arguments}.0"]
                     }
@@ -240,33 +240,33 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
                 name: "Submit a form that receives an unsuccessful AJAX response (as a String)...",
                 sequence: [
                     {
-                        func: "{gpii.templates.tests.browser.environment}.browser.goto",
-                        args: ["{gpii.templates.tests.browser.environment}.options.url"]
+                        func: "{gpii.handlebars.tests.browser.environment}.browser.goto",
+                        args: ["{gpii.handlebars.tests.browser.environment}.options.url"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onLoaded",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onLoaded",
                         // Give the page time to render to avoid intermittent errors
                         // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     ["{testEnvironment}.options.waitAfterLoad"]
                     },
                     {
-                        event: "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.click",
+                        event: "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.click",
                         args:     [".readyForStringFailure input[type='submit']"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onClickComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.wait",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onClickComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.wait",
                         args:     [500]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.templates.tests.browser.environment}.browser.evaluate",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onWaitComplete",
+                        listener: "{gpii.handlebars.tests.browser.environment}.browser.evaluate",
                         args:     [gpii.test.browser.elementMatches, ".readyForStringFailure", "Something went wrong"]
                     },
                     {
-                        event:    "{gpii.templates.tests.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.handlebars.tests.browser.environment}.browser.events.onEvaluateComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["A failure message should now be displayed...", "{arguments}.0"]
                     }
@@ -277,7 +277,7 @@ fluid.defaults("gpii.templates.tests.browser.templateFormControl.caseHolder", {
     }]
 });
 
-gpii.templates.tests.browser.environment({
+gpii.handlebars.tests.browser.environment({
     "port": 6993,
     "path": "content/tests-templateFormControl.html",
     waitAfterLoad: 150,
@@ -290,7 +290,7 @@ gpii.templates.tests.browser.environment({
     successStringExpected: { "message": "A success string is still a success." },
     components: {
         caseHolder: {
-            type: "gpii.templates.tests.browser.templateFormControl.caseHolder"
+            type: "gpii.handlebars.tests.browser.templateFormControl.caseHolder"
         }
     }
 });

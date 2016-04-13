@@ -3,15 +3,15 @@
 // NOTE:  This grade should not be used directly, you should add either the server or client appropriate gradeName to the appropriate list of components.
 //
 //  For your convenience, here are those grade names:
-//  _server_: `gpii.templates.helper.md.server`
-//  _client_: `gpii.templates.helper.md.client`
+//  _server_: `gpii.handlebars.helper.md.server`
+//  _client_: `gpii.handlebars.helper.md.client`
 
 "use strict";
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.templates.helper.md");
+fluid.registerNamespace("gpii.handlebars.helper.md");
 
-gpii.templates.helper.md.getMdFunction = function (that) {
+gpii.handlebars.helper.md.getMdFunction = function (that) {
     return function (context) {
         if (context) {
             if (that && that.converter) {
@@ -28,7 +28,7 @@ gpii.templates.helper.md.getMdFunction = function (that) {
     };
 };
 
-gpii.templates.helper.md.configureConverter = function (that) {
+gpii.handlebars.helper.md.configureConverter = function (that) {
     if (that.converter) {
         // Double all single carriage returns so that they result in new paragraphs, at least for now
         that.converter.hooks.chain("preConversion", function (text) {
@@ -44,15 +44,15 @@ gpii.templates.helper.md.configureConverter = function (that) {
     }
 };
 
-fluid.defaults("gpii.templates.helper.md", {
-    gradeNames: ["gpii.templates.helper"],
+fluid.defaults("gpii.handlebars.helper.md", {
+    gradeNames: ["gpii.handlebars.helper"],
     helperName: "md",
     members: {
         converter: null
     },
     invokers: {
         "getHelper": {
-            "funcName": "gpii.templates.helper.md.getMdFunction",
+            "funcName": "gpii.handlebars.helper.md.getMdFunction",
             "args":     ["{that}"]
         }
     },
@@ -61,7 +61,7 @@ fluid.defaults("gpii.templates.helper.md", {
     },
     listeners: {
         "converterAvailable": {
-            funcName: "gpii.templates.helper.md.configureConverter",
+            funcName: "gpii.handlebars.helper.md.configureConverter",
             args:     ["{that}"]
         }
     }

@@ -76,23 +76,23 @@ fluid.defaults("gpii.express.hb", {
         {
             record: {
                 "funcName": "gpii.express.addHelper",
-                "args": ["{gpii.express.hb}", "{gpii.templates.helper}"]
+                "args": ["{gpii.express.hb}", "{gpii.handlebars.helper}"]
             },
-            target: "{that > gpii.templates.helper}.options.listeners.onCreate"
+            target: "{that > gpii.handlebars.helper}.options.listeners.onCreate"
         }
     ],
     components: {
         md: {
-            type: "gpii.templates.helper.md.server"
+            type: "gpii.handlebars.helper.md.server"
         },
         equals: {
-            type: "gpii.templates.helper.equals"
+            type: "gpii.handlebars.helper.equals"
         },
         jsonify: {
-            type: "gpii.templates.helper.jsonify"
+            type: "gpii.handlebars.helper.jsonify"
         },
         initBlock: {
-            type: "gpii.templates.helper.initBlock"
+            type: "gpii.handlebars.helper.initBlock"
         }
     },
     listeners: {

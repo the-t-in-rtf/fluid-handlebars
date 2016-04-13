@@ -3,11 +3,11 @@
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.templates.tests.browser");
+fluid.registerNamespace("gpii.handlebars.tests.browser");
 
 /* globals $ */
 
-gpii.templates.tests.browser.equalThingsAreTrue = function (path, fnName) {
+gpii.handlebars.tests.browser.equalThingsAreTrue = function (path, fnName) {
     var element = fnName ? $(path)[fnName]() : $(path);
     var equalCandidates = element.find(".equal");
     for (var a = 0; a < equalCandidates.length; a++) {
@@ -19,7 +19,7 @@ gpii.templates.tests.browser.equalThingsAreTrue = function (path, fnName) {
     return true;
 };
 
-gpii.templates.tests.browser.unequalThingsAreFalse = function (path, fnName) {
+gpii.handlebars.tests.browser.unequalThingsAreFalse = function (path, fnName) {
     var element = fnName ? $(path)[fnName]() : $(path);
     var unequalCandidates = element.find(".unequal");
     for (var b = 0; b < unequalCandidates.length; b++) {
@@ -31,6 +31,6 @@ gpii.templates.tests.browser.unequalThingsAreFalse = function (path, fnName) {
     return true;
 };
 
-gpii.templates.tests.browser.getJSONContent = function (path) {
+gpii.handlebars.tests.browser.getJSONContent = function (path) {
     return JSON.parse($(path).html());
 };

@@ -11,8 +11,8 @@
 /* global fluid, jQuery */
 (function () {
     "use strict";
-    fluid.defaults("gpii.templates.templateRequestAndRender", {
-        gradeNames:    ["gpii.hasRequiredOptions", "gpii.templates.ajaxCapable"],
+    fluid.defaults("gpii.handlebars.templateRequestAndRender", {
+        gradeNames:    ["gpii.hasRequiredOptions", "gpii.handlebars.ajaxCapable"],
         requiredOptions: {
             templates:           true,
             "templates.error":   true,
@@ -24,7 +24,7 @@
         },
         components: {
             success: {
-                type:          "gpii.templates.templateMessage",
+                type:          "gpii.handlebars.templateMessage",
                 createOnEvent: "{renderer}.events.onRequestReceived",
                 container:     "{templateRequestAndRender}.dom.success",
                 options: {
@@ -35,7 +35,7 @@
                 }
             },
             error: {
-                type:          "gpii.templates.templateMessage",
+                type:          "gpii.handlebars.templateMessage",
                 createOnEvent: "{renderer}.events.onRequestReceived",
                 container:     "{templateRequestAndRender}.dom.error",
                 options: {
@@ -60,11 +60,11 @@
         },
         invokers: {
             handleSuccessFirst: {
-                funcName: "gpii.templates.templateRequestAndRender.handleSuccessFirst",
+                funcName: "gpii.handlebars.templateRequestAndRender.handleSuccessFirst",
                 args:     ["{that}"]
             },
             handleErrorFirst: {
-                funcName: "gpii.templates.templateRequestAndRender.handleErrorFirst",
+                funcName: "gpii.handlebars.templateRequestAndRender.handleErrorFirst",
                 args:     ["{that}"]
             }
         },

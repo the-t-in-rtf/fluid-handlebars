@@ -9,7 +9,7 @@ require("gpii-express");
 require("../../");
 require("./lib/test-router-error");
 
-fluid.defaults("gpii.templates.test.client.harness", {
+fluid.defaults("gpii.handlebars.test.client.harness", {
     gradeNames:  ["gpii.express"],
     port: 6994,
     baseUrl: {
@@ -42,7 +42,7 @@ fluid.defaults("gpii.templates.test.client.harness", {
             }
         },
         dispatcher: {
-            type: "gpii.templates.dispatcherMiddleware",
+            type: "gpii.handlebars.dispatcherMiddleware",
             options: {
                 priority: "after:handlebars",
                 path: ["/dispatcher/:template", "/dispatcher"],
@@ -58,7 +58,7 @@ fluid.defaults("gpii.templates.test.client.harness", {
             }
         },
         inline: {
-            type: "gpii.templates.inlineTemplateBundlingMiddleware",
+            type: "gpii.handlebars.inlineTemplateBundlingMiddleware",
             options: {
                 path: "/hbs",
                 templateDirs: "{harness}.options.templateDirs"
@@ -93,17 +93,17 @@ fluid.defaults("gpii.templates.test.client.harness", {
             }
         },
         error: {
-            type: "gpii.templates.test.jsonErrorPitcher"
+            type: "gpii.handlebars.test.jsonErrorPitcher"
         },
         errorJsonString: {
-            type: "gpii.templates.test.jsonErrorPitcher",
+            type: "gpii.handlebars.test.jsonErrorPitcher",
             options: {
                 path: "/errorJsonString",
                 body: JSON.stringify({ok: false, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
             }
         },
         errorString: {
-            type: "gpii.templates.test.jsonErrorPitcher",
+            type: "gpii.handlebars.test.jsonErrorPitcher",
             options: {
                 path: "/errorString",
                 body: "There was a problem.  I'm telling you about it with a string response, hopefully this doesn't cause another problem."

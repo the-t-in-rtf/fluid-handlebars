@@ -29,10 +29,10 @@
 (function () {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.templates.templateAware");
+    fluid.registerNamespace("gpii.handlebars.templateAware");
 
     // A convenience function that can be used to more easily define `renderInitialMarkup` invokers (see example above).
-    gpii.templates.templateAware.renderMarkup = function (that, renderer, selector, template, data, manipulator) {
+    gpii.handlebars.templateAware.renderMarkup = function (that, renderer, selector, template, data, manipulator) {
         manipulator = manipulator ? manipulator : "html";
         var element = that.locate(selector);
         if (renderer) {
@@ -45,11 +45,11 @@
     };
 
     // When overriding this, you should fire an `onMarkupRendered` event to ensure that bindings can be applied.
-    gpii.templates.templateAware.noRenderFunctionDefined = function () {
+    gpii.handlebars.templateAware.noRenderFunctionDefined = function () {
         fluid.fail("You are expected to define a renderInitialMarkup invoker when implementing a templateAware component.");
     };
 
-    gpii.templates.templateAware.refreshDom = function (that) {
+    gpii.handlebars.templateAware.refreshDom = function (that) {
         // Adapted from: https://github.com/fluid-project/infusion/blob/master/src/framework/preferences/js/Panels.js#L147
         var userJQuery = that.container.constructor;
         that.container = userJQuery(that.container.selector, that.container.context);
@@ -57,7 +57,7 @@
         that.events.onDomBind.fire(that);
     };
 
-    fluid.defaults("gpii.templates.templateAware", {
+    fluid.defaults("gpii.handlebars.templateAware", {
         gradeNames: ["gpii.hasRequiredOptions", "fluid.viewComponent"],
         requiredOptions: {
             templates:           true,
@@ -79,7 +79,7 @@
                 args:     ["{that}"]
             },
             "onMarkupRendered.refreshDom": {
-                funcName: "gpii.templates.templateAware.refreshDom",
+                funcName: "gpii.handlebars.templateAware.refreshDom",
                 args:     ["{that}"]
             }
         },
@@ -87,17 +87,17 @@
             // TODO: Use `fluid.notImplemented` once it's available: https://issues.fluidproject.org/browse/FLUID-5733
             // TODO: Review with Antranig, for whatever reason I cannot override this successfully in child grades.
             //renderInitialMarkup: {
-            //    funcName: "gpii.templates.templateAware.noRenderFunctionDefined"
+            //    funcName: "gpii.handlebars.templateAware.noRenderFunctionDefined"
             //},
             renderMarkup: {
-                funcName: "gpii.templates.templateAware.renderMarkup",
+                funcName: "gpii.handlebars.templateAware.renderMarkup",
                 args:     ["{that}", "{renderer}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
             }
         }
     });
 
     // A convenience grade which configured a `templateAware` component to render on startup.
-    fluid.defaults("gpii.templates.templateAware.bornReady", {
+    fluid.defaults("gpii.handlebars.templateAware.bornReady", {
         listeners: {
             "onCreate.renderMarkup": {
                 func: "{that}.renderInitialMarkup"
@@ -105,15 +105,15 @@
         }
     });
 
-    fluid.defaults("gpii.templates.templateAware.serverAware", {
-        gradeNames: ["gpii.templates.templateAware"],
+    fluid.defaults("gpii.handlebars.templateAware.serverAware", {
+        gradeNames: ["gpii.handlebars.templateAware"],
         components: {
             renderer: {
-                type: "gpii.templates.renderer.serverAware",
+                type: "gpii.handlebars.renderer.serverAware",
                 options: {
                     listeners: {
                         "onTemplatesLoaded.renderMarkup": {
-                            func: "{gpii.templates.templateAware.serverAware}.renderInitialMarkup"
+                            func: "{gpii.handlebars.templateAware.serverAware}.renderInitialMarkup"
                         }
                     }
                 }
