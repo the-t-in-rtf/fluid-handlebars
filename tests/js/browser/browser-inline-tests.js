@@ -46,8 +46,9 @@ gpii.tests.handlebars.browser.inline.hasSecondaryPartial = function () {
 fluid.defaults("gpii.tests.handlebars.browser.inline.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
+        name: "Test the `inline` middleware...",
         tests: [{
-            name: "Confirm that template content delivered by the 'inline' router is correct and usable from a templateAware component...",
+            name: "Confirm that template content delivered by the 'inline' middleware is correct and usable from a templateAware component...",
             sequence: [
                 {
                     func: "{gpii.test.handlebars.browser.environment}.browser.goto",
@@ -122,12 +123,15 @@ fluid.defaults("gpii.tests.handlebars.browser.inline.caseHolder", {
     }]
 });
 
-gpii.test.handlebars.browser.environment({
-    "port": 6595,
-    "path": "content/tests-templateAware.html",
+fluid.defaults("gpii.tests.handlebars.browser.inline.testEnvironment", {
+    gradeNames: ["gpii.test.handlebars.browser.environment"],
+    port: 6595,
+    path: "content/tests-templateAware.html",
     components: {
         caseHolder: {
             type: "gpii.tests.handlebars.browser.inline.caseHolder"
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.handlebars.browser.inline.testEnvironment");

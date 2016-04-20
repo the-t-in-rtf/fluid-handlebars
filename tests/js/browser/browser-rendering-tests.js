@@ -8,6 +8,7 @@ require("./includes.js");
 fluid.defaults("gpii.tests.handlebars.browser.renderer.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
+        name: "Testing browser template rendering...",
         tests: [
             {
                 name: "Confirm that the client-side renderer can add content after an existing element...",
@@ -416,9 +417,10 @@ fluid.defaults("gpii.tests.handlebars.browser.renderer.caseHolder", {
     }]
 });
 
-gpii.test.handlebars.browser.environment({
-    "port": 6596,
-    "path": "content/tests-rendering.html",
+fluid.defaults("gpii.tests.handlebars.browser.renderer.testEnvironment", {
+    gradeNames: ["gpii.test.handlebars.browser.environment"],
+    port: 6596,
+    path: "content/tests-rendering.html",
     patterns: {
         originalContent:            "^original content$",
         originalContentAtBeginning: "^original content",
@@ -438,3 +440,5 @@ gpii.test.handlebars.browser.environment({
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.handlebars.browser.renderer.testEnvironment");

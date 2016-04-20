@@ -16,6 +16,7 @@ gpii.tests.handlebars.browser.initBlock.selectorContains = function (selector, s
 fluid.defaults("gpii.tests.handlebars.browser.initBlock.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
+        name: "Testing `initBlock` helper...",
         tests: [
             {
                 name: "Confirm the page was rendered and that the initBlock component was created correctly...",
@@ -58,9 +59,10 @@ fluid.defaults("gpii.tests.handlebars.browser.initBlock.caseHolder", {
     }]
 });
 
-gpii.test.handlebars.browser.environment({
-    "port": 6995,
-    "path": "dispatcher/initblock?myvar=bar",
+fluid.defaults("gpii.tests.handlebars.browser.initBlock.testEnvironment", {
+    gradeNames: ["gpii.test.handlebars.browser.environment"],
+    port: 6995,
+    path: "dispatcher/initblock?myvar=bar",
     expected: {
         "hasDataFromGrade": true,
         "req": {
@@ -85,3 +87,5 @@ gpii.test.handlebars.browser.environment({
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.handlebars.browser.initBlock.testEnvironment");

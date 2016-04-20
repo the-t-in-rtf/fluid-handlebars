@@ -9,6 +9,7 @@ require("./includes.js");
 fluid.defaults("gpii.tests.handlebars.browser.templateAware.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
+        name: "Testing the `templateAware` client side grade...",
         tests: [
             {
                 name: "Confirm that the templateAware component is rendered...",
@@ -96,9 +97,10 @@ fluid.defaults("gpii.tests.handlebars.browser.templateAware.caseHolder", {
     }]
 });
 
-gpii.test.handlebars.browser.environment({
-    "port": 6895,
-    "path": "content/tests-templateAware.html",
+fluid.defaults("gpii.tests.handlebars.browser.templateAware.testEnvironment", {
+    gradeNames: ["gpii.test.handlebars.browser.environment"],
+    port: 6895,
+    path: "content/tests-templateAware.html",
     expected: {
         myvar:    "modelvariable",
         markdown: "*this works*",
@@ -115,3 +117,5 @@ gpii.test.handlebars.browser.environment({
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.handlebars.browser.templateAware.testEnvironment");

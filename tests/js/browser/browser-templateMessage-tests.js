@@ -9,6 +9,7 @@ require("./includes.js");
 fluid.defaults("gpii.tests.handlebars.browser.templateMessage.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
+        name: "Testing the `templateMessage` client-side grade...",
         tests: [
             {
                 name: "Confirm that the templateMessage component is initialized and rendered correctly...",
@@ -51,7 +52,8 @@ fluid.defaults("gpii.tests.handlebars.browser.templateMessage.caseHolder", {
     }]
 });
 
-gpii.test.handlebars.browser.environment({
+fluid.defaults("gpii.tests.handlebars.browser.templateMessage.testEnvironment", {
+    gradeNames: ["gpii.test.handlebars.browser.environment"],
     "port": 6924,
     "path": "content/tests-templateMessage.html",
     notExpected: "should not be visible",
@@ -65,3 +67,5 @@ gpii.test.handlebars.browser.environment({
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.handlebars.browser.templateMessage.testEnvironment");

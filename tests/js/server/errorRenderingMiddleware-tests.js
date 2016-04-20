@@ -47,6 +47,7 @@ fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.caseHolder", {
     },
     rawModules: [
         {
+            name: "Testing error rendering middleware...",
             tests: [
                 {
                     name: "Confirm that an HTML error is rendered correctly...",
@@ -171,4 +172,4 @@ fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.environment", {
     }
 });
 
-gpii.tests.templates.errorRenderingMiddleware.environment();
+fluid.test.runTests("gpii.tests.templates.errorRenderingMiddleware.environment");

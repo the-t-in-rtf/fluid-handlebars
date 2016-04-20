@@ -33,10 +33,10 @@ require("./lib/resolver");
 fluid.registerNamespace("gpii.handlebars.inlineTemplateBundlingMiddleware.request");
 gpii.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse = function (that) {
     if (that.options.templates) {
-        gpii.express.handler.sendResponse(that, that.response, 200, { ok: true, templates: that.options.templates });
+        gpii.express.handler.sendResponse(that, that.options.response, 200, { ok: true, templates: that.options.templates });
     }
     else {
-        gpii.express.handler.sendResponse(that, that.response, 500, { ok: false, message: that.options.messages.noTemplates});
+        gpii.express.handler.sendResponse(that, that.options.response, 500, { ok: false, message: that.options.messages.noTemplates});
     }
 };
 

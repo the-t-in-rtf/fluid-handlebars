@@ -74,6 +74,7 @@ fluid.defaults("gpii.tests.handlebars.singleTemplateMiddleware.caseHolder", {
     gradeNames: ["gpii.test.express.caseHolder"],
     rawModules: [
         {
+            name: "Testing single template middleware...",
             tests: [
                 {
                     name: "Confirm that a template is rendered without request data...",
@@ -169,4 +170,4 @@ fluid.defaults("gpii.tests.handlebars.singleTemplateMiddleware.environment", {
     }
 });
 
-gpii.tests.handlebars.singleTemplateMiddleware.environment();
+fluid.test.runTests("gpii.tests.handlebars.singleTemplateMiddleware.environment");

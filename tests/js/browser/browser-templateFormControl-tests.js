@@ -11,6 +11,7 @@ fluid.registerNamespace("gpii.tests.handlebars.client.templateFormControl");
 fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
+        name: "Testing the `templateFormControl` client-side grade...",
         tests: [
             {
                 name: "Confirm that the initial form is rendered...",
@@ -277,9 +278,10 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
     }]
 });
 
-gpii.test.handlebars.browser.environment({
-    "port": 6993,
-    "path": "content/tests-templateFormControl.html",
+fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.testEnvironment", {
+    gradeNames: ["gpii.test.handlebars.browser.environment"],
+    port: 6993,
+    path: "content/tests-templateFormControl.html",
     waitAfterLoad: 150,
     expected: {
         record: {
@@ -294,3 +296,5 @@ gpii.test.handlebars.browser.environment({
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.handlebars.browser.templateFormControl.testEnvironment");
