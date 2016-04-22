@@ -9,6 +9,7 @@
     "postinstall": "node node_modules/bower/bin/bower install"
   },
   "dependencies": {
+    "bower": "1.7.2",
     "express-handlebars": "1.2.2",
     "gpii-binder": "git://github.com/the-t-in-rtf/gpii-binder#648cbbd7933d037f650a138a225c75c217286d44",
     "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#6d733de45c85fe21468d9d94af6b3824b6128b66",
@@ -19,7 +20,6 @@
     "underscore-node": "0.1.2"
   },
   "devDependencies": {
-    "bower": "1.7.2",
     "gpii-test-browser": "git://github.com/the-t-in-rtf/gpii-test-browser#f32e8f93f341a201b62eac62cac8134cae38cdf8",
     "grunt": "~0.4.4",
     "grunt-contrib-jshint": "~0.9.0",
