@@ -12,7 +12,7 @@
     "bower": "1.7.2",
     "express-handlebars": "1.2.2",
     "gpii-binder": "git://github.com/the-t-in-rtf/gpii-binder#648cbbd7933d037f650a138a225c75c217286d44",
-    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#0ce8c6f49e47c7af03450823d2d56d6732aa9a53",
+    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#2d2d2c6c8670a206ea3f03a82c2377281a497bbf",
     "handlebars": "4.0.5",
     "infusion": "git://github.com/amb26/infusion.git#81ef49cdc0e78a96549c5195d9ffd42604087096",
     "marked": "0.3.5",
@@ -20,7 +20,7 @@
     "underscore-node": "0.1.2"
   },
   "devDependencies": {
-    "gpii-test-browser": "git://github.com/the-t-in-rtf/gpii-test-browser#f32e8f93f341a201b62eac62cac8134cae38cdf8",
+    "gpii-test-browser": "git://github.com/the-t-in-rtf/gpii-test-browser#bed2c066470c24968f5faa2a2bdaa04c285ed0fc",
     "grunt": "~0.4.4",
     "grunt-contrib-jshint": "~0.9.0",
     "grunt-jsonlint": "1.0.4",
