@@ -30,7 +30,7 @@
 // As this is a server-side component, it may be aware of things that you'd like to expose as part of your options.
 // The process of doing this is two-fold:
 //
-// 1.  When configuring your `gpii.express.dispatcher` grade, you should configure it to expose the data you're
+// 1.  When configuring your `gpii.handlebars.dispatcherMiddleware` grade, you should configure it to expose the data you're
 //     interested in to the Handlebars context.
 //
 // 2.  When configuring the `initBlock` component (typically found as a child component of a `gpii.express.hb`
@@ -71,13 +71,13 @@ var fluid  = require("infusion");
 var gpii   = fluid.registerNamespace("gpii");
 var jQuery = fluid.registerNamespace("jQuery");
 
-fluid.registerNamespace("gpii.templates.helper.initBlock");
+fluid.registerNamespace("gpii.handlebars.helper.initBlock");
 
-gpii.templates.helper.initBlock.getHelper = function (that) {
+gpii.handlebars.helper.initBlock.getHelper = function (that) {
     return that.generateInitBlock;
 };
 
-gpii.templates.helper.initBlock.generateInitBlock = function (that, args) {
+gpii.handlebars.helper.initBlock.generateInitBlock = function (that, args) {
     // Guard against being handed an `Arguments` object instead of an array.
     args = fluid.makeArray(args);
 
@@ -114,13 +114,13 @@ gpii.templates.helper.initBlock.generateInitBlock = function (that, args) {
     }
 };
 
-fluid.defaults("gpii.templates.helper.initBlock", {
-    gradeNames: ["gpii.templates.helper"],
+fluid.defaults("gpii.handlebars.helper.initBlock", {
+    gradeNames: ["gpii.handlebars.helper"],
     mergePolicy: {
         "baseOptions": "noexpand,nomerge"
     },
     contextToOptionsRules: { "": "" }, // By default, expose everything that's available.
-    baseGradeName: "gpii.templates.templateManager",
+    baseGradeName: "gpii.handlebars.templateManager",
     baseOptions: {
         components: {
             requireRenderer: {
@@ -138,11 +138,11 @@ fluid.defaults("gpii.templates.helper.initBlock", {
     helperName: "initBlock",
     invokers: {
         "getHelper": {
-            "funcName": "gpii.templates.helper.initBlock.getHelper",
+            "funcName": "gpii.handlebars.helper.initBlock.getHelper",
             "args":     ["{that}"]
         },
         "generateInitBlock": {
-            "funcName": "gpii.templates.helper.initBlock.generateInitBlock",
+            "funcName": "gpii.handlebars.helper.initBlock.generateInitBlock",
             "args":     ["{that}", "{arguments}"]
         }
     }

@@ -1,7 +1,7 @@
 "use strict";
 // Base gradeName for handlebars "helper" modules, which can be used on both the client and server side handlebars stacks.
 var fluid = fluid || require("infusion");
-fluid.registerNamespace("gpii.templates.helper");
+fluid.registerNamespace("gpii.handlebars.helper");
 
 // Each "helper" module is expected to replace the `getHelper` invoker with an invoker that returns a helper function, something like the following:
 //
@@ -24,7 +24,7 @@ fluid.registerNamespace("gpii.templates.helper");
 //      }
 //    }
 
-fluid.defaults("gpii.templates.helper", {
+fluid.defaults("gpii.handlebars.helper", {
     gradeNames: ["fluid.modelComponent", "gpii.hasRequiredOptions"],
     requiredOptions: {
         helperName: true

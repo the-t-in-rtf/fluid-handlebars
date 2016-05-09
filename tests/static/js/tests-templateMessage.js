@@ -5,12 +5,12 @@
 //
 /* global fluid */
 
-fluid.defaults("gpii.templates.tests.templateMessage", {
-    gradeNames: ["gpii.templates.templateMessage", "gpii.templates.templateAware.bornReady"],
+fluid.defaults("gpii.handlebars.tests.templateMessage", {
+    gradeNames: ["gpii.handlebars.templateMessage", "gpii.handlebars.templateAware.bornReady"],
     template:   "common-success",
     components: {
         renderer: {
-            type: "gpii.templates.renderer",
+            type: "gpii.handlebars.renderer",
             options: {
                 members: {
                     templates: {
@@ -24,14 +24,14 @@ fluid.defaults("gpii.templates.tests.templateMessage", {
     }
 });
 
-fluid.defaults("gpii.templates.tests.templateMessage.initialized", {
-    gradeNames: ["gpii.templates.tests.templateMessage"],
+fluid.defaults("gpii.handlebars.tests.templateMessage.initialized", {
+    gradeNames: ["gpii.handlebars.tests.templateMessage"],
     model: {
         message: "I was born with silver model data in my mouth."
     }
 });
 
-fluid.defaults("gpii.templates.tests.templateMessage.updated", {
-    gradeNames: ["gpii.templates.tests.templateMessage"],
+fluid.defaults("gpii.handlebars.tests.templateMessage.updated", {
+    gradeNames: ["gpii.handlebars.tests.templateMessage"],
     model:      {}
 });

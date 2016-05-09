@@ -10,9 +10,9 @@
 (function () {
     "use strict";
 
-    fluid.registerNamespace("gpii.templates.templateMessage");
-    fluid.defaults("gpii.templates.templateMessage", {
-        gradeNames:  ["gpii.templates.templateAware"],
+    fluid.registerNamespace("gpii.handlebars.templateMessage");
+    fluid.defaults("gpii.handlebars.templateMessage", {
+        gradeNames:  ["gpii.handlebars.templateAware"],
         template:    "common-message",
         manipulator: "html", // By default, we replace the contents of our container, but not the container itself.
         selectors: {

@@ -36,15 +36,16 @@
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
-fluid.registerNamespace("gpii.express.singleTemplateRouter");
-gpii.express.singleTemplateRouter.renderForm = function (that, request, response) {
+fluid.registerNamespace("gpii.express.singleTemplateMiddleware");
+
+gpii.express.singleTemplateMiddleware.renderForm = function (that, request, response) {
     var generatedContext = fluid.model.transformWithRules({ model: that.model, req: request}, that.options.rules.contextToExpose);
     response.status(200).render(that.options.templateKey, generatedContext);
 };
 
-fluid.defaults("gpii.express.singleTemplateRouter", {
-    gradeNames:      ["gpii.express.router"],
-    namespace:       "singleTemplateRouter", // Namespace to make it easier for other routers to put themselves in the chain before or after us.
+fluid.defaults("gpii.express.singleTemplateMiddleware", {
+    gradeNames:      ["gpii.express.middleware"],
+    namespace:       "singleTemplateMiddleware", // Namespace to make it easier for other routers to put themselves in the chain before or after us.
     path:            "/",
     method:          "get",
     rules: {
@@ -56,8 +57,8 @@ fluid.defaults("gpii.express.singleTemplateRouter", {
         }
     },
     invokers: {
-        route: {
-            funcName: "gpii.express.singleTemplateRouter.renderForm",
+        middleware: {
+            funcName: "gpii.express.singleTemplateMiddleware.renderForm",
             args:     ["{that}", "{arguments}.0", "{arguments}.1"] // request, response
         }
     }

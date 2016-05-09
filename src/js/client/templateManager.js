@@ -1,6 +1,6 @@
 // A client-side module that:
 //
-// 1. Instantiates a `gpii.templates.renderer`.
+// 1. Instantiates a `gpii.handlebars.renderer`.
 // 2. Distributes its renderer to any child grades that extend the `templateAware` grade.
 // 3. Makes any child grades that extend the `templateAware` grade delay their creation until templates are loaded.
 //
@@ -10,11 +10,11 @@
 /* global fluid, jQuery */
 (function () {
     "use strict";
-    fluid.defaults("gpii.templates.templateManager", {
+    fluid.defaults("gpii.handlebars.templateManager", {
         gradeNames: ["fluid.component"],
         components: {
             renderer: {
-                type: "gpii.templates.renderer.serverAware"
+                type: "gpii.handlebars.renderer.serverAware"
             },
             // All components that require a renderer should be added as children of the `requireRenderer` component
             // to ensure that they are created once the renderer is available.
@@ -26,12 +26,12 @@
         distributeOptions: [
             // Any child components of this one should use our renderer
             {
-                record: "{gpii.templates.templateManager}.renderer",
+                record: "{gpii.handlebars.templateManager}.renderer",
                 target: "{that templateAware}.options.components.renderer"
             },
             // Any child `templateAware` components of this one should be "born ready" to render.
             {
-                record: "gpii.templates.templateAware.bornReady",
+                record: "gpii.handlebars.templateAware.bornReady",
                 target: "{that templateAware}.options.gradeNames"
             }
         ]

@@ -4,8 +4,8 @@ var gpii  = fluid.registerNamespace("gpii");
 
 var jqUnit = require("node-jqunit");
 
-fluid.registerNamespace("gpii.templates.tests.server");
-gpii.templates.tests.server.isSaneResponse = function (error, response, body) {
+fluid.registerNamespace("gpii.test.handlebars.server");
+gpii.test.handlebars.server.isSaneResponse = function (error, response, body) {
     jqUnit.assertNull("There should be no errors.", error);
 
     jqUnit.assertEquals("The response should have a reasonable status code", 200, response.statusCode);
@@ -17,7 +17,7 @@ gpii.templates.tests.server.isSaneResponse = function (error, response, body) {
 };
 
 
-gpii.templates.tests.server.bodyMatches = function (message, body, pattern, shouldNotMatch) {
+gpii.test.handlebars.server.bodyMatches = function (message, body, pattern, shouldNotMatch) {
     var matches = body.match(pattern);
     if (shouldNotMatch) {
         jqUnit.assertNull(message, matches);

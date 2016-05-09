@@ -22,9 +22,9 @@
 "use strict";
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.templates.helper.equals");
+fluid.registerNamespace("gpii.handlebars.helper.equals");
 
-gpii.templates.helper.equals.getEqualsFunction = function () {
+gpii.handlebars.helper.equals.getEqualsFunction = function () {
     return function (lvalue, rvalue, options) {
         if (arguments.length < 3) {
             fluid.fail("You must call the 'equals' helper with three arguments.");
@@ -38,12 +38,12 @@ gpii.templates.helper.equals.getEqualsFunction = function () {
     };
 };
 
-fluid.defaults("gpii.templates.helper.equals", {
-    gradeNames: ["gpii.templates.helper"],
+fluid.defaults("gpii.handlebars.helper.equals", {
+    gradeNames: ["gpii.handlebars.helper"],
     helperName: "equals",
     invokers: {
         "getHelper": {
-            "funcName": "gpii.templates.helper.equals.getEqualsFunction",
+            "funcName": "gpii.handlebars.helper.equals.getEqualsFunction",
             "args":     ["{that}"]
         }
     }

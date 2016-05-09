@@ -7,8 +7,8 @@ require("../../../index");
 
 var jqUnit = require("node-jqunit");
 
-fluid.registerNamespace("gpii.handlebars.tests.standaloneRenderer");
-gpii.handlebars.tests.standaloneRenderer.runTests = function (that) {
+fluid.registerNamespace("gpii.tests.handlebars.standaloneRenderer");
+gpii.tests.handlebars.standaloneRenderer.runTests = function (that) {
     fluid.each(that.options.tests, function (testOptions) {
         jqUnit.test(testOptions.name, function () {
             var output = that.renderer.render(testOptions.templateKey, testOptions.context);
@@ -77,7 +77,7 @@ fluid.component({
     ],
     listeners: {
         "onCreate.runTests": {
-            funcName: "gpii.handlebars.tests.standaloneRenderer.runTests",
+            funcName: "gpii.tests.handlebars.standaloneRenderer.runTests",
             args:     ["{that}"]
         }
     },

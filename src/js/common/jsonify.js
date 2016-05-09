@@ -8,9 +8,9 @@
 "use strict";
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.templates.helper.jsonify");
+fluid.registerNamespace("gpii.handlebars.helper.jsonify");
 
-gpii.templates.helper.jsonify.getJsonifyFunction = function () {
+gpii.handlebars.helper.jsonify.getJsonifyFunction = function () {
     return function (context) {
         if (context) {
             try {
@@ -25,12 +25,12 @@ gpii.templates.helper.jsonify.getJsonifyFunction = function () {
     };
 };
 
-fluid.defaults("gpii.templates.helper.jsonify", {
-    gradeNames: ["gpii.templates.helper"],
+fluid.defaults("gpii.handlebars.helper.jsonify", {
+    gradeNames: ["gpii.handlebars.helper"],
     helperName: "jsonify",
     invokers: {
         "getHelper": {
-            "funcName": "gpii.templates.helper.jsonify.getJsonifyFunction",
+            "funcName": "gpii.handlebars.helper.jsonify.getJsonifyFunction",
             "args":     ["{that}"]
         }
     }

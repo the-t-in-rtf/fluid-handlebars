@@ -2,21 +2,21 @@
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.templates.tests.router.error");
+fluid.registerNamespace("gpii.test.handlebars.jsonErrorPitcher");
 
-gpii.templates.tests.router.error.route = function (that, req, res) {
+gpii.test.handlebars.jsonErrorPitcher.middleware = function (that, req, res) {
     res.status(that.options.statusCode).send(that.options.body);
 };
 
-fluid.defaults("gpii.templates.tests.router.error", {
-    gradeNames: ["gpii.express.router"],
+fluid.defaults("gpii.test.handlebars.jsonErrorPitcher", {
+    gradeNames: ["gpii.express.middleware"],
     method:     "get",
     path:       "/error",
     statusCode: 500,
     body:       { message: "Something has gone horribly wrong as planned."},
     invokers: {
-        route: {
-            funcName: "gpii.templates.tests.router.error.route",
+        middleware: {
+            funcName: "gpii.test.handlebars.jsonErrorPitcher.middleware",
             args:     ["{that}", "{arguments}.0", "{arguments}.1"]
         }
     }

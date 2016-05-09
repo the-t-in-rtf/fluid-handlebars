@@ -11,10 +11,10 @@ require("gpii-express");
 require("../../../index");
 require("./lib/sanity");
 
-fluid.registerNamespace("gpii.templates.tests.server");
+fluid.registerNamespace("gpii.tests.handlebars.server");
 
 
-gpii.templates.tests.server.runTests = function (that) {
+gpii.tests.handlebars.server.runTests = function (that) {
     jqUnit.module("Tests for dispatcher...");
 
     // Test the following variations:
@@ -31,14 +31,14 @@ gpii.templates.tests.server.runTests = function (that) {
             request.get(that.options.baseUrl + "dispatcher/" + page + "?myvar=queryvariable", function (error, response, body) {
                 jqUnit.start();
 
-                gpii.templates.tests.server.isSaneResponse(error, response, body);
+                gpii.test.handlebars.server.isSaneResponse(error, response, body);
 
-                gpii.templates.tests.server.bodyMatches("There should be layout content in the body...", body, /from the layout/);
-                gpii.templates.tests.server.bodyMatches("There should be page content in the body...", body, /from the page/);
-                gpii.templates.tests.server.bodyMatches("There should be partial content in the body...", body, /from the partial/);
-                gpii.templates.tests.server.bodyMatches("The results should contain transformed markdown.", body, /<p><em>this works<\/em><\/p>/i);
-                gpii.templates.tests.server.bodyMatches("There should be model variable content in the body...", body, /modelvariable/);
-                gpii.templates.tests.server.bodyMatches("There should be query variable content in the body...", body, /queryvariable/);
+                gpii.test.handlebars.server.bodyMatches("There should be layout content in the body...", body, /from the layout/);
+                gpii.test.handlebars.server.bodyMatches("There should be page content in the body...", body, /from the page/);
+                gpii.test.handlebars.server.bodyMatches("There should be partial content in the body...", body, /from the partial/);
+                gpii.test.handlebars.server.bodyMatches("The results should contain transformed markdown.", body, /<p><em>this works<\/em><\/p>/i);
+                gpii.test.handlebars.server.bodyMatches("There should be model variable content in the body...", body, /modelvariable/);
+                gpii.test.handlebars.server.bodyMatches("There should be query variable content in the body...", body, /queryvariable/);
 
                 // Tests for the "equals" helper.  We don't use the standard function because we want to inspect the individual results more closely.
                 var equalsElementRegexp = /<td class="equal">([^<]+)<\/td>/;
@@ -84,9 +84,9 @@ gpii.templates.tests.server.runTests = function (that) {
         request.get(that.options.baseUrl + "dispatcher/secondary", function (error, response, body) {
             jqUnit.start();
 
-            gpii.templates.tests.server.bodyMatches("The default layout should have been used...", body, /Main Layout/);
-            gpii.templates.tests.server.bodyMatches("The secondary page should have been used...", body, /page served up from the secondary template directory/);
-            gpii.templates.tests.server.bodyMatches("The secondary partial should have been used...", body, /partial served from the secondary template director/);
+            gpii.test.handlebars.server.bodyMatches("The default layout should have been used...", body, /Main Layout/);
+            gpii.test.handlebars.server.bodyMatches("The secondary page should have been used...", body, /page served up from the secondary template directory/);
+            gpii.test.handlebars.server.bodyMatches("The secondary partial should have been used...", body, /partial served from the secondary template director/);
         });
     });
 
@@ -94,9 +94,9 @@ gpii.templates.tests.server.runTests = function (that) {
         request.get(that.options.baseUrl + "dispatcher/overridden", function (error, response, body) {
             jqUnit.start();
 
-            gpii.templates.tests.server.bodyMatches("The layout should have come from the primary...", body, /layout found in the primary template directory/);
-            gpii.templates.tests.server.bodyMatches("The page should have come from the primary", body, /page served up from the primary template directory/);
-            gpii.templates.tests.server.bodyMatches("The partial should have come from the primary...", body, /partial served from the primary template directory/);
+            gpii.test.handlebars.server.bodyMatches("The layout should have come from the primary...", body, /layout found in the primary template directory/);
+            gpii.test.handlebars.server.bodyMatches("The page should have come from the primary", body, /page served up from the primary template directory/);
+            gpii.test.handlebars.server.bodyMatches("The partial should have come from the primary...", body, /partial served from the primary template directory/);
         });
     });
 };
@@ -107,7 +107,7 @@ gpii.express({
     json: { foo: "bar", baz: "quux", qux: "quux" },
     listeners: {
         "onStarted.runTests": {
-            funcName: "gpii.templates.tests.server.runTests",
+            funcName: "gpii.tests.handlebars.server.runTests",
             args:     ["{that}"]
         }
     },
@@ -132,7 +132,7 @@ gpii.express({
             }
         },
         dispatcher: {
-            type: "gpii.express.dispatcher",
+            type: "gpii.handlebars.dispatcherMiddleware",
             options: {
                 priority: "last",
                 path: ["/dispatcher/:template", "/dispatcher"],

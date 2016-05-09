@@ -6,7 +6,7 @@
 /* global fluid */
 (function () {
     fluid.defaults("gpii.tests.initBlock", {
-        gradeNames: ["gpii.templates.templateAware"],
+        gradeNames: ["gpii.handlebars.templateAware"],
         template:   "index",
         selectors: {
             initial: ".initBlock-viewport"

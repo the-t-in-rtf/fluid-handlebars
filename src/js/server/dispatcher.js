@@ -15,14 +15,14 @@
 "use strict";
 var fluid      = require("infusion");
 var gpii       = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.express.dispatcher");
+fluid.registerNamespace("gpii.handlebars.dispatcherMiddleware");
 
 require("./lib/first-matching-path");
 require("./lib/resolver");
 
-var path       = require("path");
+var path = require("path");
 
-gpii.express.dispatcher.route = function (that, req, res) {
+gpii.handlebars.dispatcherMiddleware.middleware = function (that, req, res) {
     var template     = req.params.template ? req.params.template : that.options.defaultTemplate;
     var templateName = template + ".handlebars";
 
@@ -47,8 +47,8 @@ gpii.express.dispatcher.route = function (that, req, res) {
     res.status(statusCode).render(path.join("pages", templateName), contextToExpose);
 };
 
-fluid.defaults("gpii.express.dispatcher", {
-    gradeNames:      ["gpii.express.router", "fluid.modelComponent"],
+fluid.defaults("gpii.handlebars.dispatcherMiddleware", {
+    gradeNames:      ["gpii.express.middleware", "fluid.modelComponent"],
     namespace:       "dispatcher", // Namespace to allow other routers to put themselves in the chain before or after us.
     method:          "get",
     defaultTemplate: "index",
@@ -78,8 +78,8 @@ fluid.defaults("gpii.express.dispatcher", {
     // root of the path.
     //
     invokers: {
-        route: {
-            funcName: "gpii.express.dispatcher.route",
+        middleware: {
+            funcName: "gpii.handlebars.dispatcherMiddleware.middleware",
             args: ["{that}", "{arguments}.0", "{arguments}.1"]
         }
     }
