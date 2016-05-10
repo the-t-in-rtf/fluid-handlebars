@@ -12,7 +12,7 @@
     "bower": "1.7.2",
     "express-handlebars": "1.2.2",
     "gpii-binder": "git://github.com/the-t-in-rtf/gpii-binder#a94d9311f25d591c687d626566f9d2f01109ed26",
-    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#3bb6f75741c0b402c303977fb8746ccb02d350e6",
+    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#637e3f77c0217512a9c7c6cd74a8632b94fb9caf",
     "handlebars": "4.0.5",
     "infusion": "git://github.com/amb26/infusion.git#81ef49cdc0e78a96549c5195d9ffd42604087096",
     "marked": "0.3.5",
