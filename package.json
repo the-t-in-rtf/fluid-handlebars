@@ -20,7 +20,7 @@
     "underscore-node": "0.1.2"
   },
   "devDependencies": {
-    "gpii-test-browser": "git://github.com/the-t-in-rtf/gpii-test-browser#f88c0fc34c984e0dfe36ce7cf84b1199b2610718",
+    "gpii-test-browser": "git://github.com/the-t-in-rtf/gpii-test-browser#459eb4e4d9b218123252b0502abfd7f90d1b03f5",
     "grunt": "~0.4.4",
     "grunt-contrib-jshint": "~0.9.0",
     "grunt-jsonlint": "1.0.4",
