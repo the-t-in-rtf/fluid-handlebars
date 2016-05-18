@@ -66,7 +66,7 @@ gpii.tests.handlebars.singleTemplateMiddleware.verifyResults = function (respons
 
 fluid.defaults("gpii.tests.handlebars.singleTemplateMiddleware.request", {
     gradeNames: ["kettle.test.request.http"],
-    port:       "{testEnvironment}.options.expressPort",
+    port:       "{testEnvironment}.options.port",
     path:       "{testEnvironment}.options.baseUrl"
 });
 
@@ -126,20 +126,11 @@ fluid.defaults("gpii.tests.handlebars.singleTemplateMiddleware.caseHolder", {
 });
 
 fluid.defaults("gpii.tests.handlebars.singleTemplateMiddleware.environment", {
-    gradeNames:  ["fluid.test.testEnvironment"],
-    expressPort: 6494,
-    baseUrl:     "http://localhost:6494/",
-    events: {
-        constructServer: null,
-        onStarted:       null
-    },
+    gradeNames:  ["gpii.test.express.testEnvironment"],
+    port: 6494,
     components: {
         express: {
-            type:          "gpii.express",
-            createOnEvent: "constructServer",
             options: {
-                port:    "{testEnvironment}.options.expressPort",
-                baseUrl: "{testEnvironment}.options.baseUrl",
                 components: {
                     urlencoded: {
                         type: "gpii.express.middleware.bodyparser.urlencoded"
@@ -155,11 +146,6 @@ fluid.defaults("gpii.tests.handlebars.singleTemplateMiddleware.environment", {
                         options: {
                             templateDirs:   ["%gpii-handlebars/tests/templates/primary"]
                         }
-                    }
-                },
-                listeners: {
-                    "onStarted.notifyParent": {
-                        func: "{testEnvironment}.events.onStarted.fire"
                     }
                 }
             }
