@@ -118,20 +118,11 @@ fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.caseHolder", {
 });
 
 fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.environment", {
-    gradeNames: ["fluid.test.testEnvironment"],
+    gradeNames: ["gpii.test.express.testEnvironment"],
     port:       6494,
-    baseUrl:    "http://localhost:6494/",
-    events: {
-        constructServer: null,
-        onStarted:       null
-    },
     components: {
         express: {
-            type:          "gpii.express",
-            createOnEvent: "constructServer",
             options: {
-                port:    "{testEnvironment}.options.port",
-                baseUrl: "{testEnvironment}.options.baseUrl",
                 components: {
                     handlebars: {
                         type: "gpii.express.hb",
@@ -157,11 +148,6 @@ fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.environment", {
                         options: {
                             priority: "after:errorRenderingMiddleware"
                         }
-                    }
-                },
-                listeners: {
-                    "onStarted.notifyParent": {
-                        func: "{testEnvironment}.events.onStarted.fire"
                     }
                 }
             }
