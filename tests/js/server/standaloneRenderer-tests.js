@@ -69,10 +69,16 @@ fluid.component({
             expected:    "{\n  \"foo\": \"bar\"\n}"
         },
         {
-            name:        "Testing 'jsonify' helper with no content...",
-            templateKey: "helpers-jsonify",
-            context:     {},
-            expected:    ""
+            name:        "Testing 'jsonify' handling of string values...",
+            templateKey: "helpers-jsonify-string",
+            context:     "my string without quotes",
+            expected:    "my string without quotes"
+        },
+        {
+            name:        "Testing 'jsonify' handling of string values when options are passed...",
+            templateKey: "helpers-jsonify-custom-options",
+            context:     "my string",
+            expected:    "\"my string\""
         }
     ],
     listeners: {
