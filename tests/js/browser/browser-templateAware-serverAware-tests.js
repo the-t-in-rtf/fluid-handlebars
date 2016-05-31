@@ -100,7 +100,7 @@ fluid.defaults("gpii.tests.handlebars.browser.templateAware.caseHolder", {
 fluid.defaults("gpii.tests.handlebars.browser.templateAware.testEnvironment", {
     gradeNames: ["gpii.test.handlebars.browser.environment"],
     port: 6895,
-    path: "content/tests-templateAware.html",
+    path: "content/tests-templateAware-serverAware.html",
     expected: {
         myvar:    "modelvariable",
         markdown: "*this works*",

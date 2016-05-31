@@ -54,8 +54,14 @@ fluid.defaults("gpii.tests.handlebars.browser.inline.caseHolder", {
                     func: "{gpii.test.handlebars.browser.environment}.browser.goto",
                     args: ["{gpii.test.handlebars.browser.environment}.options.url"]
                 },
+                // TODO:  Remove this once https://issues.gpii.net/browse/GPII-1574 is completed
                 {
                     event:    "{gpii.test.handlebars.browser.environment}.browser.events.onLoaded",
+                //     listener: "{gpii.test.handlebars.browser.environment}.browser.wait",
+                //     args:     [1000]
+                // },
+                // {
+                //     event:    "{gpii.test.handlebars.browser.environment}.browser.events.onWaitComplete",
                     listener: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
                     args:     [gpii.test.browser.getGlobalValue, "templateAware"]
                 },
@@ -126,7 +132,7 @@ fluid.defaults("gpii.tests.handlebars.browser.inline.caseHolder", {
 fluid.defaults("gpii.tests.handlebars.browser.inline.testEnvironment", {
     gradeNames: ["gpii.test.handlebars.browser.environment"],
     port: 6595,
-    path: "content/tests-templateAware.html",
+    path: "content/tests-templateAware-serverAware.html",
     components: {
         caseHolder: {
             type: "gpii.tests.handlebars.browser.inline.caseHolder"

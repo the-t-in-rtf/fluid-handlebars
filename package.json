@@ -11,7 +11,7 @@
   "dependencies": {
     "bower": "1.7.2",
     "express-handlebars": "1.2.2",
-    "gpii-binder": "git://github.com/the-t-in-rtf/gpii-binder#6324680c88d0fbc3af57307a4ea9fea8010ce019",
+    "gpii-binder": "git://github.com/the-t-in-rtf/gpii-binder#89f8d1b2870e521e9053bd674ccc3f3cdb431e6c",
     "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#84279ed065b0429eb71b7f13a17916353362263a",
     "handlebars": "4.0.5",
     "infusion": "2.0.0-dev.20160519T222603Z.754d2c6",

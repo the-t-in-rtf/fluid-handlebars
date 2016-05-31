@@ -36,7 +36,7 @@
         <script type="text/javascript" src="/src/js/common/equals.js"></script>
 
         <!-- Bring in our test helper -->
-        <script type="text/javascript" src="/content/js/tests-rendering.js"></script>
+        <script type="text/javascript" src="/content/js/tests-renderer-serverAware.js"></script>
 
         <!-- Foundation styles -->
         <link rel="stylesheet" href="/bc/foundation/css/foundation.css"/>
@@ -66,7 +66,7 @@
 
         <script type="text/javascript">
             <!-- instantiate test component -->
-            var tests = gpii.clientTests("body");
+            var tests = gpii.tests.handlebars.renderer.serverAware("body");
         </script>
     </body>
 </html>

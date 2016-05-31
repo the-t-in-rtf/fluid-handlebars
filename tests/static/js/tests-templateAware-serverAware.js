@@ -25,7 +25,7 @@ fluid.defaults("gpii.tests.templateAware", {
 
 // Grade for tests that are independent of the `initBlock` component.
 fluid.defaults("gpii.tests.templateAware.serverAware", {
-    gradeNames: ["gpii.tests.templateAware", "gpii.handlebars.templateAware.serverAware"]
+    gradeNames: ["gpii.handlebars.templateAware.serverAware", "gpii.tests.templateAware"]
 });
 
 fluid.defaults("gpii.tests.templateAware.contained", {

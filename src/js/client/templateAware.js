@@ -44,39 +44,23 @@
         }
     };
 
-    // When overriding this, you should fire an `onMarkupRendered` event to ensure that bindings can be applied.
-    gpii.handlebars.templateAware.noRenderFunctionDefined = function () {
-        fluid.fail("You are expected to define a renderInitialMarkup invoker when implementing a templateAware component.");
-    };
-
     gpii.handlebars.templateAware.refreshDom = function (that) {
         // Adapted from: https://github.com/fluid-project/infusion/blob/master/src/framework/preferences/js/Panels.js#L147
         var userJQuery = that.container.constructor;
         that.container = userJQuery(that.container.selector, that.container.context);
         fluid.initDomBinder(that, that.options.selectors);
-        that.events.onDomBind.fire(that);
+        that.events.onDomChange.fire(that);
     };
 
     fluid.defaults("gpii.handlebars.templateAware", {
-        gradeNames: ["gpii.hasRequiredOptions", "fluid.viewComponent"],
-        requiredOptions: {
-            templates:           true,
-            "templates.initial": true,
-            "templates.error":   true,
-            "templates.success": true
-        },
+        gradeNames: ["fluid.viewComponent", "gpii.binder.bindOnDomChange"],
         events: {
             refresh: null,
-            onMarkupRendered: null,
-            onDomBind: null
+            onMarkupRendered: null
         },
         listeners: {
             "refresh.renderMarkup": {
                 func: "{that}.renderInitialMarkup"
-            },
-            "onDomBind.applyBinding": {
-                funcName: "gpii.binder.applyBinding",
-                args:     ["{that}"]
             },
             "onMarkupRendered.refreshDom": {
                 funcName: "gpii.handlebars.templateAware.refreshDom",
@@ -84,20 +68,44 @@
             }
         },
         invokers: {
-            // TODO: Use `fluid.notImplemented` once it's available: https://issues.fluidproject.org/browse/FLUID-5733
-            // TODO: Review with Antranig, for whatever reason I cannot override this successfully in child grades.
-            //renderInitialMarkup: {
-            //    funcName: "gpii.handlebars.templateAware.noRenderFunctionDefined"
-            //},
+            renderInitialMarkup: {
+                funcName: "fluid.notImplemented"
+            },
             renderMarkup: {
                 funcName: "gpii.handlebars.templateAware.renderMarkup",
-                args:     ["{that}", "{renderer}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"]
+                args:     ["{that}", "{renderer}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"] // renderer, selector, template, data, manipulator
             }
         }
     });
 
-    // A convenience grade which configured a `templateAware` component to render on startup.
+    // A convenience grade which configures a `templateAware` component to render on startup.
     fluid.defaults("gpii.handlebars.templateAware.bornReady", {
+        listeners: {
+            "onCreate.renderMarkup": {
+                func: "{that}.renderInitialMarkup"
+            }
+        }
+    });
+
+    fluid.defaults("gpii.handlebars.templateAware.standalone", {
+        gradeNames: ["gpii.handlebars.templateAware"],
+        requiredOptions: {
+            templates: true
+        },
+        mergePolicy: {
+            "templates.layouts":  "noexpand",
+            "templates.pages":    "noexpand",
+            "templates.partials": "noexpand"
+        },
+        distributeOptions: {
+            source: "{that}.options.templates",
+            target: "{that > renderer}.options.templates"
+        },
+        components: {
+            renderer: {
+                type: "gpii.handlebars.renderer.standalone"
+            }
+        },
         listeners: {
             "onCreate.renderMarkup": {
                 func: "{that}.renderInitialMarkup"

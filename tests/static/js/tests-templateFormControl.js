@@ -7,7 +7,7 @@
 fluid.registerNamespace("gpii.tests.templateFormControl");
 
 fluid.defaults("gpii.tests.templateFormControl", {
-    gradeNames: ["gpii.handlebars.templateFormControl", "gpii.handlebars.templateAware.serverAware"],
+    gradeNames: ["gpii.handlebars.templateAware.serverAware", "gpii.handlebars.templateFormControl"],
     templates: {
         success: "common-success",
         error:   "common-error"

@@ -5,7 +5,7 @@ var gpii  = fluid.registerNamespace("gpii");
 
 require("./includes.js");
 
-fluid.defaults("gpii.tests.handlebars.browser.renderer.caseHolder", {
+fluid.defaults("gpii.tests.handlebars.browser.renderer.serverAware.caseHolder", {
     gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
     rawModules: [{
         name: "Testing browser template rendering...",
@@ -417,10 +417,10 @@ fluid.defaults("gpii.tests.handlebars.browser.renderer.caseHolder", {
     }]
 });
 
-fluid.defaults("gpii.tests.handlebars.browser.renderer.testEnvironment", {
+fluid.defaults("gpii.tests.handlebars.browser.renderer.serverAware.testEnvironment", {
     gradeNames: ["gpii.test.handlebars.browser.environment"],
     port: 6596,
-    path: "content/tests-rendering.html",
+    path: "content/tests-renderer-serverAware.html",
     patterns: {
         originalContent:            "^original content$",
         originalContentAtBeginning: "^original content",
@@ -436,9 +436,9 @@ fluid.defaults("gpii.tests.handlebars.browser.renderer.testEnvironment", {
     },
     components: {
         caseHolder: {
-            type: "gpii.tests.handlebars.browser.renderer.caseHolder"
+            type: "gpii.tests.handlebars.browser.renderer.serverAware.caseHolder"
         }
     }
 });
 
-fluid.test.runTests("gpii.tests.handlebars.browser.renderer.testEnvironment");
+fluid.test.runTests("gpii.tests.handlebars.browser.renderer.serverAware.testEnvironment");

@@ -3,9 +3,9 @@
 //
 // This is a test component that is meant to be included in a client-side document.
 /* global fluid, gpii */
-fluid.registerNamespace("gpii.clientTests");
+fluid.registerNamespace("gpii.tests.handlebars.renderer.serverAware");
 
-gpii.clientTests.transformUsingTemplates = function (that) {
+gpii.tests.handlebars.renderer.serverAware.transformUsingTemplates = function (that) {
     that.renderer.after(that.locate("viewport-after"), that.options.templateName, that.model);
     that.renderer.append(that.locate("viewport-append"), that.options.templateName, that.model);
     that.renderer.before(that.locate("viewport-before"), that.options.templateName, that.model);
@@ -14,7 +14,7 @@ gpii.clientTests.transformUsingTemplates = function (that) {
     that.renderer.replaceWith(that.locate("viewport-replaceWith"), that.options.replaceWithTemplateName, that.model);
 };
 
-fluid.defaults("gpii.clientTests", {
+fluid.defaults("gpii.tests.handlebars.renderer.serverAware", {
     gradeNames: ["gpii.handlebars.templateAware.serverAware"],
     model: {
         myvar:                   "modelvariable",
@@ -33,7 +33,7 @@ fluid.defaults("gpii.clientTests", {
     },
     invokers: {
         "renderInitialMarkup": {
-            funcName: "gpii.clientTests.transformUsingTemplates",
+            funcName: "gpii.tests.handlebars.renderer.serverAware.transformUsingTemplates",
             args:     ["{that}"]
         }
     }
