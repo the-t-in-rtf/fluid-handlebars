@@ -1,5 +1,6 @@
 // Helpers intended to be used with Nightmare's `evaluate` function to examine client-side content.
 //
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");

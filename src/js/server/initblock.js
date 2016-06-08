@@ -66,6 +66,7 @@
 //
 // For more details, review each of those and the tests in this package.
 //
+/* eslint-env node */
 "use strict";
 var fluid  = require("infusion");
 var gpii   = fluid.registerNamespace("gpii");

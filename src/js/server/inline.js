@@ -20,7 +20,7 @@
      With the data this router supplies, the handlebars client has what it needs to load partials and handle updating
      markup on the client side.
  */
-
+/* eslint-env node */
 "use strict";
 var fluid  = require("infusion");
 var gpii = fluid.registerNamespace("gpii");

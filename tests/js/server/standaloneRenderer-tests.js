@@ -1,4 +1,5 @@
 // Tests for the standalone renderer used with this package.
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");

@@ -5,6 +5,7 @@
     https://github.com/GPII/gpii-handlebars/blob/master/docs/jsonifyHelper.md
 
  */
+/* eslint-env node */
 "use strict";
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");

@@ -1,4 +1,5 @@
 // Test client-side rendering using `gpii-test-browser` (Atom Electron and Chromium).
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");

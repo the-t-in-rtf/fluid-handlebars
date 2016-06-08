@@ -1,4 +1,6 @@
 // Launch the test harness as a standalone server to assist in browser debugging.
+/* eslint-env node */
+"use strict";
 var fluid = require("infusion");
 fluid.setLogging(true);
 

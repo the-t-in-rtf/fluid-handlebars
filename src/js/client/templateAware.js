@@ -26,6 +26,7 @@
   For an example of using this in depth, check out the provided `templateFormControl` grade or the client side tests.
  */
 /* global fluid, jQuery */
+/* eslint-env browser */
 (function () {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");

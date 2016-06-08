@@ -1,3 +1,5 @@
+/* eslint-env node */
+/* eslint-env node */
 "use strict";
 
 require("./dispatcher-tests.js");

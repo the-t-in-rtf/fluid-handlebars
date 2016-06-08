@@ -1,3 +1,4 @@
+/* eslint-env node */
 "use strict";
 // Base gradeName for handlebars "helper" modules, which can be used on both the client and server side handlebars stacks.
 var fluid = fluid || require("infusion");

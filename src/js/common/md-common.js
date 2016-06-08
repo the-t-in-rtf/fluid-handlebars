@@ -5,7 +5,7 @@
 //  For your convenience, here are those grade names:
 //  _server_: `gpii.handlebars.helper.md.server`
 //  _client_: `gpii.handlebars.helper.md.client`
-
+/* eslint-env node */
 "use strict";
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");

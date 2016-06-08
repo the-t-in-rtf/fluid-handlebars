@@ -1,4 +1,5 @@
 // Test "inline" router from the other side, ensuring that templates are available, that inheritance, etc. works correctly.
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");

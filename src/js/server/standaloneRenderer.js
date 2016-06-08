@@ -14,6 +14,7 @@
 //
 // `%npm-package-name/path/within/package`
 //
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");

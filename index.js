@@ -1,3 +1,4 @@
+/* eslint-env node */
 // Include all server side components and register our working directory.
 //
 "use strict";

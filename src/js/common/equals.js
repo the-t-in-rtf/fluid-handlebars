@@ -1,3 +1,4 @@
+/* eslint-env node */
 // Handlebars helper to allow us to compare values used in presentation logic.
 //
 // This can be used to do things like add an extra CSS class to records whose status is "deleted".

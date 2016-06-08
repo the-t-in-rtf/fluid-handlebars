@@ -1,4 +1,5 @@
 // Test all server side modules (including basic template rendering)...
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 

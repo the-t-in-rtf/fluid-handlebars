@@ -84,11 +84,11 @@
     });
 
     /**
-     * 
+     *
      * Our internal handlebars instance needs to be made aware of each of our helpers.
-     * 
+     *
      * @param that {Object} The renderer component itself.
-     * 
+     *
      */
     gpii.handlebars.renderer.loadPartials  = function (that) {
         fluid.each(that.templates.partials, function (value, key) {
@@ -211,7 +211,7 @@
         $.ajax(settings);
     };
 
-    // A "server aware" grade that depends on being able to communicate with an instance of 
+    // A "server aware" grade that depends on being able to communicate with an instance of
     // `gpii.handlebars.inlineTemplateBundlingMiddleware`.
     fluid.defaults("gpii.handlebars.renderer.serverAware", {
         gradeNames: ["gpii.handlebars.renderer"],
@@ -236,5 +236,3 @@
         }
     });
 })(jQuery);
-
-

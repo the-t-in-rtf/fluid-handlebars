@@ -3,6 +3,7 @@
     The test fixtures used for browser testing.
 
  */
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 

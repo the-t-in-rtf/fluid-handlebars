@@ -4,9 +4,10 @@
 // `options.templateDirs` is a list of view directories that contain handlebars layouts, pages, and partials.  These can
 // either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`.
 //
-// Any "helper" functions should extend the `gpii.express.helper` grade, and should be added as child components of an 
+// Any "helper" functions should extend the `gpii.express.helper` grade, and should be added as child components of an
 // instance of this grade.
 //
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
