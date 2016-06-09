@@ -8,7 +8,6 @@
     "test": "node node_modules/istanbul/lib/cli.js cover tests/all-tests.js"
   },
   "dependencies": {
-    "bower": "1.7.2",
     "express-handlebars": "1.2.2",
     "foundation": "4.2.1-1",
     "gpii-binder": "git://github.com/the-t-in-rtf/gpii-binder#f1ade44e0be4990a2400e54061a5557e634a13a8",
