@@ -4,7 +4,7 @@ node_js:
 addons:
   apt:
     packages:
-       - gcc-4.8
+       - gcc-4.6
        - xvfb
 install:
   - export DISPLAY=':99.0'
