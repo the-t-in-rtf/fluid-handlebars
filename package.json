@@ -6,10 +6,9 @@
   "repository": "https://github.com/GPII/gpii-handlebars",
   "scripts": {
     "test": "node node_modules/istanbul/lib/cli.js cover tests/all-tests.js",
-    "postinstall": "node_modules/bower/bin/bower install"
+    "postinstall": "bower install"
   },
   "dependencies": {
-    "bower": "1.7.2",
     "express-handlebars": "1.2.2",
     "gpii-binder": "git://github.com/the-t-in-rtf/gpii-binder#f1ade44e0be4990a2400e54061a5557e634a13a8",
     "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#52b1701d46868eeb3943d6d85bba09eba47938ce",
@@ -20,6 +19,7 @@
     "underscore-node": "0.1.2"
   },
   "devDependencies": {
+    "bower": "1.7.2",
     "eslint": "2.11.1",
     "gpii-test-browser": "git://github.com/the-t-in-rtf/gpii-test-browser#bb64399e45417baa18aa943b8e98ef6e0f50b321",
     "grunt": "1.0.1",
