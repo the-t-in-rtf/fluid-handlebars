@@ -6,7 +6,7 @@
   "repository": "https://github.com/GPII/gpii-handlebars",
   "scripts": {
     "test": "node node_modules/istanbul/lib/cli.js cover tests/all-tests.js",
-    "postinstall": "node_modules/bower/bin/bower install"
+    "postinstall": "node node_modules/bower/bin/bower install"
   },
   "dependencies": {
     "bower": "1.7.2",
