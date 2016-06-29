@@ -23,38 +23,33 @@ require("./lib/resolver");
 
 var path = require("path");
 
-gpii.handlebars.dispatcherMiddleware.middleware = function (that, req, res) {
+gpii.handlebars.dispatcherMiddleware.middleware = function (that, req, res, next) {
     var template     = req.params.template ? req.params.template : that.options.defaultTemplate;
     var templateName = template + ".handlebars";
 
-    var layoutName   = templateName;
 
     var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
 
-    var layoutExists   =  fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn(["layouts", templateName]));
     var templateExists =  fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn(["pages", templateName]));
-
-    if (!layoutExists) {
-        layoutName = that.options.defaultLayout;
+    if (templateExists) {
+        var layoutExists    = fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn(["layouts", templateName]));
+        var layoutName      = layoutExists ? templateName : that.options.defaultLayout;
+        var contextToExpose = fluid.model.transformWithRules({ model: that.model, req: req, layout: layoutName }, that.options.rules.contextToExpose);
+        res.status(200).render(path.join("pages", templateName), contextToExpose);
     }
-
-    if (!templateExists) {
-        templateName = that.options.errorPage;
+    else {
+        next({ isError: true, message: "The page you requested could not be found."});
     }
-    var rules           = templateExists ? that.options.rules.contextToExpose : that.options.rules.errorContext;
-    var contextToExpose = fluid.model.transformWithRules({ model: that.model, req: req, layout: layoutName }, rules);
-    var statusCode      = templateExists ? 200 : 404;
-
-    res.status(statusCode).render(path.join("pages", templateName), contextToExpose);
 };
+
 
 fluid.defaults("gpii.handlebars.dispatcherMiddleware", {
     gradeNames:      ["gpii.express.middleware", "fluid.modelComponent"],
+    path:            ["/:template", "/"],
     namespace:       "dispatcher", // Namespace to allow other routers to put themselves in the chain before or after us.
     method:          "get",
     defaultTemplate: "index",
     defaultLayout:   "main.handlebars",
-    errorPage:       "error.handlebars",
     rules: {
         contextToExpose: {
             "layout": "layout", // This is required to support custom layouts
@@ -63,25 +58,12 @@ fluid.defaults("gpii.handlebars.dispatcherMiddleware", {
                 "query":  "req.query",
                 "params": "req.params"
             }
-        },
-        errorContext: {
-            "layout": "layout", // This is required to support custom layouts
-            message: {
-                literalValue: "The page you requested was not found."
-            }
         }
     },
-    // In most cases you will want to supply both a path with a variable, and one without, as in:
-    //
-    // path:            ["/:template", "/"],
-    //
-    // This will ensure that the root content handling (which defaults to using `index.handlebars`) responds to the
-    // root of the path.
-    //
     invokers: {
         middleware: {
             funcName: "gpii.handlebars.dispatcherMiddleware.middleware",
-            args: ["{that}", "{arguments}.0", "{arguments}.1"]
+            args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
         }
     }
 });

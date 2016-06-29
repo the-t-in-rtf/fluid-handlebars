@@ -72,15 +72,6 @@ gpii.tests.handlebars.server.runTests = function (that) {
         });
     });
 
-    jqUnit.asyncTest("Test 404 handling for dispatcher...", function () {
-        request.get(that.options.baseUrl + "dispatcher/bogus", function (error, response) {
-            jqUnit.start();
-
-            jqUnit.assertNull("There should be no errors...", error);
-            jqUnit.assertEquals("The status code should be 404...", 404, response.statusCode);
-        });
-    });
-
     jqUnit.asyncTest("Test multiple view directories with dispatcher...", function () {
         request.get(that.options.baseUrl + "dispatcher/secondary", function (error, response, body) {
             jqUnit.start();
