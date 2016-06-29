@@ -1,25 +1,14 @@
 /* eslint-env node */
-// Handlebars helper to allow us to compare values used in presentation logic.
-//
-// This can be used to do things like add an extra CSS class to records whose status is "deleted".
-//
-// The helper can be accessed in your markup using syntax like:
-//
-// `{{#equals VARIABLE1 VARIABLE2 }}`
-// `  The variables are equal.`
-// `{{/equals}}`
-//
-// `{{#equals VARIABLE1 "TEXT" }}`
-// `  The variable is equal to the text.`
-// `{{#else}}`
-// `  The variable is not equal to the text.`
-// `{{/equals}}
-//
-// Note in the second example that `else` is supported if the condition is not matched, as with the built-in `{{#if}}` helper.
-//
-// Adapted from the approach outlined in this blog by "bendog":
-// http://doginthehat.com.au/2012/02/comparison-block-helper-for-handlebars-templates/
-//
+/*
+
+    Handlebars helper to allow us to compare values and optionally display content. Adapted from the approach outlined
+    by "bendog" here:
+
+    http://doginthehat.com.au/2012/02/comparison-block-helper-for-handlebars-templates/
+
+    For more information, see the docs: https://github.com/GPII/gpii-handlebars/blob/master/docs/helper.md
+
+*/
 "use strict";
 var fluid = fluid || require("infusion");
 var gpii  = fluid.registerNamespace("gpii");

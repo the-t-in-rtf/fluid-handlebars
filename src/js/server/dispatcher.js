@@ -1,15 +1,8 @@
 /*
-  A fluid-component for use with express.js that routes requests to the appropriate layout and page (if available).
 
-  The data exposed to handlebars is controlled using the transformation rules found in `options.rules.contextToExpose`.
+    Middleware that renders a layout and/or page based on the URL path. For more information, see the docs:
 
-  By default, the request object is exposed.  To disable this, you will need to use a configuration block like:
-
-  rules: {
-    contextToExpose: {
-      req: "notfound" // point to a variable that does not exist to remove this from the results
-    }
-  }
+    https://github.com/GPII/gpii-handlebars/blob/master/docs/dispatcher.md
 
  */
 /* eslint-env node */

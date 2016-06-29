@@ -14,7 +14,7 @@ The base grade does not have the required template data by default. You are expe
 below for details on those grades.
 
 All variations of this component require [Handlebars.js](http://handlebarsjs.com/). [Pagedown](https://code.google.com/archive/p/pagedown/)
-is required if you want to render markdown using the `{{md}}` helper (see the README file for details on helpers).
+is required if you want to render markdown using the `{{md}}` helper (see the [../README.md](README file) for details on helpers).
 
 ## Component Options
 
