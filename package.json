@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "eslint": "3.2.2",
-    "gpii-test-browser": "git://github.com/the-t-in-rtf/gpii-test-browser#bb64399e45417baa18aa943b8e98ef6e0f50b321",
     "gpii-webdriver": "git://github.com/the-t-in-rtf/gpii-webdriver#88d3628528ddffbee532fb84fcab4772e9c0c2a8",
     "grunt": "1.0.1",
     "fluid-grunt-eslint": "18.1.1",
