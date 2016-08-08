@@ -19,72 +19,87 @@ require("../../../src/js/server/lib/resolver");
 
 fluid.registerNamespace("gpii.hb.tests.resolver");
 
-gpii.hb.tests.resolver.singleTest = function (test) {
-    jqUnit.test(test.message, function () {
-        if (test.hasException) {
-            jqUnit["throws"](function () { gpii.express.hb.resolveAllPaths(test.original); }, test.message);
-        }
-        else {
-            jqUnit.assertDeepEq(test.message, test.expected, gpii.express.hb.resolveAllPaths(test.original));
-        }
-    });
+gpii.hb.tests.resolver.singleTest = function (original, expected, hasException) {
+    if (hasException) {
+        jqUnit["throws"](function () { gpii.express.hb.resolveAllPaths(original); }, "An error should have been thrown...");
+    }
+    else {
+        jqUnit.assertDeepEq("The results should be as expected", expected, gpii.express.hb.resolveAllPaths(original));
+    }
 };
 
+fluid.defaults("gpii.tests.handlebars.resolver.caseHolder", {
+    gradeNames: ["fluid.test.testCaseHolder"],
+    modules: [{
+        name: "Unit tests for the resolver...",
+        tests: [
+            {
+                name: "A string should resolve correctly...",
+                sequence: [{
+                    func: "gpii.hb.tests.resolver.singleTest",
+                    args: ["%gpii-handlebars/src", [srcDir]] // original, expected, hasException
+                }]
+            },
+            {
+                name: "An array should resolve correctly...",
+                sequence: [{
+                    func: "gpii.hb.tests.resolver.singleTest",
+                    args: [["%gpii-handlebars/src", "%gpii-handlebars"], [srcDir, baseDir]] // original, expected, hasException
+                }]
+            },
+            {
+                name: "A full path passed as a string should not be changed...",
+                sequence: [{
+                    func: "gpii.hb.tests.resolver.singleTest",
+                    args: ["/this/should/work", ["/this/should/work"]] // original, expected, hasException
+                }]
+            },
+            {
+                name: "An array of full paths should not be changed.",
+                sequence: [{
+                    func: "gpii.hb.tests.resolver.singleTest",
+                    args: [["/this/works", "/this/also/works"], ["/this/works", "/this/also/works"]] // original, expected, hasException
+                }]
+            },
+            {
+                name: "`undefined` as a single argument should result in an empty array...",
+                sequence: [{
+                    func: "gpii.hb.tests.resolver.singleTest",
+                    args: [undefined, []] // original, expected, hasException
+                }]
+            },
+            {
+                name: "`null` as a single argument should result in an empty array...",
+                sequence: [{
+                    func: "gpii.hb.tests.resolver.singleTest",
+                    args: [null, []] // original, expected, hasException
+                }]
+            },
+            {
+                name: "`undefined` array values should result in an exception...",
+                sequence: [{
+                    func: "gpii.hb.tests.resolver.singleTest",
+                    args: [[undefined, "/something/has/survived"], [], true] // original, expected, hasException
+                }]
+            },
+            {
+                name: "`null` array values should result in an exception...",
+                sequence: [{
+                    func: "gpii.hb.tests.resolver.singleTest",
+                    args: [["/something/has/survived", null], [], true] // original, expected, hasException
+                }]
+            }
+        ]
+    }]
+});
 
-fluid.defaults("gpii.hb.tests.resolver", {
-    gradeNames: ["fluid.component"],
-    tests: [
-        {
-            message: "A string should resolve correctly...",
-            original: "%gpii-handlebars/src",
-            expected: [srcDir]
-        },
-        {
-            message: "An array should resolve correctly...",
-            original: ["%gpii-handlebars/src", "%gpii-handlebars"],
-            expected: [srcDir, baseDir]
-        },
-        {
-            message: "A full path passed as a string should not be changed...",
-            original: "/this/should/work",
-            expected: ["/this/should/work"]
-        },
-        {
-            message: "An array of full paths should not be changed.",
-            original: ["/this/works", "/this/also/works"],
-            expected: ["/this/works", "/this/also/works"]
-        },
-        {
-            message: "`undefined` as a single argument should result in an empty array...",
-            original: undefined,
-            expected: []
-        },
-        {
-            message: "`null` as a single argument should result in an empty array...",
-            original: null,
-            expected: []
-        },
-        {
-            message: "`undefined` array values should result in an exception...",
-            original: [undefined, "/something/has/survived"],
-            hasException: true
-        },
-        {
-            message: "`null` array values should result in an exception...",
-            original: ["/something/has/survived", null],
-            hasException: true
-        }
-    ],
-    listeners: {
-        "onCreate.setModule": {
-            funcName: "jqUnit.module",
-            args:     ["Testing the 'resolver' static function..."]
-        },
-        "onCreate.runTests": {
-            funcName: "fluid.each",
-            args:     ["{that}.options.tests", gpii.hb.tests.resolver.singleTest]
+fluid.defaults("gpii.tests.handlebars.resolver.environment", {
+    gradeNames: ["fluid.test.testEnvironment"],
+    components: {
+        caseHolder: {
+            type: "gpii.tests.handlebars.resolver.caseHolder"
         }
     }
 });
 
-gpii.hb.tests.resolver();
+fluid.test.runTests("gpii.tests.handlebars.resolver.environment");
