@@ -8,7 +8,7 @@ var gpii  = fluid.registerNamespace("gpii");
 require("./includes.js");
 
 fluid.defaults("gpii.tests.handlebars.browser.templateAware.standalone.caseHolder", {
-    gradeNames: ["gpii.test.browser.caseHolder.static"],
+    gradeNames: ["gpii.test.handlebars.browser.caseHolder"],
     rawModules: [{
         name: "Testing the standalone `templateAware` grade...",
         tests: [
@@ -16,18 +16,18 @@ fluid.defaults("gpii.tests.handlebars.browser.templateAware.standalone.caseHolde
                 name: "Confirm that the view contains rendered content (including variable data)...",
                 sequence: [
                     {
-                        func: "{testEnvironment}.browser.goto",
-                        args: ["{testEnvironment}.options.url"]
+                        func: "{gpii.test.handlebars.browser.environment}.webdriver.get",
+                        args: ["{gpii.test.handlebars.browser.environment}.options.url"]
                     },
                     {
-                        event: "{testEnvironment}.browser.events.onLoaded",
-                        func:  "{testEnvironment}.browser.evaluate",
-                        args:  [gpii.test.browser.getElementHtml, ".templateAware-standalone-viewport"]
+                        event:    "{testEnvironment}.webdriver.events.onGetComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: ".templateAware-standalone-viewport"}]
                     },
                     {
-                        event:    "{testEnvironment}.browser.events.onEvaluateComplete",
-                        listener: "jqUnit.assertEquals",
-                        args:     ["The view should contain rendered content...", "This is our rendered template content.", "{arguments}.0"]
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
+                        listener: "gpii.test.handlebars.elementMatches",
+                        args:     ["The view should contain rendered content...", "{arguments}.0", "getText", "This is our rendered template content."] // message, element, elementFn, pattern, invert
                     }
                 ]
             }
@@ -36,9 +36,9 @@ fluid.defaults("gpii.tests.handlebars.browser.templateAware.standalone.caseHolde
 });
 
 fluid.defaults("gpii.tests.handlebars.browser.templateAware.standalone.testEnvironment", {
-    gradeNames: ["gpii.test.browser.environment"],
+    gradeNames: ["gpii.test.handlebars.browser.environment"],
     path: "%gpii-handlebars/tests/static/tests-templateAware-standalone.html",
-    url: "@expand:gpii.test.browser.resolveFileUrl({that}.options.path)",
+    url: "@expand:gpii.test.webdriver.resolveFileUrl({that}.options.path)",
     components: {
         caseHolder: {
             type: "gpii.tests.handlebars.browser.templateAware.standalone.caseHolder"
@@ -46,4 +46,4 @@ fluid.defaults("gpii.tests.handlebars.browser.templateAware.standalone.testEnvir
     }
 });
 
-fluid.test.runTests("gpii.tests.handlebars.browser.templateAware.standalone.testEnvironment");
+gpii.test.webdriver.allBrowsers({ baseTestEnvironment: "gpii.tests.handlebars.browser.templateAware.standalone.testEnvironment"});

@@ -5,8 +5,8 @@
 "use strict";
 var fluid = require("infusion");
 var gpii = fluid.registerNamespace("gpii");
-require("gpii-test-browser");
-gpii.test.browser.loadTestingSupport();
+require("gpii-webdriver");
+gpii.webdriver.loadTestingSupport();
 
 require("../../../index");
 require("./lib/fixtures");

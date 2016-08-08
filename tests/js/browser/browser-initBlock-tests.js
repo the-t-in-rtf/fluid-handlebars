@@ -15,7 +15,7 @@ gpii.tests.handlebars.browser.initBlock.selectorContains = function (selector, s
 };
 
 fluid.defaults("gpii.tests.handlebars.browser.initBlock.caseHolder", {
-    gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
+    gradeNames: ["gpii.test.webdriver.caseHolder"],
     rawModules: [{
         name: "Testing `initBlock` helper...",
         tests: [
@@ -23,40 +23,39 @@ fluid.defaults("gpii.tests.handlebars.browser.initBlock.caseHolder", {
                 name: "Confirm the page was rendered and that the initBlock component was created correctly...",
                 sequence: [
                     {
-                        func: "{gpii.test.handlebars.browser.environment}.browser.goto",
+                        func: "{gpii.test.handlebars.browser.environment}.webdriver.get",
                         args: ["{gpii.test.handlebars.browser.environment}.options.url"]
                     },
-                    // TODO:  Remove this once https://issues.gpii.net/browse/GPII-1574 is completed
                     {
-                        event:    "{gpii.test.handlebars.browser.environment}.browser.events.onLoaded",
-                        listener: "{gpii.test.handlebars.browser.environment}.browser.wait",
-                        args:     [1000]
+                        event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onGetComplete",
+                        listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".initBlock-viewport"})]
                     },
                     {
-                        event:    "{gpii.test.handlebars.browser.environment}.browser.events.onWaitComplete",
-                        listener: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
-                        args:     [gpii.test.browser.getGlobalValue, "pageComponent.requireRenderer.pageComponent.model"]
+                        event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
+                        listener: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
+                        args:     [gpii.test.webdriver.invokeGlobal, "fluid.getGlobalValue", "pageComponent.requireRenderer.pageComponent.model"] // functionPath, fnArgs, environment
                     },
                     {
-                        event:    "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
                         listener: "jqUnit.assertDeepEq",
                         args:     ["The component model should include query, parameter, default, and dispatcher data...", "{gpii.test.handlebars.browser.environment}.options.expected", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
+                        func: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
                         args: [gpii.tests.handlebars.browser.initBlock.selectorContains, "body", "This content should not be visible"]
                     },
                     {
-                        event:    "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
                         listener: "jqUnit.assertFalse",
                         args:     ["The original body content should have been replaced...", "{arguments}.0"]
                     },
                     {
-                        func: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
+                        func: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
                         args: [gpii.tests.handlebars.browser.initBlock.selectorContains, "body", "coming from the page"]
                     },
                     {
-                        event:    "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
+                        event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
                         listener: "jqUnit.assertTrue",
                         args:     ["The body should contain template output...", "{arguments}.0"]
                     }
@@ -95,4 +94,4 @@ fluid.defaults("gpii.tests.handlebars.browser.initBlock.testEnvironment", {
     }
 });
 
-fluid.test.runTests("gpii.tests.handlebars.browser.initBlock.testEnvironment");
+gpii.test.webdriver.allBrowsers({ baseTestEnvironment: "gpii.tests.handlebars.browser.initBlock.testEnvironment"});
