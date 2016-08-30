@@ -112,23 +112,11 @@
         rules: {
             errorResponseToModel: {
                 ok:           false,
-                errorMessage: ""
+                errorMessage: "responseText"
             }
         },
         templates: {
             initial: "form-failure-initial"
-        }
-    });
-
-
-    fluid.defaults("gpii.tests.templateFormControl.readyForKeys", {
-        gradeNames:    ["gpii.tests.templateFormControl"],
-        hideOnSuccess: false,
-        ajaxOptions: {
-            url: "/content/json/success.json"
-        },
-        templates: {
-            initial: "form-keyed-initial"
         }
     });
 })();

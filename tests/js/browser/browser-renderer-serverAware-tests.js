@@ -8,26 +8,6 @@ require("./includes.js");
 
 fluid.registerNamespace("gpii.tests.handlebars.browser.renderer.serverAware");
 
-// There is no means of selecting a previous element using a CSS selector, for now we follow a more indirect approach, i.e. tagging
-// the previous element with a tab and then looking it up using findElement.  In this way we end up with the same
-// WebElement object as we would get from findElement.
-// TODO:  Commit the old approach once as a reference, then delete.
-gpii.tests.handlebars.browser.renderer.serverAware.tagPreviousSibling = function (selector, tag) {
-    /* global document */
-    var matchingElements = document.querySelectorAll(selector);
-    if (matchingElements) {
-        for (var a = 0; a < matchingElements.length; a++) {
-            var element = matchingElements.item(a);
-            var prevSibling = element.previousElementSibling;
-            if (prevSibling) {
-                var existingClasses = prevSibling.getAttribute("class");
-                var allClasses = existingClasses ? existingClasses + " " + tag : tag;
-                prevSibling.setAttribute("class", allClasses);
-            }
-        }
-    }
-};
-
 // A function for use with webdriver.findElement(function).  Returns the previous sibling.
 gpii.tests.handlebars.browser.renderer.serverAware.findPreviousSibling = function (selector) {
     /* global document */

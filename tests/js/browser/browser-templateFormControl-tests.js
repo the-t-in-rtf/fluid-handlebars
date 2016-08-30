@@ -18,262 +18,284 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                 name: "Confirm that the initial form is rendered...",
                 sequence: [
                     {
-                        func: "{gpii.test.handlebars.browser.environment}.webdriver.get",
-                        args: ["{gpii.test.handlebars.browser.environment}.options.url"]
+                        func: "{testEnvironment}.webdriver.get",
+                        args: ["{testEnvironment}.options.url"]
                     },
                     {
-                        event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onGetComplete",
-                        listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
+                        event:    "{testEnvironment}.webdriver.events.onGetComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
                         args:     [gpii.webdriver.until.elementLocated({ css: ".readyForSuccess"})]
                     },
                     {
-                        event: "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-                        listener: "{gpii.test.handlebars.browser.environment}.webdriver.findElement",
+                        event: "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
                         args: [{ css: "body" }]
                     },
                     {
-                        event: "{gpii.test.handlebars.browser.environment}.webdriver.events.onFindElementComplete",
+                        event: "{testEnvironment}.webdriver.events.onFindElementComplete",
                         listener: "gpii.test.handlebars.elementMatches",
                         args: ["The body should contain rendered content that replaces the original source...", "{arguments}.0", "getText", "This content should not be visible", true] // message, element, elementFn, pattern, invert
                     }
                 ]
             },
-            // TODO:  Finish the rest of these
-            // {
-            //     name: "Submit a form that receives a successful AJAX response (as JSON)...",
-            //     sequence: [
-            //         {
-            //             func: "{gpii.test.handlebars.browser.environment}.webdriver.get",
-            //             args: ["{gpii.test.handlebars.browser.environment}.options.url"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onGetComplete",
-            //             // Give the page time to render to avoid intermittent errors
-            //             // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
-            //             args:     ["{testEnvironment}.options.waitAfterLoad"]
-            //         },
-            //         {
-            //             event: "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.browser.click",
-            //             args:     [".readyForSuccess input[type='submit']"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.browser.events.onClickComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
-            //             args:     [500]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
-            //             args:     [gpii.test.browser.elementMatches, ".readyForSuccess .success", "This was a triumph"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
-            //             listener: "jqUnit.assertTrue",
-            //             args:     ["A success message should now be displayed...", "{arguments}.0"]
-            //         },
-            //         {
-            //             func: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
-            //             args: [gpii.test.webdriver.invokeGlobal, "fluid.getGlobalValue", "success.model.record"] // functionPath, fnArgs, environment
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
-            //             listener: "jqUnit.assertDeepEq",
-            //             args:     ["AJAX results should have been appended to the model data as outlined in our rules...", "{gpii.test.handlebars.browser.environment}.options.expected.record", "{arguments}.0"]
-            //         }
-            //     ]
-            // },
-            // {
-            //     name: "Submit a form that receives a successful AJAX response (as stringified JSON)...",
-            //     sequence: [
-            //         {
-            //             func: "{gpii.test.handlebars.browser.environment}.webdriver.get",
-            //             args: ["{gpii.test.handlebars.browser.environment}.options.url"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onGetComplete",
-            //             // Give the page time to render to avoid intermittent errors
-            //             // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
-            //             args:     ["{testEnvironment}.options.waitAfterLoad"]
-            //         },
-            //         {
-            //             event: "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.browser.click",
-            //             args:     [".readyForStringifySuccess input[type='submit']"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.browser.events.onClickComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
-            //             args:     [500]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
-            //             args:     [gpii.test.browser.elementMatches, ".readyForStringifySuccess .success", "This was a triumph"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
-            //             listener: "jqUnit.assertTrue",
-            //             args:     ["A success message should now be displayed...", "{arguments}.0"]
-            //         },
-            //         {
-            //             func: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
-            //             args: [gpii.test.webdriver.invokeGlobal, "fluid.getGlobalValue", "successStringify.model.record"] // functionPath, fnArgs, environment
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
-            //             listener: "jqUnit.assertDeepEq",
-            //             args:     ["AJAX results should have been appended to the model data as outlined in our rules...", "{gpii.test.handlebars.browser.environment}.options.expected.record", "{arguments}.0"]
-            //         }
-            //     ]
-            // },
-            // {
-            //     name: "Submit a form that receives a successful AJAX response (as a raw string)...",
-            //     sequence: [
-            //         {
-            //             func: "{gpii.test.handlebars.browser.environment}.webdriver.get",
-            //             args: ["{gpii.test.handlebars.browser.environment}.options.url"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onGetComplete",
-            //             // Give the page time to render to avoid intermittent errors
-            //             // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
-            //             args:     ["{testEnvironment}.options.waitAfterLoad"]
-            //         },
-            //         {
-            //             event: "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.browser.click",
-            //             args:     [".readyForStringSuccess input[type='submit']"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.browser.events.onClickComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
-            //             args:     [500]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
-            //             args:     [gpii.test.browser.elementMatches, ".readyForStringSuccess .alert-box.success", "This was a triumph"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
-            //             listener: "jqUnit.assertTrue",
-            //             args:     ["A success message should now be displayed...", "{arguments}.0"]
-            //         }
-            //     ]
-            // },
-            // {
-            //     name: "Submit a form that receives an unsuccessful AJAX response (as JSON)...",
-            //     sequence: [
-            //         {
-            //             func: "{gpii.test.handlebars.browser.environment}.webdriver.get",
-            //             args: ["{gpii.test.handlebars.browser.environment}.options.url"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onGetComplete",
-            //             // Give the page time to render to avoid intermittent errors
-            //             // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
-            //             args:     ["{testEnvironment}.options.waitAfterLoad"]
-            //         },
-            //         {
-            //             event: "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.browser.click",
-            //             args:     [".readyForFailure input[type='submit']"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.browser.events.onClickComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
-            //             args:     [500]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
-            //             args:     [gpii.test.browser.elementMatches, ".readyForFailure", "Something went wrong"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
-            //             listener: "jqUnit.assertTrue",
-            //             args:     ["A failure message should now be displayed...", "{arguments}.0"]
-            //         }
-            //     ]
-            // },
-            // {
-            //     name: "Submit a form that receives an unsuccessful AJAX response (as stringified JSON)...",
-            //     sequence: [
-            //         {
-            //             func: "{gpii.test.handlebars.browser.environment}.webdriver.get",
-            //             args: ["{gpii.test.handlebars.browser.environment}.options.url"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onGetComplete",
-            //             // Give the page time to render to avoid intermittent errors
-            //             // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
-            //             args:     ["{testEnvironment}.options.waitAfterLoad"]
-            //         },
-            //         {
-            //             event: "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.browser.click",
-            //             args:     [".readyForStringifyFailure input[type='submit']"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.browser.events.onClickComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
-            //             args:     [500]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
-            //             args:     [gpii.test.browser.elementMatches, ".readyForStringifyFailure", "Something went wrong"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
-            //             listener: "jqUnit.assertTrue",
-            //             args:     ["A failure message should now be displayed...", "{arguments}.0"]
-            //         }
-            //     ]
-            // },
-            // {
-            //     name: "Submit a form that receives an unsuccessful AJAX response (as a String)...",
-            //     sequence: [
-            //         {
-            //             func: "{gpii.test.handlebars.browser.environment}.webdriver.get",
-            //             args: ["{gpii.test.handlebars.browser.environment}.options.url"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onGetComplete",
-            //             // Give the page time to render to avoid intermittent errors
-            //             // TODO: Fix this properly once this issue is resolved: https://issues.gpii.net/browse/GPII-1574
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
-            //             args:     ["{testEnvironment}.options.waitAfterLoad"]
-            //         },
-            //         {
-            //             event: "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.browser.click",
-            //             args:     [".readyForStringFailure input[type='submit']"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.browser.events.onClickComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.wait",
-            //             args:     [500]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onWaitComplete",
-            //             listener: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
-            //             args:     [gpii.test.browser.elementMatches, ".readyForStringFailure", "Something went wrong"]
-            //         },
-            //         {
-            //             event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
-            //             listener: "jqUnit.assertTrue",
-            //             args:     ["A failure message should now be displayed...", "{arguments}.0"]
-            //         }
-            //     ]
-            // }
-            // TODO:  Test the use of the tab, space and enter keys to submit the form.
+            {
+                name: "Submit a form that receives a successful AJAX response (as JSON)...",
+                sequence: [
+                    {
+                        func: "{testEnvironment}.webdriver.get",
+                        args: ["{testEnvironment}.options.url"]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onGetComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForSuccess"})]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.actionsHelper",
+                        args:     [[{fn: "sendKeys", args: [gpii.webdriver.Key.TAB, gpii.webdriver.Key.ENTER]}]]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForSuccess .success"})]
+                    },
+                    {
+                        event: "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args: [{ css: ".readyForSuccess .success" }]
+                    },
+                    {
+                        event: "{testEnvironment}.webdriver.events.onFindElementComplete",
+                        listener: "gpii.test.handlebars.elementMatches",
+                        args: ["A success message should now be displayed...", "{arguments}.0", "getText", "This was a triumph"] // message, element, elementFn, pattern, invert
+                    },
+                    {
+                        func: "{testEnvironment}.webdriver.executeScript",
+                        args: [gpii.test.webdriver.invokeGlobal, "fluid.getGlobalValue", "success.model.record"] // functionPath, fnArgs, environment
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onExecuteScriptComplete",
+                        listener: "jqUnit.assertDeepEq",
+                        args:     ["AJAX results should have been appended to the model data as outlined in our rules...", "{testEnvironment}.options.expected.record", "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Submit a form that receives a successful AJAX response (as stringified JSON)...",
+                sequence: [
+                    {
+                        func: "{testEnvironment}.webdriver.get",
+                        args: ["{testEnvironment}.options.url"]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onGetComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringifySuccess"})]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.actionsHelper",
+                        args:     [[{fn: "sendKeys", args: [fluid.generate(3, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringifySuccess .success"})]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: ".readyForStringifySuccess .success" }]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
+                        listener: "gpii.test.handlebars.elementMatches",
+                        args:     ["A success message should now be displayed...", "{arguments}.0", "getText", "This was a triumph"] // message, element, elementFn, pattern, invert
+                    },
+                    {
+                        func: "{testEnvironment}.webdriver.executeScript",
+                        args: [gpii.test.webdriver.invokeGlobal, "fluid.getGlobalValue", "successStringify.model.record"] // functionPath, fnArgs, environment
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onExecuteScriptComplete",
+                        listener: "jqUnit.assertDeepEq",
+                        args:     ["AJAX results should have been appended to the model data as outlined in our rules...", "{testEnvironment}.options.expected.record", "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Submit a form that receives a successful AJAX response (as a raw string)...",
+                sequence: [
+                    {
+                        func: "{testEnvironment}.webdriver.get",
+                        args: ["{testEnvironment}.options.url"]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onGetComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringSuccess"})]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.actionsHelper",
+                        args:     [[{fn: "sendKeys", args: [fluid.generate(4, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringSuccess .success"})]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: ".readyForStringSuccess .success" }]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
+                        listener: "gpii.test.handlebars.elementMatches",
+                        args:     ["A success message should now be displayed...", "{arguments}.0", "getText", "This was a triumph"] // message, element, elementFn, pattern, invert
+                    },
+                    {
+                        func: "{testEnvironment}.webdriver.executeScript",
+                        args: [gpii.test.webdriver.invokeGlobal, "fluid.getGlobalValue", "successString.model.successMessage"] // functionPath, fnArgs, environment
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onExecuteScriptComplete",
+                        listener: "jqUnit.assertEquals",
+                        args:     ["We should have received a success string as expected...", "{testEnvironment}.options.expected.successString", "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Submit a form that receives an unsuccessful AJAX response (as JSON)...",
+                sequence: [
+                    {
+                        func: "{testEnvironment}.webdriver.get",
+                        args: ["{testEnvironment}.options.url"]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onGetComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForFailure"})]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.actionsHelper",
+                        args:     [[{fn: "sendKeys", args: [fluid.generate(5, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForFailure .error"})]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: ".readyForFailure .error" }]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
+                        listener: "gpii.test.handlebars.elementMatches",
+                        args:     ["An error message should be displayed...", "{arguments}.0", "getText", "Something went wrong"] // message, element, elementFn, pattern, invert
+                    },
+                    {
+                        func: "{testEnvironment}.webdriver.executeScript",
+                        args: [gpii.test.webdriver.invokeGlobal, "fluid.getGlobalValue", "failure.model.errorMessage"] // functionPath, fnArgs, environment
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onExecuteScriptComplete",
+                        listener: "jqUnit.assertEquals",
+                        args:     ["The model should now contain the error message...", "{testEnvironment}.options.expected.failureString", "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Submit a form that receives an unsuccessful AJAX response (as stringified JSON)...",
+                sequence: [
+                    {
+                        func: "{testEnvironment}.webdriver.get",
+                        args: ["{testEnvironment}.options.url"]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onGetComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringifyFailure"})]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.actionsHelper",
+                        args:     [[{fn: "sendKeys", args: [fluid.generate(6, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringifyFailure .error"})]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: ".readyForStringifyFailure .error" }]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
+                        listener: "gpii.test.handlebars.elementMatches",
+                        args:     ["An error message should be displayed...", "{arguments}.0", "getText", "Something went wrong"] // message, element, elementFn, pattern, invert
+                    },
+                    {
+                        func: "{testEnvironment}.webdriver.executeScript",
+                        args: [gpii.test.webdriver.invokeGlobal, "fluid.getGlobalValue", "stringifyFailure.model.errorMessage"] // functionPath, fnArgs, environment
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onExecuteScriptComplete",
+                        listener: "jqUnit.assertEquals",
+                        args:     ["The model should now contain the error message...", "{testEnvironment}.options.expected.failureString", "{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Submit a form that receives an unsuccessful AJAX response (as a String)...",
+                sequence: [
+                    {
+                        func: "{testEnvironment}.webdriver.get",
+                        args: ["{testEnvironment}.options.url"]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onGetComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringFailure"})]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.actionsHelper",
+                        args:     [[{fn: "sendKeys", args: [fluid.generate(7, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
+                        listener: "{testEnvironment}.webdriver.wait",
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringFailure .error"})]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: ".readyForStringFailure .error" }]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
+                        listener: "gpii.test.handlebars.elementMatches",
+                        args:     ["An error message should be displayed...", "{arguments}.0", "getText", "Something went wrong"] // message, element, elementFn, pattern, invert
+                    },
+                    {
+                        func: "{testEnvironment}.webdriver.executeScript",
+                        args: [gpii.test.webdriver.invokeGlobal, "fluid.getGlobalValue", "stringFailure.model.errorMessage"] // functionPath, fnArgs, environment
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onExecuteScriptComplete",
+                        listener: "jqUnit.assertEquals",
+                        args:     ["The model should now contain the error message...", "{testEnvironment}.options.expected.failureResponseText", "{arguments}.0"]
+                    }
+                ]
+            }
         ]
     }]
 });
@@ -287,9 +309,11 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.testEnvironmen
         record: {
             foo: "bar",
             baz: "qux"
-        }
+        },
+        successString: "A success string is still a success.",
+        failureString: "The response was not successful...",
+        failureResponseText: "There was a problem.  I'm telling you about it with a string response, hopefully this doesn't cause another problem."
     },
-    successStringExpected: { "message": "A success string is still a success." },
     components: {
         caseHolder: {
             type: "gpii.tests.handlebars.browser.templateFormControl.caseHolder"
