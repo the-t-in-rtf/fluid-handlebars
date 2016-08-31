@@ -14,7 +14,6 @@ software_stack: nodejs
 software_stack_version: lts
 
 setup:
-  - sudo npm install -g bower
   - npm install
 
 commands:
