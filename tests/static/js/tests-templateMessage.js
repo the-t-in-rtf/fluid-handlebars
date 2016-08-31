@@ -15,7 +15,7 @@ fluid.defaults("gpii.handlebars.tests.templateMessage", {
                 members: {
                     templates: {
                         partials: {
-                            "common-success": "<div class=\"alert-box success\">{{message}}</div>"
+                            "common-success": "<div class=\"callout success\">{{message}}</div>"
                         }
                     }
                 }
