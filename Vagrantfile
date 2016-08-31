@@ -45,7 +45,7 @@ end
 Vagrant.configure(2) do |config|
 
   if app_env_runtime == "linux-desktop"
-    config.vm.box = "inclusivedesign/fedora22"
+    config.vm.box = "inclusivedesign/fedora24"
   else
     config.vm.box = "inclusivedesign/centos7"
   end
