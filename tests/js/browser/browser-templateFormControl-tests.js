@@ -50,10 +50,16 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                         listener: "{testEnvironment}.webdriver.wait",
                         args:     [gpii.webdriver.until.elementLocated({ css: ".readyForSuccess"})]
                     },
+                    // We must explicitly set the initial focus, as Firefox focuses on the location bar by default.
                     {
                         event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: ".initial-focus-here"}]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
                         listener: "{testEnvironment}.webdriver.actionsHelper",
-                        args:     [[{fn: "sendKeys", args: [gpii.webdriver.Key.TAB, gpii.webdriver.Key.ENTER]}]]
+                        args:     [[{fn: "click", args: ["{arguments}.0"]}, {fn: "sendKeys", args: [gpii.webdriver.Key.TAB, gpii.webdriver.Key.ENTER]}]]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
@@ -93,10 +99,16 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                         listener: "{testEnvironment}.webdriver.wait",
                         args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringifySuccess"})]
                     },
+                    // We must explicitly set the initial focus, as Firefox focuses on the location bar by default.
                     {
                         event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: ".initial-focus-here"}]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
                         listener: "{testEnvironment}.webdriver.actionsHelper",
-                        args:     [[{fn: "sendKeys", args: [fluid.generate(3, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
+                        args:     [[{fn: "click", args: ["{arguments}.0"]}, {fn: "sendKeys", args: [fluid.generate(3, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
@@ -136,10 +148,16 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                         listener: "{testEnvironment}.webdriver.wait",
                         args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringSuccess"})]
                     },
+                    // We must explicitly set the initial focus, as Firefox focuses on the location bar by default.
                     {
                         event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: ".initial-focus-here"}]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
                         listener: "{testEnvironment}.webdriver.actionsHelper",
-                        args:     [[{fn: "sendKeys", args: [fluid.generate(4, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
+                        args:     [[{fn: "click", args: ["{arguments}.0"]}, {fn: "sendKeys", args: [fluid.generate(4, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
@@ -179,10 +197,16 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                         listener: "{testEnvironment}.webdriver.wait",
                         args:     [gpii.webdriver.until.elementLocated({ css: ".readyForFailure"})]
                     },
+                    // We must explicitly set the initial focus, as Firefox focuses on the location bar by default.
                     {
                         event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: ".initial-focus-here"}]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
                         listener: "{testEnvironment}.webdriver.actionsHelper",
-                        args:     [[{fn: "sendKeys", args: [fluid.generate(5, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
+                        args:     [[{fn: "click", args: ["{arguments}.0"]}, {fn: "sendKeys", args: [fluid.generate(5, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
@@ -222,10 +246,16 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                         listener: "{testEnvironment}.webdriver.wait",
                         args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringifyFailure"})]
                     },
+                    // We must explicitly set the initial focus, as Firefox focuses on the location bar by default.
                     {
                         event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: ".initial-focus-here"}]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
                         listener: "{testEnvironment}.webdriver.actionsHelper",
-                        args:     [[{fn: "sendKeys", args: [fluid.generate(6, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
+                        args:     [[{fn: "click", args: ["{arguments}.0"]}, {fn: "sendKeys", args: [fluid.generate(6, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
@@ -265,10 +295,16 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                         listener: "{testEnvironment}.webdriver.wait",
                         args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringFailure"})]
                     },
+                    // We must explicitly set the initial focus, as Firefox focuses on the location bar by default.
                     {
                         event:    "{testEnvironment}.webdriver.events.onWaitComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: ".initial-focus-here"}]
+                    },
+                    {
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
                         listener: "{testEnvironment}.webdriver.actionsHelper",
-                        args:     [[{fn: "sendKeys", args: [fluid.generate(7, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
+                        args:     [[{fn: "click", args: ["{arguments}.0"]}, {fn: "sendKeys", args: [fluid.generate(7, gpii.webdriver.Key.TAB).concat(gpii.webdriver.Key.ENTER)]}]]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
