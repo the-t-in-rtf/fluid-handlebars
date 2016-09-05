@@ -28,9 +28,9 @@ instance.  In addition, this component supports the following configuration opti
 # Component Invokers
 
 ## `{that}.middleware(request, response, next)`
-* `request {Object}` An Express Request object (see [the docs](https://github.com/GPII/gpii-express/blob/master/docs/express.md) for details).
-* `response {Object}` An Express Response object (see [the docs](https://github.com/GPII/gpii-express/blob/master/docs/express.md) for details).
-* `next`: The next piece of middleware in the chain.  Used to report errors if needed.
+* `request`: An object representing the individual user's request.  See [the `gpii-express` documentation](https://github.com/GPII/gpii-express/blob/master/docs/express.md#the-express-request-object) for details.
+* `response`: The response object, which can be used to send information to the requesting user.  See [the `gpii-express` documentation](https://github.com/GPII/gpii-express/blob/master/docs/express.md#the-express-response-object) for details.
+* `next`: The next Express middleware or router function in the chain.  See [the `gpii-express` documentation for details](https://github.com/GPII/gpii-express/blob/master/docs/middleware.md#what-is-middleware).
 * Returns: Nothing.
 
 Implements the `middleware` function required by the [`gpii.express.middleware` grade](https://github.com/GPII/gpii-express/blob/master/docs/middleware.md)
