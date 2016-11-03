@@ -17,4 +17,4 @@ setup:
   - npm install
 
 commands:
-  - npm test
+  - BROWSERS=chrome npm test
