@@ -53,7 +53,7 @@
         components: {
             success: {
                 type:          "gpii.handlebars.templateMessage",
-                createOnEvent: "{templateFormControl}.events.onMarkupRendered",
+                createOnEvent: "{templateFormControl}.events.onDomChange",
                 container:     "{templateFormControl}.dom.success",
                 options: {
                     components: {
@@ -72,7 +72,7 @@
             },
             error: {
                 type:          "gpii.handlebars.templateMessage",
-                createOnEvent: "{templateFormControl}.events.onMarkupRendered",
+                createOnEvent: "{templateFormControl}.events.onDomChange",
                 container:     "{templateFormControl}.dom.error",
                 options: {
                     components: {

@@ -12,7 +12,7 @@
     "gpii-binder": "git://github.com/the-t-in-rtf/gpii-binder#513066d82f20303e4745115f6d52d104bc359021",
     "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#baa1558d22ee7abcb6d6b6410af7cc95693f1b80",
     "handlebars": "4.0.5",
-    "infusion": "2.0.0-dev.20160519T222603Z.754d2c6",
+    "infusion": "git://github.com/the-t-in-rtf/infusion.git#056bd1a246fd63f0123fcd375db8f6b157e245b8",
     "marked": "0.3.6",
     "pagedown": "1.1.0",
     "underscore-node": "0.1.2"
