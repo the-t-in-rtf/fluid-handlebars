@@ -75,13 +75,13 @@ gpii.test.handlebars.sanityCheckElements = function (elements, matchDefs) {
                 element.findElements(matchDef.locator).then(function (subElements) {
                     var pass = 1;
                     fluid.each(subElements, function (subElement) {
-                        gpii.test.handlebars.elementMatches(matchDef.message + " (pass " + pass + ")", subElement, matchDef.elementFn || "getInnerHtml", matchDef.pattern, matchDef.invert);
+                        gpii.test.handlebars.elementMatches(matchDef.message + " (pass " + pass + ")", subElement, matchDef.elementFn || "getText", matchDef.pattern, matchDef.invert);
                         pass++;
                     });
                 })["catch"](fluid.fail);
             }
             else {
-                gpii.test.handlebars.elementMatches(matchDef.message, element, matchDef.elementFn || "getInnerHtml", matchDef.pattern, matchDef.invert);
+                gpii.test.handlebars.elementMatches(matchDef.message, element, matchDef.elementFn || "getText", matchDef.pattern, matchDef.invert);
             }
         });
     });

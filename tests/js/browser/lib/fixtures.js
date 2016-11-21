@@ -35,11 +35,13 @@ fluid.defaults("gpii.test.handlebars.browser.caseHolder", {
         standard: {
             markdown: {
                 message: "The element should contain rendered markdown...",
-                pattern: "<p><em>this works<\/em><\/p>"
+                pattern: "this works",
+                locator: { css: ".markdown p em"}
             },
             variable: {
                 message: "The new element should contain rendered variable content...",
-                pattern: "modelvariable"
+                pattern: "modelvariable",
+                locator: { css: ".variable"}
             },
             partial: {
                 message: "The element after the original should have rendered content...",
@@ -53,7 +55,7 @@ fluid.defaults("gpii.test.handlebars.browser.caseHolder", {
             unequals: {
                 message: "Unequal comparisons should display the correct text (false)...",
                 pattern: "false",
-                locator: {css: ".unequal"}
+                locator: { css: ".unequal"}
             }
         },
         noOriginalContent: {
