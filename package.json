@@ -22,7 +22,7 @@
     "eslint-config-fluid": "1.0.0",
     "fluid-grunt-eslint": "18.1.2",
     "foundation-sites": "6.2.4",
-    "gpii-webdriver": "git://github.com/the-t-in-rtf/gpii-webdriver#7e1d3d913d9df61423809a5f2bb7182389c9efc6",
+    "gpii-webdriver": "git://github.com/the-t-in-rtf/gpii-webdriver#b4540371d21c11700b3b13e73adb73c234634505",
     "grunt": "1.0.1",
     "grunt-jsonlint": "1.1.0",
     "istanbul": "0.4.5",
