@@ -10,7 +10,7 @@
   "dependencies": {
     "express-handlebars": "1.2.2",
     "gpii-binder": "git://github.com/the-t-in-rtf/gpii-binder#61ff175ae762a15542b4e7af09cd1dd56f1a6222",
-    "gpii-express": "git://github.com/the-t-in-rtf/gpii-express#39c32a4b306640c7c92dd1a7acd6d5af3f37ddef",
+    "gpii-express": "1.0.0",
     "handlebars": "4.0.6",
     "infusion": "2.0.0-dev.20161027T155641Z.0bcd507",
     "marked": "0.3.6",
