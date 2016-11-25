@@ -4,4 +4,3 @@ bower_components
 coverage
 reports
 .vagrant
-yarn.lock
