@@ -567,9 +567,9 @@ eslint-config-fluid@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/eslint-config-fluid/-/eslint-config-fluid-1.0.0.tgz#fd1fe8c14439c6afc009b31c0665be0d574d2892"
 
-eslint@3.10.2:
-  version "3.10.2"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-3.10.2.tgz#c9a10e8bf6e9d65651204778c503341f1eac3ce7"
+eslint@^3.11.1:
+  version "3.11.1"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-3.11.1.tgz#408be581041385cba947cd8d1cd2227782b55dbf"
   dependencies:
     babel-code-frame "^6.16.0"
     chalk "^1.1.3"
@@ -949,9 +949,9 @@ gpii-binder@1.0.0-dev.20161123T123137Z.a776add:
   dependencies:
     infusion "git://github.com/the-t-in-rtf/infusion.git#8202f87093d60bdf7c58d95a41ecdf27aca0eca9"
 
-gpii-express@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/gpii-express/-/gpii-express-1.0.0.tgz#97acef3356395c45265869a32cceafce8e549013"
+gpii-express@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/gpii-express/-/gpii-express-1.0.1.tgz#ad2b3e110d56867e171c2323362caaa378163095"
   dependencies:
     body-parser "1.15.2"
     cookie-parser "1.4.3"
@@ -960,9 +960,9 @@ gpii-express@1.0.0:
     infusion "2.0.0-dev.20161027T155641Z.0bcd507"
     resolve "1.1.7"
 
-gpii-webdriver@1.0.0-dev.20161124T133029Z.b454037:
-  version "1.0.0-dev.20161124T133029Z.b454037"
-  resolved "https://registry.yarnpkg.com/gpii-webdriver/-/gpii-webdriver-1.0.0-dev.20161124T133029Z.b454037.tgz#6fcc5d2307820e4c3b232fd54994d7db7722ef3c"
+gpii-webdriver@^1.0.0-dev.20161125T164054Z.becc872:
+  version "1.0.0-dev.20161125T164054Z.becc872"
+  resolved "https://registry.yarnpkg.com/gpii-webdriver/-/gpii-webdriver-1.0.0-dev.20161125T164054Z.becc872.tgz#a6c23b792380393cb53d352028f4c027fcfad60f"
   dependencies:
     accessibility-developer-tools "2.11.0"
     axe-core "2.0.7"
@@ -1181,6 +1181,12 @@ infusion@2.0.0-dev.20160519T222603Z.754d2c6:
 infusion@2.0.0-dev.20161027T155641Z.0bcd507:
   version "2.0.0-dev.20161027T155641Z.0bcd507"
   resolved "https://registry.yarnpkg.com/infusion/-/infusion-2.0.0-dev.20161027T155641Z.0bcd507.tgz#207e474cdd3e326f99c262560849de9cd6c8dfa9"
+  dependencies:
+    fluid-resolve "1.2.0"
+
+infusion@^2.0.0-dev.20161124T191742Z.17a345b:
+  version "2.0.0-dev.20161124T191742Z.17a345b"
+  resolved "https://registry.yarnpkg.com/infusion/-/infusion-2.0.0-dev.20161124T191742Z.17a345b.tgz#8266bc688d1a0afb399aeced06bc3b46efa81b5b"
   dependencies:
     fluid-resolve "1.2.0"
 

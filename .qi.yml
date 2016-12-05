@@ -1,20 +1,18 @@
 # A configuration file for our Quality Infrastructure builds: https://wiki.gpii.net/w/Quality_Infrastructure
-app_name: gpii-handlebars
-
-git_repository: https://github.com/the-t-in-rtf/gpii-handlebars.git
-
 email: tony@raisingthefloor.org
-
 env_runtime: linux-desktop
 
-app_start_service: false
-
-software_stack: nodejs
-
-software_stack_version: lts
-
-setup:
-  - npm install
-
-commands:
-  - BROWSERS=chrome npm test
+apps:
+  - app_name: gpii-handlebars
+    git_repository: https://github.com/the-t-in-rtf/gpii-handlebars.git
+    git_branch: GPII-1810
+    software_stack: nodejs
+    software_stack_version: lts
+    folder:
+      dest: /app/gpii-handlebars
+    run_in: fedora
+    deploy: false
+    setup:
+      - yarn install
+    test_cmds:
+      - BROWSERS=chrome yarn test
