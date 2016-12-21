@@ -64,12 +64,12 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                     {
                         event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
                         listener: "{testEnvironment}.webdriver.wait",
-                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForSuccess .success"})]
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForSuccess .templateFormControl-success"})]
                     },
                     {
                         event: "{testEnvironment}.webdriver.events.onWaitComplete",
                         listener: "{testEnvironment}.webdriver.findElement",
-                        args: [{ css: ".readyForSuccess .success" }]
+                        args: [{ css: ".readyForSuccess .templateFormControl-success" }]
                     },
                     {
                         event: "{testEnvironment}.webdriver.events.onFindElementComplete",
@@ -113,12 +113,12 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                     {
                         event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
                         listener: "{testEnvironment}.webdriver.wait",
-                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringifySuccess .success"})]
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringifySuccess .templateFormControl-success"})]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onWaitComplete",
                         listener: "{testEnvironment}.webdriver.findElement",
-                        args:     [{ css: ".readyForStringifySuccess .success" }]
+                        args:     [{ css: ".readyForStringifySuccess .templateFormControl-success" }]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
@@ -162,12 +162,12 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                     {
                         event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
                         listener: "{testEnvironment}.webdriver.wait",
-                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringSuccess .success"})]
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringSuccess .templateFormControl-success"})]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onWaitComplete",
                         listener: "{testEnvironment}.webdriver.findElement",
-                        args:     [{ css: ".readyForStringSuccess .success" }]
+                        args:     [{ css: ".readyForStringSuccess .templateFormControl-success" }]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
@@ -211,12 +211,12 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                     {
                         event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
                         listener: "{testEnvironment}.webdriver.wait",
-                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForFailure .error"})]
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForFailure .templateFormControl-error"})]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onWaitComplete",
                         listener: "{testEnvironment}.webdriver.findElement",
-                        args:     [{ css: ".readyForFailure .error" }]
+                        args:     [{ css: ".readyForFailure .templateFormControl-error" }]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
@@ -260,12 +260,12 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                     {
                         event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
                         listener: "{testEnvironment}.webdriver.wait",
-                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringifyFailure .error"})]
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringifyFailure .templateFormControl-error"})]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onWaitComplete",
                         listener: "{testEnvironment}.webdriver.findElement",
-                        args:     [{ css: ".readyForStringifyFailure .error" }]
+                        args:     [{ css: ".readyForStringifyFailure .templateFormControl-error" }]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
@@ -309,12 +309,12 @@ fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.caseHolder", {
                     {
                         event:    "{testEnvironment}.webdriver.events.onActionsHelperComplete",
                         listener: "{testEnvironment}.webdriver.wait",
-                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringFailure .error"})]
+                        args:     [gpii.webdriver.until.elementLocated({ css: ".readyForStringFailure .templateFormControl-error"})]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onWaitComplete",
                         listener: "{testEnvironment}.webdriver.findElement",
-                        args:     [{ css: ".readyForStringFailure .error" }]
+                        args:     [{ css: ".readyForStringFailure .templateFormControl-error" }]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onFindElementComplete",

@@ -102,8 +102,8 @@
         selectors: {
             initial: "",         // The container that will be updated with template content on startup and on a full refresh.
             form:    "form",     // The form element whose submission we will control
-            error:   ".error",   // The error message controlled by our sub-component
-            success: ".success", // The positive feedback controlled by our sub-component
+            error:   ".templateFormControl-error",   // The error message controlled by our sub-component
+            success: ".templateFormControl-success", // The positive feedback controlled by our sub-component
             submit:  ".submit"   // Clicking or hitting enter on our submit button will launch our AJAX request
         },
         invokers: {
