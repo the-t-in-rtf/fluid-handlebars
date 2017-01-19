@@ -205,6 +205,7 @@
     gpii.handlebars.renderer.serverAware.retrieveTemplates = function (that) {
         var settings = {
             url:     that.options.templateUrl,
+            accepts: "application/json",
             success: that.cacheTemplates
         };
 
