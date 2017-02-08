@@ -6,6 +6,7 @@
     https://github.com/GPII/gpii-handlebars/blob/master/docs/errorRenderingMiddleware.md
 
  */
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");

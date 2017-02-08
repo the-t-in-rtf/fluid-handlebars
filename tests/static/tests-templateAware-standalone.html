@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <title>Tests for "standalone" templateAware grade...</title>
+        <!-- Bring in jQuery and other dependencies -->
+        <script type="text/javascript" src="../../node_modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
+
+        <!-- Bring in fluid dependencies -->
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDocument.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/Fluid.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidIoC.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/DataBinding.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidView.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/lib/fastXmlPull/js/fastXmlPull.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/renderer/js/fluidParser.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/renderer/js/fluidRenderer.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidRequests.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/ModelTransformation.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
+        
+        <!-- Bring in Handlebars dependency -->
+        <script type="text/javascript" src="../../node_modules/handlebars/dist/handlebars.js"></script>
+
+        <!-- Bring in Pagedown dependencies -->
+        <script type="text/javascript" src="../../node_modules/pagedown/Markdown.Converter.js"></script>
+        <script type="text/javascript" src="../../node_modules/pagedown/Markdown.Sanitizer.js"></script>
+
+        <!-- Bring in client library being tested -->
+        <script type="text/javascript" src="../../node_modules/gpii-binder/src/js/binder.js"></script>
+        <script type="text/javascript" src="../../src/js/client/templateAware.js"></script>
+        <script type="text/javascript" src="../../src/js/client/renderer.js"></script>
+        <script type="text/javascript" src="../../src/js/common/helper.js"></script>
+        <script type="text/javascript" src="../../src/js/common/md-common.js"></script>
+        <script type="text/javascript" src="../../src/js/client/md-client.js"></script>
+        <script type="text/javascript" src="../../src/js/common/jsonify.js"></script>
+        <script type="text/javascript" src="../../src/js/common/equals.js"></script>
+
+        <!-- Bring in our test helper -->
+        <script type="text/javascript" src="./js/tests-templateAware-standalone.js"></script>
+    </head>
+    <body>
+        <h1>Handlebars Helper Test Suite</h1>
+
+        <p>This page is intended to be loaded using a standalone browser.</p>
+
+        <div class="templateAware-standalone-viewport"></div>
+
+        <script type="text/javascript">
+            var component = gpii.tests.handlebars.templateAware.standalone(".templateAware-standalone-viewport");
+        </script>
+    </body>
+</html>

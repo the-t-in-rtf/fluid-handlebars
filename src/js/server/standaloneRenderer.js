@@ -1,19 +1,11 @@
-// A standalone handlebars renderer designed for use in rendering mail templates.
-//
-// Although this does not itself require express, it can work with any helper functions that extend the
-// `gpii.express.helper` grade, but which do not themselves require express.
-//
-// The directory conventions used with express are partially supported, as follows:
-//
-//  1. Any templates in the `partials` subdirectory relative to `options.templateDirs` will be registered as partials for use in `{{>partial}}` statements.
-//  2. All other templates are expected to be stored in a `pages` subdirectory relative to `options.templateDirs`.
-//
-// The most important configuration option is `options.templateDirs`, which can either be a string or an array of strings
-// representing the location of one or more template directories.  As with the `gpii.express` `views` option, the
-// string values will usually be unresolved references to a directory within a package, as in:
-//
-// `%npm-package-name/path/within/package`
-//
+/*
+
+    A standalone handlebars renderer designed for use outside of express, for example when rendering mail templates.
+
+    See the docs for details: https://github.com/GPII/gpii-handlebars/blob/master/docs/standaloneRenderer.md
+
+*/
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");

@@ -1,4 +1,5 @@
 // Test all server side modules (including basic template rendering)...
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 
@@ -68,15 +69,6 @@ gpii.tests.handlebars.server.runTests = function (that) {
 
                 }
             });
-        });
-    });
-
-    jqUnit.asyncTest("Test 404 handling for dispatcher...", function () {
-        request.get(that.options.baseUrl + "dispatcher/bogus", function (error, response) {
-            jqUnit.start();
-
-            jqUnit.assertNull("There should be no errors...", error);
-            jqUnit.assertEquals("The status code should be 404...", 404, response.statusCode);
         });
     });
 

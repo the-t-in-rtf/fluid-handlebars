@@ -4,7 +4,7 @@
 // This is a test component that is meant to be included in a client-side document.
 //
 /* global fluid */
-
+/* eslint-env node */
 fluid.defaults("gpii.handlebars.tests.templateMessage", {
     gradeNames: ["gpii.handlebars.templateMessage", "gpii.handlebars.templateAware.bornReady"],
     template:   "common-success",
@@ -15,7 +15,7 @@ fluid.defaults("gpii.handlebars.tests.templateMessage", {
                 members: {
                     templates: {
                         partials: {
-                            "common-success": "<div class=\"alert-box success\">{{message}}</div>"
+                            "common-success": "<div class=\"callout success\">{{message}}</div>"
                         }
                     }
                 }

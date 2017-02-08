@@ -1,5 +1,6 @@
 // Test "templateMessage" components using `gpii-test-browser`.
 //
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
@@ -7,7 +8,24 @@ var gpii  = fluid.registerNamespace("gpii");
 require("./includes.js");
 
 fluid.defaults("gpii.tests.handlebars.browser.templateMessage.caseHolder", {
-    gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
+    gradeNames: ["gpii.test.handlebars.browser.caseHolder"],
+    matchDefs: {
+        body: {
+            initialMarkupReplaced: {
+                message: "The initial markup should no longer be present...",
+                pattern: "should not be visible",
+                invert: true
+            },
+            renderedMarkup: {
+                message: "There should be rendered content",
+                pattern: "born with silver model data in my mouth"
+            },
+            updatedModelData: {
+                message: "There should be updated model content...",
+                pattern: "some have data thrust upon them"
+            }
+        }
+    },
     rawModules: [{
         name: "Testing the `templateMessage` client-side grade...",
         tests: [
@@ -15,36 +33,18 @@ fluid.defaults("gpii.tests.handlebars.browser.templateMessage.caseHolder", {
                 name: "Confirm that the templateMessage component is initialized and rendered correctly...",
                 sequence: [
                     {
-                        func: "{gpii.test.handlebars.browser.environment}.browser.goto",
-                        args: ["{gpii.test.handlebars.browser.environment}.options.url"]
+                        func: "{testEnvironment}.webdriver.get",
+                        args: ["{testEnvironment}.options.url"]
                     },
                     {
-                        event: "{gpii.test.handlebars.browser.environment}.browser.events.onLoaded",
-                        listener: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
-                        args: [gpii.test.browser.elementMatches, "body", "{gpii.test.handlebars.browser.environment}.options.notExpected"]
+                        event:    "{testEnvironment}.webdriver.events.onGetComplete",
+                        listener: "{testEnvironment}.webdriver.findElement",
+                        args:     [{ css: "body"}]
                     },
                     {
-                        event: "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
-                        listener: "jqUnit.assertFalse",
-                        args: ["The placeholder text should no longer be present...", "{arguments}.0"]
-                    },
-                    {
-                        func: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
-                        args: [gpii.test.browser.elementMatches, "body", "{gpii.test.handlebars.browser.environment}.options.expected.initialized"]
-                    },
-                    {
-                        event: "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
-                        listener: "jqUnit.assertTrue",
-                        args: ["A component with initial model data should display as expected...", "{arguments}.0"]
-                    },
-                    {
-                        func: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
-                        args: [gpii.test.browser.elementMatches, "body", "{gpii.test.handlebars.browser.environment}.options.expected.updated"]
-                    },
-                    {
-                        event: "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
-                        listener: "jqUnit.assertTrue",
-                        args: ["A component with updated model data should display as expected...", "{arguments}.0"]
+                        event:    "{testEnvironment}.webdriver.events.onFindElementComplete",
+                        listener: "gpii.test.handlebars.sanityCheckElements",
+                        args:     ["{arguments}.0", "{that}.options.matchDefs.body"] //elements, matchDefs
                     }
                 ]
             }
@@ -56,11 +56,6 @@ fluid.defaults("gpii.tests.handlebars.browser.templateMessage.testEnvironment", 
     gradeNames: ["gpii.test.handlebars.browser.environment"],
     "port": 6924,
     "path": "content/tests-templateMessage.html",
-    notExpected: "should not be visible",
-    expected: {
-        initialized: "born with silver model data in my mouth",
-        updated:     "some have data thrust upon them"
-    },
     components: {
         caseHolder: {
             type: "gpii.tests.handlebars.browser.templateMessage.caseHolder"
@@ -68,4 +63,4 @@ fluid.defaults("gpii.tests.handlebars.browser.templateMessage.testEnvironment", 
     }
 });
 
-fluid.test.runTests("gpii.tests.handlebars.browser.templateMessage.testEnvironment");
+gpii.test.webdriver.allBrowsers({ baseTestEnvironment: "gpii.tests.handlebars.browser.templateMessage.testEnvironment"});

@@ -1,6 +1,7 @@
 // Server-side wrapper to add a markdown parsing helper.
 //
 // This is designed to be included as a child component of `gpii.express.hb`
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");

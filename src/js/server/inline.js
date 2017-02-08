@@ -1,26 +1,12 @@
 /*
-    This component is designed to feed template content stored on the server to the client-side components included
-    with this library.
 
-    This component requires the full path to all template content.  That path is expected to point to a directory
-    that follows the handlebars conventions, and stores template content in subdirectories based on the type of template
-    (`layouts`, `pages`, and `partials`).  Any content found in these subdirectories will be read and stored in the
-    `templates` member object using the template directory name and the filename (minus the handlebars suffix).
+    Middleware that combines all available Handlebars templates into a single bundle that can be downloaded and used
+    by the client-side renderer.  For more information, see the docs:
 
-    Say that we have a views directory that contains a `pages` subdirectory, and that the `pages` subdirectory contains
-    a single template, called `myTemplate.handlebars`.  When `loadTemplates` finishes running, the `templates` member
-    object should look like:
+    https://github.com/GPII/gpii-handlebars/blob/master/docs/inline.md
 
-     {
-       pages: {
-         myTemplate: "..." // template content omitted for brevity
-       }
-     }
-
-     With the data this router supplies, the handlebars client has what it needs to load partials and handle updating
-     markup on the client side.
  */
-
+/* eslint-env node */
 "use strict";
 var fluid  = require("infusion");
 var gpii = fluid.registerNamespace("gpii");

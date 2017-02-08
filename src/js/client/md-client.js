@@ -3,6 +3,7 @@
 //
 // Requires Pagedown (for markdown rendering)
 /* global fluid, jQuery, Markdown */
+/* eslint-env browser */
 (function () {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
@@ -30,5 +31,3 @@
         }
     });
 })(jQuery);
-
-

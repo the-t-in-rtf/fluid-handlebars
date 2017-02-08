@@ -1,6 +1,7 @@
 /*
     Test harness common to all Zombie tests.  Loads all required server-side components.
  */
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 
@@ -62,13 +63,6 @@ fluid.defaults("gpii.test.handlebars.client.harness", {
             options: {
                 path: "/hbs",
                 templateDirs: "{harness}.options.templateDirs"
-            }
-        },
-        bc: {
-            type: "gpii.express.router.static",
-            options: {
-                path:    "/bc",
-                content: "%gpii-handlebars/bower_components"
             }
         },
         js: {

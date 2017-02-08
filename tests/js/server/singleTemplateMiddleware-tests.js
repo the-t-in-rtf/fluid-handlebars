@@ -1,5 +1,6 @@
 // Tests for the "single template router".
 //
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");

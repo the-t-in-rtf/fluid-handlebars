@@ -1,5 +1,6 @@
 // Tests for the "error rendering middleware".
 //
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
@@ -12,8 +13,8 @@ require("gpii-express");
 gpii.express.loadTestingSupport();
 
 fluid.registerNamespace("gpii.tests.handlebars.errorRenderingMiddleware");
-gpii.tests.handlebars.errorRenderingMiddleware.responseHasText = function (message, expectedString, body) {
-    jqUnit.assertTrue(message, body.indexOf(expectedString) !== -1);
+gpii.tests.handlebars.errorRenderingMiddleware.responseHasText = function (message, pattern, body) {
+    jqUnit.assertTrue(message, body.match(pattern));
 };
 
 // A router that is born to lose, with a worried mind.
@@ -42,7 +43,7 @@ fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.request", {
 fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.caseHolder", {
     gradeNames: ["gpii.test.express.caseHolder"],
     expected: {
-        html: "There was an error:\n\n*sound of drums*",
+        html: /There was an error:\r?\n\r?\n\*sound of drums\*/m,
         json: { isError: true, message: "*sound of drums*"}
     },
     rawModules: [

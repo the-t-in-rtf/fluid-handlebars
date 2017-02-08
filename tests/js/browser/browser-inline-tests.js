@@ -1,4 +1,5 @@
 // Test "inline" router from the other side, ensuring that templates are available, that inheritance, etc. works correctly.
+/* eslint-env node */
 "use strict";
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
@@ -6,6 +7,11 @@ var gpii  = fluid.registerNamespace("gpii");
 require("./includes.js");
 
 fluid.registerNamespace("gpii.tests.handlebars.browser.inline");
+
+gpii.tests.handlebars.browser.inline.objectExists = function (objectName) {
+    var object = fluid.getGlobalValue(objectName);
+    return object !== undefined;
+};
 
 gpii.tests.handlebars.browser.inline.hasTemplateDirs = function () {
     /* globals window */
@@ -44,77 +50,73 @@ gpii.tests.handlebars.browser.inline.hasSecondaryPartial = function () {
 };
 
 fluid.defaults("gpii.tests.handlebars.browser.inline.caseHolder", {
-    gradeNames: ["gpii.test.browser.caseHolder.withExpress"],
+    gradeNames: ["gpii.test.webdriver.caseHolder"],
     rawModules: [{
         name: "Test the `inline` middleware...",
         tests: [{
             name: "Confirm that template content delivered by the 'inline' middleware is correct and usable from a templateAware component...",
             sequence: [
                 {
-                    func: "{gpii.test.handlebars.browser.environment}.browser.goto",
+                    func: "{gpii.test.handlebars.browser.environment}.webdriver.get",
                     args: ["{gpii.test.handlebars.browser.environment}.options.url"]
                 },
                 {
-                    event:    "{gpii.test.handlebars.browser.environment}.browser.events.onLoaded",
-                    listener: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
-                    args:     [gpii.test.browser.getGlobalValue, "templateAware"]
+                    event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onGetComplete",
+                    listener: "{gpii.test.handlebars.browser.environment}.webdriver.sleep",
+                    args:     [1000]
                 },
                 {
-                    event:    "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
-                    listener: "jqUnit.assertNotNull",
+                    event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onSleepComplete",
+                    listener: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
+                    args:     [gpii.tests.handlebars.browser.inline.objectExists, "templateAware"]
+                },
+                {
+                    event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
+                    listener: "jqUnit.assertTrue",
                     args:     ["There should be a global variable for the client-side component...", "{arguments}.0"]
                 },
                 {
-                    func: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
-                    args: [gpii.test.browser.getGlobalValue, "templateAware.renderer"]
+                    func: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
+                    args: [gpii.tests.handlebars.browser.inline.objectExists, "templateAware.renderer.templates"]
                 },
                 {
-                    event:    "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
-                    listener: "jqUnit.assertNotNull",
-                    args:     ["The client side component should have a renderer...", "{arguments}.0"]
-                },
-                {
-                    func: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
-                    args: [gpii.test.browser.getGlobalValue, "templateAware.renderer.templates"]
-                },
-                {
-                    event:    "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
-                    listener: "jqUnit.assertNotNull",
+                    event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
+                    listener: "jqUnit.assertTrue",
                     args:     ["The renderer should have templates...", "{arguments}.0"]
                 },
                 {
-                    func: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
+                    func: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
                     args: [gpii.tests.handlebars.browser.inline.preservesPrimaryPage]
                 },
                 {
-                    event:    "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
+                    event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
                     listener: "jqUnit.assertTrue",
                     args:     ["A page that exists in the both the secondary and primary directory should not have been overridden...", "{arguments}.0"]
                 },
                 {
-                    func: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
+                    func: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
                     args: [gpii.tests.handlebars.browser.inline.preservesPrimaryPartial]
                 },
                 {
-                    event:    "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
+                    event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
                     listener: "jqUnit.assertTrue",
                     args:     ["A partial that exists in the both the secondary and primary directory should not have been overridden...", "{arguments}.0"]
                 },
                 {
-                    func: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
+                    func: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
                     args: [gpii.tests.handlebars.browser.inline.hasSecondaryPage]
                 },
                 {
-                    event:    "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
+                    event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
                     listener: "jqUnit.assertTrue",
                     args:     ["A page that only exists in the secondary directory should be available...", "{arguments}.0"]
                 },
                 {
-                    func: "{gpii.test.handlebars.browser.environment}.browser.evaluate",
+                    func: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
                     args: [gpii.tests.handlebars.browser.inline.hasSecondaryPartial]
                 },
                 {
-                    event:    "{gpii.test.handlebars.browser.environment}.browser.events.onEvaluateComplete",
+                    event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",
                     listener: "jqUnit.assertTrue",
                     args:     ["A partial that only exists in the secondary directory should be available...", "{arguments}.0"]
                 }
@@ -126,12 +128,22 @@ fluid.defaults("gpii.tests.handlebars.browser.inline.caseHolder", {
 fluid.defaults("gpii.tests.handlebars.browser.inline.testEnvironment", {
     gradeNames: ["gpii.test.handlebars.browser.environment"],
     port: 6595,
-    path: "content/tests-templateAware.html",
+    path: "content/tests-templateAware-serverAware.html",
     components: {
         caseHolder: {
             type: "gpii.tests.handlebars.browser.inline.caseHolder"
+        },
+        webdriver: {
+            options: {
+                listeners: {
+                    "onError.log": {
+                        funcName: "console.log",
+                        args: ["BROWSER ERROR:", "{arguments}.0"]
+                    }
+                }
+            }
         }
     }
 });
 
-fluid.test.runTests("gpii.tests.handlebars.browser.inline.testEnvironment");
+gpii.test.webdriver.allBrowsers({ baseTestEnvironment: "gpii.tests.handlebars.browser.inline.testEnvironment"});

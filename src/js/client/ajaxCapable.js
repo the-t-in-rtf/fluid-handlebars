@@ -96,6 +96,7 @@ A few more things to note:
     fluid.defaults("gpii.handlebars.ajaxCapable", {
         gradeNames:    ["fluid.modelComponent"],
         ajaxOptions: {
+            accepts:  "application/json",
             success: "{that}.handleSuccess",
             error:   "{that}.handleError"
         },
