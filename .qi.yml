@@ -14,6 +14,6 @@ apps:
     deploy: false
     setup:
       - sudo yum install -y chromedriver
-      - yarn install
+      - npm install
     test_cmds:
-      - BROWSERS=chrome yarn test
+      - BROWSERS=chrome npm test
