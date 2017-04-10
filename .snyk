@@ -1,0 +1,21 @@
+version: v1.5.2
+ignore:
+  'npm:handlebars:20151207':
+    - express-handlebars > handlebars:
+        reason: >-
+          1.2.2 is the last version to include support for arrays of view
+          directories.
+        expires: '2017-05-10T08:00:13.531Z'
+patch:
+  'npm:uglify-js:20150824':
+    - express-handlebars > handlebars > uglify-js:
+        patched: '2017-04-10T07:55:58.776Z'
+  'npm:uglify-js:20151024':
+    - express-handlebars > handlebars > uglify-js:
+        patched: '2017-04-10T07:55:58.776Z'
+  'npm:semver:20150403':
+    - express-handlebars > semver:
+        patched: '2017-04-10T07:55:58.776Z'
+  'npm:marked:20170112':
+    - marked:
+        patched: '2017-04-10T07:55:58.776Z'

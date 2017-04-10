@@ -5,31 +5,35 @@
   "license": "BSD-3-Clause",
   "repository": "https://github.com/GPII/gpii-handlebars",
   "scripts": {
-    "test": "node node_modules/istanbul/lib/cli.js cover tests/all-tests.js"
+    "test": "snyk test && node node_modules/istanbul/lib/cli.js cover tests/all-tests.js",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "express-handlebars": "1.2.2",
     "gpii-binder": "1.0.0-dev.20170127T144054Z.54a5ef2",
-    "gpii-express": "1.0.2",
+    "gpii-express": "1.0.6-dev.20170410T073824Z.533a56f",
     "handlebars": "4.0.6",
     "infusion": "3.0.0-dev.20170127T130413Z.103de6e",
     "marked": "0.3.6",
     "pagedown": "1.1.0",
-    "underscore-node": "0.1.2"
+    "underscore-node": "0.1.2",
+    "snyk": "1.18.0"
   },
   "devDependencies": {
-    "eslint": "3.15.0",
+    "eslint": "3.19.0",
     "eslint-config-fluid": "1.1.0",
     "fluid-grunt-eslint": "18.1.2",
-    "foundation-sites": "6.3.0",
-    "gpii-webdriver": "1.0.0-dev.20170127T135806Z.aa30519",
+    "foundation-sites": "6.3.1",
+    "gpii-webdriver": "1.0.0",
     "grunt": "1.0.1",
     "grunt-jsonlint": "1.1.0",
     "istanbul": "0.4.5",
-    "jsdom": "9.10.0",
-    "kettle": "1.3.2",
+    "jsdom": "9.12.0",
+    "kettle": "1.4.0",
     "node-jqunit": "1.1.4",
-    "request": "2.79.0",
+    "request": "2.81.0",
     "tough-cookie": "2.3.2"
-  }
+  },
+  "snyk": true
 }
