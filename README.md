@@ -46,7 +46,25 @@ For more details on the `initBlock` helper,  see [its documentation](docs/initBl
 
 # Testing This Module
 
-Building and testing this module should be as simple as running the following commands in order:
+## In a Virtual Machine
+
+The preferred way to run the tests is to create a virtual machine and run the tests in that supported and
+pre-configured environment.  To run the tests in a virtual machine, you will need to have VirtualBox, Vagrant, and the
+Vagrant CI Plugin installed.  See the [QI development environment requirements](https://github.com/GPII/qi-development-environments/#requirements) for more details.
+
+Once you have satisfied the requirements, you can run the tests using the following commands from the root of the
+repository:
+
+1. `vagrant up`
+2. `vagrant ci test`
+
+If you would like to remove the VM, use the command `vagrant destroy` from the root of the repository.
+
+## On a Local Machine
+
+In order to run the tests locally, you must have [Chrome](https://www.google.com/chrome/) and
+[ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/) installed.  You should then be able to run the
+following commands in order:
 
 1. `npm install`
 2. `npm test`
