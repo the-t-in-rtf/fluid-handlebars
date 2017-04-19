@@ -1032,9 +1032,9 @@ gpii-binder@1.0.1-dev.20170417T183445Z.982c172:
   dependencies:
     infusion "3.0.0-dev.20170322T234120Z.278de35"
 
-gpii-express@1.0.7-dev.20170417T134005Z.8acdf26:
-  version "1.0.7-dev.20170417T134005Z.8acdf26"
-  resolved "https://registry.yarnpkg.com/gpii-express/-/gpii-express-1.0.7-dev.20170417T134005Z.8acdf26.tgz#c03f8821964870b9f64f864203455eeac02326a0"
+gpii-express@1.0.7-dev.20170419T081915Z.306d53d:
+  version "1.0.7-dev.20170419T081915Z.306d53d"
+  resolved "https://registry.yarnpkg.com/gpii-express/-/gpii-express-1.0.7-dev.20170419T081915Z.306d53d.tgz#162f42d96640002b50e1cefe04b7a827213ce3ee"
   dependencies:
     body-parser "1.17.1"
     cookie-parser "1.4.3"
@@ -2001,13 +2001,7 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-rimraf@^2.2.8, rimraf@^2.5.4:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.5.4.tgz#96800093cbf1a0c86bd95b4625467535c29dfa04"
-  dependencies:
-    glob "^7.0.5"
-
-rimraf@^2.6.1:
+rimraf@^2.2.8, rimraf@^2.5.4, rimraf@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
   dependencies:

@@ -11,7 +11,7 @@
   "dependencies": {
     "express-handlebars": "1.2.2",
     "gpii-binder": "1.0.1-dev.20170417T183445Z.982c172",
-    "gpii-express": "1.0.7-dev.20170417T134005Z.8acdf26",
+    "gpii-express": "1.0.7-dev.20170419T081915Z.306d53d",
     "handlebars": "4.0.6",
     "infusion": "3.0.0-dev.20170322T234120Z.278de35",
     "marked": "0.3.6",
