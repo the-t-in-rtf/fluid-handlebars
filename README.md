@@ -6,9 +6,8 @@ This package provides components to assist in rendering handlebars templates bot
 
 ## Handlebars Middleware
 
-This package provides middleware that adds Handlebars rendering support to a `gpii.express` instance.  For more details,
-see the [handlebars middleware documentation](docs/handlebars.md).
-
+This package provides a custom view engine that adds Handlebars rendering support to a `gpii.express` instance.
+For more details, see the [handlebars view engine documentation](docs/handlebars.md).
 
 ## Dispatcher Middleware
 
