@@ -15,6 +15,7 @@ require("handlebars");
 require("./lib/first-matching-path");
 require("./lib/resolver");
 require("./standaloneRenderer");
+require("./watcher");
 
 gpii.express.hb.engine = function (that, templatePath, templateContext, callback) {
     try {
@@ -66,6 +67,52 @@ fluid.defaults("gpii.express.hb", {
         "{gpii.express}.events.onStarted": {
             funcName: "gpii.express.hb.configureExpress",
             args:     ["{that}", "{gpii.express}"]
+        }
+    }
+});
+
+/*
+
+    A grade that reloads the list of templates whenever there are filesystem changes.  See: https://issues.gpii.net/browse/GPII-2474
+
+ */
+fluid.defaults("gpii.express.hb.live", {
+    gradeNames: ["gpii.express.hb"],
+    events: {
+        onWatcherReady: null,
+        onFsChange: null,
+        onTemplatesLoaded: null
+    },
+    components: {
+        watcher: {
+            type: "gpii.handlebars.watcher",
+            options: {
+                watchDirs: "{gpii.express.hb}.options.templateDirs",
+                listeners: {
+                    "onFsChange.notifyParent": {
+                        func: "{gpii.express.hb.live}.events.onFsChange.fire"
+                    },
+                    "onReady.notifyParent": {
+                        func: "{gpii.express.hb.live}.events.onWatcherReady.fire"
+                    }
+                }
+            }
+
+        },
+        renderer: {
+            options: {
+                listeners: {
+                    "onTemplatesLoaded.notifyParent": {
+                        func: "{gpii.express.hb.live}.events.onTemplatesLoaded.fire"
+                    }
+                }
+            }
+        }
+    },
+    listeners: {
+        "onFsChange.reloadTemplates": {
+            funcName: "gpii.handlebars.standaloneRenderer.init",
+            args:     ["{renderer}"]
         }
     }
 });

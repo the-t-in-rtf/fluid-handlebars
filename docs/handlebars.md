@@ -24,7 +24,7 @@ fluid.defaults("my.grade.name", {
 my.grade.name();
 ```
 
-# Component Options
+## Component Options
 
 | Option         | Type             | Description |
 | -------------- | ---------------- | ----------- |
@@ -33,3 +33,11 @@ my.grade.name();
 To use this middleware, you need to make it aware of one or more directories that contain templates (typically via the
 `options.config.express.views` option in your `gpii.express` configuration.  These options are passed to the underlying
 [renderer component](standaloneRenderer.md), see those docs for details.
+
+# `gpii.express.hb.live`
+
+This component grade extends `gpii.express.hb` and adds support for "live" reloading of templates.  It uses an instance
+ of [`gpii.handlebars.watcher`](watcher.md) to watch for changes to all directories specified in `options.templateDirs`
+ see above.  Whenever files are added, removed, or changed, the renderer's cache will be cleared and all partials
+ will be reloaded.  This process typically takes around two seconds, mainly because we wait to be sure the template has
+ been completely saved to disc.  See the [`gpii.handlebars.watcher`](watcher.md) docs for details.

@@ -29,6 +29,9 @@ gpii.handlebars.standaloneRenderer.addHelper = function (that, component) {
 };
 
 gpii.handlebars.standaloneRenderer.init = function (that) {
+    // Get rid of any existing compiled templates.
+    that.compiledTemplates = [];
+
     // As with gradeNames, the right-most template directory that contains a given partial "wins".
     fluid.each(that.templateDirs.reverse(), function (templateDir) {
         // Register all partials found in the "partials" subdirectory relative to `options.templateDirs`;
@@ -45,6 +48,8 @@ gpii.handlebars.standaloneRenderer.init = function (that) {
     fluid.each(that.helpers, function (fn, key) {
         handlebars.registerHelper(key, fn);
     });
+
+    that.events.onTemplatesLoaded.fire();
 };
 
 gpii.handlebars.standaloneRenderer.getLayoutPathFromKey = function (that, layoutKey) {
@@ -118,6 +123,9 @@ fluid.defaults("gpii.handlebars.standaloneRenderer", {
     gradeNames: ["fluid.modelComponent"],
     defaultLayout: "main",
     handlebarsExtension: "handlebars",
+    events: {
+        onTemplatesLoaded: null
+    },
     members: {
         helpers:           {},
         compiledTemplates: {},
