@@ -13,8 +13,6 @@ fluid.logObjectRenderChars = 10240;
 var gpii  = fluid.registerNamespace("gpii");
 
 fluid.require("%gpii-handlebars");
-// TODO: Using this consistently results in ENOENT errors.  Use that to troubleshoot, resolve the issues, and move on.
-// fluid.require("%gpii-handlebars");
 
 var copy   = require("recursive-copy");
 var fs     = require("fs");
@@ -97,7 +95,11 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
     ],
     sequenceEnd: [
         {
-            func: "{testEnvironment}.events.cleanup.fire"
+            func: "{testEnvironment}.express.destroy"
+        },
+        {
+            event: "{testEnvironment}.express.events.afterDestroy",
+            listener: "{testEnvironment}.events.cleanup.fire"
         },
         {
             event: "{testEnvironment}.events.onCleanupComplete",
