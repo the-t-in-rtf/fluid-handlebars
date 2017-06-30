@@ -8,8 +8,8 @@ var gpii = fluid.registerNamespace("gpii");
 var jqUnit  = fluid.require("node-jqunit");
 var request = require("request");
 
-require("gpii-express");
-require("../../../index");
+fluid.require("%gpii-express");
+fluid.require("%gpii-handlebars");
 require("./lib/sanity.js");
 
 fluid.registerNamespace("gpii.tests.handlebars.server.inline");

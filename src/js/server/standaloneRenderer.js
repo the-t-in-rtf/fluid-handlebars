@@ -16,7 +16,7 @@ var handlebars = require("handlebars");
 var fs   = require("fs");
 var path = require("path");
 
-require("gpii-express"); // required to pick up `resolvePaths` function used below.
+fluid.require("%gpii-express"); // required to pick up `resolvePaths` function used below.
 
 gpii.handlebars.standaloneRenderer.addHelper = function (that, component) {
     var key = component.options.helperName;

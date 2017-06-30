@@ -7,9 +7,9 @@ var gpii  = fluid.registerNamespace("gpii");
 
 var jqUnit = require("node-jqunit");
 
-require("../../../index");
+fluid.require("%gpii-handlebars");
 
-require("gpii-express");
+fluid.require("%gpii-express");
 gpii.express.loadTestingSupport();
 
 fluid.registerNamespace("gpii.tests.handlebars.errorRenderingMiddleware");

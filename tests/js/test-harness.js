@@ -5,9 +5,9 @@
 "use strict";
 var fluid = require("infusion");
 
-require("gpii-express");
+fluid.require("%gpii-express");
+fluid.require("%gpii-handlebars");
 
-require("../../");
 require("./lib/test-router-error");
 
 fluid.defaults("gpii.test.handlebars.client.harness", {

@@ -4,7 +4,7 @@
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
-require("../../../index");
+fluid.require("%gpii-handlebars");
 
 var jqUnit = require("node-jqunit");
 

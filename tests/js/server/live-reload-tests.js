@@ -12,7 +12,9 @@ fluid.logObjectRenderChars = 10240;
 
 var gpii  = fluid.registerNamespace("gpii");
 
-require("../../../index");
+fluid.require("%gpii-handlebars");
+// TODO: Using this consistently results in ENOENT errors.  Use that to troubleshoot, resolve the issues, and move on.
+// fluid.require("%gpii-handlebars");
 
 var copy   = require("recursive-copy");
 var fs     = require("fs");
@@ -21,7 +23,7 @@ var os     = require("os");
 var path   = require("path");
 var rimraf = require("rimraf");
 
-require("gpii-express");
+fluid.require("%gpii-express");
 gpii.express.loadTestingSupport();
 
 var kettle = require("kettle");

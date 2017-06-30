@@ -5,7 +5,7 @@
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
-require("../../../index");
+fluid.require("%gpii-handlebars");
 
 var jqUnit = require("node-jqunit");
 var fs     = require("fs");
@@ -13,7 +13,7 @@ var jsdom  = require("jsdom");
 
 var jqueryContent = fs.readFileSync(fluid.module.resolvePath("%infusion/src/lib/jquery/core/js/jquery.js"), "utf8");
 
-require("gpii-express");
+fluid.require("%gpii-express");
 gpii.express.loadTestingSupport();
 
 var kettle = require("kettle");
