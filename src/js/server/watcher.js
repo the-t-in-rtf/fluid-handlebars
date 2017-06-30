@@ -29,11 +29,13 @@ gpii.handlebars.watcher.init = function (that) {
     var resolvedDirs = fluid.transform(fluid.makeArray(that.options.watchDirs), fluid.module.resolvePath);
     that.watcher = chokidar.watch(resolvedDirs, that.options.chokidarOptions);
 
-    fluid.each(that.options.eventsToWatch, function (eventName) {
-        // Pass the event type (chokidar only does this for the "all" event type.
-        that.watcher.on(eventName, function (path, details) {
-            that.handleFsEvent(eventName, path, details);
-        });
+    fluid.each(that.options.eventsToWatch, function (eventEnabled, eventName) {
+        if (eventEnabled) {
+            // Pass the event type (chokidar only does this for the "all" event type.
+            that.watcher.on(eventName, function (path, details) {
+                that.handleFsEvent(eventName, path, details);
+            });
+        }
     });
 
     // fluid.log("Watching the following directories: ", resolvedDirs.join(","));
@@ -67,7 +69,12 @@ fluid.defaults("gpii.handlebars.watcher", {
     members: {
         watcher: null
     },
-    eventsToWatch: ["add", "change", "unlink"], // Watch for file adds, changes, and removals.
+    // Watch for file adds, changes, and removals.
+    "eventsToWatch": {
+        "add": true,
+        "change": true,
+        "unlink": true
+    },
     watchDirs: [],
     // See: https://github.com/paulmillr/chokidar#api
     chokidarOptions: {
