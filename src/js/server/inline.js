@@ -28,7 +28,7 @@ gpii.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse = function
 
 fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware.request", {
     gradeNames: ["gpii.express.handler"],
-    templates: "{inline}.templates",
+    templates: "{inlineTemplateBundlingMiddleware}.templates",
     messages: {
         noTemplates: "No templates were found."
     },
@@ -42,6 +42,11 @@ fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware.request", {
 
 gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates =  function (that) {
     var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
+
+    // Clear out the existing template content, as we might also be called during a "reload".
+    fluid.each(["layouts", "pages", "partials"], function (key) {
+        that.templates[key] = {};
+    });
 
     fluid.each(resolvedTemplateDirs, function (templateDir) {
         // Start with each "views" directory and work our way down
@@ -90,11 +95,15 @@ fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware", {
         }
     },
     events: {
+        loadTemplates: null,
         templatesLoaded: null
     },
     handlerGrades: ["gpii.handlebars.inlineTemplateBundlingMiddleware.request"],
     listeners: {
         "onCreate.loadTemplates": {
+            func: "{that}.events.loadTemplates.fire"
+        },
+        "loadTemplates.loadTemplates": {
             funcName: "gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates",
             args:     ["{that}"]
         }

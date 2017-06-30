@@ -28,7 +28,8 @@ my.grade.name();
 
 | Option         | Type             | Description |
 | -------------- | ---------------- | ----------- |
-| `templateDirs` | `Array | String` | A list of template directories that contain handlebars layouts, pages, and partials.  These can either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`. |
+| `templateDirs` | `{Array} or {String}` | A list of template directories that contain handlebars layouts, pages, and partials.  These can either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`. |
+
 
 To use this middleware, you need to make it aware of one or more directories that contain templates (typically via the
 `options.config.express.views` option in your `gpii.express` configuration.  These options are passed to the underlying
@@ -41,3 +42,9 @@ This component grade extends `gpii.express.hb` and adds support for "live" reloa
  see above.  Whenever files are added, removed, or changed, the renderer's cache will be cleared and all partials
  will be reloaded.  This process typically takes around two seconds, mainly because we wait to be sure the template has
  been completely saved to disc.  See the [`gpii.handlebars.watcher`](watcher.md) docs for details.
+
+Note that this grade takes care of reloading templates in the view engine.  The [error rendering middleware](errorRenderingMiddleware.md), 
+[single template middleware](singleTemplateMiddleware.md) and ["dispatcher"](dispatcher.md) all use the view engine, 
+and do not need to be notified of updates separately.  The ["inline" middleware](inline.md) that delivers template
+content to client-side components does not use the view engine, and needs to be explicitly told to reload its template
+content.  See [the "inline" middleware documentation](inline.md) for details.

@@ -8,6 +8,8 @@
 var fluid = require("infusion");
 fluid.setLogging(true);
 
+fluid.logObjectRenderChars = 10240;
+
 var gpii  = fluid.registerNamespace("gpii");
 
 require("../../../index");
@@ -59,6 +61,21 @@ fluid.defaults("gpii.tests.handlebars.live.request", {
 gpii.tests.handlebars.live.updateTemplate = function (templateDir, relativeTemplatePath, textToAppend) {
     var fullPath = path.resolve(templateDir, relativeTemplatePath) + ".handlebars";
     fs.appendFileSync(fullPath, textToAppend);
+};
+
+/**
+ * A simple function to work around the limitations in jqUnit.assertLeftHand.  Allows us to test a single deep value
+ * against an expected value.
+ *
+ * @param message {String} - The message to be passed to the test assertion (will appear in the test output).
+ * @param root {Object} - The object to be inspected.
+ * @param path {String} - The deep path (i.e. `path.to.value`) within `root`.
+ * @param expected {String|Number|Boolean} - The expected value to be compared.  Note that `Array` and `Object` values are not handled properly.
+ *
+ */
+gpii.tests.handlebars.live.pathEquals = function (message, root, path, expected) {
+    var actual = fluid.get(root, path);
+    jqUnit.assertEquals(message, expected, actual);
 };
 
 fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
@@ -144,6 +161,33 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                     ]
                 },
                 {
+                    name: "The 'inline' middleware should be able to handle reloads...",
+                    type: "test",
+                    sequence: [
+                        {
+                            func: "{initialInlineRequest}.send"
+                        },
+                        {
+                            listener: "gpii.tests.handlebars.live.pathEquals",
+                            event:    "{initialInlineRequest}.events.onComplete",
+                            args:     ["The original content should be unaltered when we begin.", "@expand:JSON.parse({arguments}.0)", "templates.partials.renderer-partial", "This is partial content."] // message, root, path, expected
+                        },
+                        {
+                            func: "gpii.tests.handlebars.live.updateTemplate",
+                            args: ["{testEnvironment}.options.templateDirs", "partials/renderer-partial", "  I love inline templates."] // templateDir, path, textToAppend
+                        },
+                        {
+                            event:    "{testEnvironment}.events.onTemplatesLoaded",
+                            listener: "{postChangeInlineRequest}.send"
+                        },
+                        {
+                            listener: "gpii.tests.handlebars.live.pathEquals",
+                            event:    "{postChangeInlineRequest}.events.onComplete",
+                            args:     ["The updated content should be delivered in the payload.", "@expand:JSON.parse({arguments}.0)", "templates.partials.renderer-partial", "This is partial content.  I love inline templates."] // message, root, path, expected
+                        }
+                    ]
+                },
+                {
                     name: "The error-rendering middleware should be able to handle reloads...",
                     type: "test",
                     sequence: [
@@ -196,6 +240,18 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
             type: "gpii.tests.handlebars.live.request",
             options: {
                 path: "/dispatcher"
+            }
+        },
+        initialInlineRequest: {
+            type: "gpii.tests.handlebars.live.request",
+            options: {
+                path: "/inline"
+            }
+        },
+        postChangeInlineRequest: {
+            type: "gpii.tests.handlebars.live.request",
+            options: {
+                path: "/inline"
             }
         },
         initialErrorRequest: {
@@ -286,6 +342,14 @@ fluid.defaults("gpii.tests.handlebars.live.environment", {
     components: {
         express: {
             options: {
+                events: {
+                    onFsChange: null
+                },
+                listeners: {
+                    "onFsChange.reloadInlineTemplates": {
+                        func: "{inlineMiddleware}.events.loadTemplates.fire"
+                    }
+                },
                 components: {
                     handlebars: {
                         type: "gpii.express.hb.live",
@@ -297,6 +361,9 @@ fluid.defaults("gpii.tests.handlebars.live.environment", {
                                 },
                                 "onWatcherReady.notifyEnvironment": {
                                     func: "{testEnvironment}.events.onWatcherReady.fire"
+                                },
+                                "onFsChange.notifyExpress": {
+                                    func: "{gpii.express}.events.onFsChange.fire"
                                 }
                             }
                         }
@@ -313,6 +380,13 @@ fluid.defaults("gpii.tests.handlebars.live.environment", {
                         options: {
                             path: "/singleTemplate",
                             templateKey: "pages/singleTemplateMiddleware"
+                        }
+                    },
+                    inlineMiddleware: {
+                        type: "gpii.handlebars.inlineTemplateBundlingMiddleware",
+                        options: {
+                            path: "/inline",
+                            templateDirs: "{gpii.tests.handlebars.live.environment}.options.templateDirs"
                         }
                     },
                     errorGeneratingMiddleware: {
