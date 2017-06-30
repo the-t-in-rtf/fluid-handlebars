@@ -32,7 +32,7 @@ my.grade.name();
 
 
 To use this middleware, you need to make it aware of one or more directories that contain templates (typically via the
-`options.config.express.views` option in your `gpii.express` configuration.  These options are passed to the underlying
+`options.config.express.views` option in your `gpii.express` configuration).  These options are passed to the underlying
 [renderer component](standaloneRenderer.md), see those docs for details.
 
 # `gpii.express.hb.live`

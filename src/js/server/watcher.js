@@ -31,14 +31,12 @@ gpii.handlebars.watcher.init = function (that) {
 
     fluid.each(that.options.eventsToWatch, function (eventEnabled, eventName) {
         if (eventEnabled) {
-            // Pass the event type (chokidar only does this for the "all" event type.
+            // Pass the event type (chokidar only does this for the "all" event type).
             that.watcher.on(eventName, function (path, details) {
                 that.handleFsEvent(eventName, path, details);
             });
         }
     });
-
-    // fluid.log("Watching the following directories: ", resolvedDirs.join(","));
 
     // Once chokidar fires its own "ready" event, let everyone know that we're ready to start monitoring.
     that.watcher.on("ready", that.events.onReady.fire);
@@ -51,7 +49,6 @@ gpii.handlebars.watcher.init = function (that) {
 
  */
 gpii.handlebars.watcher.handleFsEvent = function (that, eventName, path, details) {
-    // fluid.log("Handled fs event '", event, "' for file '", path, "':\n", details);
     that.events.onFsChange.fire(eventName, path, details);
 };
 
