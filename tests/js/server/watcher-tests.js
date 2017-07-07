@@ -122,23 +122,23 @@ jqUnit.asyncTest("We should be able to detect a file that has been changed...", 
     var toBeChanged = path.resolve(watcherComponent.options.watchDirs[0], "to-be-changed.txt");
 
     watcherComponent.events.onReady.addListener(function () {
-        // Create the file before listening to changes.
+        var eventsInOrder = ["add", "change"];
+        watcherComponent.events.onFsChange.addListener(function (eventName, path) {
+            var expectedEvent = eventsInOrder.shift();
+            jqUnit.start();
+            jqUnit.assertEquals("A file 'change' event should have been fired...", expectedEvent, eventName);
+            jqUnit.assertEquals("The path should be correct...", toBeChanged, path);
+
+            if (eventsInOrder.length === 0) {
+                watcherComponent.destroy();
+            }
+        });
+
+        // Create the file.
         fs.writeFileSync(toBeChanged, "Unchanged.");
 
-        // Because awaitWriteFinish is set, we need to give the above add ~2 seconds to complete before listening for and then making a change.
-        setTimeout(function () {
-            watcherComponent.events.onFsChange.addListener(function (eventName, path) {
-                jqUnit.start();
-                jqUnit.assertEquals("A file 'change' event should have been fired...", "change", eventName);
-                jqUnit.assertEquals("The path should be correct...", toBeChanged, path);
-                watcherComponent.destroy();
-            });
-
-            fluid.log("Updating file '", toBeChanged, "'...");
-            fs.writeFileSync(toBeChanged, "Updated.");
-        }, 2500);
-
-
+        // Update the file
+        fs.writeFileSync(toBeChanged, "Updated.");
     });
 });
 
@@ -163,5 +163,28 @@ jqUnit.asyncTest("We should be able to detect a file that has been deleted...", 
             fluid.log("Removing file '", toBeDeleted, "'...");
             fs.unlinkSync(toBeDeleted);
         }, 2500);
+    });
+});
+
+jqUnit.asyncTest("Large writes should be complete before we are notified of a file change...", function () {
+    var watcherComponent = gpii.tests.handlebars.watcher({});
+
+    var templateContent = (fluid.generate(1024 * 1024 * 25, "X")).join(""); // ~25Mb of "X" characters.
+
+    var templatePath = path.resolve(watcherComponent.options.watchDirs[0], "large-file.txt");
+
+    watcherComponent.events.onFsChange.addListener(function (eventName, path) {
+        jqUnit.start();
+        jqUnit.assertEquals("A file 'add' event should have been fired...", "add", eventName);
+        jqUnit.assertEquals("The path should be correct...", templatePath, path);
+        var fileContent = fs.readFileSync(templatePath, "utf8");
+        jqUnit.assertEquals("The file's contents should be correct...", templateContent, fileContent);
+        fs.unlink(templatePath);
+        watcherComponent.destroy();
+    });
+
+    watcherComponent.events.onReady.addListener(function () {
+        fluid.log("Writing large template file to '", templatePath, "'...");
+        fs.writeFileSync(templatePath, templateContent);
     });
 });

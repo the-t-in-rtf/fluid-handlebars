@@ -13,14 +13,14 @@ incidates that the chokidar watcher has loaded and is actively monitoring the wa
 
 ## Component Options
 
-| Option                             | Type      | Description |
-| ---------------------------------- | --------- | ----------- |
-| `chokidarOptions`                  | `Object`  |  The options passed to chokidar when instantiating the watcher.  See [the chokidar API docs](https://github.com/paulmillr/chokidar#api) for the full list of supported options and the defaults. |
-| `chokidarOptions.ignoreInitial`    | `Boolean` | If this is set to `false`, an `add` or `addDir` chokidar event will be fired for all files and directories on startup. Defaults to `true`. |
-| `chokidarOptions.awaitWriteFinish` | `Boolean` | Whether to wait for a file to finish writing before reporting the change.  As we want to avoid loading incomplete [partial templates](http://handlebarsjs.com/partials.html), this defaults to `true`. |
-| `chokidarOptions.depth`            | `Number`  | The depth of subdirectories to "watch".  Defaults to `2`, which ensures that the standard template directory structure (pages, layouts, partials) will be monitored. |
-| `eventsToWatch`                    | `Object`  | The chokidar events (see below ) to watch for. By default, `add`, `change`, and `unlink` events are watched, i.e. file adds, changes, and removals. |
-| `watchDirs`                        | `Array`   | One or more directories to watch for changes.  Supports both full paths, and package-relative paths such as `%package/path/to/directory` that are resolved with [`fluid.module.resolvePath`](http://docs.fluidproject.org/infusion/development/NodeAPI.html#fluid-module-resolvepath-path-) |
+| Option                             | Type                  | Description |
+| ---------------------------------- | --------------------- | ----------- |
+| `chokidarOptions`                  | `Object`              |  The options passed to chokidar when instantiating the watcher.  See [the chokidar API docs](https://github.com/paulmillr/chokidar#api) for the full list of supported options and the defaults. |
+| `chokidarOptions.ignoreInitial`    | `Boolean`             | If this is set to `false`, an `add` or `addDir` chokidar event will be fired for all files and directories on startup. Defaults to `true`. |
+| `chokidarOptions.awaitWriteFinish` | `Boolean` or `Object` | Whether to wait for a file to finish writing before reporting the change.  Set this to `true` if you have problems with template content loading before writes are complete. Defaults to `false`.   You can control the timing of this setting by passing an object, see [the chokidar performance docs](https://github.com/paulmillr/chokidar#performance) for details.|
+| `chokidarOptions.depth`            | `Number`              | The depth of subdirectories to "watch".  Defaults to `2`, which ensures that the standard template directory structure (pages, layouts, partials) will be monitored. |
+| `eventsToWatch`                    | `Object`              | The chokidar events (see below ) to watch for. By default, `add`, `change`, and `unlink` events are watched, i.e. file adds, changes, and removals. |
+| `watchDirs`                        | `Array`               | One or more directories to watch for changes.  Supports both full paths, and package-relative paths such as `%package/path/to/directory` that are resolved with [`fluid.module.resolvePath`](http://docs.fluidproject.org/infusion/development/NodeAPI.html#fluid-module-resolvepath-path-) |
 
 
 ##  Choosing Which Events to Monitor

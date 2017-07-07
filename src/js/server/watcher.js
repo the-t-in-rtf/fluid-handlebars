@@ -76,7 +76,7 @@ fluid.defaults("gpii.handlebars.watcher", {
     // See: https://github.com/paulmillr/chokidar#api
     chokidarOptions: {
         ignoreInitial: true, // We do not want to detect files when starting up, only when they change after startup.
-        awaitWriteFinish: true, // We only want to reload when a file has finished writing.
+        awaitWriteFinish: false,
         depth: 2 // We are typically dealing with template directories that contain at most one level of subdirectories.
     },
     events: {
