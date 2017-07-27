@@ -40,11 +40,12 @@ gpii.tests.handlebars.server.inline.runTests = function (that) {
             jqUnit.stop();
 
             // Get it again to confirm that cachine behaves properly.
-            request.get({ url: that.options.baseUrl + "inline", headers: { "If-None-Match": response.headers.etag }}, function (error, response, body) {
+            var initialEtag = response.headers.etag;
+            request.get({ url: that.options.baseUrl + "inline", headers: { "If-None-Match": initialEtag }}, function (error, response, body) {
                 jqUnit.start();
                 jqUnit.assertFalse("There should be no errors...", error);
                 jqUnit.assertEquals("The status code should indicate that the content hasn't changed...", 304, response.statusCode);
-                jqUnit.assertEquals("The response should include a valid ETag header...", "98c72d5483a86f85a28241389e016eb9", response.headers.etag);
+                jqUnit.assertEquals("The response should include the same ETag header as before...", initialEtag, response.headers.etag);
                 jqUnit.assertEquals("The body should be empty...", "", body);
             });
         });
