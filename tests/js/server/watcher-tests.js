@@ -31,6 +31,7 @@ gpii.tests.handlebars.watcher.init = function (that) {
     fluid.each(resolvedPaths, function (watchDir) {
         initPromises.push(function () {
             var initPromise = fluid.promise();
+            fluid.log("Creating directory '", watchDir, "'...");
             mkdirp(watchDir, function (error) {
                 if (error) {
                     initPromise.reject(error);
@@ -117,25 +118,24 @@ jqUnit.asyncTest("We should be able to detect a file that has been added...", fu
 });
 
 jqUnit.asyncTest("We should be able to detect a file that has been changed...", function () {
-    var watcherComponent = gpii.tests.handlebars.watcher({});
+    // We need to set the directory ourself so that we can create the file before we start "watching"
+    var tmpPath = path.resolve(os.tmpDir(), "watcher-tests-" + Math.random() * 99999 );
+    mkdirp.sync(tmpPath);
+    var toBeChanged = path.resolve(tmpPath, "to-be-changed.txt");
 
-    var toBeChanged = path.resolve(watcherComponent.options.watchDirs[0], "to-be-changed.txt");
+    // Create the file.
+    fs.writeFileSync(toBeChanged, "Original.");
+
+    var watcherComponent = gpii.tests.handlebars.watcher({ watchDirs: [tmpPath] });
 
     watcherComponent.events.onReady.addListener(function () {
-        var eventsInOrder = ["add", "change"];
         watcherComponent.events.onFsChange.addListener(function (eventName, path) {
-            var expectedEvent = eventsInOrder.shift();
             jqUnit.start();
-            jqUnit.assertEquals("A file 'change' event should have been fired...", expectedEvent, eventName);
+            jqUnit.assertEquals("A file 'change' event should have been fired...", "change", eventName);
             jqUnit.assertEquals("The path should be correct...", toBeChanged, path);
 
-            if (eventsInOrder.length === 0) {
-                watcherComponent.destroy();
-            }
+            watcherComponent.destroy();
         });
-
-        // Create the file.
-        fs.writeFileSync(toBeChanged, "Unchanged.");
 
         // Update the file
         fs.writeFileSync(toBeChanged, "Updated.");
