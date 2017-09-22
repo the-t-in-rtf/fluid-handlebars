@@ -9,7 +9,7 @@ fluid.require("%gpii-handlebars");
 
 var jqUnit = require("node-jqunit");
 var fs     = require("fs");
-var jsdom  = require("jsdom");
+var jsdom  = require("jsdom/lib/old-api");
 
 var jqueryContent = fs.readFileSync(fluid.module.resolvePath("%infusion/src/lib/jquery/core/js/jquery.js"), "utf8");
 
