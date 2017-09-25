@@ -8,8 +8,8 @@ var gpii = fluid.registerNamespace("gpii");
 var jqUnit  = fluid.require("node-jqunit");
 var request = require("request");
 
-require("gpii-express");
-require("../../../index");
+fluid.require("%gpii-express");
+fluid.require("%gpii-handlebars");
 require("./lib/sanity.js");
 
 fluid.registerNamespace("gpii.tests.handlebars.server.inline");
@@ -30,6 +30,26 @@ gpii.tests.handlebars.server.inline.runTests = function (that) {
                 });
             }
         });
+    });
+
+    jqUnit.asyncTest("Confirm that caching works as expected...", function () {
+        // Get it once to get the etag.
+        request.get({ url: that.options.baseUrl + "inline"}, function (error, response) {
+            jqUnit.start();
+            jqUnit.assertFalse("There should be no error getting the initial template payload...", error);
+            jqUnit.stop();
+
+            // Get it again to confirm that cachine behaves properly.
+            var initialEtag = response.headers.etag;
+            request.get({ url: that.options.baseUrl + "inline", headers: { "If-None-Match": initialEtag }}, function (error, response, body) {
+                jqUnit.start();
+                jqUnit.assertFalse("There should be no errors...", error);
+                jqUnit.assertEquals("The status code should indicate that the content hasn't changed...", 304, response.statusCode);
+                jqUnit.assertEquals("The response should include the same ETag header as before...", initialEtag, response.headers.etag);
+                jqUnit.assertEquals("The body should be empty...", "", body);
+            });
+        });
+
     });
 };
 

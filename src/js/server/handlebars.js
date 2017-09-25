@@ -11,50 +11,27 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.hb");
 
-var exphbs = require("express-handlebars");
-
 require("handlebars");
 require("./lib/first-matching-path");
 require("./lib/resolver");
+require("./standaloneRenderer");
+require("./watcher");
 
-gpii.express.addHelper = function (that, component) {
-    var key = component.options.helperName;
-    if (component.getHelper) {
-        that.helpers[key] = component.getHelper();
+gpii.express.hb.engine = function (that, templatePath, templateContext, callback) {
+    try {
+        var renderedContent = that.renderer.renderWithLayout(templatePath, templateContext);
+        return callback(null, renderedContent);
     }
-    else {
-        fluid.fail("Can't register helper '" + key + "' because it doesn't have a getHelper() invoker.");
+    catch (error) {
+        return callback(error);
     }
 };
 
-gpii.express.configureExpress = function (that, expressComponent) {
+gpii.express.hb.configureExpress = function (that, expressComponent) {
     var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
-
     if (resolvedTemplateDirs.length > 0) {
-        // Add any partial directories we find.
-        var partialsDirs = [];
-        fluid.each(resolvedTemplateDirs, function (viewDir) {
-            // We add entries in reverse order to preserve the same inheritance we see with pages.
-            partialsDirs.unshift(viewDir + "/partials/");
-        });
-
-        // We can only use the first layouts directory until this issue is resolved in express-handlebars:
-        //
-        // https://github.com/ericf/express-handlebars/issues/112
-        var layoutDir = fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn("layouts"));
-
-        var handlebarsConfig = {
-            defaultLayout: "main",
-            layoutsDir:    layoutDir,
-            partialsDir:   partialsDirs
-        };
-
-        handlebarsConfig.helpers = that.helpers;
-
         expressComponent.express.set("views", resolvedTemplateDirs);
-
-        var hbs = exphbs.create(handlebarsConfig);
-        expressComponent.express.engine("handlebars", hbs.engine);
+        expressComponent.express.engine("handlebars", that.engine);
         expressComponent.express.set("view engine", "handlebars");
     }
     else {
@@ -66,38 +43,76 @@ fluid.defaults("gpii.express.hb", {
     gradeNames:       ["fluid.modelComponent"],
     config:           "{expressConfigHolder}.options.config",
     namespace:        "handlebars", // Namespace to allow other middleware to put themselves in the chain before or after us.
-    members: {
-        helpers: {},
-        templateDirs: []
-    },
     model: {},    // We should have an empty model, as the dispatcher expects to expose that.
-    distributeOptions: [
-        {
-            record: {
-                "funcName": "gpii.express.addHelper",
-                "args": ["{gpii.express.hb}", "{gpii.handlebars.helper}"]
-            },
-            target: "{that > gpii.handlebars.helper}.options.listeners.onCreate"
-        }
-    ],
     components: {
-        md: {
-            type: "gpii.handlebars.helper.md.server"
-        },
-        equals: {
-            type: "gpii.handlebars.helper.equals"
-        },
-        jsonify: {
-            type: "gpii.handlebars.helper.jsonify"
-        },
-        initBlock: {
-            type: "gpii.handlebars.helper.initBlock"
+        renderer: {
+            type: "gpii.handlebars.standaloneRenderer",
+            options: {
+                templateDirs: "{gpii.express.hb}.options.templateDirs",
+                components: {
+                    initBlock: {
+                        type: "gpii.handlebars.helper.initBlock"
+                    }
+                }
+            }
+        }
+    },
+    invokers: {
+        engine: {
+            funcName: "gpii.express.hb.engine",
+            args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"] // templatePath, templateContext, callback
         }
     },
     listeners: {
         "{gpii.express}.events.onStarted": {
-            funcName: "gpii.express.configureExpress",
+            funcName: "gpii.express.hb.configureExpress",
             args:     ["{that}", "{gpii.express}"]
+        }
+    }
+});
+
+/*
+
+    A grade that reloads the list of templates whenever there are filesystem changes.  See: https://issues.gpii.net/browse/GPII-2474
+
+ */
+fluid.defaults("gpii.express.hb.live", {
+    gradeNames: ["gpii.express.hb"],
+    events: {
+        onWatcherReady: null,
+        onFsChange: null,
+        onTemplatesLoaded: null
+    },
+    components: {
+        watcher: {
+            type: "gpii.handlebars.watcher",
+            options: {
+                watchDirs: "{gpii.express.hb}.options.templateDirs",
+                listeners: {
+                    "onFsChange.notifyParent": {
+                        func: "{gpii.express.hb.live}.events.onFsChange.fire"
+                    },
+                    "onReady.notifyParent": {
+                        func: "{gpii.express.hb.live}.events.onWatcherReady.fire"
+                    }
+                }
+            }
+
+        },
+        renderer: {
+            options: {
+                listeners: {
+                    "onTemplatesLoaded.notifyParent": {
+                        func: "{gpii.express.hb.live}.events.onTemplatesLoaded.fire"
+                    }
+                }
+            }
+        }
+    },
+    listeners: {
+        "onFsChange.reloadTemplates": {
+            funcName: "gpii.handlebars.standaloneRenderer.init",
+            args:     ["{renderer}"]
         }
     }
 });

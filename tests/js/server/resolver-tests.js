@@ -13,7 +13,7 @@ var jqUnit = require("node-jqunit");
 var baseDir = fluid.module.resolvePath("%gpii-handlebars");
 var srcDir  = fluid.module.resolvePath("%gpii-handlebars/src");
 
-require("../../../index");
+fluid.require("%gpii-handlebars");
 require("../../../src/js/server/lib/resolver");
 
 

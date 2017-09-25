@@ -36,3 +36,42 @@ available and that the right layout is used.
 | `templateDirs` | `Array | String` | A list of template directories that contain handlebars layouts, pages, and partials.  These can either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`. |
 
 
+# Live Reloading
+
+This middleware component provides a `loadTemplates` event that can be used to reload all template content from the
+filesystem.  The component itself only makes use of this event on startup.  To enable "live" reloading, you will need
+to fire the `loadTemplates` event whenever an associated ["watcher"](watcher.md) component detects a change, as in the
+following example:
+
+```$javascript
+fluid.defaults("my.live.express", {
+    gradeNames: ["gpii.express"],
+    events: {
+        onFsChange: null
+    },
+    listeners: {
+        "onFsChange.reloadInlineTemplates": {
+            func: "{inlineMiddleware}.events.loadTemplates.fire"
+        }
+    },
+    components: {
+        handlebars: {
+            type: "gpii.express.hb.live",
+            options: {
+                templateDirs: "{my.live.express}.options.templateDirs",
+                listeners: {
+                    "onFsChange.notifyExpress": {
+                        func: "{my.live.express}.events.onFsChange.fire"
+                    }
+                }
+            }
+        },
+        inlineMiddleware: {
+            type: "gpii.handlebars.inlineTemplateBundlingMiddleware",
+            options: {
+                templateDirs: "{my.live.express}.options.templateDirs"
+            }
+        }
+    }
+});
+```

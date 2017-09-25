@@ -5,9 +5,9 @@
 "use strict";
 var fluid = require("infusion");
 
-require("gpii-express");
+fluid.require("%gpii-express");
+fluid.require("%gpii-handlebars");
 
-require("../../");
 require("./lib/test-router-error");
 
 fluid.defaults("gpii.test.handlebars.client.harness", {
@@ -20,26 +20,24 @@ fluid.defaults("gpii.test.handlebars.client.harness", {
         }
     },
     templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
+    contextToOptionsRules: {
+        model: {
+            "":       "notfound",
+            req:      "req",
+            myvar:    "myvar",
+            markdown: "markdown",
+            json:     "json"
+        }
+    },
+    distributeOptions: {
+        source: "{that}.options.contextToOptionsRules",
+        target: "{that gpii.handlebars.helper.initBlock}.options.contextToOptionsRules"
+    },
     components: {
         handlebars: {
             type: "gpii.express.hb",
             options: {
-                templateDirs: "{harness}.options.templateDirs",
-                components: {
-                    initBlock: {
-                        options: {
-                            contextToOptionsRules: {
-                                model: {
-                                    "":       "notfound",
-                                    req:      "req",
-                                    myvar:    "myvar",
-                                    markdown: "markdown",
-                                    json:     "json"
-                                }
-                            }
-                        }
-                    }
-                }
+                templateDirs: "{harness}.options.templateDirs"
             }
         },
         dispatcher: {

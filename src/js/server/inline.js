@@ -13,13 +13,24 @@ var gpii = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.handlebars.inlineTemplateBundlingMiddleware");
 var fs     = require("fs");
 var path   = require("path");
+var md5    = require("md5");
 
 require("./lib/resolver");
 
 fluid.registerNamespace("gpii.handlebars.inlineTemplateBundlingMiddleware.request");
 gpii.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse = function (that) {
     if (that.options.templates) {
-        gpii.express.handler.sendResponse(that, that.options.response, 200, { ok: true, templates: that.options.templates });
+        var md5Sum = md5(JSON.stringify(that.options.templates));
+        // Always set the "etag" header so that we always have something to compare for each subsequent request.
+        that.options.response.set("ETag", md5Sum);
+
+        if (that.options.request.headers["if-none-match"] === md5Sum) {
+            // A 304 response should not send a message body.  See https://httpstatuses.com/304 for an explanation (includes links to the relevant RFC as well).
+            that.options.response.status(304).end();
+        }
+        else {
+            gpii.express.handler.sendResponse(that, that.options.response, 200, { ok: true, templates: that.options.templates });
+        }
     }
     else {
         gpii.express.handler.sendResponse(that, that.options.response, 500, { ok: false, message: that.options.messages.noTemplates});
@@ -28,7 +39,7 @@ gpii.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse = function
 
 fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware.request", {
     gradeNames: ["gpii.express.handler"],
-    templates: "{inline}.templates",
+    templates: "{inlineTemplateBundlingMiddleware}.templates",
     messages: {
         noTemplates: "No templates were found."
     },
@@ -42,6 +53,11 @@ fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware.request", {
 
 gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates =  function (that) {
     var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
+
+    // Clear out the existing template content, as we might also be called during a "reload".
+    fluid.each(["layouts", "pages", "partials"], function (key) {
+        that.templates[key] = {};
+    });
 
     fluid.each(resolvedTemplateDirs, function (templateDir) {
         // Start with each "views" directory and work our way down
@@ -90,11 +106,15 @@ fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware", {
         }
     },
     events: {
+        loadTemplates: null,
         templatesLoaded: null
     },
     handlerGrades: ["gpii.handlebars.inlineTemplateBundlingMiddleware.request"],
     listeners: {
         "onCreate.loadTemplates": {
+            func: "{that}.events.loadTemplates.fire"
+        },
+        "loadTemplates.loadTemplates": {
             funcName: "gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates",
             args:     ["{that}"]
         }

@@ -5,9 +5,9 @@
 "use strict";
 var fluid = require("infusion");
 var gpii = fluid.registerNamespace("gpii");
-require("gpii-webdriver");
+fluid.require("%gpii-webdriver");
 gpii.webdriver.loadTestingSupport();
 
-require("../../../index");
+fluid.require("%gpii-handlebars");
 require("./lib/fixtures");
 require("./lib/helpers");

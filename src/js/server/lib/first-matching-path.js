@@ -23,7 +23,8 @@ fluid.registerNamespace("gpii.express.hb");
 gpii.express.hb.getPathSearchFn = function (pathSegments) {
     var pathSegmentArray = fluid.makeArray(pathSegments);
     return function (dir) {
-        var combinedPathSegments = fluid.makeArray(dir).concat(pathSegmentArray);
+        var resolvedDir = fluid.module.resolvePath(dir);
+        var combinedPathSegments = fluid.makeArray(resolvedDir).concat(pathSegmentArray);
         var templatePath = path.join.apply(path, combinedPathSegments);
         return fs.existsSync(templatePath) ? templatePath : undefined;
     };
