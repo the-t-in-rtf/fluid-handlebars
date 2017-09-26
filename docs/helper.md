@@ -60,6 +60,9 @@ Transform markdown into html.  To use this function in your handlebars templates
 {{md "string value"}}
 ```
 
+For more information, see the [md helper docs](mdHelper.md).
+
+
 ## equals
 
 Display content when two values match.  Values can be context variables or strings:

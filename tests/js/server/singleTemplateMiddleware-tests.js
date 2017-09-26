@@ -9,6 +9,8 @@ fluid.require("%gpii-handlebars");
 
 var jqUnit = require("node-jqunit");
 var fs     = require("fs");
+
+// TODO: Update to the new JSDOM API or find a replacement.
 var jsdom  = require("jsdom/lib/old-api");
 
 var jqueryContent = fs.readFileSync(fluid.module.resolvePath("%infusion/src/lib/jquery/core/js/jquery.js"), "utf8");

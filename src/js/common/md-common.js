@@ -14,12 +14,12 @@ fluid.registerNamespace("gpii.handlebars.helper.md");
 gpii.handlebars.helper.md.getMdFunction = function (that) {
     return function (context) {
         if (context) {
-            if (that && that.converter) {
+            if (that && that.renderer) {
                 // We need to ensure that this is a string, as Pagedown cannot handle anything else.
-                return that.converter.makeHtml(String(context));
+                return that.renderer.render(String(context));
             }
             else {
-                fluid.fail("Can't convert markdown content because the converter could not be found.");
+                fluid.fail("Can't convert markdown content because the renderer could not be found.");
             }
         }
 
@@ -28,27 +28,29 @@ gpii.handlebars.helper.md.getMdFunction = function (that) {
     };
 };
 
-gpii.handlebars.helper.md.configureConverter = function (that) {
-    if (that.converter) {
-        // Double all single carriage returns so that they result in new paragraphs, at least for now
-        that.converter.hooks.chain("preConversion", function (text) {
-            if (typeof text === "string") {
-                return text.replace(/[\r\n]+/g, "\n\n");
-            }
-
-            return text;
-        });
-    }
-    else {
-        fluid.fail("Could not initialize pagedown converter.  Markdown content will not be parsed.");
-    }
-};
+// TODO: See if this is still needed.
+// gpii.handlebars.helper.md.configureConverter = function (that) {
+//     if (that.converter) {
+//         // Double all single carriage returns so that they result in new paragraphs, at least for now
+//         that.converter.hooks.chain("preConversion", function (text) {
+//             if (typeof text === "string") {
+//                 return text.replace(/[\r\n]+/g, "\n\n");
+//             }
+//
+//             return text;
+//         });
+//     }
+//     else {
+//         fluid.fail("Could not initialize pagedown converter.  Markdown content will not be parsed.");
+//     }
+// };
 
 fluid.defaults("gpii.handlebars.helper.md", {
     gradeNames: ["gpii.handlebars.helper"],
     helperName: "md",
+    markdownItOptions: {},
     members: {
-        converter: null
+        renderer: null
     },
     invokers: {
         "getHelper": {
@@ -57,12 +59,13 @@ fluid.defaults("gpii.handlebars.helper.md", {
         }
     },
     events: {
-        "converterAvailable": null
-    },
-    listeners: {
-        "converterAvailable": {
-            funcName: "gpii.handlebars.helper.md.configureConverter",
-            args:     ["{that}"]
-        }
+        "rendererAvailable": null
     }
+    // ,
+    // listeners: {
+    //     "rendererAvailable": {
+    //         funcName: "gpii.handlebars.helper.md.configureConverter",
+    //         args:     ["{that}"]
+    //     }
+    // }
 });

@@ -33,7 +33,7 @@ fluid.defaults("gpii.tests.handlebars.browser.renderer.standalone.caseHolder", {
                     {
                         event:    "{testEnvironment}.webdriver.events.onExecuteScriptComplete",
                         listener: "jqUnit.assertEquals",
-                        args:     ["We should have received rendered markup...", "<p><a href=\"http://ul.gpii.net/\">unified listing</a></p>", "{arguments}.0"]
+                        args:     ["We should have received rendered markup...", "<p><a href=\"http://ul.gpii.net/\">unified listing</a></p>\n", "{arguments}.0"]
                     }
                 ]
             },
