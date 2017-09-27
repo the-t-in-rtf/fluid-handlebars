@@ -11,7 +11,7 @@
   "dependencies": {
     "chokidar": "1.7.0",
     "gpii-binder": "1.0.3",
-    "gpii-express": "1.0.10-dev.20170927T072132Z.5d9f636",
+    "gpii-express": "1.0.10",
     "handlebars": "4.0.10",
     "infusion": "3.0.0-dev.20170724T165035Z.eee50c1",
     "markdown-it": "8.4.0",
