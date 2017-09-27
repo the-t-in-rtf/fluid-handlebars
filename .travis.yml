@@ -1,10 +1,10 @@
 language: node_js
 node_js:
-  - 4
+  - 6
 env:
   - CXX=g++-4.8
 addons:
-  firefox: "46.0"
+  chrome: stable
   apt:
     sources:
     - ubuntu-toolchain-r-test
@@ -17,4 +17,4 @@ install:
   - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
   - npm install
 script:
-  - BROWSERS=firefox npm test
+  - npm test
