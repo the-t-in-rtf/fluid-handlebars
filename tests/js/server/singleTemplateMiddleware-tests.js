@@ -8,12 +8,7 @@ var gpii  = fluid.registerNamespace("gpii");
 fluid.require("%gpii-handlebars");
 
 var jqUnit = require("node-jqunit");
-var fs     = require("fs");
-
-// TODO: Update to the new JSDOM API or find a replacement.
-var jsdom  = require("jsdom/lib/old-api");
-
-var jqueryContent = fs.readFileSync(fluid.module.resolvePath("%infusion/src/lib/jquery/core/js/jquery.js"), "utf8");
+var cheerio = require("cheerio");
 
 fluid.require("%gpii-express");
 gpii.express.loadTestingSupport();
@@ -41,30 +36,23 @@ fluid.registerNamespace("gpii.tests.handlebars.singleTemplateMiddleware");
 gpii.tests.handlebars.singleTemplateMiddleware.verifyResults = function (response, body, statusCode, expected, notExpected) {
     jqUnit.assertEquals("The status code should be as expected...", statusCode, response.statusCode);
 
+    var $ = cheerio.load(body);
 
-    jsdom.env({
-        html: body,
-        src:  [jqueryContent],
-        done: function (err, window) {
-            jqUnit.assertNull("There should be no errors...", err);
+    if (expected) {
+        fluid.each(expected, function (expectedValue, expectedSelector) {
+            var matchingElements = $(expectedSelector);
+            jqUnit.assertEquals("There should be exactly one matching element...", 1, matchingElements.length);
 
-            if (expected) {
-                fluid.each(expected, function (expectedValue, expectedSelector) {
-                    var matchingElements = window.$(expectedSelector);
-                    jqUnit.assertEquals("There should be exactly one matching element...", 1, matchingElements.length);
+            jqUnit.assertEquals("The text should be as expected...", expectedValue, matchingElements.text().trim());
+        });
+    }
 
-                    jqUnit.assertEquals("The text should be as expected...", expectedValue, matchingElements.text().trim());
-                });
-            }
-
-            if (notExpected) {
-                fluid.each(notExpected, function (notExpectedSelector) {
-                    var matchingElements = window.$(notExpectedSelector);
-                    jqUnit.assertTrue("The element should not be found...", matchingElements.length === 0);
-                });
-            }
-        }
-    });
+    if (notExpected) {
+        fluid.each(notExpected, function (notExpectedSelector) {
+            var matchingElements = $(notExpectedSelector);
+            jqUnit.assertTrue("The element should not be found...", matchingElements.length === 0);
+        });
+    }
 };
 
 fluid.defaults("gpii.tests.handlebars.singleTemplateMiddleware.request", {
