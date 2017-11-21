@@ -7,12 +7,11 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.handlebars.helper.md.server");
 
-var pagedown = require("pagedown");
+var MarkDownIt = require("markdown-it");
 
 gpii.handlebars.helper.md.server.initConverter = function (that) {
-    var converter = pagedown.getSanitizingConverter();
-    that.converter = converter;
-    that.events.converterAvailable.fire();
+    that.renderer = new MarkDownIt(that.options.markdownItOptions);
+    that.events.rendererAvailable.fire();
 };
 
 fluid.defaults("gpii.handlebars.helper.md.server", {

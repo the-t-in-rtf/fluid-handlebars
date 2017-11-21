@@ -13,7 +13,7 @@ The base grade does not have the required template data by default. You are expe
 `gpii.handlebars.renderer.serverAware` grade and communicate with a server that will return the template content.  See
 below for details on those grades.
 
-All variations of this component require [Handlebars.js](http://handlebarsjs.com/). [Pagedown](https://code.google.com/archive/p/pagedown/)
+All variations of this component require [Handlebars.js](http://handlebarsjs.com/). [Markdown-it](https://markdown-it.github.io/markdown-it/#MarkdownIt.new)
 is required if you want to render markdown using the `{{md}}` helper (see the [../README.md](README file) for details on helpers).
 
 ## Component Options
