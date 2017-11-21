@@ -28,23 +28,6 @@ gpii.handlebars.helper.md.getMdFunction = function (that) {
     };
 };
 
-// TODO: See if this is still needed.
-// gpii.handlebars.helper.md.configureConverter = function (that) {
-//     if (that.converter) {
-//         // Double all single carriage returns so that they result in new paragraphs, at least for now
-//         that.converter.hooks.chain("preConversion", function (text) {
-//             if (typeof text === "string") {
-//                 return text.replace(/[\r\n]+/g, "\n\n");
-//             }
-//
-//             return text;
-//         });
-//     }
-//     else {
-//         fluid.fail("Could not initialize pagedown converter.  Markdown content will not be parsed.");
-//     }
-// };
-
 fluid.defaults("gpii.handlebars.helper.md", {
     gradeNames: ["gpii.handlebars.helper"],
     helperName: "md",
@@ -61,11 +44,4 @@ fluid.defaults("gpii.handlebars.helper.md", {
     events: {
         "rendererAvailable": null
     }
-    // ,
-    // listeners: {
-    //     "rendererAvailable": {
-    //         funcName: "gpii.handlebars.helper.md.configureConverter",
-    //         args:     ["{that}"]
-    //     }
-    // }
 });
