@@ -125,23 +125,21 @@
             error:   "common-error"
         },
         listeners: {
-            "onMarkupRendered.wireControls": [
-                {
-                    "this": "{that}.dom.submit",
-                    method: "on",
-                    args:   ["keyup.handleKeyPress", "{that}.handleKeyPress"]
-                },
-                {
-                    "this": "{that}.dom.submit",
-                    method: "on",
-                    args:   ["click.submitForm", "{that}.submitForm"]
-                },
-                {
-                    "this": "{that}.dom.form",
-                    method: "on",
-                    args:   ["submit.submitForm", "{that}.submitForm"]
-                }
-            ],
+            "onMarkupRendered.wireSubmitKeyPress": {
+                "this": "{that}.dom.submit",
+                method: "on",
+                args:   ["keyup.handleKeyPress", "{that}.handleKeyPress"]
+            },
+            "onMarkupRendered.wireSubmitClick": {
+                "this": "{that}.dom.submit",
+                method: "on",
+                args:   ["click.submitForm", "{that}.submitForm"]
+            },
+            "onMarkupRendered.wireFormSubmit": {
+                "this": "{that}.dom.form",
+                method: "on",
+                args:   ["submit.submitForm", "{that}.submitForm"]
+            },
             "requestReceived.hideContentIfNeeded": {
                 funcName: "gpii.handlebars.templateFormControl.hideContentIfNeeded",
                 args:     ["{that}", "{arguments}.1"]
