@@ -94,4 +94,7 @@ Note that, just like the `{{#if}}` block provided by handlebars, the `{{#equals}
 
 Note in the second example that `else` is supported if the condition is not matched, as with the built-in `{{#if}}` helper.
 
+## message-helper
 
+Resolve a message key based on the user's locale and language preferences, and replace it with
+localised/internationalised text.  See the [i18n documentation for more details](i18n.md).

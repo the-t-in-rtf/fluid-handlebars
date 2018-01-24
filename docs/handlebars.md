@@ -26,9 +26,10 @@ my.grade.name();
 
 ## Component Options
 
-| Option         | Type             | Description |
-| -------------- | ---------------- | ----------- |
-| `templateDirs` | `{Array} or {String}` | A list of template directories that contain handlebars layouts, pages, and partials.  These can either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`. |
+| Option              | Type                  | Description |
+| ------------------- | --------------------- | ----------- |
+| `templateDirs`      | `{Array} or {String}` | A list of template directories that contain handlebars layouts, pages, and partials.  These can either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`. |
+| `messageBundleDirs` | `{Array} or {String}` | A list of directories that contain message bundles (see the [i18n docs](i18n.md) for details).  These can either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`. |
 
 
 To use this middleware, you need to make it aware of one or more directories that contain templates (typically via the

@@ -30,7 +30,7 @@ above).  For more details, see the [renderer documentation](docs/renderer.md).
 ## Helper Functions
 
 This package provides additional handlebars block helpers that can be used in your handlebars templates.  For more
-details, see the [helpers documentation](docs/helpers.md).
+details, see the [helpers documentation](docs/helper.md).
 
 ## `initBlock` Handlebars block helper
 

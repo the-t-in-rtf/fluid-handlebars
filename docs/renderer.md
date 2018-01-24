@@ -68,6 +68,7 @@ startup.
 | Option                 | Type       | Description |
 | ---------------------- | ---------- | ----------- |
 | `templates` (required) | `{Object}` | A map of layouts, pages, and partials, keyed by template name. (see below) |
+| `messages`             | `{Object}` | A map of message keys and string templates, see below.  Defaults to an empty object, i.e. no message keys or string templates. |
 
 The `templates` option is expected to contain raw template content, keyed by template name, and organized into
 groups of "layouts", "pages", and "partials".  This layout exactly corresponds to the directory structure expected
@@ -83,7 +84,7 @@ fluid.defaults("my.renderer.component", {
         pages: {
             myPage: "){{>myPartial}(<"
         },
-        {
+        partials: {
             myPartial: "]{{myVariable}}["
         }
     }
@@ -95,14 +96,40 @@ console.log(renderer.render("myPage", "payload")); // logs `>)]payload[(<`
 
 ```
 
+To use message bundles and the [`{{message-helper}}` helper](i18n.md) with the standalone render, you might use
+options like the following:
 
-# `gpii.handlebars.serverAware`
+```
+fluid.defaults("my.localisedRenderer.component", {
+    gradeNames: ["gpii.handlebars.renderer.standalone"],
+    templates: {
+        layouts: {
+            main: "{{body}}"
+        },
+        pages: {
+            localisedPage: "{{message-helper key}}"
+        },
+        partials: {}
+    },
+    messages: {
+        "hello-message-key": "Hello, %mood world."
+    }
+});
+
+var renderer = my.localisedRenderer.component();
+
+console.log(renderer.render("localisedPage", { key: "hello-message-key", mood: "variable"})); // logs `Hello, variable world.`
+
+```
+
+# `gpii.handlebars.renderer.serverAware`
 
 This is an extension of the above `gpii.handlebars.renderer` grade which communicates with an instance of
 `gpii.handlebars.inlineTemplateBundlingMiddleware` on startup and wires the templates returned into itself.
 
 ## Component Options
 
-| Option                   | Type       | Description |
-| ------------------------ | ---------- | ----------- |
-| `templateUrl` (required) | `{String}` | The URL (relative or absolute) where our template content can be retrieved. |
+| Option                        | Type       | Description |
+| ----------------------------- | ---------- | ----------- |
+| `templateUrl` (required)      | `{String}` | The URL (relative or absolute) where our template content can be retrieved. |
+| `messageBundleUrl` (required) | `{String}` | The URL (relative or absolute) where our message bundle content can be retrieved. |
