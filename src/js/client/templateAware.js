@@ -25,9 +25,9 @@
 
   For an example of using this in depth, check out the provided `templateFormControl` grade or the client side tests.
  */
-/* global fluid, jQuery */
+/* global fluid */
 /* eslint-env browser */
-(function () {
+(function (fluid) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.handlebars.templateAware");
@@ -130,4 +130,4 @@
             }
         }
     });
-})(jQuery);
+})(fluid);

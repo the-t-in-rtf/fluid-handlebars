@@ -8,7 +8,7 @@
 
  */
 /* global fluid, jQuery, Handlebars */
-(function ($) {
+(function (fluid, $, Handlebars) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.handlebars.renderer");
@@ -236,4 +236,4 @@
             }
         }
     });
-})(jQuery);
+})(fluid, jQuery, Handlebars);

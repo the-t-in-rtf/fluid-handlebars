@@ -9,9 +9,9 @@
   For more details on the request and response cycle, see the `templateRequestAndUpdate` grade.
 
  */
-/* global fluid, jQuery */
+/* global fluid */
 /* eslint-env browser */
-(function () {
+(function (fluid) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.handlebars.templateFormControl");
@@ -146,4 +146,4 @@
             }
         }
     });
-})(jQuery);
+})(fluid);

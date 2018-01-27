@@ -8,8 +8,8 @@
   For more details on the request and response cycle, see the `ajaxCapable` grade.
 
  */
-/* global fluid, jQuery */
-(function () {
+/* global fluid */
+(function (fluid) {
     "use strict";
     fluid.defaults("gpii.handlebars.templateRequestAndRender", {
         gradeNames:    ["gpii.hasRequiredOptions", "gpii.handlebars.ajaxCapable"],
@@ -72,4 +72,4 @@
             error:   "common-error"
         }
     });
-})(jQuery);
+})(fluid);
