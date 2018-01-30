@@ -55,7 +55,7 @@
      * @param that {Object} The renderer component itself.
      * @param templateName {String} The name of the template to render (should be a filename, minus extension).
      * @param context {Object} The optional "context" data to pass to the renderer, which will be available via tags like {{variable}}.
-     * @returns {String} The output of the rendering process.
+     * @return {String} The output of the rendering process.
      */
     gpii.handlebars.renderer.render = function (that, templateName, context) {
         var templateType = that.templates.partials[templateName] ? "partials" : that.templates.pages[templateName] ? "pages" : that.templates.layouts[templateName] ? "layouts" : null;
