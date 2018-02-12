@@ -13,7 +13,8 @@
         "gpii-binder": "1.0.3",
         "gpii-express": "1.0.12",
         "handlebars": "4.0.11",
-        "infusion": "3.0.0-dev.20171117T095227Z.67ff934",
+        "infusion": "3.0.0-dev.20180208T114206Z.2964703",
+        "json5": "0.5.1",
         "markdown-it": "8.4.0",
         "md5": "2.2.1",
         "underscore-node": "0.1.2"
@@ -34,6 +35,7 @@
         "recursive-copy": "2.0.7",
         "request": "2.83.0",
         "rimraf": "2.6.2",
+        "selenium-webdriver": "4.0.0-alpha.1",
         "tough-cookie": "2.3.3"
     }
 }

@@ -70,7 +70,10 @@
             that.compiled[templateType][templateName] = compiledTemplate;
         }
 
-        return that.compiled[templateType][templateName](context);
+        // Combine the passed context with any component material that needs to be accessed from within a template or helper, such as message bundles.
+        var componentContext = fluid.model.transformWithRules(that, that.options.rules.componentToRendererContext, {});
+        var combinedContext = fluid.merge({}, componentContext, context);
+        return that.compiled[templateType][templateName](combinedContext);
     };
 
     gpii.handlebars.renderer.passthrough = function (that, element, key, context, manipulator) {
@@ -107,10 +110,14 @@
             },
             "jsonify": {
                 "type": "gpii.handlebars.helper.jsonify"
+            },
+            "messageHelper": {
+                "type": "gpii.handlebars.helper.messageHelper"
             }
         },
         members: {
             helpers:   {},
+            messages: {},
             templates: {
                 layouts:  {},
                 pages:    {},
@@ -121,6 +128,12 @@
                 pages:    {},
                 partials: {}
             }
+        },
+        mergePolicy: {
+            "rules.componentToRendererContext": "nomerge"
+        },
+        rules: {
+            componentToRendererContext: {}
         },
         distributeOptions: [
             {
@@ -176,8 +189,10 @@
     // The "standalone" renderer grade.
     fluid.defaults("gpii.handlebars.renderer.standalone", {
         gradeNames: ["gpii.handlebars.renderer"],
+        messages: {},
         members: {
-            templates: "{that}.options.templates"
+            templates: "{that}.options.templates",
+            messages: "{that}.options.messages"
         },
         mergePolicy: {
             // Templates contain lots of literal squiggly braces, which we cannot expand
@@ -202,11 +217,11 @@
         that.events.onTemplatesLoaded.fire(that);
     };
 
-    gpii.handlebars.renderer.serverAware.retrieveTemplates = function (that) {
+    gpii.handlebars.renderer.serverAware.retrieveResource = function (url, callback) {
         var settings = {
-            url:     that.options.templateUrl,
+            url:     url,
             accepts: "application/json",
-            success: that.cacheTemplates
+            success: callback
         };
 
         $.ajax(settings);
@@ -221,10 +236,6 @@
             "cacheTemplates": {
                 funcName: "gpii.handlebars.renderer.serverAware.cacheTemplates",
                 args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
-            },
-            "retrieveTemplates": {
-                funcName: "gpii.handlebars.renderer.serverAware.retrieveTemplates",
-                args: ["{that}", "{arguments}.0"]
             }
         },
         events: {
@@ -232,7 +243,47 @@
         },
         listeners: {
             "onCreate.loadTemplates": {
-                func: "{that}.retrieveTemplates"
+                funcName: "gpii.handlebars.renderer.serverAware.retrieveResource",
+                args: ["{that}.options.templateUrl", "{that}.cacheTemplates"] // url, callback
+            }
+        }
+    });
+
+    fluid.registerNamespace("gpii.handlebars.renderer.serverMessageAware");
+    gpii.handlebars.renderer.serverMessageAware.cacheMessages = function (that, data) {
+        that.messages = data;
+
+        // Fire a "messages loaded" event so that components can render once they are available.
+        that.events.onMessagesLoaded.fire(that);
+    };
+
+    fluid.defaults("gpii.handlebars.renderer.serverMessageAware", {
+        gradeNames: ["gpii.handlebars.renderer.serverAware"],
+        messageUrl: "/messages",
+        invokers: {
+            "cacheMessages": {
+                funcName: "gpii.handlebars.renderer.serverMessageAware.cacheMessages",
+                args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
+            }
+        },
+        rules: {
+            componentToRendererContext: {
+                "messages": "messages"
+            }
+        },
+        events: {
+            "onMessagesLoaded": null,
+            "onAllResourcesLoaded": {
+                events: {
+                    onMessagesLoaded: "onMessagesLoaded",
+                    onTemplatesLoaded: "onTemplatesLoaded"
+                }
+            }
+        },
+        listeners: {
+            "onCreate.loadMessages": {
+                funcName: "gpii.handlebars.renderer.serverAware.retrieveResource",
+                args: ["{that}.options.messageUrl", "{that}.cacheMessages"] // url, callback
             }
         }
     });

@@ -43,12 +43,17 @@ fluid.defaults("gpii.express.hb", {
     gradeNames:       ["fluid.modelComponent"],
     config:           "{expressConfigHolder}.options.config",
     namespace:        "handlebars", // Namespace to allow other middleware to put themselves in the chain before or after us.
-    model: {},    // We should have an empty model, as the dispatcher expects to expose that.
+    model: {
+        messageBundles: {}
+    },
     components: {
         renderer: {
             type: "gpii.handlebars.standaloneRenderer",
             options: {
                 templateDirs: "{gpii.express.hb}.options.templateDirs",
+                model: {
+                    messageBundles: "{gpii.express.hb}.model.messageBundles"
+                },
                 components: {
                     initBlock: {
                         type: "gpii.handlebars.helper.initBlock"

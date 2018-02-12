@@ -12,13 +12,13 @@
                 main: "{{body}}"
             },
             pages: {
-                main: "This is our {{.}} template content."
+                main: "This is our {{payload}} template content."
             }
         },
         invokers: {
             renderInitialMarkup: {
                 func: "{that}.renderMarkup",
-                args: ["viewport", "main", "rendered", "html"] // selector, template, data, manipulator
+                args: ["viewport", "main", { payload: "rendered" }, "html"] // selector, template, data, manipulator
             }
         }
     });

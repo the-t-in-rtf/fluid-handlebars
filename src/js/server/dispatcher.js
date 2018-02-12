@@ -28,6 +28,7 @@ gpii.handlebars.dispatcherMiddleware.middleware = function (that, req, res, next
         var layoutExists    = fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn(["layouts", templateName]));
         var layoutName      = layoutExists ? templateName : that.options.defaultLayout;
         var contextToExpose = fluid.model.transformWithRules({ model: that.model, req: req, layout: layoutName }, that.options.rules.contextToExpose);
+        // TODO: merge this with a message bundle specific to the user's request.
         res.status(200).render(path.join("pages", templateName), contextToExpose);
     }
     else {

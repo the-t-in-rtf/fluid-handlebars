@@ -14,7 +14,7 @@ The base grade does not have the required template data by default. You are expe
 below for details on those grades.
 
 All variations of this component require [Handlebars.js](http://handlebarsjs.com/). [Markdown-it](https://markdown-it.github.io/markdown-it/#MarkdownIt.new)
-is required if you want to render markdown using the `{{md}}` helper (see the [../README.md](README file) for details on helpers).
+is required if you want to render markdown using the `{{md}}` helper (see the [README file](../README.md) for details on helpers).
 
 ## Component Options
 
@@ -129,7 +129,21 @@ This is an extension of the above `gpii.handlebars.renderer` grade which communi
 
 ## Component Options
 
+| Option                   | Type       | Description |
+| ------------------------ | ---------- | ----------- |
+| `templateUrl` (required) | `{String}` | The URL (relative or absolute) where our template content can be retrieved. |
+
+# `gpii.handlebars.renderer.serverMessageAware`
+
+This is an extension of the above `gpii.handlebars.renderer.serverAware` grade, which, in addition to loading templates
+as described above, communicates with an instance of `gpii.handlebars.inlineMessageBundlingMiddleware` on startup and
+wires the message bundles into itself.  You must use this grade to make effective use of the `{{messageHelper}}` helper
+(see the [i18n docs](i18n.md) for details).
+
+## Component Options
+
+In addition to the options for `gpii.handlebars.renderer.serverAware`, this grade supports the following options:
+
 | Option                        | Type       | Description |
 | ----------------------------- | ---------- | ----------- |
-| `templateUrl` (required)      | `{String}` | The URL (relative or absolute) where our template content can be retrieved. |
 | `messageBundleUrl` (required) | `{String}` | The URL (relative or absolute) where our message bundle content can be retrieved. |

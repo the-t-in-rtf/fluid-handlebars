@@ -72,16 +72,22 @@ gpii.handlebars.standaloneRenderer.getPathFromSegmentAndKey = function (that, se
 };
 
 
-gpii.handlebars.standaloneRenderer.render = function (that, pageTemplatePath, context) {
+gpii.handlebars.standaloneRenderer.render = function (that, pageTemplatePath, context, localeOrLanguage) {
+    var messages = gpii.handlebars.i18n.deriveMessageBundle(localeOrLanguage, that.model.messageBundles, that.options.defaultLocale);
+    var combinedContext = fluid.merge({}, { messages: messages}, context);
+
     var pageTemplate = gpii.handlebars.standaloneRenderer.getTemplate(that, pageTemplatePath);
-    return pageTemplate(context);
+    return pageTemplate(combinedContext);
 };
 
-gpii.handlebars.standaloneRenderer.renderWithLayout = function (that, pageTemplatePath, context) {
-    // Render the page body first.
-    var pageBody = that.render(pageTemplatePath, context);
+gpii.handlebars.standaloneRenderer.renderWithLayout = function (that, pageTemplatePath, context, localeOrLanguage) {
+    var messages = gpii.handlebars.i18n.deriveMessageBundle(localeOrLanguage, that.model.messageBundles, that.options.defaultLocale);
 
-    var layoutContext = fluid.extend({}, context, { body: pageBody});
+    // Render the page body first.
+    var pageBody = that.render(pageTemplatePath, context, localeOrLanguage);
+
+    // Pass both the body and the derived message bundle as part of the effective context.
+    var layoutContext = fluid.merge({}, { messages: messages}, { body: pageBody}, context);
 
     // Render the page body in the selected layout (or the default if none is selected).
     var layoutTemplateKey = context.layout ? context.layout : that.options.defaultLayout;
@@ -121,10 +127,14 @@ gpii.handlebars.standaloneRenderer.getTemplate = function (that, templatePath) {
 
 fluid.defaults("gpii.handlebars.standaloneRenderer", {
     gradeNames: ["fluid.modelComponent"],
+    defaultLocale: "en_us",
     defaultLayout: "main",
     handlebarsExtension: "handlebars",
     events: {
         onTemplatesLoaded: null
+    },
+    model: {
+        messageBundles: {}
     },
     members: {
         helpers:           {},
@@ -149,16 +159,24 @@ fluid.defaults("gpii.handlebars.standaloneRenderer", {
         },
         jsonify: {
             type: "gpii.handlebars.helper.jsonify"
+        },
+        messageHelper: {
+            type: "gpii.handlebars.helper.messageHelper",
+            options: {
+                model: {
+                    messageBundles: "{gpii.handlebars.standaloneRenderer}.model.messageBundles"
+                }
+            }
         }
     },
     invokers: {
         render: {
             funcName: "gpii.handlebars.standaloneRenderer.render",
-            args:     ["{that}", "{arguments}.0", "{arguments}.1"] // templateName, context
+            args:     ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"] // templateName, context, localeOrLanguage
         },
         renderWithLayout: {
             funcName: "gpii.handlebars.standaloneRenderer.renderWithLayout",
-            args:     ["{that}", "{arguments}.0", "{arguments}.1"] // templateName, context
+            args:     ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"] // templateName, context, localeOrLanguages
         }
     },
     listeners: {

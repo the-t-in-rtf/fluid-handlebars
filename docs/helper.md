@@ -40,21 +40,21 @@ This package provides additional handlebars helpers that can be used in your han
 these are available by default when you use the `gpii.express.hb` handlebars middleware.  On the client side, these are
 prewired into `gpii.templates.renderer`, the client-side renderer.
 
-## jsonify
+## `{{jsonify}}`
 
 Convert an object into a string representation using JSON.stringify.  To use this function in your handlebars templates, add code like:
 
-```
+```handlebars
 {{jsonify variable}}
 ```
 
 For more information, see the [jsonify helper docs](jsonifyHelper.md).
 
-## md
+## `{{md}}`
 
 Transform markdown into html.  To use this function in your handlebars templates, add code like:
 
-```
+```handlebars
 {{md variable}}
 
 {{md "string value"}}
@@ -63,11 +63,11 @@ Transform markdown into html.  To use this function in your handlebars templates
 For more information, see the [md helper docs](mdHelper.md).
 
 
-## equals
+## `{{equals}}`
 
 Display content when two values match.  Values can be context variables or strings:
 
-```
+```handlebars
 {{#equals json.baz json.qux}}true{{else}}false{{/equals}}
 
 {{#equals json.foo json.qux}}true{{else}}false{{/equals}}
@@ -80,21 +80,27 @@ Display content when two values match.  Values can be context variables or strin
 Note that, just like the `{{#if}}` block provided by handlebars, the `{{#equals}}` block supports the use of an optional
 `{{else}}` block for cases in which the two values are not equal. For example:
 
-```
+```handlebars
 {{#equals VARIABLE1 VARIABLE2 }}
   The variables are equal.
 {{/equals}}
 
 {{#equals VARIABLE1 "TEXT" }}
   The variable is equal to the text.
-{{#else}}
+{{else}}
   The variable is not equal to the text.
 {{/equals}}
 ```
 
 Note in the second example that `else` is supported if the condition is not matched, as with the built-in `{{#if}}` helper.
 
-## message-helper
+## `{{messageHelper}}`
 
-Resolve a message key based on the user's locale and language preferences, and replace it with
-localised/internationalised text.  See the [i18n documentation for more details](i18n.md).
+Resolves a message key based on the user's locale and language preferences, and replace it with
+localised/internationalised text.  For example:
+
+```handlebars
+{{messageHelper "my-message-key" myContextVariable}}
+```
+
+See the [i18n documentation for more details](i18n.md) for more details.

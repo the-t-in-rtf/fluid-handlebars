@@ -14,6 +14,7 @@ var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.handlebars.errorRenderingMiddleware");
 gpii.handlebars.errorRenderingMiddleware.renderError = function (that, error, request, response, next) {
     if (gpii.handlebars.errorRenderingMiddleware.isOurContentType(that, request)) {
+        // TODO: figure out the message bundle for this request and merge with the error so that we can use i18n in errors.
         response.status(that.options.statusCode).render(that.options.templateKey, error);
     }
     else {

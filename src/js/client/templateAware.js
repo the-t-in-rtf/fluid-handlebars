@@ -130,4 +130,20 @@
             }
         }
     });
+
+    fluid.defaults("gpii.handlebars.templateAware.serverMessageAware", {
+        gradeNames: ["gpii.handlebars.templateAware"],
+        components: {
+            renderer: {
+                type: "gpii.handlebars.renderer.serverMessageAware",
+                options: {
+                    listeners: {
+                        "onAllResourcesLoaded.renderMarkup": {
+                            func: "{gpii.handlebars.templateAware.serverMessageAware}.renderInitialMarkup"
+                        }
+                    }
+                }
+            }
+        }
+    });
 })(fluid);

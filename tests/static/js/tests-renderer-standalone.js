@@ -12,10 +12,10 @@
                 main: "{{body}}"
             },
             pages: {
-                md:        "{{{md .}}}",
+                md:        "{{{md payload}}}",
                 partial:   "{{>includedPartial}}",
-                jsonify:   "{{{jsonify . space=0}}}",
-                equals:    "{{#equals \"good\" .}}equals{{else}}not equals{{/equals}}"
+                jsonify:   "{{{jsonify payload space=0}}}",
+                equals:    "{{#equals \"good\" payload}}equals{{else}}not equals{{/equals}}"
             },
             partials: {
                 includedPartial: "This is content coming from the partial."

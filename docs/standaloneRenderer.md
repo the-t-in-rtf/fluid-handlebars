@@ -3,7 +3,7 @@
 The core renderer designed both for use as [an Express view engine](http://expressjs.com/en/advanced/developing-template-engines.html),
 and in node contexts outside of Express, for example, when rendering mail templates.
 
-# Component Options
+## Component Options
 
 | Option                | Type             | Description |
 | --------------------- | ---------------- | ----------- |
@@ -11,7 +11,7 @@ and in node contexts outside of Express, for example, when rendering mail templa
 | `handlebarsExtension` | `String`         | The extension used for all our templates.  Defaults to `handlebars`. |
 | `templateDirs`        | `Array | String` | A list of template directories that contain handlebars layouts, pages, and partials.  These can either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`.   Please note, if multiple directories contain layouts, pages, or partials with the same name, the right-most directory takes precedence. |
 
-## Template Directory Layout
+### Template Directory Layout
 
 When Express provided its own view engines, it followed a particular convention that we also honor.  Within each directory
 specified in `options.templateDirs` (see above), there is expected to be one or more of the following subdirectories:
@@ -20,7 +20,7 @@ specified in `options.templateDirs` (see above), there is expected to be one or 
 2. `layouts`: Contains "layouts", templates that generate the markup surrounding the "body".  Used with `renderWithLayout`.
 3. `partials`: Contains "[partials](http://handlebarsjs.com/partials.html)", templates that can be used within "pages" or "layouts" using notation like `{{>my-partial-name}}`.
 
-# Component Invokers
+## Component Invokers
 
 ## `{that}.render(templateName, context)`
 * `templateName {String}` A full path to the template to use, or a "key", which is the filename (minus extension) relative to the "pages" subdirectory in one of the view directories specified in `options.templateDirs` (see above).
@@ -43,7 +43,7 @@ var renderedContent = renderer.render("myPageTemplate", { name: "Patience" });
 
 For more details about partials, iterative and conditional blocks, see the [Handlebars documentation](http://handlebarsjs.com/).
 
-## `{that}.renderWithLayout(templateName, context)`
+### `{that}.renderWithLayout(templateName, context)`
 
 * `templateName {String}` See above.
 * `context {Object}` See above for general details, and see below for details about passing layout hints as part of the context.
@@ -66,9 +66,16 @@ variables passed to the page to be used in the layout as well.
 The layout defaults to `options.defaultLayout`, you can change this on the fly by passing a layout key as part of your
 `context`, as in `renderer.renderWithLayout("myPageTemplate", { name: "Patience",  layout: "otherLayout"})`
 
-# Adding block helpers
+## Adding block helpers
 
 Child components of this grade that extend the [`gpii.handlebars.helper`](helper.md) grade are made available as block
 helpers that can be used when rendering content.  By default, this grade includes all of the helpers provided by this
 package, with the exception of the `initBlock` helper used within the view engine..  See the
 [helpers documentation](helpers.md) for details.
+
+## Internationalisation and Localisation
+
+The renderer includes the [messageHelper helper](i18n.md), which can be used to internationalise and localise template
+content.  In order for the renderer to have access to the necessary message templates, you are expected to populate this
+component's `messageBundles` member with individual message bundles, keyed by language or locale.  In most cases you
+will want to use the  `gpii.handlebars.i18n.messageLoader` grade described [in the i18n documentation](i18n.md) to populate this.
