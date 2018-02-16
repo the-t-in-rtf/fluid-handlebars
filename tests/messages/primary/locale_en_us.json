@@ -3,5 +3,5 @@
     "how-are-things": "Things are fine.",
     "merged-key": "Old.  Worn out.",
     "shallow-variable": "This is %condition.",
-    "deep-variable": "This is even %deep.value."
+    "deep-variable": "This is even %deep.condition."
 }

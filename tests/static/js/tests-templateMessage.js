@@ -5,7 +5,7 @@
 //
 /* global fluid */
 /* eslint-env node */
-fluid.defaults("gpii.handlebars.tests.templateMessage", {
+fluid.defaults("gpii.tests.handlebars.templateMessage", {
     gradeNames: ["gpii.handlebars.templateMessage", "gpii.handlebars.templateAware.bornReady"],
     template:   "common-success",
     components: {
@@ -24,14 +24,14 @@ fluid.defaults("gpii.handlebars.tests.templateMessage", {
     }
 });
 
-fluid.defaults("gpii.handlebars.tests.templateMessage.initialized", {
-    gradeNames: ["gpii.handlebars.tests.templateMessage"],
+fluid.defaults("gpii.tests.handlebars.templateMessage.initialized", {
+    gradeNames: ["gpii.tests.handlebars.templateMessage"],
     model: {
         message: "I was born with silver model data in my mouth."
     }
 });
 
-fluid.defaults("gpii.handlebars.tests.templateMessage.updated", {
-    gradeNames: ["gpii.handlebars.tests.templateMessage"],
+fluid.defaults("gpii.tests.handlebars.templateMessage.updated", {
+    gradeNames: ["gpii.tests.handlebars.templateMessage"],
     model:      {}
 });

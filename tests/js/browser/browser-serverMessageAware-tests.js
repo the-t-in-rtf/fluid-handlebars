@@ -21,14 +21,19 @@ fluid.defaults("gpii.tests.handlebars.browser.serverMessageAware.caseHolder", {
                 locator: { css: "#how-are-things"}
             },
             shallowVariable: {
-                message: "The new element should contain rendered variable content...",
+                message: "The new element should contain rendered variable content.",
                 pattern: "This is working.",
                 locator: { css: "#shallow-variable"}
             },
             deepVariable: {
-                message: "The element after the original should have rendered content...",
+                message: "The element after the original should have rendered content.",
                 pattern:  "This is even better.",
                 locator: { css: "#deep-variable" }
+            },
+            nonRootContext: {
+                message: "We should be able to specify the context for variables.",
+                pattern: "This is better.",
+                locator: { css: "#non-root-context"}
             }
         }
     },

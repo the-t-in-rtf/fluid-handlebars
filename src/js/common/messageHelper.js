@@ -13,12 +13,17 @@ var gpii   = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.handlebars.helper.messageHelper");
 
 gpii.handlebars.helper.messageHelper.getHelper = function () {
-    return function (messageKey, data) {
-        if (arguments.length < 3) {
-            fluid.fail("You must call the 'messageHelper' helper with a message key and context containing at least the message bundles.");
+    return function (messageKey, dataOrRootContext, rootContext) {
+        if (arguments.length < 2) {
+            fluid.fail("You must call the 'messageHelper' helper with at least a message key.");
         }
         else {
-            var resolver = fluid.messageResolver({ messageBase: data.messages });
+            // Pick up the message bundles from the root context, which is always the last argument.
+            var messages = fluid.get(rootContext || dataOrRootContext, "data.root.messages");
+
+            // If we have a third argument, then the second argument is our "data".  Otherwise, we use the root context (equivalent to passing "." as the variable).
+            var data = rootContext ? dataOrRootContext : fluid.get(dataOrRootContext, "data.root");
+            var resolver = fluid.messageResolver({ messageBase: messages });
             return resolver.resolve(messageKey, data);
         }
     };

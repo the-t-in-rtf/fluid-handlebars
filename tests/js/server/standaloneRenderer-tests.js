@@ -124,7 +124,7 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
         {
             name: "Testing i18n deep variable interpolation.",
             templateKey: "messageHelper",
-            context: { key: "deep-variable", deep: { value: "better"} },
+            context: { key: "deep-variable", deep: { condition: "better"} },
             expected: "This is even better."
         }
     ],

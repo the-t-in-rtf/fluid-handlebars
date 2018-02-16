@@ -6,6 +6,7 @@ var fluid = require("infusion");
 fluid.module.register("gpii-handlebars", __dirname, require);
 
 // Common base components for both server and client side
+require("./src/js/common/lib/i18n");
 require("./src/js/common/helper");
 require("./src/js/common/equals");
 require("./src/js/common/jsonify");
@@ -19,7 +20,7 @@ require("./src/js/server/handlebars");
 require("./src/js/server/initblock");
 require("./src/js/server/inline");
 require("./src/js/server/inlineMessageBundlingMiddleware");
-require("./src/js/server/lib/i18n");
+require("./src/js/server/lib/i18n-node");
 require("./src/js/server/md-server");
 require("./src/js/server/singleTemplateMiddleware");
 require("./src/js/server/standaloneRenderer");

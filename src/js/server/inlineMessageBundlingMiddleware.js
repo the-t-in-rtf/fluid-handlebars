@@ -12,7 +12,7 @@ var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 var md5   = require("md5");
 
-require("./lib/i18n");
+require("./lib/i18n-node");
 
 fluid.registerNamespace("gpii.handlebars.inlineMessageBundlingMiddleware.request");
 

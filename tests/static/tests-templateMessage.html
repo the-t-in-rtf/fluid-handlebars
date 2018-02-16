@@ -29,6 +29,8 @@
         <script type="text/javascript" src="/src/js/common/equals.js"></script>
         <script type="text/javascript" src="/src/js/common/md-common.js"></script>
         <script type="text/javascript" src="/src/js/common/jsonify.js"></script>
+        <script type="text/javascript" src="/src/js/common/lib/i18n.js"></script>
+        <script type="text/javascript" src="/src/js/common/messageHelper.js"></script>
         <script type="text/javascript" src="/src/js/client/md-client.js"></script>
         <script type="text/javascript" src="/src/js/client/renderer.js"></script>
         <script type="text/javascript" src="/modules/gpii-binder/src/js/binder.js"></script>
@@ -41,7 +43,7 @@
         <script type="text/javascript" src="/content/js/tests-templateMessage.js"></script>
 
         <!-- Foundation styles -->
-        <link rel="stylesheet" href="/modules/foundation-sites/foundation.css"/>
+        <link rel="stylesheet" href="/modules/foundation-sites/dist/css/foundation.css"/>
     </head>
     <body>
         <div class="row">
@@ -62,8 +64,8 @@
 
         <script type="text/javascript">
             <!-- instantiate test components -->
-            var initialized = gpii.handlebars.tests.templateMessage.initialized(".viewport-initialized");
-            var updated     = gpii.handlebars.tests.templateMessage.updated(".viewport-updated");
+            var initialized = gpii.tests.handlebars.templateMessage.initialized(".viewport-initialized");
+            var updated     = gpii.tests.handlebars.templateMessage.updated(".viewport-updated");
             updated.applier.change("message", "Some are born with data, some achieve data, and some have data thrust upon them.");
         </script>
     </body>

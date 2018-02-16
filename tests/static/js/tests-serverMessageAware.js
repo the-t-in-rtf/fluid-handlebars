@@ -20,7 +20,7 @@
                     },
                     condition: "working",
                     deep: {
-                        value: "better"
+                        condition: "better"
                     }
                 }
             }
