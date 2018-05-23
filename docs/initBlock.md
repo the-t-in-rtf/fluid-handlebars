@@ -10,7 +10,7 @@ The end result is a nested structure, starting with a `pageComponent` variable t
 component has a `requireRenderer` child component, which is created only when the templates are available, and holds
 a `pageComponent` component constructed from the grades passed to the helper (see below).
 
-# Component Options
+## Component Options
 
 | Option                  | Type       | Description |
 | ----------------------- | ---------- | ----------- |
@@ -27,7 +27,7 @@ merged with `options.baseOptions`.
 
 Let's say you have options like the following:
 
-```
+```snippet
 baseOptions: {
   staticOption: true,
   model: {
@@ -44,7 +44,7 @@ contextToOptionsRules: {
 
 Let's also assume that your context (see below for details) looks something like:
 
-```
+```json5
 {
   staticOption: false,
   user: {
@@ -55,7 +55,7 @@ Let's also assume that your context (see below for details) looks something like
 
 The resulting client-side component will have options like the following:
 
-```
+```json5
 {
   staticOption: true,
   user: {
@@ -76,12 +76,12 @@ exposed.  Check the following docs for more details:
 * [Renderer](renderer.md)
 * [Single Template Middleware](singleTemplateMiddleware.md)
 
-# Client-side Usage
+## Client-side Usage
 
 The markup required to use this in a Handlebars template consists of the helper itself and one or more named grades, as
 in the following example:
 
-```
+```handlebars
 {{{initblock "grade1", "grade2", "grade3"}}}
 ```
 
@@ -93,7 +93,8 @@ of the grades in this example have an invoker with the same name, the invoker de
 Please note, in the example above that the triple braces are required in order to prevent Handlebars from escaping
 the generated code and presenting it as text.  Note also that this helper is only meant to be used on the server
 side, and will not work at all with the client side Handlebars infrastructure.
-# Client-side Requirements
+
+## Client-side Requirements
 
 The generated code will only work if you have included Fluid itself and any client-side code your grades depend on.
 At a minimum, you will need to include the following client-side scripts from this package:

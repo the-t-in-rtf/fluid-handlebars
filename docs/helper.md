@@ -7,42 +7,44 @@ to an instance of [`gpii.express.hb`](handlebars.md).
 
 ### `{that}.getHelper()`
 
-Each "helper" module is expected to implement a `getHelper` invoker with an invoker that returns a helper function. something like the following:
+Each "helper" module is expected to implement a `getHelper` invoker with an invoker that returns a helper function.
+something like the following:
 
-```
+```javascript
 fluid.registerNamespace("your.helper");
 
-your.helper.getHelperFn = function(that){
-   return function(arg1, arg2) {
-       // The two argument variations have the "options" object as the second argument.  one-argument variations have it as the first.
-       var options = arg2 ? arg2 : arg1;
-       return options.fn(this);
-   };
+your.helper.getHelperFn = function (that) {
+    return function (arg1, arg2) {
+        // The two argument variations have the "options" object as the second argument.  one-argument variations have it as the first.
+        var options = arg2 ? arg2 : arg1;
+        return options.fn(this);
+    };
 };
 
 fluid.defaults("your.helper", {
     gradeNames: ["gpii.handlebars.helper"],
     invokers: {
-    "getHelper": {
-        "funcName": "your.helper.getHelperFn",
-        "args":     ["{that}"]
+        "getHelper": {
+            "funcName": "your.helper.getHelperFn",
+            "args":     ["{that}"]
+        }
     }
-   }
 });
 ```
 
-See [the Handlebars documentation](http:handlebarsjs.com/block_helpers.html) for an overview of the various types of 
+See [the Handlebars documentation](http:handlebarsjs.com/block_helpers.html) for an overview of the various types of
 helper functions that are possible.
 
-# Helper functions included with this package
+## Helper functions included with this package
 
 This package provides additional handlebars helpers that can be used in your handlebars templates.  On the server side,
 these are available by default when you use the `gpii.express.hb` handlebars middleware.  On the client side, these are
 prewired into `gpii.templates.renderer`, the client-side renderer.
 
-## `{{jsonify}}`
+### `{{jsonify}}`
 
-Convert an object into a string representation using JSON.stringify.  To use this function in your handlebars templates, add code like:
+Convert an object into a string representation using JSON.stringify.  To use this function in your handlebars templates,
+add code like:
 
 ```handlebars
 {{jsonify variable}}
@@ -50,7 +52,7 @@ Convert an object into a string representation using JSON.stringify.  To use thi
 
 For more information, see the [jsonify helper docs](jsonifyHelper.md).
 
-## `{{md}}`
+### `{{md}}`
 
 Transform markdown into html.  To use this function in your handlebars templates, add code like:
 
@@ -62,8 +64,7 @@ Transform markdown into html.  To use this function in your handlebars templates
 
 For more information, see the [md helper docs](mdHelper.md).
 
-
-## `{{equals}}`
+### `{{equals}}`
 
 Display content when two values match.  Values can be context variables or strings:
 
@@ -92,9 +93,10 @@ Note that, just like the `{{#if}}` block provided by handlebars, the `{{#equals}
 {{/equals}}
 ```
 
-Note in the second example that `else` is supported if the condition is not matched, as with the built-in `{{#if}}` helper.
+Note in the second example that `else` is supported if the condition is not matched, as with the built-in `{{#if}}`
+helper.
 
-## `{{messageHelper}}`
+### `{{messageHelper}}`
 
 Resolves a message key based on the user's locale and language preferences, and replace it with
 localised/internationalised text.  For example:

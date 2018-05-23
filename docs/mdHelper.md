@@ -1,12 +1,10 @@
-# The Markdown Handlebars Helper
-
 # `gpii.handlebars.helper.md`
 
 This component is a [Handlebars helper](http://handlebarsjs.com/block_helpers.html) that allows us to render Markdown
 content as HTML.  This helper is wired into `gpii.express.handlebars` by default.  Here are examples of how you might
 use it in a handlebars template:
 
-```
+```handlebars
 {{md variable}}
 
 {{md "string value"}}
@@ -16,10 +14,9 @@ use it in a handlebars template:
 ```
 
 The last example, in which HTML and markdown are mixed, will only work if:
- 
+
 1. You have passed the appropriate options to the helper (see below).
 2. You use triple braces so that HTML content is not escaped by handlebars.
-
 
 ## Component Options
 
@@ -39,12 +36,12 @@ fluid.defaults("my.express.instance", {
     gradeNames: ["gpii.express"],
     distributeOptions: {
         record: true,
-        target: "{that gpii.handlebars.helper.md}.options.markdownItOptions.html" 
+        target: "{that gpii.handlebars.helper.md}.options.markdownItOptions.html"
     },
     components: {
         handlebars: {
             type: "gpii.express.handlebars"
         }
     }
-})
+});
 ```

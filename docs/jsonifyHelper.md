@@ -24,7 +24,7 @@ This functionality is wired into `gpii.express.handlebars` by default.
 
 You can also pass custom options as key value pairs, as in:
 
-```
+```snippet
 with quotes:    {{{jsonify VARIABLE stringifyStrings=true}}}
 
 without quotes: {{{jsonify VARIABLE stringifyStrings=false}}}
