@@ -70,5 +70,5 @@ The layout defaults to `options.defaultLayout`, you can change this on the fly b
 
 Child components of this grade that extend the [`gpii.handlebars.helper`](helper.md) grade are made available as block
 helpers that can be used when rendering content.  By default, this grade includes all of the helpers provided by this
-package, with the exception of the `initBlock` helper used within the view engine..  See the
-[helpers documentation](helpers.md) for details.
+package, with the exception of the `initBlock` helper used within the view engine.  See the
+[helpers documentation](helper.md) for details.
