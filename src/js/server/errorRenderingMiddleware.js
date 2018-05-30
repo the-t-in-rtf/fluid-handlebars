@@ -25,10 +25,11 @@ gpii.handlebars.errorRenderingMiddleware.renderError = function (that, error, re
 
 /**
  *
- * @param that {Object} - The middleware component itself.
- * @param request {Object} - The request object.
- *
  * Confirm that this request matches our content type, if we have them.
+ *
+ * @param {Object} that - The middleware component itself.
+ * @param {Object} request - The request object.
+ * @return {Boolean} - Returns `true` if the request accepts a content type we support, or `false` if it doesn't.
  *
  */
 gpii.handlebars.errorRenderingMiddleware.isOurContentType = function (that, request) {

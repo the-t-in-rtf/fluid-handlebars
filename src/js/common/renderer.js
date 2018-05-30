@@ -41,7 +41,7 @@ var Handlebars = Handlebars || {};
      *
      * Our internal handlebars instance needs to be made aware of each of our helpers.
      *
-     * @param that {Object} The renderer component itself.
+     * @param {Object} that The renderer component itself.
      *
      */
     gpii.handlebars.renderer.loadPartials  = function (that) {

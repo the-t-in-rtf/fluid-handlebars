@@ -18,7 +18,6 @@ The `templates` option is expected to contain raw template content, keyed by tem
 groups of "layouts", "pages", and "partials".  This layout exactly corresponds to the directory structure expected
 by [express-handlebars](https://github.com/ericf/express-handlebars).  
 
-
 ### Component Invokers
 
 #### `{that}.render(templateKey, context, [localeOrLanguage])`
@@ -26,7 +25,8 @@ by [express-handlebars](https://github.com/ericf/express-handlebars).
 * `templateKey`: A `{String}` representing the name of the template we will render (does not need to have the
   `.handlebars` suffix, which is implied).
 * `context`: An `{Object}` representing data that can be referenced from within the template.
-* `localeOrLanguage`:  An optional `{String}` representing the locale or language to use when rendering content (for example, using the `{{message}}` helper).
+* `localeOrLanguage`:  An optional `{String}` representing the locale or language to use when rendering content (for
+  example, using the `{{message}}` helper).
 * Returns: The rendered content.
 
 Render a template without an enclosing layout, as shown here:
@@ -58,13 +58,13 @@ This example also demonstrates the use of message bundles and the [`{{message-he
 * `templateKey`: A `{String}` representing the name of the template we will render (does not need to have the
   `.handlebars` suffix, which is implied).
 * `context`: An `{Object}` representing data that can be referenced from within the template.
-* `localeOrLanguage`:  An optional `{String}` representing the locale or language to use when rendering content (for example, using the `{{message}}` helper).
+* `localeOrLanguage`:  An optional `{String}` representing the locale or language to use when rendering content (for
+  example, using the `{{message}}` helper).
 * Returns: The rendered content.
 
 Render a template with an enclosing layout.  The layout defaults to "main", which just includes the body of the page.
 You can specify a layout within the context by passing a template key (relative to `options.templates.layouts`) as
 the top-level `layout` variable, as shown here:
-
 
 ```javascript
 fluid.defaults("my.renderer.component", {
@@ -89,7 +89,7 @@ console.log(renderer.renderWithLayout("myPage", { myVariable: "my value" }));
 /*
 
     Logs:
-    
+
     <p>Content from the layout.</p>
     <p>Content from the page.</p>
     <p>Content from the partial.</p>
@@ -218,5 +218,5 @@ package, with the exception of the `initBlock` helper used within the view engin
 
 The renderer includes the [messageHelper helper](i18n.md), which can be used to internationalise and localise template
 content.  In order for the renderer to have access to the necessary message templates, you are expected to populate this
-component's `messages` member with a single message bundle.  In most cases you will want to use the 
+component's `messages` member with a single message bundle.  In most cases you will want to use the
 `gpii.handlebars.i18n.messageLoader` grade described [in the i18n documentation](i18n.md) to populate this.

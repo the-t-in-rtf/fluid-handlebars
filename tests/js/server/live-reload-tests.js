@@ -32,9 +32,10 @@ fluid.registerNamespace("gpii.tests.handlebars.live");
 /**
  *
  * Confirm that a test string was added to the relevant template.
- * @param body {String} - The body of the document returned to the request.
- * @param expectedText {String} - The text to look for in the body.
- * @param invert {Boolean} - Whether to invert the comparison (used to confirm that the text is not initially present).
+ *
+ * @param {String} body - The body of the document returned to the request.
+ * @param {String} expectedText - The text to look for in the body.
+ * @param {Boolean} invert - Whether to invert the comparison (used to confirm that the text is not initially present).
  *
  */
 gpii.tests.handlebars.live.verifyResults = function (body, expectedText, invert) {
@@ -53,9 +54,9 @@ fluid.defaults("gpii.tests.handlebars.live.request", {
  *
  * Add text to a template, which we should be able to see in the rendered output after a "live" reload.
  *
- * @param templatedir {Strin} - The full relativeTemplatePath to the template directory.
- * @param relativeTemplatePath {String} - The relativeTemplatePath to the template, relative to the above.
- * @param textToAppend {String} - The text to append to the template.
+ * @param {String} templateDir - The full relativeTemplatePath to the template directory.
+ * @param {String} relativeTemplatePath - The relativeTemplatePath to the template, relative to the above.
+ * @param {String} textToAppend - The text to append to the template.
  *
  */
 gpii.tests.handlebars.live.updateTemplate = function (templateDir, relativeTemplatePath, textToAppend) {
@@ -67,10 +68,10 @@ gpii.tests.handlebars.live.updateTemplate = function (templateDir, relativeTempl
  * A simple function to work around the limitations in jqUnit.assertLeftHand.  Allows us to test a single deep value
  * against an expected value.
  *
- * @param message {String} - The message to be passed to the test assertion (will appear in the test output).
- * @param root {Object} - The object to be inspected.
- * @param path {String} - The deep path (i.e. `path.to.value`) within `root`.
- * @param expected {String|Number|Boolean} - The expected value to be compared.  Note that `Array` and `Object` values are not handled properly.
+ * @param {String} message - The message to be passed to the test assertion (will appear in the test output).
+ * @param {Object} root - The object to be inspected.
+ * @param {String} path - The deep path (i.e. `path.to.value`) within `root`.
+ * @param {String|Number|Boolean} expected - The expected value to be compared.  Note that `Array` and `Object` values are not handled properly.
  *
  */
 gpii.tests.handlebars.live.pathEquals = function (message, root, path, expected) {
@@ -285,7 +286,7 @@ gpii.tests.handlebars.live.generateUniqueTemplateDir = function (that) {
  * As we don't want to make changes to our actual template content, copy them to a temp directory where we can safely
  * make changes.
  *
- * @param that - The testEnvironment component itself.
+ * @param {Object} that - The testEnvironment component itself.
  *
  */
 gpii.tests.handlebars.live.cloneTemplates = function (that) {

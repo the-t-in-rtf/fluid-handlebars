@@ -25,9 +25,10 @@ fluid.registerNamespace("gpii.handlebars.i18n");
  * 2. The user's language.
  * 3. The default locale.
  *
- * @param request {Object} - An express request object: http://expressjs.com/en/4x/api.html#req
- * @param messageBundles {Object} - The full set of all message bundles available, keyed by locale or language.
- * @param defaultLocale {String} - The default locale.
+ * @param {Object} request - An express request object: http://expressjs.com/en/4x/api.html#req
+ * @param {Object} messageBundles - The full set of all message bundles available, keyed by locale or language.
+ * @param {String} defaultLocale - The default locale.
+ * @return {Object} - A map of messages for a single locale.
  *
  */
 gpii.handlebars.i18n.deriveMessageBundleFromRequest = function (request, messageBundles, defaultLocale) {
@@ -39,9 +40,9 @@ gpii.handlebars.i18n.deriveMessageBundleFromRequest = function (request, message
  *
  * Load our all message bundles from one or more directories and organise them into a single object.
  *
- * @param messageDirs {Array} - An array of full or package-relative paths to directories containing message bundles.
- * @param defaultLocale {String} - The default locale to use for files that do not provide language or locale data.
- * @returns {Object} - A combined bundle of message bundles, keyed by locales and languages.
+ * @param {Array} messageDirs - An array of full or package-relative paths to directories containing message bundles.
+ * @param {String} defaultLocale - The default locale to use for files that do not provide language or locale data.
+ * @return {Object} - A combined bundle of message bundles, keyed by locales and languages.
  *
  */
 gpii.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) {

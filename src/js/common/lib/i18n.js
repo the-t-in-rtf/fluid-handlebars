@@ -14,8 +14,8 @@ fluid.registerNamespace("gpii.handlebars.i18n");
  *
  * Parse the content of an `Accept-Language` header and return the full list of locales in order of preference.
  *
- * @param header {String} - The value of the `Accept-Language` header.
- * @returns {String[]} - An array of strings representing locales and/or languages, in order of preference.
+ * @param {String} header - The value of the `Accept-Language` header.
+ * @return {String[]} - An array of strings representing locales and/or languages, in order of preference.
  *
  */
 gpii.handlebars.i18n.getAllLocalesFromHeader = function (header) {
@@ -48,7 +48,7 @@ gpii.handlebars.i18n.getAllLocalesFromHeader = function (header) {
  *
  * @param {Object} a - A single weighted language entry.
  * @param {Object} b - Another weighted language to compare to `a`.
- * @returns {Number} - -1 if `a` should come before `b`, 1 if `b` should come before `a`, 0 if their weights are equal.
+ * @return {Number} - -1 if `a` should come before `b`, 1 if `b` should come before `a`, 0 if their weights are equal.
  *
  */
 gpii.handlebars.i18n.sortByQScore = function (a, b) {
@@ -106,9 +106,10 @@ gpii.handlebars.i18n.deriveMessageBundleFromHeader = function (header, messageBu
  * 2. The user's language.
  * 3. The default locale.
  *
- * @param locale {String} - The locale to use.
- * @param messageBundles {Object} - The full set of all message bundles available, keyed by locale or language.
- * @param defaultLocale {String} - The default locale.  Compared with `locale` to determine how material should be inherited from the defaults.
+ * @param {String} preferredLocale - The locale to use.
+ * @param {Object} messageBundles - The full set of all message bundles available, keyed by locale or language.
+ * @param {String} defaultLocale - The default locale.  Compared with `locale` to determine how material should be inherited from the defaults.
+ * @return {Object} - A map of messages for a single locale.
  *
  */
 gpii.handlebars.i18n.deriveMessageBundle = function (preferredLocale, messageBundles, defaultLocale) {
@@ -142,9 +143,9 @@ gpii.handlebars.i18n.deriveMessageBundle = function (preferredLocale, messageBun
  *
  * A sorting function which we use to prefer locales over languages.
  *
- * @param a {String} - A string representing a language or locale.
- * @param b {String} - Another string representing a language or locale.
- * @returns {Integer} - A positive number if the second item is longer, a negative number if the first item is longer, or zero if the items are of the same length.
+ * @param {String} a - A string representing a language or locale.
+ * @param {String} b - Another string representing a language or locale.
+ * @return {Integer} - A positive number if the second item is longer, a negative number if the first item is longer, or zero if the items are of the same length.
  *
  */
 gpii.handlebars.i18n.sortByDescendingLength = function (a, b) {
@@ -156,9 +157,9 @@ gpii.handlebars.i18n.sortByDescendingLength = function (a, b) {
  * Derive the full list of languages and locales from our "bundle of bundles".  Sanitises the keys so that they can be
  * used with `request.acceptsLanguages`, which expects locales to be of the form `en-us` rather than using underscores.
  *
- * @param messageBundle {Object} - The "bundle of message bundles" containing all messages from all supported languages.
- * @param defaultLocale {String} - The default locale.
- * @returns {String[]} - An array of strings starting with the default locale, and then all locales and languages, sorted in descending order by length.
+ * @param {Object} messageBundle - The "bundle of message bundles" containing all messages from all supported languages.
+ * @param {String} defaultLocale - The default locale.
+ * @return {String[]} - An array of strings starting with the default locale, and then all locales and languages, sorted in descending order by length.
  *
  */
 gpii.handlebars.i18n.languagesAndLocalesFromMessageBundle = function (messageBundle, defaultLocale) {
@@ -173,7 +174,7 @@ gpii.handlebars.i18n.languagesAndLocalesFromMessageBundle = function (messageBun
  *
  * Derive the language (ex: "en") from the locale (ex: "en_US").
  *
- * @param localeString {String} - The locale string.
+ * @param {String} localeString - The locale string.
  * @return {String|undefined} - The language if found, otherwise `undefined`.
  *
  */
