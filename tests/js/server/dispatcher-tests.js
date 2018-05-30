@@ -87,18 +87,22 @@ gpii.tests.handlebars.server.runTests = function (that) {
             jqUnit.start();
 
             gpii.test.handlebars.server.bodyMatches("The layout should have come from the primary...", body, /layout found in the primary template directory/);
-            gpii.test.handlebars.server.bodyMatches("The page should have come from the primary", body, /page served up from the primary template directory/);
-            gpii.test.handlebars.server.bodyMatches("The partial should have come from the primary...", body, /partial served from the primary template directory/);
+            gpii.test.handlebars.server.bodyMatches("The page should have come from the secondary", body, /page served up from the secondary template directory/);
+            gpii.test.handlebars.server.bodyMatches("The partial should have come from the secondary...", body, /partial served from the secondary template directory/);
         });
     });
 };
 
 gpii.express({
+    gradeNames: ["fluid.modelComponent"],
     "port" :   6904,
     "baseUrl": "http://localhost:6904/",
     json: { foo: "bar", baz: "quux", qux: "quux" },
+    events: {
+        onTemplatesLoaded: null
+    },
     listeners: {
-        "onStarted.runTests": {
+        "onTemplatesLoaded.runTests": {
             funcName: "gpii.tests.handlebars.server.runTests",
             args:     ["{that}"]
         }
@@ -120,7 +124,18 @@ gpii.express({
             type: "gpii.express.hb",
             options: {
                 priority: "after:urlencoded",
-                templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"]
+                templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
+                components: {
+                    renderer: {
+                        options: {
+                            modelListeners: {
+                                templates: {
+                                    func: "{gpii.express}.events.onTemplatesLoaded.fire"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         dispatcher: {

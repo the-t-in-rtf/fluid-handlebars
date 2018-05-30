@@ -34,19 +34,19 @@ gpii.tests.handlebars.browser.inline.hasTemplateDirs = function () {
 
 /* globals window */
 gpii.tests.handlebars.browser.inline.preservesPrimaryPage = function () {
-    return window.templateAware.renderer.templates.pages.overridden.indexOf("primary") !== -1;
+    return window.templateAware.renderer.model.templates.pages.overridden.indexOf("primary") !== -1;
 };
 
 gpii.tests.handlebars.browser.inline.preservesPrimaryPartial = function () {
-    return window.templateAware.renderer.templates.partials["overridden-partial"].indexOf("primary") !== -1;
+    return window.templateAware.renderer.model.templates.partials["overridden-partial"].indexOf("primary") !== -1;
 };
 
 gpii.tests.handlebars.browser.inline.hasSecondaryPage = function () {
-    return window.templateAware.renderer.templates.pages.secondary.length > 0;
+    return window.templateAware.renderer.model.templates.pages.secondary.length > 0;
 };
 
 gpii.tests.handlebars.browser.inline.hasSecondaryPartial = function () {
-    return window.templateAware.renderer.templates.partials["secondary-partial"].length > 0;
+    return window.templateAware.renderer.model.templates.partials["secondary-partial"].length > 0;
 };
 
 fluid.defaults("gpii.tests.handlebars.browser.inline.caseHolder", {
@@ -77,7 +77,7 @@ fluid.defaults("gpii.tests.handlebars.browser.inline.caseHolder", {
                 },
                 {
                     func: "{gpii.test.handlebars.browser.environment}.webdriver.executeScript",
-                    args: [gpii.tests.handlebars.browser.inline.objectExists, "templateAware.renderer.templates"]
+                    args: [gpii.tests.handlebars.browser.inline.objectExists, "templateAware.renderer.model.templates"]
                 },
                 {
                     event:    "{gpii.test.handlebars.browser.environment}.webdriver.events.onExecuteScriptComplete",

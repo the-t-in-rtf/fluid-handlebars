@@ -1,49 +1,37 @@
 <html>
     <head>
         <title>Tests for "Template Message" component</title>
-        <!-- Bring in jQuery and other dependencies -->
-        <script type="text/javascript" src="/modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
 
-        <!-- Bring in fluid dependencies -->
-        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/FluidDocument.js"></script>
-        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/Fluid.js"></script>
-        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
-        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/FluidIoC.js"></script>
-        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/DataBinding.js"></script>
-        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/FluidView.js"></script>
-        <script type="text/javascript" src="/modules/infusion/src/lib/fastXmlPull/js/fastXmlPull.js"></script>
-        <script type="text/javascript" src="/modules/infusion/src/framework/renderer/js/fluidParser.js"></script>
-        <script type="text/javascript" src="/modules/infusion/src/framework/renderer/js/fluidRenderer.js"></script>
-        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/FluidRequests.js"></script>
-        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/ModelTransformation.js"></script>
-        <script type="text/javascript" src="/modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
-
+        <!-- Bring in jQuery and fluid dependencies -->
+        <script type="text/javascript" src="../../node_modules/infusion/dist/infusion-all.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/MessageResolver.js"></script>
 
         <!-- Bring in Handlebars dependency -->
-        <script type="text/javascript" src="/modules/handlebars/dist/handlebars.js"></script>
+        <script type="text/javascript" src="../../node_modules/handlebars/dist/handlebars.js"></script>
 
         <!-- Bring in markdown-it dependencies -->
-        <script type="text/javascript" src="/modules/markdown-it/dist/markdown-it.js"></script>
+        <script type="text/javascript" src="../../node_modules/markdown-it/dist/markdown-it.js"></script>
 
-        <script type="text/javascript" src="/src/js/common/helper.js"></script>
-        <script type="text/javascript" src="/src/js/common/equals.js"></script>
-        <script type="text/javascript" src="/src/js/common/md-common.js"></script>
-        <script type="text/javascript" src="/src/js/common/jsonify.js"></script>
-        <script type="text/javascript" src="/src/js/common/lib/i18n.js"></script>
-        <script type="text/javascript" src="/src/js/common/messageHelper.js"></script>
-        <script type="text/javascript" src="/src/js/client/md-client.js"></script>
-        <script type="text/javascript" src="/src/js/client/renderer.js"></script>
-        <script type="text/javascript" src="/modules/gpii-binder/src/js/binder.js"></script>
+        <script type="text/javascript" src="../../src/js/common/helper.js"></script>
+        <script type="text/javascript" src="../../src/js/common/equals.js"></script>
+        <script type="text/javascript" src="../../src/js/common/md-common.js"></script>
+        <script type="text/javascript" src="../../src/js/common/jsonify.js"></script>
+        <script type="text/javascript" src="../../src/js/common/lib/i18n.js"></script>
+        <script type="text/javascript" src="../../src/js/common/messageHelper.js"></script>
+        <script type="text/javascript" src="../../src/js/client/md-client.js"></script>
+        <script type="text/javascript" src="../../src/js/common/renderer.js"></script>
+        <script type="text/javascript" src="../../src/js/client/renderer.js"></script>
+        <script type="text/javascript" src="../../node_modules/gpii-binder/src/js/binder.js"></script>
 
         <!-- Bring in client library being tested -->
-        <script type="text/javascript" src="/src/js/client/templateAware.js"></script>
-        <script type="text/javascript" src="/src/js/client/templateMessage.js"></script>
+        <script type="text/javascript" src="../../src/js/client/templateAware.js"></script>
+        <script type="text/javascript" src="../../src/js/client/templateMessage.js"></script>
 
         <!-- Bring in our test helper -->
-        <script type="text/javascript" src="/content/js/tests-templateMessage.js"></script>
+        <script type="text/javascript" src="./js/tests-templateMessage.js"></script>
 
         <!-- Foundation styles -->
-        <link rel="stylesheet" href="/modules/foundation-sites/dist/css/foundation.css"/>
+        <link rel="stylesheet" href="../../node_modules/foundation-sites/dist/css/foundation.css"/>
     </head>
     <body>
         <div class="row">

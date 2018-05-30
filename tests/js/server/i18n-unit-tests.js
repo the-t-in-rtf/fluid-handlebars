@@ -14,7 +14,7 @@ fluid.require("%gpii-handlebars");
 jqUnit.module("Unit tests for i18n functions.");
 
 jqUnit.test("Testing message loading.", function () {
-    var messageBundle = gpii.handlebars.i18n.loadMessages(["%gpii-handlebars/tests/messages/primary", "%gpii-handlebars/tests/messages/secondary"], "en_us");
+    var messageBundle = gpii.handlebars.i18n.loadMessageBundles(["%gpii-handlebars/tests/messages/primary", "%gpii-handlebars/tests/messages/secondary"], "en_us");
 
     jqUnit.assertEquals("Locale content should have been loaded as expected.", "Things are fine.", fluid.get(messageBundle, "en_us.how-are-things"));
 
@@ -28,7 +28,7 @@ jqUnit.test("Testing message loading.", function () {
 });
 
 jqUnit.test("Testing message loading error handling.", function () {
-    var messageBundle = gpii.handlebars.i18n.loadMessages(["%non-existing-package/messages", "/bad/path/messages"]);
+    var messageBundle = gpii.handlebars.i18n.loadMessageBundles(["%non-existing-package/messages", "/bad/path/messages"]);
     jqUnit.assertDeepEq("An empty message bundle should be returned if no valid message directories are provided.", {}, messageBundle);
 });
 
@@ -83,7 +83,7 @@ jqUnit.test("Testing message loading error handling.", function () {
 */
 
 jqUnit.test("Testing deriving messages from message bundle by language/locale.", function () {
-    var messageBundles = gpii.handlebars.i18n.loadMessages(["%gpii-handlebars/tests/messages/primary", "%gpii-handlebars/tests/messages/secondary"], "en_us");
+    var messageBundles = gpii.handlebars.i18n.loadMessageBundles(["%gpii-handlebars/tests/messages/primary", "%gpii-handlebars/tests/messages/secondary"], "en_us");
 
     var nlNlMessages =  gpii.handlebars.i18n.deriveMessageBundle("nl_nl", messageBundles);
     jqUnit.assertEquals("Locale specific data should be included in a bundle derived from a locale.", "Hier is er geen hond.", fluid.get(nlNlMessages, "four-oh-four"));

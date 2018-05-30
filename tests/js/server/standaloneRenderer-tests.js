@@ -12,6 +12,10 @@ fluid.registerNamespace("gpii.tests.handlebars.standaloneRenderer");
 gpii.tests.handlebars.standaloneRenderer.runTests = function (that) {
     fluid.each(that.options.tests, function (testOptions) {
         jqUnit.test(testOptions.name, function () {
+            if (testOptions.locale) {
+                that.messageLoader.applier.change("locale", testOptions.locale);
+            }
+
             var output = that.renderer.render(testOptions.templateKey, testOptions.context, testOptions.locale);
             jqUnit.assertEquals("The output should be as expected...", testOptions.expected, output.trim());
         });
@@ -24,7 +28,14 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
         tests: "noexpand,nomerge"
     },
     events: {
-        onMessagesLoaded: null
+        onMessagesLoaded: null,
+        onTemplatesLoaded: null,
+        onReady: {
+            events: {
+                onMessagesLoaded: "onMessagesLoaded",
+                onTemplatesLoaded: "onTemplatesLoaded"
+            }
+        }
     },
     model: {
         messageBundles: {}
@@ -129,7 +140,7 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
         }
     ],
     listeners: {
-        "onMessagesLoaded.runTests": {
+        "onReady.runTests": {
             funcName: "gpii.tests.handlebars.standaloneRenderer.runTests",
             args:     ["{that}"]
         }
@@ -140,9 +151,14 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
             type: "gpii.handlebars.standaloneRenderer",
             options: {
                 model: {
-                    messageBundles: "{gpii.tests.handlebars.standaloneRenderer}.model.messageBundles"
+                    messages: "{gpii.tests.handlebars.standaloneRenderer}.model.messages"
                 },
-                templateDirs: "%gpii-handlebars/tests/templates/primary"
+                templateDirs: "%gpii-handlebars/tests/templates/primary",
+                modelListeners: {
+                    templates: {
+                        func: "{gpii.tests.handlebars.standaloneRenderer}.events.onTemplatesLoaded.fire"
+                    }
+                }
             }
         },
         messageLoader: {
@@ -150,10 +166,10 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
             options: {
                 messageDirs: "{gpii.tests.handlebars.standaloneRenderer}.options.messageDirs",
                 model: {
-                    messageBundles: "{gpii.tests.handlebars.standaloneRenderer}.model.messageBundles"
+                    messages: "{gpii.tests.handlebars.standaloneRenderer}.model.messages"
                 },
-                listeners: {
-                    "onMessagesLoaded.notifyParent": {
+                modelListeners: {
+                    "messageBundles": {
                         func: "{gpii.tests.handlebars.standaloneRenderer}.events.onMessagesLoaded.fire"
                     }
                 }

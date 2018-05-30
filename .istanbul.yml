@@ -1,5 +1,4 @@
 reporting:
-  print: none
   dir: ./reports
   reports:
     - lcov

@@ -8,21 +8,10 @@
         selectors: {
             initial: "" // Update the whole container
         },
-        components: {
-            renderer: {
-                options: {
-                    rules: {
-                        componentToRendererContext: {
-                            "messages": "messages",
-                            "condition": "options.condition",
-                            "deep":      "options.deep"
-                        }
-                    },
-                    condition: "working",
-                    deep: {
-                        condition: "better"
-                    }
-                }
+        model: {
+            condition: "working",
+            deep: {
+                condition: "better"
             }
         },
         invokers: {

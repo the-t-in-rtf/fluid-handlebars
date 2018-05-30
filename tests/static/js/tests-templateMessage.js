@@ -12,9 +12,9 @@ fluid.defaults("gpii.tests.handlebars.templateMessage", {
         renderer: {
             type: "gpii.handlebars.renderer",
             options: {
-                members: {
+                model: {
                     templates: {
-                        partials: {
+                        pages: {
                             "common-success": "<div class=\"callout success\">{{message}}</div>"
                         }
                     }

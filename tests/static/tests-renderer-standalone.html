@@ -1,23 +1,11 @@
 <html>
     <head>
         <title>Tests for "standalone" client-side handlebars renderer...</title>
-        <!-- Bring in jQuery and other dependencies -->
-        <script type="text/javascript" src="../../node_modules/infusion/src/lib/jquery/core/js/jquery.js"></script>
 
-        <!-- Bring in fluid dependencies -->
-        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDocument.js"></script>
-        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/Fluid.js"></script>
-        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidDOMUtilities.js"></script>
-        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidIoC.js"></script>
-        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/DataBinding.js"></script>
-        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidView.js"></script>
-        <script type="text/javascript" src="../../node_modules/infusion/src/lib/fastXmlPull/js/fastXmlPull.js"></script>
-        <script type="text/javascript" src="../../node_modules/infusion/src/framework/renderer/js/fluidParser.js"></script>
-        <script type="text/javascript" src="../../node_modules/infusion/src/framework/renderer/js/fluidRenderer.js"></script>
-        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/FluidRequests.js"></script>
-        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/ModelTransformation.js"></script>
-        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
-        
+        <!-- Bring in jQuery and fluid dependencies -->
+        <script type="text/javascript" src="../../node_modules/infusion/dist/infusion-all.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/MessageResolver.js"></script>
+
         <!-- Bring in Handlebars dependency -->
         <script type="text/javascript" src="../../node_modules/handlebars/dist/handlebars.js"></script>
 
@@ -25,8 +13,10 @@
         <script type="text/javascript" src="../../node_modules/markdown-it/dist/markdown-it.js"></script>
 
         <!-- Bring in client library being tested -->
+        <script type="text/javascript" src="../../src/js/common/lib/i18n.js"></script>
         <script type="text/javascript" src="../../node_modules/gpii-binder/src/js/binder.js"></script>
         <script type="text/javascript" src="../../src/js/client/templateAware.js"></script>
+        <script type="text/javascript" src="../../src/js/common/renderer.js"></script>
         <script type="text/javascript" src="../../src/js/client/renderer.js"></script>
         <script type="text/javascript" src="../../src/js/common/helper.js"></script>
         <script type="text/javascript" src="../../src/js/common/md-common.js"></script>

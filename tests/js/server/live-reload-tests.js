@@ -127,8 +127,9 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                             args: ["{testEnvironment}.options.templateDirs", "pages/singleTemplateMiddleware", "I love single templates."] // templateDir, path, textToAppend
                         },
                         {
-                            event:    "{testEnvironment}.events.onTemplatesLoaded",
-                            listener: "{postChangeSingleTemplateRequest}.send"
+                            changeEvent: "{testEnvironment}.express.handlebars.renderer.applier.modelChanged",
+                            path:        "templates",
+                            listener:    "{postChangeSingleTemplateRequest}.send"
                         },
                         {
                             listener: "gpii.tests.handlebars.live.verifyResults",
@@ -154,8 +155,9 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                             args: ["{testEnvironment}.options.templateDirs", "pages/index", "I love dispatched templates."] // templateDir, path, textToAppend
                         },
                         {
-                            event:    "{testEnvironment}.events.onTemplatesLoaded",
-                            listener: "{postChangeDispatcherRequest}.send"
+                            changeEvent: "{testEnvironment}.express.handlebars.renderer.applier.modelChanged",
+                            path:        "templates",
+                            listener:    "{postChangeDispatcherRequest}.send"
                         },
                         {
                             listener: "gpii.tests.handlebars.live.verifyResults",
@@ -181,8 +183,9 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                             args: ["{testEnvironment}.options.templateDirs", "partials/renderer-partial", "  I love inline templates."] // templateDir, path, textToAppend
                         },
                         {
-                            event:    "{testEnvironment}.events.onTemplatesLoaded",
-                            listener: "{postChangeInlineRequest}.send"
+                            changeEvent: "{testEnvironment}.express.handlebars.renderer.applier.modelChanged",
+                            path:        "templates",
+                            listener:    "{postChangeInlineRequest}.send"
                         },
                         {
                             listener: "gpii.tests.handlebars.live.pathEquals",
@@ -208,8 +211,9 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                             args: ["{testEnvironment}.options.templateDirs", "pages/error", "I love error templates."] // templateDir, path, textToAppend
                         },
                         {
-                            event:    "{testEnvironment}.events.onTemplatesLoaded",
-                            listener: "{postChangeErrorRequest}.send"
+                            changeEvent: "{testEnvironment}.express.handlebars.renderer.applier.modelChanged",
+                            path:        "templates",
+                            listener:    "{postChangeErrorRequest}.send"
                         },
                         {
                             listener: "gpii.tests.handlebars.live.verifyResults",
@@ -328,8 +332,7 @@ fluid.defaults("gpii.tests.handlebars.live.environment", {
         cleanup:           null,
         onCleanupComplete: null,
         onWatcherReady:    null,
-        onTemplatesCloned: null,
-        onTemplatesLoaded: null
+        onTemplatesCloned: null
     },
     templateSource: "%gpii-handlebars/tests/templates/primary",
     templateDirs: "@expand:gpii.tests.handlebars.live.generateUniqueTemplateDir({that})",
@@ -360,9 +363,6 @@ fluid.defaults("gpii.tests.handlebars.live.environment", {
                         options: {
                             templateDirs: "{gpii.tests.handlebars.live.environment}.options.templateDirs",
                             listeners: {
-                                "onTemplatesLoaded.notifyEnvironment": {
-                                    func: "{testEnvironment}.events.onTemplatesLoaded.fire"
-                                },
                                 "onWatcherReady.notifyEnvironment": {
                                     func: "{testEnvironment}.events.onWatcherReady.fire"
                                 },

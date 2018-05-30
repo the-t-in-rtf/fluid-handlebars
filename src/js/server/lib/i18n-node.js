@@ -44,7 +44,7 @@ gpii.handlebars.i18n.deriveMessageBundleFromRequest = function (request, message
  * @returns {Object} - A combined bundle of message bundles, keyed by locales and languages.
  *
  */
-gpii.handlebars.i18n.loadMessages = function (messageDirs, defaultLocale) {
+gpii.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) {
     defaultLocale = defaultLocale || "en_us";
     var messageBundles = {};
     var resolvedMessageDirs = gpii.express.hb.resolveAllPaths(messageDirs);
@@ -107,9 +107,16 @@ gpii.handlebars.i18n.loadMessages = function (messageDirs, defaultLocale) {
 
 fluid.registerNamespace("gpii.handlebars.i18n.messageLoader");
 
-gpii.handlebars.i18n.messageLoader.loadMessages =  function (that) {
-    that.applier.change("messageBundles", gpii.handlebars.i18n.loadMessages(that.options.messageDirs, that.options.defaultLocale));
+gpii.handlebars.i18n.messageLoader.loadMessageBundles =  function (that) {
+    var messageBundles = gpii.handlebars.i18n.loadMessageBundles(that.options.messageDirs, that.options.defaultLocale);
+    that.applier.change("messageBundles", messageBundles);
+
     that.events.onMessagesLoaded.fire(that);
+};
+
+gpii.handlebars.i18n.messageLoader.deriveMessagesFromBundlesAndLocale = function (that) {
+    var messages = gpii.handlebars.i18n.deriveMessageBundle(that.model.locale, that.model.messageBundles, that.options.defaultLocale);
+    that.applier.change("messages", messages);
 };
 
 fluid.defaults("gpii.handlebars.i18n.messageLoader", {
@@ -119,19 +126,27 @@ fluid.defaults("gpii.handlebars.i18n.messageLoader", {
         messageDirs: "nomerge"
     },
     messageDirs: [],
-    members: {
+    model: {
+        locale: "{that}.options.defaultLocale",
+        messages: {},
         messageBundles: {}
     },
     events: {
-        loadMessages: null,
         onMessagesLoaded: null
     },
     listeners: {
         "onCreate.loadMessages": {
-            func: "{that}.events.loadMessages.fire"
+            funcName: "gpii.handlebars.i18n.messageLoader.loadMessageBundles",
+            args:     ["{that}"]
+        }
+    },
+    modelListeners: {
+        "locale": {
+            funcName: "gpii.handlebars.i18n.messageLoader.deriveMessagesFromBundlesAndLocale",
+            args:     ["{that}"]
         },
-        "loadMessages.loadMessages": {
-            funcName: "gpii.handlebars.i18n.messageLoader.loadMessages",
+        "messageBundles": {
+            funcName: "gpii.handlebars.i18n.messageLoader.deriveMessagesFromBundlesAndLocale",
             args:     ["{that}"]
         }
     }

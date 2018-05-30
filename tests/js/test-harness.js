@@ -91,7 +91,7 @@ fluid.defaults("gpii.test.handlebars.client.harness", {
         modules: {
             type: "gpii.express.router.static",
             options: {
-                path:    "/modules",
+                path:    "/node_modules",
                 content: "%gpii-handlebars/node_modules"
             }
         },

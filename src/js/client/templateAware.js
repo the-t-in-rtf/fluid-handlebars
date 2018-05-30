@@ -94,6 +94,9 @@
         requiredOptions: {
             templates: true
         },
+        model: {
+            templates: "{that}.options.templates"
+        },
         mergePolicy: {
             "templates.layouts":  "noexpand",
             "templates.pages":    "noexpand",
@@ -105,7 +108,12 @@
         },
         components: {
             renderer: {
-                type: "gpii.handlebars.renderer.standalone"
+                type: "gpii.handlebars.renderer.standalone",
+                options: {
+                    model: {
+                        templates: "{gpii.handlebars.templateAware.standalone}.model.templates"
+                    }
+                }
             }
         },
         listeners: {

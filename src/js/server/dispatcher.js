@@ -17,15 +17,12 @@ require("./lib/resolver");
 var path = require("path");
 
 gpii.handlebars.dispatcherMiddleware.middleware = function (that, req, res, next) {
-    var template     = req.params.template ? req.params.template : that.options.defaultTemplate;
-    var templateName = template + ".handlebars";
-
-
+    var templateName     = req.params.template ? req.params.template : that.options.defaultTemplate;
     var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
 
-    var templateExists =  fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn(["pages", templateName]));
+    var templateExists =  fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn(["pages", templateName + ".handlebars"]));
     if (templateExists) {
-        var layoutExists    = fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn(["layouts", templateName]));
+        var layoutExists    = fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn(["layouts", templateName + ".handlebars"]));
         var layoutName      = layoutExists ? templateName : that.options.defaultLayout;
         var contextToExpose = fluid.model.transformWithRules({ model: that.model, req: req, layout: layoutName }, that.options.rules.contextToExpose);
         // TODO: merge this with a message bundle specific to the user's request.
@@ -43,7 +40,7 @@ fluid.defaults("gpii.handlebars.dispatcherMiddleware", {
     namespace:       "dispatcher", // Namespace to allow other routers to put themselves in the chain before or after us.
     method:          "get",
     defaultTemplate: "index",
-    defaultLayout:   "main.handlebars",
+    defaultLayout:   "main",
     rules: {
         contextToExpose: {
             "layout": "layout", // This is required to support custom layouts

@@ -53,8 +53,8 @@ fluid.defaults("gpii.handlebars.inlineMessageBundlingMiddleware.request", {
     }
 });
 
-gpii.handlebars.inlineMessageBundlingMiddleware.loadMessages =  function (that) {
-    that.applier.change("messageBundles", gpii.handlebars.i18n.loadMessages(that.options.messageDirs, that.options.defaultLocale));
+gpii.handlebars.inlineMessageBundlingMiddleware.loadMessageBundles =  function (that) {
+    that.applier.change("messageBundles", gpii.handlebars.i18n.loadMessageBundles(that.options.messageDirs, that.options.defaultLocale));
     that.events.messagesLoaded.fire(that);
 };
 
@@ -67,16 +67,12 @@ fluid.defaults("gpii.handlebars.inlineMessageBundlingMiddleware", {
         messageBundles: {}
     },
     events: {
-        loadMessages: null,
         messagesLoaded: null
     },
     handlerGrades: ["gpii.handlebars.inlineMessageBundlingMiddleware.request"],
     listeners: {
         "onCreate.loadMessages": {
-            func: "{that}.events.loadMessages.fire"
-        },
-        "loadMessages.loadMessages": {
-            funcName: "gpii.handlebars.inlineMessageBundlingMiddleware.loadMessages",
+            funcName: "gpii.handlebars.inlineMessageBundlingMiddleware.loadMessageBundles",
             args:     ["{that}"]
         }
     }
