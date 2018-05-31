@@ -11,7 +11,7 @@
     "dependencies": {
         "chokidar": "2.0.3",
         "gpii-binder": "1.0.3",
-        "gpii-express": "1.0.13",
+        "gpii-express": "1.0.14",
         "handlebars": "4.0.11",
         "infusion": "3.0.0-dev.20180208T114206Z.2964703",
         "json5": "1.0.1",
