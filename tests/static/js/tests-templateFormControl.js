@@ -10,7 +10,7 @@
 
     fluid.defaults("gpii.tests.templateFormControl", {
         gradeNames: ["gpii.handlebars.templateAware.serverAware", "gpii.handlebars.templateFormControl"],
-        templates: {
+        templateKeys: {
             success: "common-success",
             error:   "common-error"
         },
@@ -32,7 +32,7 @@
         model: {
             buttonName: "Succeed"
         },
-        templates: {
+        templateKeys: {
             initial: "form-success-initial",
             success: "form-success"
         }
@@ -83,7 +83,7 @@
         model: {
             buttonName: "Fail"
         },
-        templates: {
+        templateKeys: {
             initial: "form-failure-initial"
         }
     });
@@ -96,7 +96,7 @@
         model: {
             buttonName: "Stringify Fail"
         },
-        templates: {
+        templateKeys: {
             initial: "form-failure-initial"
         }
     });
@@ -115,7 +115,7 @@
                 errorMessage: "responseText"
             }
         },
-        templates: {
+        templateKeys: {
             initial: "form-failure-initial"
         }
     });

@@ -17,7 +17,7 @@
         args: [
           "{that}",
           "{that}.options.selectors.selector",
-          "{that}.options.templates.templates",
+          "{that}.options.templateKeys.templateKey",
           "{that}.model",
           "appendTo"
         ]

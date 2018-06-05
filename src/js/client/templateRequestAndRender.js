@@ -14,9 +14,9 @@
     fluid.defaults("gpii.handlebars.templateRequestAndRender", {
         gradeNames:    ["gpii.hasRequiredOptions", "gpii.handlebars.ajaxCapable"],
         requiredOptions: {
-            templates:           true,
-            "templates.error":   true,
-            "templates.success": true
+            templateKeys:           true,
+            "templateKeys.error":   true,
+            "templateKeys.success": true
         },
         ajaxOptions: {
             success: "{that}.handleSuccessFirst",
@@ -28,7 +28,7 @@
                 createOnEvent: "{renderer}.events.onRequestReceived",
                 container:     "{templateRequestAndRender}.dom.success",
                 options: {
-                    template: "{templateRequestAndRender}.options.templates.success",
+                    template: "{templateRequestAndRender}.options.templateKeys.success",
                     model:  {
                         message: "{templateRequestAndRender}.successMessage"
                     }
@@ -39,7 +39,7 @@
                 createOnEvent: "{renderer}.events.onRequestReceived",
                 container:     "{templateRequestAndRender}.dom.error",
                 options: {
-                    template: "{templateRequestAndRender}.options.templates.error",
+                    template: "{templateRequestAndRender}.options.templateKeys.error",
                     model:  {
                         message: "{templateRequestAndRender}.errorMessage"
                     }

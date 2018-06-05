@@ -81,9 +81,14 @@ var Handlebars = Handlebars || {};
         var combinedContext = fluid.merge({}, { messages: that.model.messages}, context);
 
         var template = fluid.get(that.model, ["templates", "pages", templateKey]);
-        var compiledTemplate = Handlebars.compile(template);
+        if (template) {
+            var compiledTemplate = Handlebars.compile(template);
 
-        return compiledTemplate(combinedContext);
+            return compiledTemplate(combinedContext);
+        }
+        else {
+            fluid.fail("Can't find template '" + templateKey, "'.");
+        }
     };
 
     /**
