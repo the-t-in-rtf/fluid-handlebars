@@ -28,7 +28,7 @@ vagrant_up:
   stage: vagrant_up
   script:
     - VBoxManage --version
-    - ls -la ~/
+    - ls -la ~/VirtualBox\ VMs
     - vagrant box update
     - vagrant up
   when: always
