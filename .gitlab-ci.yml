@@ -27,7 +27,6 @@ before_script:
 vagrant_up:
   stage: vagrant_up
   script:
-    - VBoxManage list runningvms
     - vagrant box update
     - vagrant up
   when: always
@@ -36,6 +35,11 @@ vagrant_tests:
   stage: vagrant_tests
   script:
     - vagrant ci test
+  coverage: '/=+ Coverage summary =+/'
+  artifacts:
+    paths:
+    - reports/
+    - coverage/
 
 vagrant_destroy:
   stage: vagrant_destroy
