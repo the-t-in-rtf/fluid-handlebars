@@ -27,7 +27,7 @@ before_script:
 vagrant_up:
   stage: vagrant_up
   script:
-    - vagrant destroy -f
+    - VBoxManage --version
     - vagrant box update
     - vagrant up
   when: always
