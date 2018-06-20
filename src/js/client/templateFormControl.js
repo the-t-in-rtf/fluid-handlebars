@@ -46,7 +46,7 @@
             templateKeys:           true,
             "templateKeys.initial": true,
             "templateKeys.error":   true,
-            "templates.success": true
+            "templateKeys.success": true
         },
         model: {
         },
