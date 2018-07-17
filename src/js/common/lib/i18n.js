@@ -185,4 +185,3 @@ gpii.handlebars.i18n.languageFromLocale = function (localeString) {
     }
     return undefined;
 };
-

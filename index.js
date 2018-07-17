@@ -24,4 +24,3 @@ require("./src/js/server/lib/i18n-node");
 require("./src/js/server/md-server");
 require("./src/js/server/singleTemplateMiddleware");
 require("./src/js/server/standaloneRenderer");
-

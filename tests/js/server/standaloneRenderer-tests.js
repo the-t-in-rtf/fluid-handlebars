@@ -178,4 +178,3 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
     }
 });
 gpii.tests.handlebars.standaloneRenderer();
-
