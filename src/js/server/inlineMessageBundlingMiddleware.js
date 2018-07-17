@@ -53,11 +53,6 @@ fluid.defaults("gpii.handlebars.inlineMessageBundlingMiddleware.request", {
     }
 });
 
-gpii.handlebars.inlineMessageBundlingMiddleware.loadMessageBundles =  function (that) {
-    that.applier.change("messageBundles", gpii.handlebars.i18n.loadMessageBundles(that.options.messageDirs, that.options.defaultLocale));
-    that.events.messagesLoaded.fire(that);
-};
-
 fluid.defaults("gpii.handlebars.inlineMessageBundlingMiddleware", {
     gradeNames:          ["gpii.express.middleware.requestAware", "fluid.modelComponent"],
     defaultLocale:       "en_us",
@@ -66,14 +61,5 @@ fluid.defaults("gpii.handlebars.inlineMessageBundlingMiddleware", {
     model: {
         messageBundles: {}
     },
-    events: {
-        messagesLoaded: null
-    },
-    handlerGrades: ["gpii.handlebars.inlineMessageBundlingMiddleware.request"],
-    listeners: {
-        "onCreate.loadMessages": {
-            funcName: "gpii.handlebars.inlineMessageBundlingMiddleware.loadMessageBundles",
-            args:     ["{that}"]
-        }
-    }
+    handlerGrades: ["gpii.handlebars.inlineMessageBundlingMiddleware.request"]
 });

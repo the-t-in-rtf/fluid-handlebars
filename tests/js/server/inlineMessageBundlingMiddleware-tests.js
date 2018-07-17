@@ -10,6 +10,8 @@ gpii.express.loadTestingSupport();
 
 var jqUnit = require("node-jqunit");
 
+var request = require("request");
+
 fluid.registerNamespace("gpii.tests.handlebars.inlineMessageBundlingMiddleware");
 
 gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle = function (response, returnedBundle, expected) {
@@ -30,6 +32,43 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.request", 
         "Accept-Language": "{gpii.tests.handlebars.inlineMessageBundlingMiddleware.request}.options.acceptLanguageHeaders"
     }
 });
+
+gpii.tests.handlebars.inlineMessageBundlingMiddleware.testBundleCaching = function (testEnvironment) {
+    var messagesEndpoint = "http://localhost:" + testEnvironment.options.port + "/messages";
+
+    var firstRequestOptions = {
+        url: messagesEndpoint
+    };
+
+    jqUnit.stop();
+    request(firstRequestOptions, function (error, response, body) {
+        jqUnit.start();
+
+        jqUnit.assertEquals("There should not be an error.", null, error);
+
+        jqUnit.assertNotUndefined("The body should be defined.", body);
+
+        var etag = fluid.get(response, ["headers", "etag"]);
+        if (etag) {
+            var secondRequestOptions = {
+                url: messagesEndpoint,
+                headers: {
+                    "If-None-Match": etag
+                }
+            };
+            jqUnit.stop();
+            request(secondRequestOptions, function (error, response, body) {
+                jqUnit.start();
+                jqUnit.assertEquals("There should not be an error.", null, error);
+                jqUnit.assertEquals("There should not be a body.", "", body);
+                jqUnit.assertEquals("The status code should be correct.", 304, response.statusCode);
+            });
+        }
+        else {
+            jqUnit.fail("There should have been an etag in the first response");
+        }
+    });
+};
 
 fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder", {
     gradeNames: ["gpii.test.express.caseHolder"],
@@ -107,6 +146,14 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
         {
             name: "Testing message bundling middleware...",
             tests: [
+                {
+                    name: "Message bundle caching should work as expected.",
+                    type: "test",
+                    sequence: [{
+                        func: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.testBundleCaching",
+                        args: ["{testEnvironment}"]
+                    }]
+                },
                 {
                     name: "The default language should be used if there are no Accept-Language headers.",
                     type: "test",
@@ -369,14 +416,22 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.environmen
         express: {
             options: {
                 components: {
-                    inlineMessageBundlingMiddleware: {
-                        type: "gpii.handlebars.inlineMessageBundlingMiddleware",
+                    messageLoader: {
+                        type: "gpii.handlebars.i18n.messageLoader",
                         options: {
                             messageDirs: ["%gpii-handlebars/tests/messages/primary", "%gpii-handlebars/tests/messages/secondary"],
                             listeners: {
-                                "messagesLoaded.notifyParent": {
+                                "onMessagesLoaded.notifyParent": {
                                     func: "{testEnvironment}.events.messagesLoaded.fire"
                                 }
+                            }
+                        }
+                    },
+                    inlineMessageBundlingMiddleware: {
+                        type: "gpii.handlebars.inlineMessageBundlingMiddleware",
+                        options: {
+                            model: {
+                                messageBundles: "{messageLoader}.model.messageBundles"
                             }
                         }
                     }

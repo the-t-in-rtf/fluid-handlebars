@@ -76,6 +76,7 @@ fluid.defaults("gpii.test.handlebars.client.harness", {
         messages: {
             type: "gpii.handlebars.inlineMessageBundlingMiddleware",
             options: {
+                messageDirs: "{harness}.options.messageDirs",
                 model: {
                     messageBundles: "{messageLoader}.model.messageBundles"
                 }

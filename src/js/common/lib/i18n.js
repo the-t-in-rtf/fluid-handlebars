@@ -20,17 +20,14 @@ fluid.registerNamespace("gpii.handlebars.i18n");
  */
 gpii.handlebars.i18n.getAllLocalesFromHeader = function (header) {
     var acceptedLanguages = [];
-    if (header === undefined) {
-        acceptedLanguages.push("*");
-    }
-    else if (typeof header === "string") {
+    if (typeof header === "string") {
         var localeSegments = header.trim().split(/ *, */);
         var segmentsAsObjects = [];
-        fluid.each(localeSegments, function (localeSegment) {
+        localeSegments.forEach(function (localeSegment) {
             var subSegments = localeSegment.split(";q=");
             var segmentDef = {
                 locale: subSegments[0],
-                q: subSegments.length > 1 ? subSegments[1] : 1
+                q: subSegments.length > 1 ? parseInt(subSegments[1], 10) : 1
             };
             segmentsAsObjects.push(segmentDef);
         });
@@ -38,6 +35,9 @@ gpii.handlebars.i18n.getAllLocalesFromHeader = function (header) {
         segmentsAsObjects.map(function (entry) {
             acceptedLanguages.push(entry.locale);
         });
+    }
+    else {
+        acceptedLanguages.push("*");
     }
     return acceptedLanguages.map(function (entry) { return entry.toLowerCase().replace("-", "_");});
 };
@@ -52,15 +52,7 @@ gpii.handlebars.i18n.getAllLocalesFromHeader = function (header) {
  *
  */
 gpii.handlebars.i18n.sortByQScore = function (a, b) {
-    if (a.q === b.q) {
-        return 0;
-    }
-    else if (a.q > b.q) {
-        return -1;
-    }
-    else {
-        return 1;
-    }
+    return b.q - a.q;
 };
 
 /**
@@ -116,26 +108,29 @@ gpii.handlebars.i18n.deriveMessageBundle = function (preferredLocale, messageBun
     defaultLocale = defaultLocale || "en_us";
     preferredLocale = preferredLocale || defaultLocale;
 
-    var defaultMessages = fluid.get(messageBundles, defaultLocale);
+    var messagesToMerge = [fluid.get(messageBundles, defaultLocale)];
 
-    var languageMessages = {};
     // Look up any messages inherited from the language portion of the locale, and use those instead of the defaults.
     var preferredLanguage = gpii.handlebars.i18n.languageFromLocale(preferredLocale);
+    var defaultLanguage = gpii.handlebars.i18n.languageFromLocale(defaultLocale);
     if (preferredLanguage && fluid.get(messageBundles, preferredLanguage)) {
-        languageMessages = messageBundles[preferredLanguage];
+        // the default locale should take precedence over the default language, i.e. should appear later in the array.
+        if (defaultLanguage === preferredLanguage) {
+            messagesToMerge.unshift(messageBundles[preferredLanguage]);
+        }
+        // The chosen language should take precedence, i.e. should appear earlier in the array.
+        else {
+            messagesToMerge.push(messageBundles[preferredLanguage]);
+        }
     }
 
-    var combinedMessageBundle = fluid.copy(languageMessages);
-
-    // The default locale wins out over messages inherited from the underlying language.
-    if (preferredLocale === defaultLocale) {
-        combinedMessageBundle = fluid.merge({}, combinedMessageBundle, defaultMessages);
-    }
-    // If we are not using the default locale and there are messages for our locale, those win over anything we've collected so far.
-    else if (fluid.get(messageBundles, preferredLocale)) {
-        combinedMessageBundle = fluid.merge({}, defaultMessages, combinedMessageBundle, messageBundles[preferredLocale]);
+    // The default locale wins out over messages inherited from the underlying language, i.e. it should be later in the merge.
+    if (preferredLocale !== defaultLocale && fluid.get(messageBundles, preferredLocale)) {
+        messagesToMerge.push(messageBundles[preferredLocale]);
     }
 
+    var combinedMessageBundle = {};
+    fluid.extend.apply(null, [true, combinedMessageBundle].concat(messagesToMerge));
     return combinedMessageBundle;
 };
 
@@ -164,7 +159,7 @@ gpii.handlebars.i18n.sortByDescendingLength = function (a, b) {
  */
 gpii.handlebars.i18n.languagesAndLocalesFromMessageBundle = function (messageBundle, defaultLocale) {
     var rawKeys = Object.keys(messageBundle);
-    rawKeys.sort(gpii.handlebars.inlineMessageBundlingMiddleware.request.sortByDescendingLength);
+    rawKeys.sort(gpii.handlebars.i18n.sortByDescendingLength);
 
     // Always make sure the default locale is first so that wildcard matching (or the lack of headers results in using the default locale.
     return [defaultLocale].concat(rawKeys);

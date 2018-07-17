@@ -85,15 +85,27 @@ jqUnit.test("Testing message loading error handling.", function () {
 jqUnit.test("Testing deriving messages from message bundle by language/locale.", function () {
     var messageBundles = gpii.handlebars.i18n.loadMessageBundles(["%gpii-handlebars/tests/messages/primary", "%gpii-handlebars/tests/messages/secondary"], "en_us");
 
-    var nlNlMessages =  gpii.handlebars.i18n.deriveMessageBundle("nl_nl", messageBundles);
+    var nlNlMessages =  gpii.handlebars.i18n.deriveMessageBundleFromHeader("nl_nl", messageBundles);
     jqUnit.assertEquals("Locale specific data should be included in a bundle derived from a locale.", "Hier is er geen hond.", fluid.get(nlNlMessages, "four-oh-four"));
     jqUnit.assertEquals("Language data should be included in a bundle derived from a locale.", "Het gaat goed.", fluid.get(nlNlMessages, "how-are-things"));
     jqUnit.assertEquals("Unique data from the default locale should be included in a bundle derived from a locale.", "This is %condition.", fluid.get(nlNlMessages, "shallow-variable"));
 
-    var nlBeMessages =  gpii.handlebars.i18n.deriveMessageBundle("nl_be", messageBundles);
+    var nlBeMessages =  gpii.handlebars.i18n.deriveMessageBundleFromHeader("nl_be", messageBundles);
     jqUnit.assertEquals("Locale specific data should be included in a bundle derived from a locale.", "Hier is er geen kat.", fluid.get(nlBeMessages, "four-oh-four"));
     jqUnit.assertEquals("Language data should be included in a bundle derived from a locale.", "Het gaat goed.", fluid.get(nlBeMessages, "how-are-things"));
     jqUnit.assertEquals("Unique from a locale with the same language should be included in a bundle derived from a locale.", "golf", fluid.get(nlBeMessages, "wave"));
+
+    var enInMessages = gpii.handlebars.i18n.deriveMessageBundleFromHeader("en_in", messageBundles);
+    jqUnit.assertEquals("A locale for which we have no messages should fail over to the language.", "Things are fine.", fluid.get(enInMessages, "how-are-things"));
+
+    var zhTwMessages = gpii.handlebars.i18n.deriveMessageBundleFromHeader("zh_tw", messageBundles);
+    jqUnit.assertEquals("A language for which we have no messages should fail over to the default.", "Things are fine.", fluid.get(zhTwMessages, "how-are-things"));
+
+    jqUnit.assertDeepEq("Missing headers should be handled correctly in deriveMessageBundleFromHeader.", { "this": "works"}, gpii.handlebars.i18n.deriveMessageBundleFromHeader(undefined, { "my-default": { "this": "works"} }, "my-default"));
+
+    jqUnit.assertDeepEq("Missing headers should be handled correctly in getAllLocalesFromHeader.", ["*"],  gpii.handlebars.i18n.getAllLocalesFromHeader());
+
+    jqUnit.assertDeepEq("Garbled headers should be handled correctly in getAllLocalesFromHeader.", ["*"],  gpii.handlebars.i18n.getAllLocalesFromHeader());
 });
 
 jqUnit.test("Testing language detection from locale.", function () {

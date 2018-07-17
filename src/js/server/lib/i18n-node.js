@@ -64,17 +64,14 @@ gpii.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) 
 
                 if (matchesLocale) {
                     var preferredLocale = matchesLocale[1];
-                    if (!filesByLocale[preferredLocale]) { filesByLocale[preferredLocale] = []; }
-                    filesByLocale[preferredLocale].push(fullPath);
+                    fluid.pushArray(filesByLocale, preferredLocale, fullPath);
                 }
                 else if (matchesLanguage) {
                     var preferredLanguage = matchesLanguage[1];
-                    if (!filesByLanguage[preferredLanguage]) { filesByLanguage[preferredLanguage] = []; }
-                    filesByLanguage[preferredLanguage].push(fullPath);
+                    fluid.pushArray(filesByLanguage, preferredLanguage, fullPath);
                 }
                 else {
-                    if (!filesByLocale[defaultLocale]) { filesByLocale[defaultLocale] = []; }
-                    filesByLocale[defaultLocale].push(fullPath);
+                    fluid.pushArray(filesByLocale, defaultLocale, fullPath);
                 }
             });
         }
@@ -87,11 +84,11 @@ gpii.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) 
     fluid.each(filesByLocale, function (files, locale) {
         fluid.each(files, function (fullPath) {
             var data = JSON5.parse(fs.readFileSync(fullPath, "utf8"));
-            messageBundles[locale] = fluid.merge({}, messageBundles[locale], data);
+            messageBundles[locale] = fluid.extend(true, messageBundles[locale], data);
 
             // Add any unique material from the locale to the language, taking care to prefer existing language data.
             var languageFromLocale = gpii.handlebars.i18n.languageFromLocale(locale);
-            messageBundles[languageFromLocale] = fluid.merge({}, messageBundles[languageFromLocale], data);
+            messageBundles[languageFromLocale] = fluid.extend(true, messageBundles[languageFromLocale], data);
         });
     });
 
@@ -99,7 +96,7 @@ gpii.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) 
     fluid.each(filesByLanguage, function (files, language) {
         fluid.each(files, function (fullPath) {
             var data = JSON5.parse(fs.readFileSync(fullPath, "utf8"));
-            messageBundles[language] = fluid.merge({}, messageBundles[language], data);
+            messageBundles[language] = fluid.extend(true, messageBundles[language], data);
         });
     });
 
@@ -110,7 +107,8 @@ fluid.registerNamespace("gpii.handlebars.i18n.messageLoader");
 
 gpii.handlebars.i18n.messageLoader.loadMessageBundles =  function (that) {
     var messageBundles = gpii.handlebars.i18n.loadMessageBundles(that.options.messageDirs, that.options.defaultLocale);
-    that.applier.change("messageBundles", messageBundles);
+
+    gpii.handlebars.utils.deleteAndAddModelData(that, "messageBundles", messageBundles);
 
     that.events.onMessagesLoaded.fire(that);
 };

@@ -68,7 +68,8 @@
     fluid.registerNamespace("gpii.handlebars.renderer.serverAware");
     gpii.handlebars.renderer.serverAware.cacheTemplates = function (that, data) {
         var templates = fluid.filterKeys(data.templates, ["layouts", "pages", "partials"]);
-        that.applier.change("templates", templates);
+
+        gpii.handlebars.utils.deleteAndAddModelData(that, "templates", templates);
 
         // Fire a "templates loaded" event so that components can wait for their markup to appear.
         that.events.onTemplatesLoaded.fire(that);
@@ -92,7 +93,7 @@
         invokers: {
             "cacheTemplates": {
                 funcName: "gpii.handlebars.renderer.serverAware.cacheTemplates",
-                args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
+                args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"] //  data, textStatus, jqXHR
             }
         },
         events: {
@@ -117,7 +118,10 @@
      * @param {Object} data - The message bundle for the locale as returned by the server.
      */
     gpii.handlebars.renderer.serverMessageAware.cacheMessages = function (that, data) {
-        that.applier.change("messages", data);
+        var transaction = that.applier.initiate();
+        transaction.fireChangeRequest({path: "messages", type: "DELETE"});
+        transaction.fireChangeRequest({path: "messages", type: "ADD", value: data });
+        transaction.commit();
 
         // Fire a "messages loaded" event so that components can render once they are available.
         that.events.onMessagesLoaded.fire(that);

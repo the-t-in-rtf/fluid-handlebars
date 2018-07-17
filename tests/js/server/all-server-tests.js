@@ -7,10 +7,13 @@ require("./standaloneRenderer-tests");
 
 require("./dispatcher-tests.js");
 require("./errorRenderingMiddleware-tests");
-require("./first-matching-path-tests.js");
+require("./first-matching-path-tests");
 require("./i18n-unit-tests");
-require("./inline-tests.js");
+require("./inline-tests");
+// TODO: These don't work!
+require("./inlineMessageBundlingMiddleware-tests");
 require("./live-reload-tests");
-require("./resolver-tests.js");
+require("./resolver-tests");
 require("./singleTemplateMiddleware-tests");
+require("./standaloneRenderer-tests");
 require("./watcher-tests");

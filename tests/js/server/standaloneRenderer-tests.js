@@ -137,6 +137,12 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
             templateKey: "messageHelper",
             context: { key: "deep-variable", deep: { condition: "better"} },
             expected: "This is even better."
+        },
+        {
+            name: "Testing failover to context root.",
+            templateKey: "messageHelper-root",
+            context: { key: "shallow-variable", condition: "fine"},
+            expected: "This is fine."
         }
     ],
     listeners: {
