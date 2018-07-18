@@ -69,14 +69,7 @@ gpii.handlebars.i18n.deriveMessageBundleFromHeader = function (header, messageBu
     var localesAndLanguages = gpii.handlebars.i18n.languagesAndLocalesFromMessageBundle(messageBundles, defaultLocale);
     var allLocalesFromHeader = gpii.handlebars.i18n.getAllLocalesFromHeader(header);
 
-    var inheritedMatchingLanguage = fluid.find(allLocalesFromHeader, function (candidateLocale) {
-        var language = gpii.handlebars.i18n.languageFromLocale(candidateLocale);
-        if (language && localesAndLanguages.indexOf(language) !== -1) {
-            return language;
-        }
-    });
-
-    var directMatchingLocaleOrLanguage = fluid.find(allLocalesFromHeader, function (candidateLocale) {
+    var preferredLanguageOrLocale = fluid.find(allLocalesFromHeader, function (candidateLocale) {
         if (candidateLocale === "*") {
             return defaultLocale;
         }
@@ -85,7 +78,6 @@ gpii.handlebars.i18n.deriveMessageBundleFromHeader = function (header, messageBu
         }
     });
 
-    var preferredLanguageOrLocale = directMatchingLocaleOrLanguage || inheritedMatchingLanguage || defaultLocale;
     return gpii.handlebars.i18n.deriveMessageBundle(preferredLanguageOrLocale, messageBundles, defaultLocale);
 };
 
@@ -94,9 +86,10 @@ gpii.handlebars.i18n.deriveMessageBundleFromHeader = function (header, messageBu
  * Derive a single message bundle from all available languages and locales, based on the `Accept-Language` headers
  * passed as part of `request`.  Returns a combination of all messages found matching the following:
  *
- * 1. The user's locale.
- * 2. The user's language.
+ * 1. The user's locale, if different than the default.
+ * 2. The user's language, if different than the default.
  * 3. The default locale.
+ * 4. The default language.
  *
  * @param {String} preferredLocale - The locale to use.
  * @param {Object} messageBundles - The full set of all message bundles available, keyed by locale or language.
@@ -106,27 +99,27 @@ gpii.handlebars.i18n.deriveMessageBundleFromHeader = function (header, messageBu
  */
 gpii.handlebars.i18n.deriveMessageBundle = function (preferredLocale, messageBundles, defaultLocale) {
     defaultLocale = defaultLocale || "en_us";
-    preferredLocale = preferredLocale || defaultLocale;
 
-    var messagesToMerge = [fluid.get(messageBundles, defaultLocale)];
+    var messagesToMerge = [];
 
-    // Look up any messages inherited from the language portion of the locale, and use those instead of the defaults.
-    var preferredLanguage = gpii.handlebars.i18n.languageFromLocale(preferredLocale);
     var defaultLanguage = gpii.handlebars.i18n.languageFromLocale(defaultLocale);
-    if (preferredLanguage && fluid.get(messageBundles, preferredLanguage)) {
-        // the default locale should take precedence over the default language, i.e. should appear later in the array.
-        if (defaultLanguage === preferredLanguage) {
-            messagesToMerge.unshift(messageBundles[preferredLanguage]);
-        }
-        // The chosen language should take precedence, i.e. should appear earlier in the array.
-        else {
-            messagesToMerge.push(messageBundles[preferredLanguage]);
-        }
+    if (defaultLanguage && fluid.get(messageBundles, defaultLanguage)) {
+        messagesToMerge.push(fluid.get(messageBundles, defaultLanguage));
     }
 
-    // The default locale wins out over messages inherited from the underlying language, i.e. it should be later in the merge.
-    if (preferredLocale !== defaultLocale && fluid.get(messageBundles, preferredLocale)) {
-        messagesToMerge.push(messageBundles[preferredLocale]);
+    messagesToMerge.push(fluid.get(messageBundles, defaultLocale));
+
+    if (preferredLocale) {
+        // Look up any messages inherited from the language portion of the locale, and use those instead of the defaults.
+        var preferredLanguage = gpii.handlebars.i18n.languageFromLocale(preferredLocale);
+        if (preferredLanguage && preferredLanguage !== defaultLanguage && fluid.get(messageBundles, preferredLanguage)) {
+            messagesToMerge.push(messageBundles[preferredLanguage]);
+        }
+
+        // The default locale wins out over messages inherited from the underlying language, i.e. it should be later in the merge.
+        if (preferredLocale !== defaultLocale && preferredLocale !== preferredLanguage && fluid.get(messageBundles, preferredLocale)) {
+            messagesToMerge.push(messageBundles[preferredLocale]);
+        }
     }
 
     var combinedMessageBundle = {};

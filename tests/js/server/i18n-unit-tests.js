@@ -105,7 +105,7 @@ jqUnit.test("Testing deriving messages from message bundle by language/locale.",
 
     jqUnit.assertDeepEq("Missing headers should be handled correctly in getAllLocalesFromHeader.", ["*"],  gpii.handlebars.i18n.getAllLocalesFromHeader());
 
-    jqUnit.assertDeepEq("Garbled headers should be handled correctly in getAllLocalesFromHeader.", ["*"],  gpii.handlebars.i18n.getAllLocalesFromHeader());
+    jqUnit.assertDeepEq("Garbled headers should be handled correctly in getAllLocalesFromHeader.", ["*"],  gpii.handlebars.i18n.getAllLocalesFromHeader(Math.PI));
 });
 
 jqUnit.test("Testing language detection from locale.", function () {

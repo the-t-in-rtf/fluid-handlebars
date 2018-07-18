@@ -141,12 +141,14 @@ fluid.defaults("gpii.handlebars.i18n.messageLoader", {
     },
     modelListeners: {
         "locale": {
-            funcName: "gpii.handlebars.i18n.messageLoader.deriveMessagesFromBundlesAndLocale",
-            args:     ["{that}"]
+            excludeSource: "init",
+            funcName:      "gpii.handlebars.i18n.messageLoader.deriveMessagesFromBundlesAndLocale",
+            args:          ["{that}"]
         },
         "messageBundles": {
-            funcName: "gpii.handlebars.i18n.messageLoader.deriveMessagesFromBundlesAndLocale",
-            args:     ["{that}"]
+            excludeSource: "init",
+            funcName:      "gpii.handlebars.i18n.messageLoader.deriveMessagesFromBundlesAndLocale",
+            args:          ["{that}"]
         }
     }
 });

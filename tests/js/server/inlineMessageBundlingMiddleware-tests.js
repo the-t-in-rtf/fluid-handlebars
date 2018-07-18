@@ -79,9 +79,9 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
             "shallow-variable": "This is %condition.",
             "message-key-language-only": "Works."
         },
-        // equivalent to "en"
+        // equivalent to "en-US"
         localeFailover: {
-            "four-oh-four": "Page not found.",
+            "four-oh-four": "Nothing to see here.",
             "shallow-variable": "This is %condition.",
             "message-key-language-only": "Works."
         },
@@ -221,6 +221,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{enLanguageRequest}.events.onComplete",
                             args:     ["{enLanguageRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.enLanguage"] // response, returnedBundle, expected
+                            //args:     ["{enLanguageRequest}.nativeResponse", "{arguments}.0", "{caseHolder}.options.expected.enLanguage"] // response, returnedBundle, expected
                         }
                     ]
                 },
