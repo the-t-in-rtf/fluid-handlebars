@@ -25,14 +25,15 @@
         <!-- Bring in Handlebars dependency -->
         <script type="text/javascript" src="../../node_modules/handlebars/dist/handlebars.js"></script>
 
-        <!-- Bring in Pagedown dependencies -->
-        <script type="text/javascript" src="../../node_modules/pagedown/Markdown.Converter.js"></script>
-        <script type="text/javascript" src="../../node_modules/pagedown/Markdown.Sanitizer.js"></script>
+        <!-- Bring in Markdown-it dependencies -->
+        <script type="text/javascript" src="../../node_modules/markdown-it/dist/markdown-it.js"></script>
 
         <script type="text/javascript" src="../../src/js/common/helper.js"></script>
         <script type="text/javascript" src="../../src/js/common/equals.js"></script>
         <script type="text/javascript" src="../../src/js/common/md-common.js"></script>
         <script type="text/javascript" src="../../src/js/common/jsonify.js"></script>
+        <script type="text/javascript" src="../../src/js/common/lib/i18n.js"></script>
+        <script type="text/javascript" src="../../src/js/common/messageHelper.js"></script>
         <script type="text/javascript" src="../../src/js/client/md-client.js"></script>
         <script type="text/javascript" src="../../src/js/client/renderer.js"></script>
 
@@ -44,7 +45,7 @@
         <script type="text/javascript" src="../static/js/tests-templateMessage.js"></script>
 
         <!-- Foundation styles -->
-        <link rel="stylesheet" href="../../node_modules/foundation-sites/dist/foundation.css"/>
+        <link rel="stylesheet" href="../../node_modules/foundation-sites/dist/css/foundation.css "/>
     </head>
     <body>
         <div class="row">
@@ -65,8 +66,8 @@
 
         <script type="text/javascript">
             <!-- instantiate test components -->
-            var initialized = gpii.tests.templateMessage.initialized(".viewport-initialized");
-            var updated     = gpii.tests.templateMessage.updated(".viewport-updated");
+            var initialized = gpii.tests.handlebars.templateMessage.initialized(".viewport-initialized");
+            var updated     = gpii.tests.handlebars.templateMessage.updated(".viewport-updated");
             updated.applier.change("message", "Some are born with data, some achieve data, and some have data thrust upon them.");
         </script>
     </body>

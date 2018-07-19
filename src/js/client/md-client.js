@@ -1,9 +1,9 @@
 // A client-side module that provides the ability to parse markdown in handlebars.
 // This is intended to be added as a child component of a grade that wires in helpers, such as `gpii.handlebars.renderer`
 //
-/* global fluid, jQuery */
+/* global fluid */
 /* eslint-env browser */
-(function () {
+(function (fluid) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.handlebars.helper.md.client");
@@ -24,4 +24,4 @@
             ]
         }
     });
-})(jQuery);
+})(fluid);

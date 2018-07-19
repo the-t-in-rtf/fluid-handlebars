@@ -6,7 +6,8 @@ for changes.  When a relevant change occurs, the component's `onFsChange` event 
 
 1. `eventName`: A `{String}` that corresponds to one of the chokidar events mentioned below.
 2. `path`: A `{String}` that represents the path to the filesystem content that has changed.
-3. `details`: An `{Object}` that contains statistics about the change.  See [the Node `fs.Stats` documentation](https://nodejs.org/api/fs.html#fs_class_fs_stats) for details.
+3. `details`: An `{Object}` that contains statistics about the change.  See [the Node `fs.Stats`
+   documentation](https://nodejs.org/api/fs.html#fs_class_fs_stats) for details.
 
 The watcher will not actually be ready to perform its work immediately.  There is an `onReady` event provided that
 incidates that the chokidar watcher has loaded and is actively monitoring the watch directories.
@@ -22,24 +23,24 @@ incidates that the chokidar watcher has loaded and is actively monitoring the wa
 | `eventsToWatch`                    | `Object`              | The chokidar events (see below ) to watch for. By default, `add`, `change`, and `unlink` events are watched, i.e. file adds, changes, and removals. |
 | `watchDirs`                        | `Array`               | One or more directories to watch for changes.  Supports both full paths, and package-relative paths such as `%package/path/to/directory` that are resolved with [`fluid.module.resolvePath`](http://docs.fluidproject.org/infusion/development/NodeAPI.html#fluid-module-resolvepath-path-) |
 
+## Choosing Which Events to Monitor
 
-##  Choosing Which Events to Monitor
- 
 Chokidar emits the following events:
- 
+
 | Event       | Description |
 | ----------- | ----------- |
 | `add`       | A file has been added. |
 | `addDir`    | A directory has been added. |
 | `change`    | A file has changed. See [the chokidar docs](https://github.com/paulmillr/chokidar#errors) for special cases in which a change may be reported as two separate `unlink` and `add` events. |
 | `unlink`    | A file has been removed. |
-| `unlinkDir` | A directory has been removed. | 
+| `unlinkDir` | A directory has been removed. |
 | `ready`     | The chokidar "watcher" is ready to start watching content. |
 | `raw`       | Any event in its raw form.  |
 | `error`     | Chokidar itself has encountered an error (for example, if a filesystem containing a monitored folder is unmounted). |
 
-Each of these can be specified as a key in `options.eventsToWatch`.  Keys with "truthy" values will be monitored and an `onFsChange` event (see above) will
-be fired when each chokidar event occurs.  As an example, the default value of `options.eventsToWatch` is:
+Each of these can be specified as a key in `options.eventsToWatch`.  Keys with "truthy" values will be monitored and an
+`onFsChange` event (see above) will be fired when each chokidar event occurs.  As an example, the default value of
+`options.eventsToWatch` is:
 
 ```$json
 {

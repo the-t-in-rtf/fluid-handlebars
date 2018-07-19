@@ -7,54 +7,56 @@ to an instance of [`gpii.express.hb`](handlebars.md).
 
 ### `{that}.getHelper()`
 
-Each "helper" module is expected to implement a `getHelper` invoker with an invoker that returns a helper function. something like the following:
+Each "helper" module is expected to implement a `getHelper` invoker with an invoker that returns a helper function.
+something like the following:
 
-```
+```javascript
 fluid.registerNamespace("your.helper");
 
-your.helper.getHelperFn = function(that){
-   return function(arg1, arg2) {
-       // The two argument variations have the "options" object as the second argument.  one-argument variations have it as the first.
-       var options = arg2 ? arg2 : arg1;
-       return options.fn(this);
-   };
+your.helper.getHelperFn = function (that) {
+    return function (arg1, arg2) {
+        // The two argument variations have the "options" object as the second argument.  one-argument variations have it as the first.
+        var options = arg2 ? arg2 : arg1;
+        return options.fn(this);
+    };
 };
 
 fluid.defaults("your.helper", {
     gradeNames: ["gpii.handlebars.helper"],
     invokers: {
-    "getHelper": {
-        "funcName": "your.helper.getHelperFn",
-        "args":     ["{that}"]
+        "getHelper": {
+            "funcName": "your.helper.getHelperFn",
+            "args":     ["{that}"]
+        }
     }
-   }
 });
 ```
 
-See [the Handlebars documentation](http:handlebarsjs.com/block_helpers.html) for an overview of the various types of 
+See [the Handlebars documentation](http:handlebarsjs.com/block_helpers.html) for an overview of the various types of
 helper functions that are possible.
 
-# Helper functions included with this package
+## Helper functions included with this package
 
 This package provides additional handlebars helpers that can be used in your handlebars templates.  On the server side,
 these are available by default when you use the `gpii.express.hb` handlebars middleware.  On the client side, these are
 prewired into `gpii.templates.renderer`, the client-side renderer.
 
-## jsonify
+### `{{jsonify}}`
 
-Convert an object into a string representation using JSON.stringify.  To use this function in your handlebars templates, add code like:
+Convert an object into a string representation using JSON.stringify.  To use this function in your handlebars templates,
+add code like:
 
-```
+```handlebars
 {{jsonify variable}}
 ```
 
 For more information, see the [jsonify helper docs](jsonifyHelper.md).
 
-## md
+### `{{md}}`
 
 Transform markdown into html.  To use this function in your handlebars templates, add code like:
 
-```
+```handlebars
 {{md variable}}
 
 {{md "string value"}}
@@ -62,12 +64,11 @@ Transform markdown into html.  To use this function in your handlebars templates
 
 For more information, see the [md helper docs](mdHelper.md).
 
-
-## equals
+### `{{equals}}`
 
 Display content when two values match.  Values can be context variables or strings:
 
-```
+```handlebars
 {{#equals json.baz json.qux}}true{{else}}false{{/equals}}
 
 {{#equals json.foo json.qux}}true{{else}}false{{/equals}}
@@ -80,18 +81,28 @@ Display content when two values match.  Values can be context variables or strin
 Note that, just like the `{{#if}}` block provided by handlebars, the `{{#equals}}` block supports the use of an optional
 `{{else}}` block for cases in which the two values are not equal. For example:
 
-```
+```handlebars
 {{#equals VARIABLE1 VARIABLE2 }}
   The variables are equal.
 {{/equals}}
 
 {{#equals VARIABLE1 "TEXT" }}
   The variable is equal to the text.
-{{#else}}
+{{else}}
   The variable is not equal to the text.
 {{/equals}}
 ```
 
-Note in the second example that `else` is supported if the condition is not matched, as with the built-in `{{#if}}` helper.
+Note in the second example that `else` is supported if the condition is not matched, as with the built-in `{{#if}}`
+helper.
 
+### `{{messageHelper}}`
 
+Resolves a message key based on the user's locale and language preferences, and replace it with
+localised/internationalised text.  For example:
+
+```handlebars
+{{messageHelper "my-message-key" myContextVariable}}
+```
+
+See the [i18n documentation for more details](i18n.md) for more details.

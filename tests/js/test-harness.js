@@ -20,6 +20,7 @@ fluid.defaults("gpii.test.handlebars.client.harness", {
         }
     },
     templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
+    messageDirs: ["%gpii-handlebars/tests/messages/primary", "%gpii-handlebars/tests/messages/secondary"],
     contextToOptionsRules: {
         model: {
             "":       "notfound",
@@ -37,7 +38,10 @@ fluid.defaults("gpii.test.handlebars.client.harness", {
         handlebars: {
             type: "gpii.express.hb",
             options: {
-                templateDirs: "{harness}.options.templateDirs"
+                templateDirs: "{harness}.options.templateDirs",
+                members: {
+                    messageBundles: "{messageLoader}.messageBundles"
+                }
             }
         },
         dispatcher: {
@@ -63,6 +67,21 @@ fluid.defaults("gpii.test.handlebars.client.harness", {
                 templateDirs: "{harness}.options.templateDirs"
             }
         },
+        messageLoader: {
+            type: "gpii.handlebars.i18n.messageLoader",
+            options: {
+                messageDirs: "{harness}.options.messageDirs"
+            }
+        },
+        messages: {
+            type: "gpii.handlebars.inlineMessageBundlingMiddleware",
+            options: {
+                messageDirs: "{harness}.options.messageDirs",
+                model: {
+                    messageBundles: "{messageLoader}.model.messageBundles"
+                }
+            }
+        },
         js: {
             type: "gpii.express.router.static",
             options: {
@@ -73,7 +92,7 @@ fluid.defaults("gpii.test.handlebars.client.harness", {
         modules: {
             type: "gpii.express.router.static",
             options: {
-                path:    "/modules",
+                path:    "/node_modules",
                 content: "%gpii-handlebars/node_modules"
             }
         },

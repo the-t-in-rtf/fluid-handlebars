@@ -42,11 +42,11 @@ gpii.test.handlebars.browser.getJSONContent = function (path) {
  *
  * Test a single WebElement to see if it matches a pattern.
  *
- * @param message {String} A description of this specific test.
- * @param element {WebElement} The element returned by `findElement` or `findElements`.
- * @param elementFn {String} The `element` function name to use to retrieve the value.
- * @param pattern {Regexp} The pattern to test the return value against.
- * @param invert {Boolean} Whether to invert the match (consider the fact that it's missing as success.
+ * @param {String} message A description of this specific test.
+ * @param {WebElement} element The element returned by `findElement` or `findElements`.
+ * @param {String} elementFn The `element` function name to use to retrieve the value.
+ * @param {Regexp} pattern The pattern to test the return value against.
+ * @param {Boolean} invert Whether to invert the match (consider the fact that it's missing as success.
  */
 gpii.test.handlebars.elementMatches = function (message, element, elementFn, pattern, invert) {
     jqUnit.stop();
@@ -64,8 +64,8 @@ gpii.test.handlebars.elementMatches = function (message, element, elementFn, pat
  * common renderer checks.  Calls `gpii.test.handlebars.elementMatches` (see above) for each element and match
  * definition.
  *
- * @param elements One or more WebElement instances, as returned by findElement or findElements.
- * @param matchDefs {Object} A structure that defines the `message` associated with the test, the `elementFn` to use to get the value, and the `pattern' to compare to the value.  May include a 'locator' to inspect a sub-element.
+ * @param {Array|Object} elements One or more WebElement instances, as returned by findElement or findElements.
+ * @param {Object} matchDefs A structure that defines the `message` associated with the test, the `elementFn` to use to get the value, and the `pattern' to compare to the value.  May include a 'locator' to inspect a sub-element.
  *
  */
 gpii.test.handlebars.sanityCheckElements = function (elements, matchDefs) {

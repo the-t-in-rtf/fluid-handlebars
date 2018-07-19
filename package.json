@@ -1,6 +1,6 @@
 {
     "name": "gpii-handlebars",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "private": false,
     "license": "BSD-3-Clause",
     "repository": "https://github.com/GPII/gpii-handlebars",
@@ -9,31 +9,31 @@
         "test": "node node_modules/istanbul/lib/cli.js cover tests/all-tests.js"
     },
     "dependencies": {
-        "chokidar": "1.7.0",
+        "chokidar": "2.0.4",
         "gpii-binder": "1.0.3",
-        "gpii-express": "1.0.12",
+        "gpii-express": "1.0.14",
         "handlebars": "4.0.11",
-        "infusion": "3.0.0-dev.20171117T095227Z.67ff934",
-        "markdown-it": "8.4.0",
+        "infusion": "3.0.0-dev.20180208T114206Z.2964703",
+        "json5": "1.0.1",
+        "markdown-it": "8.4.1",
         "md5": "2.2.1",
         "underscore-node": "0.1.2"
     },
     "devDependencies": {
         "cheerio": "1.0.0-rc.2",
-        "eslint": "4.11.0",
-        "eslint-config-fluid": "1.2.0",
-        "fluid-grunt-eslint": "18.1.2",
+        "eslint": "5.1.0",
+        "eslint-config-fluid": "1.3.0",
         "foundation-sites": "6.4.1",
-        "gpii-webdriver": "1.0.2",
-        "grunt": "1.0.1",
-        "grunt-jsonlint": "1.1.0",
+        "gpii-grunt-lint-all": "1.0.1-dev.20180706T153657Z.4cbbd61",
+        "gpii-webdriver": "1.0.3-dev.20180316T104657Z.4a84a30",
+        "grunt": "1.0.3",
         "istanbul": "0.4.5",
-        "kettle": "1.7.1",
+        "kettle": "1.7.3",
         "mkdirp": "0.5.1",
         "node-jqunit": "1.1.8",
-        "recursive-copy": "2.0.7",
-        "request": "2.83.0",
+        "recursive-copy": "2.0.9",
+        "request": "2.87.0",
         "rimraf": "2.6.2",
-        "tough-cookie": "2.3.3"
+        "tough-cookie": "2.4.3"
     }
 }

@@ -28,7 +28,7 @@ fluid.defaults("gpii.tests.handlebars.browser.renderer.standalone.caseHolder", {
                     {
                         event:    "{testEnvironment}.webdriver.events.onGetComplete",
                         listener: "{testEnvironment}.webdriver.executeScript",
-                        args:     [gpii.tests.handlebars.browser.renderer.standalone.render, "md", "[unified listing](http://ul.gpii.net/)"]
+                        args:     [gpii.tests.handlebars.browser.renderer.standalone.render, "md", { payload: "[unified listing](http://ul.gpii.net/)" }]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onExecuteScriptComplete",
@@ -66,7 +66,7 @@ fluid.defaults("gpii.tests.handlebars.browser.renderer.standalone.caseHolder", {
                     {
                         event:    "{testEnvironment}.webdriver.events.onGetComplete",
                         listener: "{testEnvironment}.webdriver.executeScript",
-                        args:     [gpii.tests.handlebars.browser.renderer.standalone.render, "jsonify", { foo: "bar" }]
+                        args:     [gpii.tests.handlebars.browser.renderer.standalone.render, "jsonify", { payload: { foo: "bar" } }]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onExecuteScriptComplete",
@@ -85,7 +85,7 @@ fluid.defaults("gpii.tests.handlebars.browser.renderer.standalone.caseHolder", {
                     {
                         event:    "{testEnvironment}.webdriver.events.onGetComplete",
                         listener: "{testEnvironment}.webdriver.executeScript",
-                        args:     [gpii.tests.handlebars.browser.renderer.standalone.render, "equals", "good"]
+                        args:     [gpii.tests.handlebars.browser.renderer.standalone.render, "equals", { payload: "good" }]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onExecuteScriptComplete",
@@ -94,7 +94,7 @@ fluid.defaults("gpii.tests.handlebars.browser.renderer.standalone.caseHolder", {
                     },
                     {
                         func: "{testEnvironment}.webdriver.executeScript",
-                        args: [gpii.tests.handlebars.browser.renderer.standalone.render, "equals", "bad"]
+                        args: [gpii.tests.handlebars.browser.renderer.standalone.render, "equals", { payload: "bad"} ]
                     },
                     {
                         event:    "{testEnvironment}.webdriver.events.onExecuteScriptComplete",

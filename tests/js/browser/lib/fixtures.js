@@ -79,7 +79,7 @@ fluid.defaults("gpii.test.handlebars.browser.caseHolder", {
 });
 
 
-// A standard express + Browser environment from the `gpii-test-browser` package, with our harness options wired
+// A standard express + Browser environment from the `gpii-webdriver` package, with our harness options wired
 // into the standard express component.
 //
 fluid.defaults("gpii.test.handlebars.browser.environment", {

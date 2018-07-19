@@ -7,7 +7,7 @@
     /* global fluid */
     /* eslint-env browser */
     fluid.defaults("gpii.tests.templateAware", {
-        gradeNames: ["gpii.handlebars.templateAware"],
+        gradeNames: ["fluid.modelComponent", "gpii.handlebars.templateAware"],
         template:   "index",
         selectors: {
             initial: "" // Update the whole container
@@ -20,7 +20,7 @@
         invokers: {
             renderInitialMarkup: {
                 func: "{that}.renderMarkup",
-                args: [ "initial", "{that}.options.template", "{that}.model", "html"]
+                args: [ "initial", "{that}.options.template", "{that}.model", "html"] // selector, template, data, manipulator
             }
         }
     });

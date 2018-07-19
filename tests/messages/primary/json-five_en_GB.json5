@@ -1,0 +1,4 @@
+{
+    noQuotes: "Quote 'works' unquote.",
+    "hasComment": "No comment at this time." // This file should be parsed as expected.
+}

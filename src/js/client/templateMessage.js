@@ -6,8 +6,8 @@
 // Any changes to the `model` will result in a full refresh.  You are expected to handle everything else in your
 // template, including whether to display anything at all.
 //
-/* global fluid, jQuery */
-(function () {
+/* global fluid */
+(function (fluid) {
     "use strict";
 
     fluid.registerNamespace("gpii.handlebars.templateMessage");
@@ -33,4 +33,4 @@
             }
         }
     });
-})(jQuery);
+})(fluid);

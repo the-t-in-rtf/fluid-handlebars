@@ -9,11 +9,12 @@ var fluid  = require("infusion");
 var gpii   = fluid.registerNamespace("gpii");
 var jqUnit = require("node-jqunit");
 
+fluid.require("%gpii-handlebars");
+
 // We use these to confirm that paths are actually resolved.
 var baseDir = fluid.module.resolvePath("%gpii-handlebars");
 var srcDir  = fluid.module.resolvePath("%gpii-handlebars/src");
 
-fluid.require("%gpii-handlebars");
 require("../../../src/js/server/lib/resolver");
 
 
@@ -38,6 +39,13 @@ fluid.defaults("gpii.tests.handlebars.resolver.caseHolder", {
                 sequence: [{
                     func: "gpii.hb.tests.resolver.singleTest",
                     args: ["%gpii-handlebars/src", [srcDir]] // original, expected, hasException
+                }]
+            },
+            {
+                name: "A package root should resolve correctly...",
+                sequence: [{
+                    func: "gpii.hb.tests.resolver.singleTest",
+                    args: ["%gpii-handlebars", [baseDir]] // original, expected, hasException
                 }]
             },
             {

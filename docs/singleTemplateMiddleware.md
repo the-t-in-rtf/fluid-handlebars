@@ -16,7 +16,7 @@ This component will only work if you have set up the `gpii.express.hb` middlewar
 If you want to expose request or model variables to handlebars, you will also need to have rules like the following
 in your `gpii.express.hb` component's definition:
 
-```
+```snippet
 handlebars: {
  type: "gpii.express.hb",
  options: {

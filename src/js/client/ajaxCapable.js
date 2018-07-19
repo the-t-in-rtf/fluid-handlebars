@@ -39,7 +39,7 @@ A few more things to note:
  */
 // TODO:  Reconcile this with the larger migration to dataSources.
 /* global fluid, jQuery */
-(function ($) {
+(function (fluid, $) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.handlebars.ajaxCapable");
@@ -142,4 +142,4 @@ A few more things to note:
             }
         }
     });
-})(jQuery);
+})(fluid, jQuery);

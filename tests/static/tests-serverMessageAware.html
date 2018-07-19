@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>Functional Tests for the "Server Message Aware" component grade.</title>
+
+        <!-- Bring in jQuery and fluid dependencies -->
+        <script type="text/javascript" src="../../node_modules/infusion/dist/infusion-all.js"></script>
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/MessageResolver.js"></script>
+
+        <!-- Bring in Handlebars dependency -->
+        <script type="text/javascript" src="/node_modules/handlebars/dist/handlebars.js"></script>
+
+        <!-- Bring in markdown-it dependencies -->
+        <script type="text/javascript" src="/node_modules/markdown-it/dist/markdown-it.js"></script>
+
+        <!-- Bring in client library being tested -->
+        <script type="text/javascript" src="/src/js/common/lib/i18n.js"></script>
+        <script type="text/javascript" src="/src/js/common/lib/delete-and-add.js"></script>
+        <script type="text/javascript" src="/src/js/common/renderer.js"></script>
+        <script type="text/javascript" src="/src/js/client/renderer.js"></script>
+        <script type="text/javascript" src="/node_modules/gpii-binder/src/js/binder.js"></script>
+        <script type="text/javascript" src="/src/js/client/ajaxCapable.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateMessage.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateFormControl.js"></script>
+        <script type="text/javascript" src="/src/js/common/helper.js"></script>
+        <script type="text/javascript" src="/src/js/common/md-common.js"></script>
+        <script type="text/javascript" src="/src/js/client/md-client.js"></script>
+        <script type="text/javascript" src="/src/js/common/jsonify.js"></script>
+        <script type="text/javascript" src="/src/js/common/equals.js"></script>
+        <script type="text/javascript" src="/src/js/common/messageHelper.js"></script>
+
+        <!-- Bring in our test helper -->
+        <script type="text/javascript" src="/content/js/tests-serverMessageAware.js"></script>
+
+        <!-- Foundation styles -->
+        <link rel="stylesheet" href="/node_modules/foundation-sites/dist/css/foundation.css "/>
+    </head>
+    <body>
+        <div class="row">
+            <div class="column">
+                <h1>"Server Message Aware" Component Tests</h1>
+
+                <p>This page needs to be served up by a server that can also deliver the required handlebars templates.  The tests should not complete in a standalone browser.</p>
+
+                <hr/>
+
+                <div class="viewport">This content should not be visible.</div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            <!-- instantiate test components -->
+            var serverMessageAware = gpii.tests.templateAware.serverMessageAware(".viewport");
+        </script>
+    </body>
+</html>

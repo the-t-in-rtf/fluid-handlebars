@@ -8,7 +8,7 @@
 // to `components.requireRenderer`.
 //
 /* global fluid, jQuery */
-(function () {
+(function (fluid) {
     "use strict";
     fluid.defaults("gpii.handlebars.templateManager", {
         gradeNames: ["fluid.component"],
@@ -36,4 +36,4 @@
             }
         ]
     });
-})(jQuery);
+})(fluid);

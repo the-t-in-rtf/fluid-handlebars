@@ -17,9 +17,12 @@ require("./lib/resolver");
 require("./standaloneRenderer");
 require("./watcher");
 
+var path = require("path");
+
 gpii.express.hb.engine = function (that, templatePath, templateContext, callback) {
     try {
-        var renderedContent = that.renderer.renderWithLayout(templatePath, templateContext);
+        var templateKey = path.basename(templatePath, ".handlebars");
+        var renderedContent = that.renderer.renderWithLayout(templateKey, templateContext);
         return callback(null, renderedContent);
     }
     catch (error) {
@@ -43,7 +46,6 @@ fluid.defaults("gpii.express.hb", {
     gradeNames:       ["fluid.modelComponent"],
     config:           "{expressConfigHolder}.options.config",
     namespace:        "handlebars", // Namespace to allow other middleware to put themselves in the chain before or after us.
-    model: {},    // We should have an empty model, as the dispatcher expects to expose that.
     components: {
         renderer: {
             type: "gpii.handlebars.standaloneRenderer",
@@ -70,6 +72,8 @@ fluid.defaults("gpii.express.hb", {
         }
     }
 });
+
+fluid.registerNamespace("gpii.express.hb.live");
 
 /*
 
@@ -111,7 +115,7 @@ fluid.defaults("gpii.express.hb.live", {
     },
     listeners: {
         "onFsChange.reloadTemplates": {
-            funcName: "gpii.handlebars.standaloneRenderer.init",
+            funcName: "gpii.handlebars.standaloneRenderer.loadTemplateDirs",
             args:     ["{renderer}"]
         }
     }

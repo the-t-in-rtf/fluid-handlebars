@@ -12,7 +12,7 @@ Say that we have a `views` directory that contains the following content:
 
 If this middleware were configured to use the `views` directory, it would return a payload like the following:
 
-```
+```json
 {
     "pages": {
         "main": "<p>Howdy.</p>",
@@ -26,17 +26,17 @@ If this middleware were configured to use the `views` directory, it would return
     }
 }
 ```
+
 The client-side [renderer.md](renderer) can work with this format and ensure that (for example) all partials are
 available and that the right layout is used.
 
-# Component Options
+## Component Options
 
 | Option         | Type             | Description |
 | -------------- | ---------------- | ----------- |
 | `templateDirs` | `Array | String` | A list of template directories that contain handlebars layouts, pages, and partials.  These can either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`. |
 
-
-# Live Reloading
+## Live Reloading
 
 This middleware component provides a `loadTemplates` event that can be used to reload all template content from the
 filesystem.  The component itself only makes use of this event on startup.  To enable "live" reloading, you will need

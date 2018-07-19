@@ -2,16 +2,16 @@
 
   A component to standardize handling of "simple" form data submitted via AJAX.  This component:
 
-  1.  Performs an initial render of the component using the template specified in `options.templates.initial`
+  1.  Performs an initial render of the component using the template specified in `options.templateKeys.initial`
   2.  Binds a form submission that sends the `model` data formatted using `options.rules.request` using the options
       specified in `options.ajax`
 
   For more details on the request and response cycle, see the `templateRequestAndUpdate` grade.
 
  */
-/* global fluid, jQuery */
+/* global fluid */
 /* eslint-env browser */
-(function () {
+(function (fluid) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.handlebars.templateFormControl");
@@ -43,10 +43,10 @@
         hideOnSuccess: true,  // Whether to hide our form if the results are successful
         hideOnError:   false, // Whether to hide our form if the results are unsuccessful
         requiredFields: {
-            templates:           true,
-            "templates.initial": true,
-            "templates.error":   true,
-            "templates.success": true
+            templateKeys:           true,
+            "templateKeys.initial": true,
+            "templateKeys.error":   true,
+            "templateKeys.success": true
         },
         model: {
         },
@@ -59,7 +59,7 @@
                     components: {
                         renderer: "{templateFormControl}.renderer"
                     },
-                    template: "{templateFormControl}.options.templates.success",
+                    template: "{templateFormControl}.options.templateKeys.success",
                     model:  {
                         message: "{templateFormControl}.model.successMessage"
                     },
@@ -78,7 +78,7 @@
                     components: {
                         renderer: "{templateFormControl}.renderer"
                     },
-                    template: "{templateFormControl}.options.templates.error",
+                    template: "{templateFormControl}.options.templateKeys.error",
                     model:  {
                         message: "{templateFormControl}.model.errorMessage"
                     },
@@ -109,7 +109,7 @@
         invokers: {
             renderInitialMarkup: {
                 func: "{that}.renderMarkup",
-                args: ["initial", "{that}.options.templates.initial", "{that}.model", "html"]
+                args: ["initial", "{that}.options.templateKeys.initial", "{that}.model", "html"]
             },
             submitForm: {
                 funcName: "gpii.handlebars.templateFormControl.submitForm",
@@ -120,32 +120,30 @@
                 args:     ["{that}", "{arguments}.0"]
             }
         },
-        templates: {
+        templateKeys: {
             success: "common-success",
             error:   "common-error"
         },
         listeners: {
-            "onMarkupRendered.wireControls": [
-                {
-                    "this": "{that}.dom.submit",
-                    method: "on",
-                    args:   ["keyup.handleKeyPress", "{that}.handleKeyPress"]
-                },
-                {
-                    "this": "{that}.dom.submit",
-                    method: "on",
-                    args:   ["click.submitForm", "{that}.submitForm"]
-                },
-                {
-                    "this": "{that}.dom.form",
-                    method: "on",
-                    args:   ["submit.submitForm", "{that}.submitForm"]
-                }
-            ],
+            "onMarkupRendered.wireSubmitKeyPress": {
+                "this": "{that}.dom.submit",
+                method: "on",
+                args:   ["keyup.handleKeyPress", "{that}.handleKeyPress"]
+            },
+            "onMarkupRendered.wireSubmitClick": {
+                "this": "{that}.dom.submit",
+                method: "on",
+                args:   ["click.submitForm", "{that}.submitForm"]
+            },
+            "onMarkupRendered.wireFormSubmit": {
+                "this": "{that}.dom.form",
+                method: "on",
+                args:   ["submit.submitForm", "{that}.submitForm"]
+            },
             "requestReceived.hideContentIfNeeded": {
                 funcName: "gpii.handlebars.templateFormControl.hideContentIfNeeded",
                 args:     ["{that}", "{arguments}.1"]
             }
         }
     });
-})(jQuery);
+})(fluid);

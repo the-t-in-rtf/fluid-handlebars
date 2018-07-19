@@ -18,10 +18,18 @@ renderer associated with your `gpii.express` instance to deliver an error.  To u
 
 ### `{that}.middleware(error, request, response, next)`
 
-* `error`: The error payload returned by upstream middleware.  See [the `gpii-express` documentation](https://github.com/GPII/gpii-express/blob/master/docs/middleware.md#error-handling-middleware) for details.
-* `request`: An object representing the individual user's request.  See [the `gpii-express` documentation](https://github.com/GPII/gpii-express/blob/master/docs/express.md#the-express-request-object) for details.
-* `response`: The response object, which can be used to send information to the requesting user.  See [the `gpii-express` documentation](https://github.com/GPII/gpii-express/blob/master/docs/express.md#the-express-response-object) for details.
-* `next`: The next Express middleware or router function in the chain.  See [the `gpii-express` documentation for details](https://github.com/GPII/gpii-express/blob/master/docs/middleware.md#what-is-middleware).
+* `error`: The error payload returned by upstream middleware.  See [the `gpii-express`
+  documentation](https://github.com/GPII/gpii-express/blob/master/docs/middleware.md#error-handling-middleware) for
+  details.
+* `request`: An object representing the individual user's request.  See [the `gpii-express`
+  documentation](https://github.com/GPII/gpii-express/blob/master/docs/express.md#the-express-request-object) for
+  details.
+* `response`: The response object, which can be used to send information to the requesting user.  See [the
+  `gpii-express`
+  documentation](https://github.com/GPII/gpii-express/blob/master/docs/express.md#the-express-response-object) for
+  details.
+* `next`: The next Express middleware or router function in the chain.  See [the `gpii-express` documentation for
+  details](https://github.com/GPII/gpii-express/blob/master/docs/middleware.md#what-is-middleware).
 * Returns: Nothing.
 
 This invoker fulfills the standard contract for a `gpii.express.middleware.error` component.  It first checks to see

@@ -17,7 +17,7 @@
         args: [
           "{that}",
           "{that}.options.selectors.selector",
-          "{that}.options.templates.templates",
+          "{that}.options.templateKeys.templateKey",
           "{that}.model",
           "appendTo"
         ]
@@ -25,9 +25,9 @@
 
   For an example of using this in depth, check out the provided `templateFormControl` grade or the client side tests.
  */
-/* global fluid, jQuery */
+/* global fluid */
 /* eslint-env browser */
-(function () {
+(function (fluid) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.handlebars.templateAware");
@@ -94,6 +94,9 @@
         requiredOptions: {
             templates: true
         },
+        model: {
+            templates: "{that}.options.templates"
+        },
         mergePolicy: {
             "templates.layouts":  "noexpand",
             "templates.pages":    "noexpand",
@@ -105,7 +108,12 @@
         },
         components: {
             renderer: {
-                type: "gpii.handlebars.renderer.standalone"
+                type: "gpii.handlebars.renderer.standalone",
+                options: {
+                    model: {
+                        templates: "{gpii.handlebars.templateAware.standalone}.model.templates"
+                    }
+                }
             }
         },
         listeners: {
@@ -130,4 +138,20 @@
             }
         }
     });
-})(jQuery);
+
+    fluid.defaults("gpii.handlebars.templateAware.serverMessageAware", {
+        gradeNames: ["gpii.handlebars.templateAware"],
+        components: {
+            renderer: {
+                type: "gpii.handlebars.renderer.serverMessageAware",
+                options: {
+                    listeners: {
+                        "onAllResourcesLoaded.renderMarkup": {
+                            func: "{gpii.handlebars.templateAware.serverMessageAware}.renderInitialMarkup"
+                        }
+                    }
+                }
+            }
+        }
+    });
+})(fluid);

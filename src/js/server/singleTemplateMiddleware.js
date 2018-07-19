@@ -13,6 +13,8 @@ var gpii  = fluid.registerNamespace("gpii");
 fluid.registerNamespace("gpii.express.singleTemplateMiddleware");
 
 gpii.express.singleTemplateMiddleware.renderForm = function (that, request, response) {
+    // TODO: Derive the messages based on the request, reuse the code from inlineMessageBundlingMiddleware
+    // TODO: Merge that with the generated context.
     var generatedContext = fluid.model.transformWithRules({ model: that.model, req: request}, that.options.rules.contextToExpose);
     response.status(200).render(that.options.templateKey, generatedContext);
 };
