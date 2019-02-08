@@ -2,5 +2,6 @@
   "reporter":   ["none"],
   "report-dir": "reports",
   "temp-dir":   "coverage",
-  "clean":      false
+  "clean":      false,
+  "exclude":    ["**/tests/**/*.js"]
 }
