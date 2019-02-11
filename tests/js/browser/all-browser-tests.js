@@ -9,6 +9,7 @@
 
  */
 
+require("./browser-hasRequiredOptions-tests.js");
 require("./browser-initBlock-tests.js");
 require("./browser-inline-tests.js");
 require("./browser-renderer-serverAware-tests.js");
