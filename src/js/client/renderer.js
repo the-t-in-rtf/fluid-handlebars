@@ -7,8 +7,7 @@
     https://github.com/GPII/gpii-handlebars/blob/master/docs/jsonifyHelper.md
 
  */
-/* global fluid, jQuery */
-(function (fluid, $) {
+(function (fluid) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.handlebars.renderer");
@@ -25,6 +24,10 @@
 
     fluid.defaults("gpii.handlebars.renderer", {
         gradeNames: ["gpii.handlebars.renderer.common"],
+        model: {
+            messageBundles: {},
+            templates: {}
+        },
         components: {
             "md": {
                 "type": "gpii.handlebars.helper.md.client"
@@ -57,99 +60,4 @@
             }
         }
     });
-
-    // The "standalone" renderer grade.
-    fluid.defaults("gpii.handlebars.renderer.standalone", {
-        gradeNames: ["gpii.handlebars.renderer"],
-        messages: {}
-    });
-
-
-    fluid.registerNamespace("gpii.handlebars.renderer.serverAware");
-    gpii.handlebars.renderer.serverAware.cacheTemplates = function (that, data) {
-        var templates = fluid.filterKeys(data.templates, ["layouts", "pages", "partials"]);
-
-        gpii.handlebars.utils.deleteAndAddModelData(that, "templates", templates);
-
-        // Fire a "templates loaded" event so that components can wait for their markup to appear.
-        that.events.onTemplatesLoaded.fire(that);
-    };
-
-    gpii.handlebars.renderer.serverAware.retrieveResource = function (url, callback) {
-        var settings = {
-            url:     url,
-            accepts: "application/json",
-            success: callback
-        };
-
-        $.ajax(settings);
-    };
-
-    // A "server aware" grade that depends on being able to communicate with an instance of
-    // `gpii.handlebars.inlineTemplateBundlingMiddleware`.
-    fluid.defaults("gpii.handlebars.renderer.serverAware", {
-        gradeNames: ["gpii.handlebars.renderer"],
-        templateUrl: "/hbs",
-        invokers: {
-            "cacheTemplates": {
-                funcName: "gpii.handlebars.renderer.serverAware.cacheTemplates",
-                args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"] //  data, textStatus, jqXHR
-            }
-        },
-        events: {
-            "onTemplatesLoaded": null
-        },
-        listeners: {
-            "onCreate.loadTemplates": {
-                funcName: "gpii.handlebars.renderer.serverAware.retrieveResource",
-                args: ["{that}.options.templateUrl", "{that}.cacheTemplates"] // url, callback
-            }
-        }
-    });
-
-    fluid.registerNamespace("gpii.handlebars.renderer.serverMessageAware");
-
-    /**
-     *
-     * The message bundling middleware delivers all available languages.  We look at our current locale and save the
-     * current bundle to the `messages` model variable.
-     *
-     * @param {Object} that - The renderer component itself.
-     * @param {Object} data - The message bundle for the locale as returned by the server.
-     */
-    gpii.handlebars.renderer.serverMessageAware.cacheMessages = function (that, data) {
-        var transaction = that.applier.initiate();
-        transaction.fireChangeRequest({path: "messages", type: "DELETE"});
-        transaction.fireChangeRequest({path: "messages", type: "ADD", value: data });
-        transaction.commit();
-
-        // Fire a "messages loaded" event so that components can render once they are available.
-        that.events.onMessagesLoaded.fire(that);
-    };
-
-    fluid.defaults("gpii.handlebars.renderer.serverMessageAware", {
-        gradeNames: ["gpii.handlebars.renderer.serverAware"],
-        messageUrl: "/messages",
-        invokers: {
-            "cacheMessages": {
-                funcName: "gpii.handlebars.renderer.serverMessageAware.cacheMessages",
-                args: ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"]
-            }
-        },
-        events: {
-            "onMessagesLoaded": null,
-            "onAllResourcesLoaded": {
-                events: {
-                    onMessagesLoaded: "onMessagesLoaded",
-                    onTemplatesLoaded: "onTemplatesLoaded"
-                }
-            }
-        },
-        listeners: {
-            "onCreate.loadMessages": {
-                funcName: "gpii.handlebars.renderer.serverAware.retrieveResource",
-                args: ["{that}.options.messageUrl", "{that}.cacheMessages"] // url, callback
-            }
-        }
-    });
-})(fluid, jQuery);
+})(fluid);

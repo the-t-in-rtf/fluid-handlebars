@@ -129,6 +129,12 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
             "keyboard": "toetsenbord",
             "four-oh-four": "Hier is er geen hond."
         },
+        queryLocaleRequest: {
+            "four-oh-four": "Oh dear.  Nothing here.",
+            noQuotes: "Quote 'works' unquote.",
+            "shallow-variable": "This is %condition.",
+            "message-key-language-only": "Works."
+        },
         // equivalent to "en"
         weightedLocale: {
             "shallow-variable": "This is %condition.",
@@ -296,6 +302,20 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                     ]
                 },
                 {
+                    name: "We should be able to specify a locale as a query parameter.",
+                    type: "test",
+                    sequence: [
+                        {
+                            func: "{queryLocaleRequest}.send"
+                        },
+                        {
+                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            event:    "{queryLocaleRequest}.events.onComplete",
+                            args:     ["{queryLocaleRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.queryLocaleRequest"] // response, returnedBundle, expected
+                        }
+                    ]
+                },
+                {
                     name: "We should be able to handle a request for a weighted set of preferred languages.",
                     type: "test",
                     sequence: [
@@ -384,6 +404,12 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                 acceptLanguageHeaders: "nl-NL"
             }
 
+        },
+        queryLocaleRequest: {
+            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            options: {
+                path: "/messages?locale=en-GB"
+            }
         },
         weightedLocaleRequest: {
             type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",

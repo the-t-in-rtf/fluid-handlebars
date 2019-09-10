@@ -147,7 +147,7 @@ fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.environment", {
                     defaultErrorHandler: {
                         type: "gpii.express.middleware.error",
                         options: {
-                            priority: "after:errorRenderingMiddleware"
+                            priority: "after:htmlErrorHandler"
                         }
                     }
                 }

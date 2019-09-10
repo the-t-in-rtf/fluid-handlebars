@@ -1,8 +1,8 @@
 /* eslint-env node */
-/* eslint-env node */
 "use strict";
 
-// TODO: These must run before the dispatcher tests, or the dispatcher tests will fail to load the secondary template directory.  Review together as part of the PR.
+// If this runs after the dispatcher tests the tests will fail because we are somehow getting the "secondary" templates.
+// TODO: Convert all node tests to use sequences, case holders, and test environments as a first step in addressing this.
 require("./standaloneRenderer-tests");
 
 require("./dispatcher-tests.js");
@@ -14,5 +14,4 @@ require("./inlineMessageBundlingMiddleware-tests");
 require("./live-reload-tests");
 require("./resolver-tests");
 require("./singleTemplateMiddleware-tests");
-require("./standaloneRenderer-tests");
 require("./watcher-tests");

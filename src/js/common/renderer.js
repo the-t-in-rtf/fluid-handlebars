@@ -87,7 +87,7 @@ var Handlebars = Handlebars || {};
             return compiledTemplate(combinedContext);
         }
         else {
-            fluid.fail("Can't find template '" + templateKey, "'.");
+            fluid.fail("Renderer can't find template '" + templateKey, "'.");
         }
     };
 
@@ -120,9 +120,6 @@ var Handlebars = Handlebars || {};
         gradeNames: ["fluid.modelComponent"],
         defaultLocale: "en_us",
         defaultLayout: "main",
-        events: {
-            onTemplatesLoaded: null
-        },
         model: {
             messages:  {},
             templates: {}

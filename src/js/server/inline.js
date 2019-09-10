@@ -94,8 +94,8 @@ gpii.handlebars.inlineTemplateBundlingMiddleware.scanTemplateSubdir = function (
 
 fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware", {
     gradeNames:          ["gpii.express.middleware.requestAware"],
-    path:                "/inline",
-    namespace:           "inline", // Namespace to allow other routers to put themselves in the chain before or after us.
+    path:                "/templates",
+    namespace:           "templates", // Namespace to allow other routers to put themselves in the chain before or after us.
     hbsExtensionRegexp:  /^(.+)\.(?:hbs|handlebars)$/,
     allowedTemplateDirs: ["layouts", "partials", "pages"],
     members: {

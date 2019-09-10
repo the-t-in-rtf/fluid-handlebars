@@ -5,13 +5,15 @@
 "use strict";
 var fluid = require("infusion");
 
-require("gpii-express");
+fluid.require("%gpii-handlebars");
+fluid.require("%gpii-express");
 
 require("../../");
 
 require("./lib/test-router-error");
 
-fluid.defaults("gpii.test.handlebars.client.harness", {
+// A common "base" grade that is also suitable for use with Testem.
+fluid.defaults("gpii.test.handlebars.harness.base", {
     gradeNames:  ["gpii.express"],
     port: 6994,
     baseUrl: {
@@ -39,10 +41,7 @@ fluid.defaults("gpii.test.handlebars.client.harness", {
         handlebars: {
             type: "gpii.express.hb",
             options: {
-                templateDirs: "{harness}.options.templateDirs",
-                members: {
-                    messageBundles: "{messageLoader}.messageBundles"
-                }
+                templateDirs: "{gpii.test.handlebars.harness.base}.options.templateDirs"
             }
         },
         dispatcher: {
@@ -50,7 +49,7 @@ fluid.defaults("gpii.test.handlebars.client.harness", {
             options: {
                 priority: "after:handlebars",
                 path: ["/dispatcher/:template", "/dispatcher"],
-                templateDirs: "{harness}.options.templateDirs",
+                templateDirs: "{gpii.test.handlebars.harness.base}.options.templateDirs",
                 rules: {
                     contextToExpose: {
                         myvar:    { literalValue: "modelvariable" },
@@ -61,49 +60,51 @@ fluid.defaults("gpii.test.handlebars.client.harness", {
                 }
             }
         },
-        inline: {
+        templates: {
             type: "gpii.handlebars.inlineTemplateBundlingMiddleware",
             options: {
-                path: "/hbs",
-                templateDirs: "{harness}.options.templateDirs"
+                templateDirs: "{gpii.test.handlebars.harness.base}.options.templateDirs"
             }
         },
         messageLoader: {
             type: "gpii.handlebars.i18n.messageLoader",
             options: {
-                messageDirs: "{harness}.options.messageDirs"
+                messageDirs: "{gpii.test.handlebars.harness.base}.options.messageDirs"
             }
         },
         messages: {
             type: "gpii.handlebars.inlineMessageBundlingMiddleware",
             options: {
-                messageDirs: "{harness}.options.messageDirs",
+                messageDirs: "{gpii.test.handlebars.harness.base}.options.messageDirs",
                 model: {
                     messageBundles: "{messageLoader}.model.messageBundles"
                 }
             }
         },
-        js: {
-            type: "gpii.express.router.static",
+        error: {
+            type: "gpii.test.handlebars.jsonErrorPitcher"
+        },
+        errorJsonString: {
+            type: "gpii.test.handlebars.jsonErrorPitcher",
             options: {
-                path:    "/src",
-                content: "%gpii-handlebars/src"
+                path: "/errorJsonString",
+                body: JSON.stringify({ok: false, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
             }
         },
-        modules: {
-            type: "gpii.express.router.static",
+        errorString: {
+            type: "gpii.test.handlebars.jsonErrorPitcher",
             options: {
-                path:    "/node_modules",
-                content: "%gpii-handlebars/node_modules"
+                path: "/errorString",
+                body: "There was a problem.  I'm telling you about it with a string response, hopefully this doesn't cause another problem."
             }
-        },
-        content: {
-            type: "gpii.express.router.static",
-            options: {
-                path:    "/content",
-                content: "%gpii-handlebars/tests/static"
-            }
-        },
+        }
+    }
+});
+
+// A more fully fleshed out grade that has its own express instance and additional error handling components.
+fluid.defaults("gpii.test.handlebars.harness", {
+    gradeNames:  ["gpii.express", "gpii.test.handlebars.harness.base"],
+    components: {
         error: {
             type: "gpii.test.handlebars.jsonErrorPitcher"
         },

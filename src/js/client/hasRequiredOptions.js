@@ -1,7 +1,6 @@
 /* eslint-env browser */
 // Grade to add checking for required options on startup.
 // TODO: Migrate to using JSON Schema validation to handle this once this is resolved: https://issues.gpii.net/browse/GPII-1176
-/* global fluid */
 /* eslint-env browser */
 (function (fluid) {
     "use strict";

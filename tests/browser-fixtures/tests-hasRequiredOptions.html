@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>Tests for "Required Options" grade.</title>
+
+        <!-- Fluid dependencies -->
+        <link rel="stylesheet" media="screen" href="../../node_modules/infusion/tests/lib/qunit/css/qunit.css" />
+        <script type="text/javascript" src="../../node_modules/infusion/dist/infusion-all.js"></script>
+        <!-- Not included in "all" -->
+        <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/MessageResolver.js"></script>
+
+        <!-- QUnit/jqUnit and Testem dependencies -->
+        <link rel="stylesheet" media="screen" href="../../node_modules/infusion/tests/lib/qunit/css/qunit.css" />
+        <script type="text/javascript" src="/node_modules/infusion/tests/lib/qunit/js/qunit.js"></script>
+        <script type="text/javascript" src="/node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js"></script>
+        <script src="/testem.js"></script>
+        <script type="text/javascript" src="/coverage/client/coverageSender.js"></script>
+
+        <!-- The code we are testing -->
+        <script type="text/javascript" src="/src/js/client/hasRequiredOptions.js"></script>
+    </head>
+    <body>
+        <h1 id="qunit-header">"Required Options" Grade Tests</h1>
+        <h2 id="qunit-banner"></h2>
+        <div id="qunit-testrunner-toolbar"></div>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+
+        <!-- The tests -->
+        <script src="./js/tests-hasRequiredOptions.js"></script>
+    </body>
+</html>

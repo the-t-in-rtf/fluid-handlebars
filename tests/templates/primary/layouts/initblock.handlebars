@@ -1,12 +1,19 @@
 <html>
   <head>
       <title>Init Block Test Page...</title>
+
       {{>common-includes}}
 
-      <div class="initBlock-viewport"></div>
+      <link rel="stylesheet" media="screen" href="../../node_modules/infusion/tests/lib/qunit/css/qunit.css" />
+      <script type="text/javascript" src="../../node_modules/infusion/tests/lib/qunit/js/qunit.js"></script>
+      <script type="text/javascript" src="../../node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js"></script>
 
-      <script type="text/javascript" src="/content/js/tests-initBlock.js"></script>
+      <!-- Testem and the coverage client to relay results. -->
+      <script src="/testem.js"></script>
+      <script type="text/javascript" src="/coverage/client/coverageSender.js"></script>
 
+      <!-- The component referenced in our initBlock -->
+      <script type="text/javascript" src="/tests/browser-fixtures/js/tests-initBlock-component.js"></script>
   </head>
   <body>
     {{{body}}}

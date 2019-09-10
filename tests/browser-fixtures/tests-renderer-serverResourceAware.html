@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <title>"Server Resource Aware" Renderer Tests</title>
+
+        <!-- Bring in jQuery and fluid dependencies -->
+        <script type="text/javascript" src="/node_modules/infusion/dist/infusion-all.js"></script>
+        <script type="text/javascript" src="/node_modules/infusion/src/framework/core/js/MessageResolver.js"></script>
+
+        <!-- Bring in Handlebars dependency -->
+        <script type="text/javascript" src="/node_modules/handlebars/dist/handlebars.js"></script>
+
+        <!-- Bring in markdown-it dependencies -->
+        <script type="text/javascript" src="/node_modules/markdown-it/dist/markdown-it.js"></script>
+
+        <script type="text/javascript" src="/node_modules/gpii-binder/src/js/binder.js"></script>
+
+        <!-- Bring in client library being tested -->
+        <script type="text/javascript" src="/src/js/common/lib/i18n.js"></script>
+        <script type="text/javascript" src="/src/js/common/lib/delete-and-add.js"></script>
+        <script type="text/javascript" src="/src/js/common/helper.js"></script>
+        <script type="text/javascript" src="/src/js/common/equals.js"></script>
+        <script type="text/javascript" src="/src/js/common/jsonify.js"></script>
+        <script type="text/javascript" src="/src/js/common/md-common.js"></script>
+        <script type="text/javascript" src="/src/js/common/messageHelper.js"></script>
+
+        <script type="text/javascript" src="/src/js/client/hasRequiredOptions.js"></script>
+        <script type="text/javascript" src="/src/js/client/ajaxCapable.js"></script>
+        <script type="text/javascript" src="/src/js/client/md-client.js"></script>
+        <script type="text/javascript" src="/src/js/common/renderer.js"></script>
+        <script type="text/javascript" src="/src/js/client/renderer.js"></script>
+        <script type="text/javascript" src="/src/js/client/serverResourceAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateManager.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateFormControl.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateMessage.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateRequestAndRender.js"></script>
+
+        <!-- QUnit/jqUnit and Testem dependencies -->
+        <link rel="stylesheet" media="screen" href="../../node_modules/infusion/tests/lib/qunit/css/qunit.css" />
+        <script type="text/javascript" src="/node_modules/infusion/tests/lib/qunit/js/qunit.js"></script>
+        <script type="text/javascript" src="/node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js"></script>
+        <script src="/testem.js"></script>
+        <script type="text/javascript" src="/coverage/client/coverageSender.js"></script>
+
+        <!-- replacement grades to force a consistent locale for tests -->
+        <script type="text/javascript" src="./js/lib/fixtures.js"></script>
+
+        <!-- "match defs" and helper functions for same. -->
+        <script type="text/javascript" src="./js/lib/matchdefs.js"></script>
+    </head>
+    <body>
+        <h1 id="qunit-header">"Server Resource Aware" Renderer Tests</h1>
+        <h2 id="qunit-banner"></h2>
+        <div id="qunit-testrunner-toolbar"></div>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests">
+        </ol>
+
+        <hr/>
+
+        <!-- These cannot be hidden -->
+        <h1></h1>
+
+        <p>This page needs to be served up by a server that can also deliver the required handlebars templates.  The tests should not complete in a standalone browser.</p>
+
+        <hr/>
+
+        <!-- The markup we will be targeting -->
+
+        <!-- Must come first so that we can tell that content has been inserted before it... -->
+        <h2>"Before" Tests</h2>
+        <div class="viewport-before">original content</div>
+
+        <h2>"Append" Tests</h2>
+        <div class="viewport-append">original content</div>
+
+        <h2>"HTML" Tests</h2>
+        <div class="viewport-html">original content</div>
+
+        <h2>"prepend" Tests</h2>
+        <div class="viewport-prepend">original content</div>
+
+        <h2>"replaceWith" Tests</h2>
+        <div class="viewport-replaceWith">original content</div>
+
+        <!-- Must come last so that we can tell that content has been inserted after it... -->
+        <div class="viewport-after" >original content</div>
+
+        <!-- The actual tests -->
+        <script type="text/javascript" src="./js/tests-renderer-serverResourceAware.js"></script>
+    </body>
+</html>

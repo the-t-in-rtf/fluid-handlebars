@@ -17,7 +17,7 @@
         args: [
           "{that}",
           "{that}.options.selectors.selector",
-          "{that}.options.templateKeys.templateKey",
+          "{that}.options.templateKey",
           "{that}.model",
           "appendTo"
         ]
@@ -25,7 +25,6 @@
 
   For an example of using this in depth, check out the provided `templateFormControl` grade or the client side tests.
  */
-/* global fluid */
 /* eslint-env browser */
 (function (fluid) {
     "use strict";
@@ -33,11 +32,11 @@
     fluid.registerNamespace("gpii.handlebars.templateAware");
 
     // A convenience function that can be used to more easily define `renderInitialMarkup` invokers (see example above).
-    gpii.handlebars.templateAware.renderMarkup = function (that, renderer, selector, template, data, manipulator) {
+    gpii.handlebars.templateAware.renderMarkup = function (that, renderer, selector, templateKey, data, manipulator) {
         manipulator = manipulator ? manipulator : "html";
         var element = that.locate(selector);
         if (renderer) {
-            renderer[manipulator](element, template, data);
+            renderer[manipulator](element, templateKey, data);
             that.events.onMarkupRendered.fire(that);
         }
         else {
@@ -55,13 +54,17 @@
     };
 
     fluid.defaults("gpii.handlebars.templateAware", {
-        gradeNames: ["fluid.viewComponent", "gpii.binder.bindOnDomChange"],
+        gradeNames: ["gpii.binder.bindOnDomChange", "fluid.viewComponent"],
         events: {
             refresh: null,
-            onMarkupRendered: null
+            onMarkupRendered: null,
+            onRendererAvailable: null
         },
         listeners: {
             "refresh.renderMarkup": {
+                func: "{that}.renderInitialMarkup"
+            },
+            "onRendererAvailable.renderInitialMarkup": {
                 func: "{that}.renderInitialMarkup"
             },
             "onMarkupRendered.refreshDom": {
@@ -75,79 +78,48 @@
             },
             renderMarkup: {
                 funcName: "gpii.handlebars.templateAware.renderMarkup",
-                args:     ["{that}", "{renderer}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"] // renderer, selector, template, data, manipulator
-            }
-        }
-    });
-
-    // A convenience grade which configures a `templateAware` component to render on startup.
-    fluid.defaults("gpii.handlebars.templateAware.bornReady", {
-        listeners: {
-            "onCreate.renderMarkup": {
-                func: "{that}.renderInitialMarkup"
+                args:     ["{that}", "{renderer}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"] // renderer, selector, templateKey, data, manipulator
             }
         }
     });
 
     fluid.defaults("gpii.handlebars.templateAware.standalone", {
         gradeNames: ["gpii.handlebars.templateAware"],
-        requiredOptions: {
-            templates: true
-        },
         model: {
-            templates: "{that}.options.templates"
+            templates: "{that}.options.templates",
+            messageBundles: {}
         },
         mergePolicy: {
             "templates.layouts":  "noexpand",
             "templates.pages":    "noexpand",
             "templates.partials": "noexpand"
         },
-        distributeOptions: {
-            source: "{that}.options.templates",
-            target: "{that > renderer}.options.templates"
-        },
         components: {
             renderer: {
-                type: "gpii.handlebars.renderer.standalone",
-                options: {
-                    model: {
-                        templates: "{gpii.handlebars.templateAware.standalone}.model.templates"
-                    }
-                }
-            }
-        },
-        listeners: {
-            "onCreate.renderMarkup": {
-                func: "{that}.renderInitialMarkup"
-            }
-        }
-    });
-
-    fluid.defaults("gpii.handlebars.templateAware.serverAware", {
-        gradeNames: ["gpii.handlebars.templateAware"],
-        components: {
-            renderer: {
-                type: "gpii.handlebars.renderer.serverAware",
+                type: "gpii.handlebars.renderer",
                 options: {
                     listeners: {
-                        "onTemplatesLoaded.renderMarkup": {
-                            func: "{gpii.handlebars.templateAware.serverAware}.renderInitialMarkup"
+                        "onCreate.notifyParent": {
+                            func: "{gpii.handlebars.templateAware}.events.onRendererAvailable.fire"
                         }
+                    },
+                    model: {
+                        templates: "{gpii.handlebars.templateAware.standalone}.model.templates",
+                        messageBundles: "{gpii.handlebars.templateAware.standalone}.model.messageBundles"
                     }
                 }
             }
         }
     });
 
-    fluid.defaults("gpii.handlebars.templateAware.serverMessageAware", {
-        gradeNames: ["gpii.handlebars.templateAware"],
+    fluid.defaults("gpii.handlebars.templateAware.serverResourceAware", {
+        gradeNames: ["gpii.handlebars.serverResourceAware", "gpii.handlebars.templateAware"],
         components: {
             renderer: {
-                type: "gpii.handlebars.renderer.serverMessageAware",
                 options: {
                     listeners: {
-                        "onAllResourcesLoaded.renderMarkup": {
-                            func: "{gpii.handlebars.templateAware.serverMessageAware}.renderInitialMarkup"
+                        "onCreate.notifyParent": {
+                            func: "{gpii.handlebars.templateAware}.events.onRendererAvailable.fire"
                         }
                     }
                 }

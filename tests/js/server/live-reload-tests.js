@@ -254,13 +254,13 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
         initialInlineRequest: {
             type: "gpii.tests.handlebars.live.request",
             options: {
-                path: "/inline"
+                path: "/templates"
             }
         },
         postChangeInlineRequest: {
             type: "gpii.tests.handlebars.live.request",
             options: {
-                path: "/inline"
+                path: "/templates"
             }
         },
         initialErrorRequest: {
@@ -390,7 +390,7 @@ fluid.defaults("gpii.tests.handlebars.live.environment", {
                     inlineMiddleware: {
                         type: "gpii.handlebars.inlineTemplateBundlingMiddleware",
                         options: {
-                            path: "/inline",
+                            path: "/templates",
                             templateDirs: "{gpii.tests.handlebars.live.environment}.options.templateDirs"
                         }
                     },

@@ -8,7 +8,6 @@
   For more details on the request and response cycle, see the `ajaxCapable` grade.
 
  */
-/* global fluid */
 (function (fluid) {
     "use strict";
     fluid.defaults("gpii.handlebars.templateRequestAndRender", {
@@ -39,7 +38,7 @@
                 createOnEvent: "{renderer}.events.onRequestReceived",
                 container:     "{templateRequestAndRender}.dom.error",
                 options: {
-                    template: "{templateRequestAndRender}.options.templateKeys.error",
+                    template: "error",
                     model:  {
                         message: "{templateRequestAndRender}.errorMessage"
                     }

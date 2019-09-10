@@ -84,8 +84,7 @@ fluid.defaults("gpii.express.hb.live", {
     gradeNames: ["gpii.express.hb"],
     events: {
         onWatcherReady: null,
-        onFsChange: null,
-        onTemplatesLoaded: null
+        onFsChange: null
     },
     components: {
         watcher: {
@@ -102,15 +101,6 @@ fluid.defaults("gpii.express.hb.live", {
                 }
             }
 
-        },
-        renderer: {
-            options: {
-                listeners: {
-                    "onTemplatesLoaded.notifyParent": {
-                        func: "{gpii.express.hb.live}.events.onTemplatesLoaded.fire"
-                    }
-                }
-            }
         }
     },
     listeners: {

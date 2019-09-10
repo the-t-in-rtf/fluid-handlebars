@@ -14,7 +14,7 @@ fluid.defaults("gpii.test.handlebars.environment", {
     },
     components: {
         express: {
-            type: "gpii.test.handlebars.client.harness"
+            type: "gpii.test.handlebars.harness"
         }
     }
 });
