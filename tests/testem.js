@@ -12,7 +12,7 @@ fluid.defaults("gpii.test.handlebars.coverageServer", {
     gradeNames: ["gpii.testem.coverage.express", "gpii.test.handlebars.harness.base"]
 });
 
-var testemComponent = gpii.testem({
+var testemComponent = gpii.testem.instrumentation({
     reportsDir: "reports",
     coverageDir: "coverage",
     testPages:   [
