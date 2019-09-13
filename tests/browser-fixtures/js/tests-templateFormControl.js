@@ -168,61 +168,22 @@
 
     fluid.registerNamespace("gpii.tests.handlebars.browser.templateFormControl.runner");
 
-    gpii.tests.handlebars.browser.templateFormControl.runner.runTests = function (testRunner) {
-        jqUnit.module("Testing the `templateFormControl` client-side grade.");
-
-        fluid.each(testRunner.options.testDefs, function (singleTestDef) {
-            jqUnit.asyncTest(singleTestDef.message, function () {
-                var initialStateTestFn = function (componentToTest) {
-                    jqUnit.start();
-
-                    // Check the initial rendered state of the whole page for any components that failed to render.
-                    gpii.test.handlebars.browser.sanityCheckElements([componentToTest.locate("initial")], [testRunner.options.matchDefs.initialState]);
-
-                    jqUnit.stop();
-
-                    // Wait for the form submission and refresh.  We use a timeout to avoid having to specify which
-                    // sub-component's render to wait for or which model change to wait for (programatically listening for changes to "*" fires twice).
-                    setTimeout(function () {
-                        jqUnit.start();
-
-                        // Inspect the results once the form is submitted.
-                        if (componentToTest.options.submitResultMatchDef) {
-                            gpii.test.handlebars.browser.sanityCheckElements([componentToTest.locate("initial")], [componentToTest.options.submitResultMatchDef]);
-                        }
-                        if (componentToTest.options.expectedModel) {
-                            jqUnit.assertLeftHand("The model should be as expected after the form is submitted.", componentToTest.options.expectedModel, componentToTest.model);
-                        }
-                    }, 500);
-
-                    componentToTest.submitForm();
-                };
-
-                try {
-                    // Initialise the component.
-                    var componentToTest = fluid.invokeGlobalFunction(singleTestDef.type, [
-                        singleTestDef.container,
-                        {
-                            listeners: {
-                                "onMarkupRendered.test": {
-                                    func: initialStateTestFn,
-                                    args: componentToTest
-                                }
-                            }
-                        }
-                    ]);
-                }
-                catch (error) {
-                    jqUnit.start();
-                    console.log(JSON.stringify(error, null, 2));
-                    jqUnit.fail("There should be no errors creating the component.");
-                }
-            });
-        });
+    gpii.tests.handlebars.browser.templateFormControl.submitForm = function (componentToSubmit) {
+        componentToSubmit.submitForm();
     };
 
-    fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.runner", {
-        gradeNames: ["fluid.component"],
+    gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults = function (componentToTest) {
+        // Inspect the results once the form is submitted.
+        if (componentToTest.options.submitResultMatchDef) {
+            gpii.test.handlebars.browser.sanityCheckElements([componentToTest.locate("initial")], [componentToTest.options.submitResultMatchDef]);
+        }
+        if (componentToTest.options.expectedModel) {
+            jqUnit.assertLeftHand("The model should be as expected after the form is submitted.", componentToTest.options.expectedModel, componentToTest.model);
+        }
+    };
+
+    fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.testCaseHolder", {
+        gradeNames: ["fluid.test.testCaseHolder"],
         matchDefs: {
             initialState: {
                 message: "The body should contain rendered content that replaces the original source.",
@@ -230,46 +191,247 @@
                 invert: true
             }
         },
-        testDefs: {
+        modules: [{
+            name: "Testing the `templateFormControl` client-side grade.",
+            tests: [
+                {
+                    name: "Testing JSON failure.",
+                    sequence: [
+                        {
+                            func: "{testCaseHolder}.events.createFailureComponent.fire"
+                        },
+                        {
+                            event: "{testCaseHolder}.events.onFailureRendered",
+                            listener: "gpii.tests.handlebars.browser.templateFormControl.submitForm",
+                            args: ["{gpii.tests.templateFormControl.readyForFailure}"] // componentToSubmit
+                        },
+                        {
+                            event: "{testCaseHolder}.events.onFailureRequestReceived",
+                            listener: "gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults",
+                            args: ["{gpii.tests.templateFormControl.readyForFailure}"] // componentToTest
+                        }
+                    ]
+                },
+                {
+                    name: "Testing stringified JSON failure.",
+                    sequence: [
+                        {
+                            func: "{testCaseHolder}.events.createStringifyFailureComponent.fire"
+                        },
+                        {
+                            event: "{testCaseHolder}.events.onStringifyFailureRendered",
+                            listener: "gpii.tests.handlebars.browser.templateFormControl.submitForm",
+                            args: ["{gpii.tests.templateFormControl.readyForStringifyFailure}"] // componentToSubmit
+                        },
+                        {
+                            event: "{testCaseHolder}.events.onStringifyFailureRequestReceived",
+                            listener: "gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults",
+                            args: ["{gpii.tests.templateFormControl.readyForStringifyFailure}"] // componentToTest
+                        }
+                    ]
+                },
+                {
+                    name: "Testing string failure.",
+                    sequence: [
+                        {
+                            func: "{testCaseHolder}.events.createStringFailureComponent.fire"
+                        },
+                        {
+                            event: "{testCaseHolder}.events.onStringFailureRendered",
+                            listener: "gpii.tests.handlebars.browser.templateFormControl.submitForm",
+                            args: ["{gpii.tests.templateFormControl.readyForStringFailure}"] // componentToSubmit
+                        },
+                        {
+                            event: "{testCaseHolder}.events.onStringFailureRequestReceived",
+                            listener: "gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults",
+                            args: ["{gpii.tests.templateFormControl.readyForStringFailure}"] // componentToTest
+                        }
+                    ]
+                },
+                {
+                    name: "Testing JSON success.",
+                    sequence: [
+                        {
+                            func: "{testCaseHolder}.events.createSuccessComponent.fire"
+                        },
+                        {
+                            event: "{testCaseHolder}.events.onSuccessRendered",
+                            listener: "gpii.tests.handlebars.browser.templateFormControl.submitForm",
+                            args: ["{gpii.tests.templateFormControl.readyForSuccess}"] // componentToSubmit
+                        },
+                        {
+                            event: "{testCaseHolder}.events.onSuccessRequestReceived",
+                            listener: "gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults",
+                            args: ["{gpii.tests.templateFormControl.readyForSuccess}"] // componentToTest
+                        }
+                    ]
+                },
+                {
+                    name: "Testing string success.",
+                    sequence: [
+                        {
+                            func: "{testCaseHolder}.events.createSuccessStringComponent.fire"
+                        },
+                        {
+                            event: "{testCaseHolder}.events.onSuccessStringRendered",
+                            listener: "gpii.tests.handlebars.browser.templateFormControl.submitForm",
+                            args: ["{gpii.tests.templateFormControl.readyForStringSuccess}"] // componentToSubmit
+                        },
+                        {
+                            event: "{testCaseHolder}.events.onSuccessStringRequestReceived",
+                            listener: "gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults",
+                            args: ["{gpii.tests.templateFormControl.readyForStringSuccess}"] // componentToTest
+                        }
+                    ]
+                },
+                {
+                    name: "Testing stringified JSON success.",
+                    sequence: [
+                        {
+                            func: "{testCaseHolder}.events.createSuccessStringifyComponent.fire"
+                        },
+                        {
+                            event: "{testCaseHolder}.events.onSuccessStringifyRendered",
+                            listener: "gpii.tests.handlebars.browser.templateFormControl.submitForm",
+                            args: ["{gpii.tests.templateFormControl.readyForStringifySuccess}"] // componentToSubmit
+                        },
+                        {
+                            event: "{testCaseHolder}.events.onSuccessStringifyRequestReceived",
+                            listener: "gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults",
+                            args: ["{gpii.tests.templateFormControl.readyForStringifySuccess}"] // componentToTest
+                        }
+                    ]
+                }
+            ]
+        }],
+        events: {
+            createFailureComponent: null,
+            onFailureRendered:  null,
+            onFailureRequestReceived: null,
+
+            createStringifyFailureComponent: null,
+            onStringifyFailureRendered:  null,
+            onStringifyFailureRequestReceived: null,
+
+            createStringFailureComponent: null,
+            onStringFailureRendered:  null,
+            onStringFailureRequestReceived: null,
+
+            createSuccessComponent: null,
+            onSuccessRendered:  null,
+            onSuccessRequestReceived: null,
+
+            createSuccessStringComponent: null,
+            onSuccessStringRendered:  null,
+            onSuccessStringRequestReceived: null,
+
+            createSuccessStringifyComponent: null,
+            onSuccessStringifyRendered:  null,
+            onSuccessStringifyRequestReceived: null
+        },
+        components: {
             failure: {
-                message: "Testing JSON failure.",
                 type: "gpii.tests.templateFormControl.readyForFailure",
-                container: ".readyForFailure"
+                container: ".readyForFailure",
+                createOnEvent: "createFailureComponent",
+                options: {
+                    listeners: {
+                        "onMarkupRendered.notifyParent": {
+                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onFailureRendered.fire"
+                        },
+                        "requestReceived.notifyParent": {
+                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onFailureRequestReceived.fire"
+                        }
+                    }
+                }
             },
             stringifyFailure: {
-                message: "Testing stringified JSON failure.",
                 type: "gpii.tests.templateFormControl.readyForStringifyFailure",
-                container: ".readyForStringifyFailure"
+                container: ".readyForStringifyFailure",
+                createOnEvent: "createStringifyFailureComponent",
+                options: {
+                    listeners: {
+                        "onMarkupRendered.notifyParent": {
+                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onStringifyFailureRendered.fire"
+                        },
+                        "requestReceived.notifyParent": {
+                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onStringifyFailureRequestReceived.fire"
+                        }
+                    }
+                }
             },
             stringFailure: {
-                message: "Testing string failure.",
                 type: "gpii.tests.templateFormControl.readyForStringFailure",
-                container: ".readyForStringFailure"
+                container: ".readyForStringFailure",
+                createOnEvent: "createStringFailureComponent",
+                options: {
+                    listeners: {
+                        "onMarkupRendered.notifyParent": {
+                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onStringFailureRendered.fire"
+                        },
+                        "requestReceived.notifyParent": {
+                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onStringFailureRequestReceived.fire"
+                        }
+                    }
+                }
             },
             success: {
-                message: "Testing JSON success.",
                 type: "gpii.tests.templateFormControl.readyForSuccess",
-                container: ".readyForSuccess"
+                container: ".readyForSuccess",
+                createOnEvent: "createSuccessComponent",
+                options: {
+                    listeners: {
+                        "onMarkupRendered.notifyParent": {
+                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessRendered.fire"
+                        },
+                        "requestReceived.notifyParent": {
+                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessRequestReceived.fire"
+                        }
+                    }
+                }
             },
             successString: {
-                message: "Testing string success.",
                 type: "gpii.tests.templateFormControl.readyForStringSuccess",
-                container: ".readyForStringSuccess"
+                container: ".readyForStringSuccess",
+                createOnEvent: "createSuccessStringComponent",
+                options: {
+                    listeners: {
+                        "onMarkupRendered.notifyParent": {
+                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessStringRendered.fire"
+                        },
+                        "requestReceived.notifyParent": {
+                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessStringRequestReceived.fire"
+                        }
+                    }
+                }
             },
             successStringify: {
-                message: "Testing stringified JSON success.",
                 type: "gpii.tests.templateFormControl.readyForStringifySuccess",
-                container: ".readyForStringifySuccess"
-            }
-        },
-        listeners: {
-            "onCreate.runTests": {
-                func: "gpii.tests.handlebars.browser.templateFormControl.runner.runTests",
-                args: ["{that}"]
+                container: ".readyForStringifySuccess",
+                createOnEvent: "createSuccessStringifyComponent",
+                options: {
+                    listeners: {
+                        "onMarkupRendered.notifyParent": {
+                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessStringifyRendered.fire"
+                        },
+                        "requestReceived.notifyParent": {
+                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessStringifyRequestReceived.fire"
+                        }
+                    }
+                }
             }
         }
     });
 
-    /* eslint-disable no-unused-vars */
-    gpii.tests.handlebars.browser.templateFormControl.runner();
+    fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.testEnvironment", {
+        gradeNames: ["fluid.test.testEnvironment"],
+        components: {
+            caseHolder: {
+                type: "gpii.tests.handlebars.browser.templateFormControl.testCaseHolder",
+                container: "body"
+            }
+        }
+    });
+
+    fluid.test.runTests("gpii.tests.handlebars.browser.templateFormControl.testEnvironment");
 })(fluid, jqUnit);

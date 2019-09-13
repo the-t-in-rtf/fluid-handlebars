@@ -10,17 +10,29 @@
         <script src="/testem.js"></script>
         <script src="../../node_modules/infusion/tests/lib/qunit/addons/composite/qunit-composite.js"></script>
         <script>
-            <!-- These cannot be run using only a browser, as we also need to test the server-side initBlock helper. -->
+            <!-- These cannot be run using only a browser, most need things like the initBlock helper, the message bundling middleware, and/or the template bundling middleware. -->
             QUnit.testSuites([
-                "/tests/browser-fixtures/tests-hasRequiredOptions.html",
+                // TODO: alphebetise once all are working.
+                // TODO: These still throw zero assertion errors when run locally.
+                /*
+                    1 /dispatcher/initblock?myvar=bar
+                    1 /tests/browser-fixtures/tests-hasRequiredOptions.html
+                    4 /tests/browser-fixtures/tests-renderer-standalone.html
+                    2 /tests/browser-fixtures/tests-templateAware-standalone.html
+                 */
                 "/dispatcher/initblock?myvar=bar",
-                "/tests/browser-fixtures/tests-renderer-serverResourceAware.html",
+                "/tests/browser-fixtures/tests-hasRequiredOptions.html",
                 "/tests/browser-fixtures/tests-renderer-standalone.html",
-                "/tests/browser-fixtures/tests-serverMessageAware.html",
-                "/tests/browser-fixtures/tests-templateAware-serverResourceAware.html",
                 "/tests/browser-fixtures/tests-templateAware-standalone.html",
-                //"/tests/browser-fixtures/tests-templateFormControl.html",
-                "/tests/browser-fixtures/tests-templateMessage.html"
+
+                // Seems OK
+                "/tests/browser-fixtures/tests-templateMessage.html",
+
+                // TODO: Seems to hang?
+                "/tests/browser-fixtures/tests-templateAware-serverResourceAware.html",
+                "/tests/browser-fixtures/tests-serverMessageAware.html",
+                "/tests/browser-fixtures/tests-renderer-serverResourceAware.html",
+                "/tests/browser-fixtures/tests-templateFormControl.html"
             ]);
         </script>
     </head>

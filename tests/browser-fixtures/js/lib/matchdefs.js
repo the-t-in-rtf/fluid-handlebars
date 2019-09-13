@@ -13,41 +13,41 @@
     gpii.test.handlebars.browser.matchDefs = {
         standard: {
             markdown: {
-                message: "The element should contain rendered markdown...",
+                message: "The element should contain rendered markdown.",
                 pattern: "this works",
                 selector: ".markdown p em"
             },
             variable: {
-                message: "The new element should contain rendered variable content...",
+                message: "The new element should contain rendered variable content.",
                 pattern: "modelvariable",
                 selector: ".variable"
             },
             partial: {
-                message: "The element after the original should have rendered content...",
+                message: "The element after the original should have rendered content.",
                 pattern:  "from the partial"
             },
             equals: {
-                message: "Equal comparisons should display the correct text (true)...",
+                message: "Equal comparisons should display the correct text (true).",
                 pattern: "true",
                 selector: ".equal"
             },
             unequals: {
-                message: "Unequal comparisons should display the correct text (false)...",
+                message: "Unequal comparisons should display the correct text (false).",
                 pattern: "false",
                 selector: ".unequal"
             }
         },
         noOriginalContent: {
-            message: "The original content should no longer be found...",
+            message: "The original content should no longer be found.",
             pattern: "original content",
             invert:  true
         },
         originalContent: {
-            message: "The original content should be preserved in its entirety...",
+            message: "The original content should be preserved in its entirety.",
             pattern: "^original content$"
         },
         originalContentAtBeginning: {
-            message: "The original content should still be at the start of the element...",
+            message: "The original content should still be at the start of the element.",
             pattern: "^original content.+"
         },
         originalContentAtEnd: {

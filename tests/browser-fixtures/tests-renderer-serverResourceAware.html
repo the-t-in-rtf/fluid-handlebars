@@ -35,6 +35,9 @@
         <script type="text/javascript" src="/src/js/client/templateMessage.js"></script>
         <script type="text/javascript" src="/src/js/client/templateRequestAndRender.js"></script>
 
+        <!-- Required for Fluid IoC tests. -->
+        <script type="text/javascript" src="/node_modules/infusion/tests/test-core/utils/js/IoCTestUtils.js"></script>
+
         <!-- QUnit/jqUnit and Testem dependencies -->
         <link rel="stylesheet" media="screen" href="../../node_modules/infusion/tests/lib/qunit/css/qunit.css" />
         <script type="text/javascript" src="/node_modules/infusion/tests/lib/qunit/js/qunit.js"></script>
@@ -56,16 +59,8 @@
         <ol id="qunit-tests">
         </ol>
 
-        <hr/>
-
         <!-- These cannot be hidden -->
-        <h1></h1>
-
-        <p>This page needs to be served up by a server that can also deliver the required handlebars templates.  The tests should not complete in a standalone browser.</p>
-
         <hr/>
-
-        <!-- The markup we will be targeting -->
 
         <!-- Must come first so that we can tell that content has been inserted before it... -->
         <h2>"Before" Tests</h2>

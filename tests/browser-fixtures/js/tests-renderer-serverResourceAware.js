@@ -1,6 +1,5 @@
 /* eslint-env browser */
-/* globals jqUnit */
-(function (fluid, jqUnit) {
+(function (fluid) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
 
@@ -9,57 +8,24 @@
     // This is a test component that is meant to be included in a client-side document.
     fluid.registerNamespace("gpii.tests.handlebars.renderer.serverResourceAware");
 
-    gpii.tests.handlebars.renderer.serverResourceAware.transformUsingTemplates = function (that) {
-        that.renderer.after(that.locate("viewport-after"), that.options.templateName, that.model);
-        that.renderer.append(that.locate("viewport-append"), that.options.templateName, that.model);
-        that.renderer.before(that.locate("viewport-before"), that.options.templateName, that.model);
-        that.renderer.html(that.locate("viewport-html"), that.options.templateName, that.model);
-        that.renderer.prepend(that.locate("viewport-prepend"), that.options.templateName, that.model);
-        that.renderer.replaceWith(that.locate("viewport-replaceWith"), that.options.replaceWithTemplateName, that.model);
-
+    gpii.tests.handlebars.renderer.serverResourceAware.renderBlock = function (that, rendererFn, selector, templateName) {
+        templateName = templateName || that.options.templateName;
+        that.renderer[rendererFn](that.locate(selector), templateName, that.model);
         that.events.onMarkupRendered.fire();
     };
 
-    gpii.tests.handlebars.renderer.serverResourceAware.testRenderedMarkup = function () {
-        // gpii.test.handlebars.browser.matchDefs
-        jqUnit.test("Confirm that the client-side renderer can add content after an existing element...", function () {
-            gpii.test.handlebars.browser.sanityCheckSelectors(".viewport-after + *", gpii.test.handlebars.browser.matchDefs.standard);
-            gpii.test.handlebars.browser.sanityCheckSelectors(".viewport-after", gpii.test.handlebars.browser.matchDefs.originalContent);
-        });
+    fluid.registerNamespace("gpii.tests.handlebars.renderer.serverResourceAware.testCaseHolder");
 
-        jqUnit.test("Confirm that the client-side renderer can append content to an existing element...", function () {
-            gpii.test.handlebars.browser.sanityCheckSelectors(".viewport-append", gpii.test.handlebars.browser.matchDefs.standard);
-            gpii.test.handlebars.browser.sanityCheckSelectors(".viewport-append", gpii.test.handlebars.browser.matchDefs.originalContentAtBeginning);
-        });
-
-        jqUnit.test("Confirm that the client-side renderer can add content before an existing element...", function () {
-            var previousSibling = $(".viewport-before").prev();
-            gpii.test.handlebars.browser.sanityCheckElements(previousSibling, gpii.test.handlebars.browser.matchDefs.standard);
-            gpii.test.handlebars.browser.sanityCheckSelectors(".viewport-before", gpii.test.handlebars.browser.matchDefs.originalContentAtBeginning);
-        });
-
-        jqUnit.test("Confirm that the client-side renderer can replace existing html content in an element...", function () {
-            gpii.test.handlebars.browser.sanityCheckSelectors(".viewport-html", gpii.test.handlebars.browser.matchDefs.standard);
-            gpii.test.handlebars.browser.sanityCheckSelectors(".viewport-html", gpii.test.handlebars.browser.matchDefs.noOriginalContent);
-        });
-
-        jqUnit.test("Confirm that the client-side renderer can prepend content to an existing element...", function () {
-            gpii.test.handlebars.browser.sanityCheckSelectors(".viewport-prepend", gpii.test.handlebars.browser.matchDefs.standard);
-            gpii.test.handlebars.browser.sanityCheckSelectors(".viewport-prepend", gpii.test.handlebars.browser.matchDefs.originalContentAtEnd);
-        });
-
-        jqUnit.test("Confirm that the client-side renderer can replace an existing element altogether...", function () {
-            gpii.test.handlebars.browser.sanityCheckSelectors(".viewport-replaceWith.replaced", gpii.test.handlebars.browser.matchDefs.standard);
-            gpii.test.handlebars.browser.sanityCheckSelectors(".viewport-replaceWith.replaced", gpii.test.handlebars.browser.matchDefs.noOriginalContent);
-        });
+    gpii.tests.handlebars.renderer.serverResourceAware.testCaseHolder.getPreviousSibling = function () {
+        return $(".viewport-before").prev();
     };
 
-    fluid.defaults("gpii.tests.handlebars.renderer.serverResourceAware", {
-        gradeNames: ["gpii.tests.handlebars.templateAware.serverResourceAware"],
+    fluid.defaults("gpii.tests.handlebars.renderer.serverResourceAware.testCaseHolder", {
+        gradeNames: ["fluid.test.testCaseHolder", "gpii.tests.handlebars.templateAware.serverResourceAware"],
         model: {
-            myvar:                   "modelvariable",
-            markdown:                "*this works*",
-            json:                    { foo: "bar", baz: "quux", qux: "quux" }
+            myvar:    "modelvariable",
+            markdown: "*this works*",
+            json:     { foo: "bar", baz: "quux", qux: "quux" }
         },
         templateName:            "index",
         replaceWithTemplateName: "replace",
@@ -73,20 +39,133 @@
         },
         invokers: {
             "renderInitialMarkup": {
-                funcName: "gpii.tests.handlebars.renderer.serverResourceAware.transformUsingTemplates",
-                args:     ["{that}"]
+                funcName: "fluid.identity"
             }
         },
-        listeners: {
-            "onRendererAvailable.render": {
-                func: "{that}.renderInitialMarkup"
-            },
-            "onMarkupRendered.testRenderedMarkup": {
-                funcName: "gpii.tests.handlebars.renderer.serverResourceAware.testRenderedMarkup",
-                args: ["{that}"]
+        modules: [{
+            name: "Tests for 'server resource aware' renderer.",
+            tests: [
+                {
+                    name: "Confirm that the client-side renderer can add content after an existing element.",
+                    sequence: [
+                        {
+                            func: "gpii.tests.handlebars.renderer.serverResourceAware.renderBlock",
+                            args: ["{that}", "after", "viewport-after"] // that, rendererFn, selector, [templateName]
+                        },
+                        {
+                            event: "{that}.events.onMarkupRendered",
+                            listener: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                            args: [".viewport-after + *", gpii.test.handlebars.browser.matchDefs.standard] // selector, matchDefs
+                        },
+                        {
+                            func: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                            args: [".viewport-after", gpii.test.handlebars.browser.matchDefs.originalContent] // selector, matchDefs
+                        }
+                    ]
+                },
+                {
+                    name: "Confirm that the client-side renderer can append content to an existing element.",
+                    sequence: [
+                        {
+                            func: "gpii.tests.handlebars.renderer.serverResourceAware.renderBlock",
+                            args: ["{that}", "append", "viewport-append"] // that, rendererFn, selector, [templateName]
+                        },
+                        {
+                            event: "{that}.events.onMarkupRendered",
+                            listener: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                            args: [".viewport-append", gpii.test.handlebars.browser.matchDefs.standard] // selector, matchDefs
+                        },
+                        {
+                            func: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                            args: [".viewport-append", gpii.test.handlebars.browser.matchDefs.originalContentAtBeginning] // selector, matchDefs
+                        }
+                    ]
+                },
+                {
+                    name: "Confirm that the client-side renderer can add content before an existing element.",
+                    sequence: [
+                        {
+                            func: "gpii.tests.handlebars.renderer.serverResourceAware.renderBlock",
+                            args: ["{that}", "before", "viewport-before"] // that, rendererFn, selector, [templateName]
+                        },
+                        {
+                            event: "{that}.events.onMarkupRendered",
+                            listener: "gpii.test.handlebars.browser.sanityCheckElements",
+                            args: ["@expand:gpii.tests.handlebars.renderer.serverResourceAware.testCaseHolder.getPreviousSibling()", gpii.test.handlebars.browser.matchDefs.standard] // selector, matchDefs
+                        },
+                        {
+                            func: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                            args: [".viewport-before", gpii.test.handlebars.browser.matchDefs.originalContentAtBeginning] // selector, matchDefs
+                        }
+                    ]
+                },
+                {
+                    name: "Confirm that the client-side renderer can replace existing html content in an element.",
+                    sequence: [
+                        {
+                            func: "gpii.tests.handlebars.renderer.serverResourceAware.renderBlock",
+                            args: ["{that}", "html", "viewport-html"] // that, rendererFn, selector, [templateName]
+                        },
+                        {
+                            event: "{that}.events.onMarkupRendered",
+                            listener: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                            args: [".viewport-html", gpii.test.handlebars.browser.matchDefs.standard] // selector, matchDefs
+                        },
+                        {
+                            func: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                            args: [".viewport-html", gpii.test.handlebars.browser.matchDefs.noOriginalContent] // selector, matchDefs
+                        }
+                    ]
+                },
+                {
+                    name: "Confirm that the client-side renderer can prepend content to an existing element.",
+                    sequence: [
+                        {
+                            func: "gpii.tests.handlebars.renderer.serverResourceAware.renderBlock",
+                            args: ["{that}", "prepend", "viewport-prepend"] // that, rendererFn, selector, [templateName]
+                        },
+                        {
+                            event: "{that}.events.onMarkupRendered",
+                            listener: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                            args: [".viewport-prepend", gpii.test.handlebars.browser.matchDefs.standard] // selector, matchDefs
+                        },
+                        {
+                            func: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                            args: [".viewport-prepend", gpii.test.handlebars.browser.matchDefs.originalContentAtEnd] // selector, matchDefs
+                        }
+                    ]
+                },
+                {
+                    name: "Confirm that the client-side renderer can replace an existing element altogether.",
+                    sequence: [
+                        {
+                            func: "gpii.tests.handlebars.renderer.serverResourceAware.renderBlock",
+                            args: ["{that}", "replaceWith", "viewport-replaceWith", "{that}.options.replaceWithTemplateName"] // that, rendererFn, selector, [templateName]
+                        },
+                        {
+                            event: "{that}.events.onMarkupRendered",
+                            listener: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                            args: [".viewport-replaceWith.replaced", gpii.test.handlebars.browser.matchDefs.standard] // selector, matchDefs
+                        },
+                        {
+                            func: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                            args: [".viewport-replaceWith.replaced", gpii.test.handlebars.browser.matchDefs.noOriginalContent] // selector, matchDefs
+                        }
+                    ]
+                }
+            ]
+        }]
+    });
+
+    fluid.defaults("gpii.tests.handlebars.renderer.serverResourceAware.testEnvironment", {
+        gradeNames: ["fluid.test.testEnvironment"],
+        components: {
+            caseHolder: {
+                type: "gpii.tests.handlebars.renderer.serverResourceAware.testCaseHolder",
+                container: "body"
             }
         }
     });
 
-    gpii.tests.handlebars.renderer.serverResourceAware("body");
-})(fluid, jqUnit);
+    fluid.test.runTests("gpii.tests.handlebars.renderer.serverResourceAware.testEnvironment");
+})(fluid);

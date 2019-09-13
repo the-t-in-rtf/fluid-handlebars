@@ -1,26 +1,10 @@
 /* eslint-env browser */
-/* globals jqUnit */
-(function (fluid, jqUnit) {
+(function (fluid) {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
-
     fluid.registerNamespace("gpii.tests.handlebars.templateAware.standalone");
-
-    gpii.tests.handlebars.templateAware.standalone.runTests = function (that) {
-        jqUnit.module("Testing the standalone `templateAware` grade...");
-        jqUnit.test("Confirm that the view contains rendered content (including variable data).", function () {
-            gpii.test.handlebars.browser.sanityCheckSelectors(".templateAware-standalone-viewport", that.options.matchDefs);
-        });
-    };
 
     fluid.defaults("gpii.tests.handlebars.templateAware.standalone", {
         gradeNames: ["fluid.modelComponent", "gpii.handlebars.templateAware.standalone"],
-        matchDefs: {
-            markdown: {
-                message: "The view should contain rendered content.",
-                pattern: "This is our rendered template content."
-            }
-        },
         selectors: {
             viewport: ""
         },
@@ -43,14 +27,59 @@
                 func: "{that}.renderMarkup",
                 args: ["viewport", "main", { payload: "rendered" }, "html"] // selector, template, data, manipulator
             }
+        }
+    });
+
+    fluid.defaults("gpii.tests.handlebars.templateAware.standalone.caseHolder", {
+        gradeNames: ["fluid.test.testCaseHolder"],
+        matchDefs: {
+            markdown: {
+                message: "The view should contain rendered content.",
+                pattern: "This is our rendered template content."
+            }
         },
-        listeners: {
-            "onMarkupRendered.runTests": {
-                funcName: "gpii.tests.handlebars.templateAware.standalone.runTests",
-                args: ["{that}"]
+        modules: [{
+            name: "Testing the standalone `templateAware` grade.",
+            tests: [{
+                name: "Confirm that the view contains rendered content (including variable data).",
+                sequence: [
+                    {
+                        func: "{testEnvironment}.events.createFixtures.fire"
+                    },
+                    {
+                        event: "{testEnvironment}.events.onMarkupRendered",
+                        listener: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                        args: [".templateAware-standalone-viewport", "{that}.options.matchDefs"]
+                    }
+                ]
+            }]
+        }]
+    });
+
+    fluid.defaults("gpii.tests.handlebars.templateAware.standalone.testEnvironment", {
+        gradeNames: ["fluid.test.testEnvironment"],
+        events: {
+            createFixtures: null,
+            onMarkupRendered: null
+        },
+        components: {
+            caseHolder: {
+                type: "gpii.tests.handlebars.templateAware.standalone.caseHolder"
+            },
+            viewComponent: {
+                type: "gpii.tests.handlebars.templateAware.standalone",
+                container: ".templateAware-standalone-viewport",
+                createOnEvent: "createFixtures",
+                options: {
+                    listeners: {
+                        "onMarkupRendered.notifyParent": {
+                            func: "{gpii.tests.handlebars.templateAware.standalone.testEnvironment}.events.onMarkupRendered.fire"
+                        }
+                    }
+                }
             }
         }
     });
 
-    gpii.tests.handlebars.templateAware.standalone(".templateAware-standalone-viewport");
-})(fluid, jqUnit);
+    fluid.test.runTests("gpii.tests.handlebars.templateAware.standalone.testEnvironment");
+})(fluid);

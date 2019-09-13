@@ -29,30 +29,110 @@
         }
     });
 
-    var rendererComponent = gpii.tests.handlebars.renderer.standalone();
+    gpii.tests.handlebars.renderer.standalone.renderAndCompare = function (message, renderer, templateKey, payload, expected, compareFn) {
+        compareFn = compareFn || "assertEquals";
+        var renderedOutput = renderer.render(templateKey, { payload: payload });
+        jqUnit[compareFn](message, expected, renderedOutput);
+    };
 
-    jqUnit.module("Testing standalone renderer component.");
-
-    jqUnit.test("Confirm that the client-side renderer can render markdown.", function () {
-        var renderedOutput = rendererComponent.render("md", { payload: "[unified listing](http://ul.gpii.net/)" });
-        jqUnit.assertEquals("We should have received rendered markup.", "<p><a href=\"http://ul.gpii.net/\">unified listing</a></p>\n", renderedOutput);
+    fluid.defaults("gpii.tests.handlebars.renderer.standalone.testEnvironment.caseHolder", {
+        gradeNames: ["fluid.test.testCaseHolder"],
+        // We have to make sure this expected value isn't expanded.
+        troublesomeExpectations: {
+            jsonify: "{\"foo\":\"bar\"}"
+        },
+        mergePolicy: {
+            troublesomeExpectations: "noexpand"
+        },
+        modules: [{
+            name: "Testing standalone renderer component.",
+            tests: [
+                {
+                    name: "Confirm that the client-side renderer can render markdown.",
+                    sequence: [{
+                        funcName: "gpii.tests.handlebars.renderer.standalone.renderAndCompare",
+                        // message, renderer, templateKey, payload, expected, [compareFn]
+                        args: [
+                            "We should have received rendered markup.",
+                            "{renderer}",
+                            "md",
+                            "[unified listing](http://ul.gpii.net/)",
+                            "<p><a href=\"http://ul.gpii.net/\">unified listing</a></p>\n"
+                        ]
+                    }]
+                },
+                {
+                    name: "Confirm that the client-side partials work.",
+                    sequence: [{
+                        funcName: "gpii.tests.handlebars.renderer.standalone.renderAndCompare",
+                        // message, renderer, templateKey, payload, expected, [compareFn]
+                        args: [
+                            "We should have received partial content.",
+                            "{renderer}",
+                            "partial",
+                            {},
+                            "This is content coming from the partial."
+                        ]
+                    }]
+                },
+                {
+                    name: "Confirm that the JSONify helper works.",
+                    sequence: [{
+                        funcName: "gpii.tests.handlebars.renderer.standalone.renderAndCompare",
+                        // message, renderer, templateKey, payload, expected, [compareFn]
+                        args: [
+                            "We should have received stringified JSON content.",
+                            "{renderer}",
+                            "jsonify",
+                            { foo: "bar" },
+                            "{that}.options.troublesomeExpectations.jsonify"
+                        ]
+                    }]
+                },
+                {
+                    name: "Confirm that the equals helper works.",
+                    sequence: [
+                        {
+                            funcName: "gpii.tests.handlebars.renderer.standalone.renderAndCompare",
+                            // message, renderer, templateKey, payload, expected, [compareFn]
+                            args: [
+                                "We should have hit the 'equals' block...",
+                                "{renderer}",
+                                "equals",
+                                "good",
+                                "equals"
+                            ]
+                        },
+                        {
+                            funcName: "gpii.tests.handlebars.renderer.standalone.renderAndCompare",
+                            // message, renderer, templateKey, payload, expected, [compareFn]
+                            args: [
+                                "We should have hit the 'not equals' block...",
+                                "{renderer}",
+                                "equals",
+                                "bad",
+                                "not equals"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }],
+        components: {
+            renderer: {
+                type: "gpii.tests.handlebars.renderer.standalone"
+            }
+        }
     });
 
-    jqUnit.test("Confirm that the client-side partials work.", function () {
-        var renderedOutput = rendererComponent.render("partial");
-        jqUnit.assertEquals("We should have received partial content.", "This is content coming from the partial.", renderedOutput);
+    fluid.defaults("gpii.tests.handlebars.renderer.standalone.testEnvironment", {
+        gradeNames: ["fluid.test.testEnvironment"],
+        components: {
+            caseHolder: {
+                type: "gpii.tests.handlebars.renderer.standalone.testEnvironment.caseHolder"
+            }
+        }
     });
 
-    jqUnit.test("Confirm that the JSONify helper works.", function () {
-        var renderedOutput = rendererComponent.render("jsonify", { payload: { foo: "bar" } });
-        jqUnit.assertDeepEq("We should have received stringified JSON content.", "{\"foo\":\"bar\"}", renderedOutput);
-    });
-
-    jqUnit.test("Confirm that the equals helper works.", function () {
-        var equalsOutput = rendererComponent.render("equals", { payload: "good" });
-        jqUnit.assertEquals("We should have hit the 'equals' block...", "equals", equalsOutput);
-
-        var notEqualsOutput = rendererComponent.render("equals", { payload: "bad"});
-        jqUnit.assertEquals("We should have hit the 'not equals' block...", "not equals", notEqualsOutput);
-    });
+    fluid.test.runTests("gpii.tests.handlebars.renderer.standalone.testEnvironment");
 })(fluid, jqUnit);
