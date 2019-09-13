@@ -66,7 +66,8 @@ gpii.tests.handlebars.watcher.cleanup = function (that) {
             var resolvedDirPath = fluid.module.resolvePath(watchDir);
             rimraf(resolvedDirPath, function (error) {
                 if (error) {
-                    promise.reject(error);
+                    fluid.log("CLEANUP ERROR:", error);
+                    promise.resolve();
                 }
                 else {
                     promise.resolve();
@@ -78,7 +79,7 @@ gpii.tests.handlebars.watcher.cleanup = function (that) {
 
     var sequence = fluid.promise.sequence(promises);
     sequence.then(
-        function () { fluid.log("Temporary content removed..."); },
+        function () { fluid.log("Temporary content cleanup complete..."); },
         fluid.fail
     );
 };
@@ -119,7 +120,7 @@ jqUnit.asyncTest("We should be able to detect a file that has been added...", fu
 
 jqUnit.asyncTest("We should be able to detect a file that has been changed...", function () {
     // We need to set the directory ourself so that we can create the file before we start "watching"
-    var tmpPath = path.resolve(os.tmpDir(), "watcher-tests-" + Math.random() * 99999 );
+    var tmpPath = path.resolve(os.tmpdir(), "watcher-tests-" + Math.random() * 99999 );
     mkdirp.sync(tmpPath);
     var toBeChanged = path.resolve(tmpPath, "to-be-changed.txt");
 
