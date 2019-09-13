@@ -32,18 +32,7 @@
     });
 
     fluid.defaults("gpii.tests.templateAware.testCaseHolder", {
-        gradeNames: ["fluid.test.testCaseHolder", "fluid.viewComponent"],
-        events: {
-            createFixtures: null,
-            mainRendered: null,
-            containedRendered: null,
-            allRendered: {
-                events: {
-                    mainRendered: "mainRendered",
-                    containedRendered: "containedRendered"
-                }
-            }
-        },
+        gradeNames: ["fluid.test.testCaseHolder"],
         matchDefs: {
             contained: {
                 outside: {
@@ -56,46 +45,16 @@
                 }
             }
         },
-        selectors: {
-            main: ".viewport",
-            contained: ".contained"
-        },
-        components: {
-            main: {
-                type: "gpii.tests.templateAware.serverResourceAware",
-                container: "{that}.dom.main",
-                createOnEvent: "{that}.events.createFixtures",
-                options: {
-                    listeners: {
-                        "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.templateAware.testCaseHolder}.events.mainRendered.fire"
-                        }
-                    }
-                }
-            },
-            contained: {
-                type: "gpii.tests.templateAware.contained",
-                container: "{that}.dom.contained",
-                createOnEvent: "{that}.events.createFixtures",
-                options: {
-                    listeners: {
-                        "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.templateAware.testCaseHolder}.events.containedRendered.fire"
-                        }
-                    }
-                }
-            }
-        },
         modules: [{
             name: "Testing the `templateAware` client side grade.",
             tests: [{
                 name: "Confirm that the templateAware component is rendered correctly.",
                 sequence: [
                     {
-                        func: "{that}.events.createFixtures.fire"
+                        func: "{testEnvironment}.events.createFixtures.fire"
                     },
                     {
-                        event: "{that}.events.allRendered",
+                        event: "{testEnvironment}.events.allRendered",
                         listener: "fluid.identity"
                     },
                     {
@@ -117,10 +76,44 @@
 
     fluid.defaults("gpii.tests.templateAware.testEnvironment", {
         gradeNames: ["fluid.test.testEnvironment"],
+        events: {
+            createFixtures: null,
+            mainRendered: null,
+            containedRendered: null,
+            allRendered: {
+                events: {
+                    mainRendered: "mainRendered",
+                    containedRendered: "containedRendered"
+                }
+            }
+        },
         components: {
+            main: {
+                type: "gpii.tests.templateAware.serverResourceAware",
+                container: ".viewport",
+                createOnEvent: "{that}.events.createFixtures",
+                options: {
+                    listeners: {
+                        "onMarkupRendered.notifyParent": {
+                            func: "{gpii.tests.templateAware.testEnvironment}.events.mainRendered.fire"
+                        }
+                    }
+                }
+            },
+            contained: {
+                type: "gpii.tests.templateAware.contained",
+                container: ".contained",
+                createOnEvent: "{that}.events.createFixtures",
+                options: {
+                    listeners: {
+                        "onMarkupRendered.notifyParent": {
+                            func: "{gpii.tests.templateAware.testEnvironment}.events.containedRendered.fire"
+                        }
+                    }
+                }
+            },
             caseHolder: {
-                type: "gpii.tests.templateAware.testCaseHolder",
-                container: "body"
+                type: "gpii.tests.templateAware.testCaseHolder"
             }
         }
     });
