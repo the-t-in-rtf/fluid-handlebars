@@ -6,153 +6,234 @@ var fluid = require("infusion");
 var gpii = fluid.registerNamespace("gpii");
 
 var jqUnit  = fluid.require("node-jqunit");
-var request = require("request");
 
 fluid.require("%gpii-express");
+gpii.express.loadTestingSupport();
+
 fluid.require("%gpii-handlebars");
 require("./lib/sanity");
 
-fluid.registerNamespace("gpii.tests.handlebars.server");
+fluid.registerNamespace("gpii.tests.handlebars.server.dispatcher");
 
+gpii.tests.handlebars.server.dispatcher.checkStandardBody = function (expectedJson, response, body) {
+    gpii.test.handlebars.server.isSaneResponse(null, response, body);
 
-gpii.tests.handlebars.server.runTests = function (that) {
-    jqUnit.module("Tests for dispatcher...");
+    gpii.test.handlebars.server.bodyMatches("There should be layout content in the body...", body, /from the layout/);
+    gpii.test.handlebars.server.bodyMatches("There should be page content in the body...", body, /from the page/);
+    gpii.test.handlebars.server.bodyMatches("There should be partial content in the body...", body, /from the partial/);
+    gpii.test.handlebars.server.bodyMatches("The results should contain transformed markdown.", body, /<p><em>this works<\/em><\/p>/i);
+    gpii.test.handlebars.server.bodyMatches("There should be model variable content in the body...", body, /modelvariable/);
+    gpii.test.handlebars.server.bodyMatches("There should be query variable content in the body...", body, /queryvariable/);
 
-    // Test the following variations:
-    //
-    //   1. The default home page with the default layout
-    //   2. A custom page with matching layout
-    //   3. A custom page with no matching layout
-    //
-    //  All variations should test partials and variables
-    var pages = ["custom", "custom-no-matching-layout", ""];
+    // Tests for the "equals" helper.  We don't use the standard function because we want to inspect the individual results more closely.
+    var equalsElementRegexp = /<td class="equal">([^<]+)<\/td>/;
+    var equalMatches = body.match(equalsElementRegexp);
+    jqUnit.assertNotNull("There should be 'equal' content.", equalMatches);
+    for (var b = 1; b < equalMatches.length; b++) {
+        var equalElementText = equalMatches[b];
+        jqUnit.assertEquals("All 'equal' comparisons should end up displaying 'true'.", "true", equalElementText);
+    }
 
-    pages.forEach(function (page) {
-        jqUnit.asyncTest("Test template handling dispatcher for page '" + page + "' ...", function () {
-            request.get(that.options.baseUrl + "dispatcher/" + page + "?myvar=queryvariable", function (error, response, body) {
-                jqUnit.start();
+    var unequalRegexp = /<td class="unequal">([^<]+)<\/td>/;
+    var unequalMatches = body.match(unequalRegexp);
+    jqUnit.assertNotNull("There should be 'unequal' content.", unequalMatches);
+    for (var c = 1; c < unequalMatches.length; c++) {
+        var unequalElementText = unequalMatches[c];
+        jqUnit.assertEquals("All 'unequal' comparisons should end up displaying 'false'.", "false", unequalElementText);
+    }
 
-                gpii.test.handlebars.server.isSaneResponse(error, response, body);
-
-                gpii.test.handlebars.server.bodyMatches("There should be layout content in the body...", body, /from the layout/);
-                gpii.test.handlebars.server.bodyMatches("There should be page content in the body...", body, /from the page/);
-                gpii.test.handlebars.server.bodyMatches("There should be partial content in the body...", body, /from the partial/);
-                gpii.test.handlebars.server.bodyMatches("The results should contain transformed markdown.", body, /<p><em>this works<\/em><\/p>/i);
-                gpii.test.handlebars.server.bodyMatches("There should be model variable content in the body...", body, /modelvariable/);
-                gpii.test.handlebars.server.bodyMatches("There should be query variable content in the body...", body, /queryvariable/);
-
-                // Tests for the "equals" helper.  We don't use the standard function because we want to inspect the individual results more closely.
-                var equalsElementRegexp = /<td class="equal">([^<]+)<\/td>/;
-                var equalMatches = body.match(equalsElementRegexp);
-                jqUnit.assertNotNull("There should be 'equal' content.", equalMatches);
-                for (var b = 1; b < equalMatches.length; b++) {
-                    var equalElementText = equalMatches[b];
-                    jqUnit.assertEquals("All 'equal' comparisons should end up displaying 'true'.", "true", equalElementText);
-                }
-
-                var unequalRegexp = /<td class="unequal">([^<]+)<\/td>/;
-                var unequalMatches = body.match(unequalRegexp);
-                jqUnit.assertNotNull("There should be 'unequal' content.", unequalMatches);
-                for (var c = 1; c < unequalMatches.length; c++) {
-                    var unequalElementText = unequalMatches[c];
-                    jqUnit.assertEquals("All 'unequal' comparisons should end up displaying 'false'.", "false", unequalElementText);
-                }
-
-                // Tests for the "jsonify" (JSON.stringify) helper.  We don't use the standard function because we want to inspect the results more closely.
-                var jsonifyElementRegexp = /<td class="jsonify">([^<]+)<\/td>/;
-                var matches = body.match(jsonifyElementRegexp);
-                jqUnit.assertNotNull("There should be jsonify content.", matches);
-                for (var a = 1; a < matches.length; a++) {
-                    var jsonString = matches[a];
-                    var data = JSON.parse(jsonString);
-                    jqUnit.assertDeepEq("The JSON data should match the model", that.options.json, data);
-
-                }
-            });
-        });
-    });
-
-    jqUnit.asyncTest("Test multiple view directories with dispatcher...", function () {
-        request.get(that.options.baseUrl + "dispatcher/secondary", function (error, response, body) {
-            jqUnit.start();
-
-            gpii.test.handlebars.server.bodyMatches("The default layout should have been used...", body, /Main Layout/);
-            gpii.test.handlebars.server.bodyMatches("The secondary page should have been used...", body, /page served up from the secondary template directory/);
-            gpii.test.handlebars.server.bodyMatches("The secondary partial should have been used...", body, /partial served from the secondary template director/);
-        });
-    });
-
-    jqUnit.asyncTest("Test overriding of content when using multiple view directories with dispatcher...", function () {
-        request.get(that.options.baseUrl + "dispatcher/overridden", function (error, response, body) {
-            jqUnit.start();
-
-            gpii.test.handlebars.server.bodyMatches("The layout should have come from the primary...", body, /layout found in the primary template directory/);
-            gpii.test.handlebars.server.bodyMatches("The page should have come from the secondary", body, /page served up from the secondary template directory/);
-            gpii.test.handlebars.server.bodyMatches("The partial should have come from the secondary...", body, /partial served from the secondary template directory/);
-        });
-    });
+    // Tests for the "jsonify" (JSON.stringify) helper.  We don't use the standard function because we want to inspect the results more closely.
+    var jsonifyElementRegexp = /<td class="jsonify">([^<]+)<\/td>/;
+    var jsonContentMatches = body.match(jsonifyElementRegexp);
+    jqUnit.assertNotNull("There should be jsonify content.", jsonContentMatches);
+    for (var a = 1; a < jsonContentMatches.length; a++) {
+        var jsonString = jsonContentMatches[a];
+        var data = JSON.parse(jsonString);
+        jqUnit.assertDeepEq("The JSON data should match the model", expectedJson, data);
+    }
 };
 
-gpii.express({
-    gradeNames: ["fluid.modelComponent"],
-    "port" :   6904,
-    "baseUrl": "http://localhost:6904/",
-    json: { foo: "bar", baz: "quux", qux: "quux" },
-    events: {
-        onTemplatesLoaded: null
-    },
-    listeners: {
-        "onTemplatesLoaded.runTests": {
-            funcName: "gpii.tests.handlebars.server.runTests",
-            args:     ["{that}"]
+gpii.tests.handlebars.server.dispatcher.checkSecondaryBody = function (body) {
+    gpii.test.handlebars.server.bodyMatches("The default layout should have been used...", body, /Main Layout/);
+    gpii.test.handlebars.server.bodyMatches("The secondary page should have been used...", body, /page served up from the secondary template directory/);
+    gpii.test.handlebars.server.bodyMatches("The secondary partial should have been used...", body, /partial served from the secondary template director/);
+};
+
+gpii.tests.handlebars.server.dispatcher.checkOverridenBody = function (body) {
+    gpii.test.handlebars.server.bodyMatches("The layout should have come from the primary...", body, /layout found in the primary template directory/);
+    gpii.test.handlebars.server.bodyMatches("The page should have come from the secondary", body, /page served up from the secondary template directory/);
+    gpii.test.handlebars.server.bodyMatches("The partial should have come from the secondary...", body, /partial served from the secondary template directory/);
+};
+
+fluid.defaults("gpii.tests.handlebars.dispatcher.request", {
+    gradeNames: ["kettle.test.request.http"],
+    port: "{testEnvironment}.options.port",
+    path: {
+        expander: {
+            funcName: "fluid.stringTemplate",
+            args: ["%baseUrl%endpoint", { baseUrl: "{testEnvironment}.options.baseUrl", endpoint: "{that}.options.endpoint"}]
         }
-    },
+    }
+});
+
+
+fluid.defaults("gpii.tests.handlebars.dispatcher.caseHolder", {
+    gradeNames: ["gpii.test.express.caseHolder"],
+    rawModules: [{
+        name: "Testing dispatcher middleware.",
+        tests: [
+            {
+                name: "Testing dispatcher default page.",
+                sequence: [
+                    { func: "{defaultPageRequest}.send" },
+                    {
+                        event:    "{defaultPageRequest}.events.onComplete",
+                        listener: "gpii.tests.handlebars.server.dispatcher.checkStandardBody",
+                        args:     ["{testEnvironment}.options.jsonPayload", "{defaultPageRequest}.nativeResponse", "{arguments}.0"] // expectedJson, response, body
+                    }
+                ]
+            },
+            {
+                name: "Testing dispatcher with a custom page that has a layout.",
+                sequence: [
+                    { func: "{customPageRequest}.send" },
+                    {
+                        event:    "{customPageRequest}.events.onComplete",
+                        listener: "gpii.tests.handlebars.server.dispatcher.checkStandardBody",
+                        args:     ["{testEnvironment}.options.jsonPayload", "{customPageRequest}.nativeResponse", "{arguments}.0"] // response, body
+                    }
+                ]
+            },
+            {
+                name: "Testing dispatcher with a custom page that doesn't have a layout.",
+                sequence: [
+                    { func: "{customPageNoLayoutRequest}.send" },
+                    {
+                        event:    "{customPageNoLayoutRequest}.events.onComplete",
+                        listener: "gpii.tests.handlebars.server.dispatcher.checkStandardBody",
+                        args:     ["{testEnvironment}.options.jsonPayload", "{customPageNoLayoutRequest}.nativeResponse", "{arguments}.0"] // response, body
+                    }
+                ]
+            },
+            {
+                name: "Test multiple view directories with dispatcher.",
+                sequence: [
+                    { func: "{secondaryViewDirRequest}.send" },
+                    {
+                        event: "{secondaryViewDirRequest}.events.onComplete",
+                        listener: "gpii.tests.handlebars.server.dispatcher.checkSecondaryBody",
+                        args: ["{arguments}.0"]
+                    }
+                ]
+            },
+            {
+                name: "Test overriding of content when using multiple view directories with dispatcher.",
+                sequence: [
+                    { func: "{overriddenViewDirRequest}.send" },
+                    {
+                        event: "{overriddenViewDirRequest}.events.onComplete",
+                        listener: "gpii.tests.handlebars.server.dispatcher.checkOverridenBody",
+                        args: ["{arguments}.0"]
+                    }
+                ]
+            }
+        ]
+    }],
     components: {
-        "json": {
-            "type": "gpii.express.middleware.bodyparser.json",
+        defaultPageRequest: {
+            type: "gpii.tests.handlebars.dispatcher.request",
             options: {
-                priority: "first"
+                endpoint: "dispatcher?myvar=queryvariable"
             }
         },
-        "urlencoded": {
-            "type": "gpii.express.middleware.bodyparser.urlencoded",
+        customPageRequest: {
+            type: "gpii.tests.handlebars.dispatcher.request",
             options: {
-                priority: "after:json"
+                endpoint: "dispatcher/custom?myvar=queryvariable"
             }
         },
-        handlebars: {
-            type: "gpii.express.hb",
+        customPageNoLayoutRequest: {
+            type: "gpii.tests.handlebars.dispatcher.request",
             options: {
-                priority: "after:urlencoded",
-                templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
+                endpoint: "dispatcher/custom-no-matching-layout?myvar=queryvariable"
+            }
+        },
+        secondaryViewDirRequest: {
+            type: "gpii.tests.handlebars.dispatcher.request",
+            options: {
+                endpoint: "dispatcher/secondary"
+            }
+        },
+        overriddenViewDirRequest: {
+            type: "gpii.tests.handlebars.dispatcher.request",
+            options: {
+                endpoint: "dispatcher/overridden"
+            }
+        }
+    }
+});
+
+fluid.defaults("gpii.tests.handlebars.dispatcher.environment", {
+    gradeNames: ["gpii.test.express.testEnvironment"],
+    port: 6904,
+    jsonPayload: { foo: "bar", baz: "quux", qux: "quux" },
+    components: {
+        caseHolder: {
+            type: "gpii.tests.handlebars.dispatcher.caseHolder"
+        },
+        express: {
+            options: {
                 components: {
-                    renderer: {
+                    "json": {
+                        "type": "gpii.express.middleware.bodyparser.json",
                         options: {
-                            modelListeners: {
-                                templates: {
-                                    func: "{gpii.express}.events.onTemplatesLoaded.fire"
+                            priority: "first"
+                        }
+                    },
+                    "urlencoded": {
+                        "type": "gpii.express.middleware.bodyparser.urlencoded",
+                        options: {
+                            priority: "after:json"
+                        }
+                    },
+                    handlebars: {
+                        type: "gpii.express.hb",
+                        options: {
+                            priority: "after:urlencoded",
+                            templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
+                            components: {
+                                renderer: {
+                                    options: {
+                                        //modelListeners: {
+                                        //    templates: {
+                                        //        func: "{gpii.express}.events.onTemplatesLoaded.fire"
+                                        //    }
+                                        //}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    dispatcher: {
+                        type: "gpii.handlebars.dispatcherMiddleware",
+                        options: {
+                            priority: "last",
+                            path: ["/dispatcher/:template", "/dispatcher"],
+                            templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
+                            rules: {
+                                contextToExpose: {
+                                    myvar:    { literalValue: "modelvariable" },
+                                    markdown: { literalValue: "*this works*" },
+                                    json:     { literalValue: "{testEnvironment}.options.jsonPayload" },
+                                    req:      { params: "req.params", query: "req.query"}
                                 }
                             }
                         }
                     }
                 }
             }
-        },
-        dispatcher: {
-            type: "gpii.handlebars.dispatcherMiddleware",
-            options: {
-                priority: "last",
-                path: ["/dispatcher/:template", "/dispatcher"],
-                templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
-                rules: {
-                    contextToExpose: {
-                        myvar:    { literalValue: "modelvariable" },
-                        markdown: { literalValue: "*this works*" },
-                        json:     { literalValue: "{express}.options.json" },
-                        req:      { params: "req.params", query: "req.query"}
-                    }
-                }
-            }
         }
     }
 });
+
+fluid.test.runTests("gpii.tests.handlebars.dispatcher.environment");
