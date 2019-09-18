@@ -53,6 +53,7 @@ gpii.tests.handlebars.server.inline.runTests = function (that) {
     });
 };
 
+// TODO: Convert to a Fluid IoC test if there are any further problems with test instability.
 gpii.express({
     "port" :   6914,
     "baseUrl": "http://localhost:6914/",
