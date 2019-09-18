@@ -200,18 +200,7 @@ fluid.defaults("gpii.tests.handlebars.dispatcher.environment", {
                         type: "gpii.express.hb",
                         options: {
                             priority: "after:urlencoded",
-                            templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
-                            components: {
-                                renderer: {
-                                    options: {
-                                        //modelListeners: {
-                                        //    templates: {
-                                        //        func: "{gpii.express}.events.onTemplatesLoaded.fire"
-                                        //    }
-                                        //}
-                                    }
-                                }
-                            }
+                            templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"]
                         }
                     },
                     dispatcher: {
