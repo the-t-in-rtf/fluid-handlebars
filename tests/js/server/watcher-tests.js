@@ -11,7 +11,7 @@ var gpii = fluid.registerNamespace("gpii");
 require("../../../src/js/server/watcher");
 
 var jqUnit = require("node-jqunit");
-var fs     = require("fs");
+var fs     = require("graceful-fs");
 var os     = require("os");
 var path   = require("path");
 var rimraf = require("rimraf");
