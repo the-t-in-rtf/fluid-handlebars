@@ -25,7 +25,7 @@ gpii.tests.handlebars.watcher.generateUniqueTmpDir = function (that) {
 };
 
 gpii.tests.handlebars.watcher.init = function (that) {
-    var resolvedPaths = fluid.transform(fluid.makeArray(that.options.watchDirs), fluid.module.resolvePath);
+    var resolvedPaths = fluid.values(fluid.transform(that.options.watchDirs, fluid.module.resolvePath));
 
     var initPromises = [];
     fluid.each(resolvedPaths, function (watchDir) {
@@ -60,11 +60,11 @@ gpii.tests.handlebars.watcher.cleanup = function (that) {
 
     // Remove our temporary content
     var promises = [];
-    fluid.each(fluid.makeArray(that.options.watchDirs), function (watchDir) {
+    var resolvedWatchDirs = gpii.express.hb.resolveAllPaths(that.options.watchDirs);
+    fluid.each(resolvedWatchDirs, function (resolvedWatchdirPath) {
         promises.push(function () {
             var promise = fluid.promise();
-            var resolvedDirPath = fluid.module.resolvePath(watchDir);
-            rimraf(resolvedDirPath, function (error) {
+            rimraf(resolvedWatchdirPath, function (error) {
                 if (error) {
                     fluid.log("CLEANUP ERROR:", error);
                     promise.resolve();
@@ -120,7 +120,7 @@ jqUnit.asyncTest("We should be able to detect a file that has been added...", fu
 
 jqUnit.asyncTest("We should be able to detect a file that has been changed...", function () {
     // We need to set the directory ourself so that we can create the file before we start "watching"
-    var tmpPath = path.resolve(os.tmpdir(), "watcher-tests-" + Math.random() * 99999 );
+    var tmpPath = path.resolve(os.tmpdir(), "watcher-change-tests-" + Math.random() * 99999 );
     mkdirp.sync(tmpPath);
     var toBeChanged = path.resolve(tmpPath, "to-be-changed.txt");
 

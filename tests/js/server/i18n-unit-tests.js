@@ -14,9 +14,14 @@ fluid.require("%gpii-handlebars");
 jqUnit.module("Unit tests for i18n functions.");
 
 jqUnit.test("Testing message loading.", function () {
-    var messageBundle = gpii.handlebars.i18n.loadMessageBundles(["%gpii-handlebars/tests/messages/primary", "%gpii-handlebars/tests/messages/secondary"], "en_us");
+    var messageBundle = gpii.handlebars.i18n.loadMessageBundles(
+        {
+            primary: "%gpii-handlebars/tests/messages/primary",
+            secondary: "%gpii-handlebars/tests/messages/secondary"
+        },
+        "en_us");
 
-    jqUnit.assertEquals("Locale content should have been loaded as expected.", "Things are fine.", fluid.get(messageBundle, "en_us.how-are-things"));
+    jqUnit.assertEquals("Locale content should have been loaded as expected (from a map).", "Things are fine.", fluid.get(messageBundle, "en_us.how-are-things"));
 
     jqUnit.assertEquals("Content with no language/locale should be stored in the default locale.", "Yes, this works.", fluid.get(messageBundle, "en_us.files-without-suffixes-stored-in-default-locale"));
 
@@ -25,6 +30,10 @@ jqUnit.test("Testing message loading.", function () {
     jqUnit.assertEquals("Content should have been added from a secondary directory.", "Works just fine.", fluid.get(messageBundle, "en_us.unique-to-secondary-dir"));
     jqUnit.assertEquals("Content should have been merged from a secondary directory.", "Young.  I feel young.", fluid.get(messageBundle, "en_us.merged-key"));
     jqUnit.assertEquals("Unique locale content from a secondary directory should have been added to the language data.", "Works just fine.", fluid.get(messageBundle, "en.unique-to-secondary-dir"));
+
+    var messageBundleFromArray = gpii.handlebars.i18n.loadMessageBundles(["%gpii-handlebars/tests/messages/primary","%gpii-handlebars/tests/messages/secondary"],"en_us");
+    jqUnit.assertEquals("Locale content should have been loaded as expected (from an array).", "Things are fine.", fluid.get(messageBundleFromArray, "en_us.how-are-things"));
+
 });
 
 jqUnit.test("Testing message loading error handling.", function () {

@@ -446,7 +446,10 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.environmen
                     messageLoader: {
                         type: "gpii.handlebars.i18n.messageLoader",
                         options: {
-                            messageDirs: ["%gpii-handlebars/tests/messages/primary", "%gpii-handlebars/tests/messages/secondary"],
+                            messageDirs: {
+                                primary: "%gpii-handlebars/tests/messages/primary",
+                                secondary: "%gpii-handlebars/tests/messages/secondary"
+                            },
                             listeners: {
                                 "onMessagesLoaded.notifyParent": {
                                     func: "{testEnvironment}.events.messagesLoaded.fire"
