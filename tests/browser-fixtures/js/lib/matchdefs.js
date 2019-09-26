@@ -38,21 +38,29 @@
             }
         },
         noOriginalContent: {
-            message: "The original content should no longer be found.",
-            pattern: "original content",
-            invert:  true
+            removed: {
+                message: "The original content should no longer be found.",
+                pattern: "original content",
+                invert:  true
+            }
         },
         originalContent: {
-            message: "The original content should be preserved in its entirety.",
-            pattern: "^original content$"
+            preserved: {
+                message: "The original content should be preserved in its entirety.",
+                pattern: "^original content$"
+            }
         },
         originalContentAtBeginning: {
-            message: "The original content should still be at the start of the element.",
-            pattern: "^original content.+"
+            atBeginning: {
+                message: "The original content should still be at the start of the element.",
+                pattern: "^original content"
+            }
         },
         originalContentAtEnd: {
-            message: "The original content should be found at the end of the element",
-            pattern: "original content$"
+            atEnd: {
+                message: "The original content should be found at the end of the element",
+                pattern: "original content$"
+            }
         }
     };
 

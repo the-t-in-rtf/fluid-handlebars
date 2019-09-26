@@ -2,6 +2,7 @@
 /* eslint-env browser */
 (function (fluid) {
     "use strict";
+    var gpii = fluid.registerNamespace("gpii");
 
     // Test components to render content.
     fluid.defaults("gpii.tests.templateAware.serverResourceAware", {
@@ -49,6 +50,7 @@
             name: "Testing the `templateAware` client side grade.",
             tests: [{
                 name: "Confirm that the templateAware component is rendered correctly.",
+                expect: 9,
                 sequence: [
                     {
                         func: "{testEnvironment}.events.createFixtures.fire"
@@ -59,11 +61,7 @@
                     },
                     {
                         funcName: "gpii.test.handlebars.browser.sanityCheckSelectors",
-                        args: [".viewport", "{that}.options.matchDefs.originalContent"]
-                    },
-                    {
-                        funcName: "gpii.test.handlebars.browser.sanityCheckSelectors",
-                        args: [".viewport", "{that}.options.matchDefs.standard"]
+                        args: [".viewport", gpii.test.handlebars.browser.matchDefs.standard]
                     },
                     {
                         funcName: "gpii.test.handlebars.browser.sanityCheckSelectors",
