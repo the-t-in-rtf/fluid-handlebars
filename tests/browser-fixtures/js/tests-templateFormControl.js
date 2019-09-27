@@ -433,5 +433,7 @@
         }
     });
 
-    fluid.test.runTests("gpii.tests.handlebars.browser.templateFormControl.testEnvironment");
+    // TODO: Figure out why this causes the test run to never leave the "running" state.
+    //fluid.test.runTests("gpii.tests.handlebars.browser.templateFormControl.testEnvironment");
+    gpii.tests.handlebars.browser.templateFormControl.testEnvironment();
 })(fluid, jqUnit);
