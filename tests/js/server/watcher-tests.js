@@ -67,15 +67,21 @@ gpii.tests.handlebars.watcher.cleanup = function (that) {
     fluid.each(resolvedWatchDirs, function (resolvedWatchdirPath) {
         promises.push(function () {
             var promise = fluid.promise();
-            rimraf(resolvedWatchdirPath, function (error) {
-                if (error) {
-                    fluid.log("CLEANUP ERROR:", error);
-                    promise.resolve();
-                }
-                else {
-                    promise.resolve();
-                }
-            });
+            try {
+                rimraf(resolvedWatchdirPath, function (error) {
+                    if (error) {
+                        fluid.log("CLEANUP ERROR:", error);
+                        promise.resolve();
+                    }
+                    else {
+                        promise.resolve();
+                    }
+                });
+            }
+            catch (thrownError) {
+                fluid.log("CLEANUP EXCEPTION:", thrownError);
+                promise.resolve();
+            }
             return promise;
         });
     });
