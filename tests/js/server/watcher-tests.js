@@ -10,12 +10,15 @@ var gpii = fluid.registerNamespace("gpii");
 
 require("../../../src/js/server/watcher");
 
-var jqUnit = require("node-jqunit");
-var fs     = require("graceful-fs");
-var os     = require("os");
-var path   = require("path");
-var rimraf = require("rimraf");
-var mkdirp = require("mkdirp");
+var jqUnit     = require("node-jqunit");
+var os         = require("os");
+var path       = require("path");
+var rimraf     = require("rimraf");
+var mkdirp     = require("mkdirp");
+var fs         = require("fs");
+var gracefulFs = require("graceful-fs");
+
+gracefulFs.gracefulify(fs);
 
 fluid.registerNamespace("gpii.tests.handlebars.watcher");
 
