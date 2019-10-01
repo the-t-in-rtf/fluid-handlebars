@@ -87,7 +87,7 @@ var Handlebars = Handlebars || {};
             return compiledTemplate(combinedContext);
         }
         else {
-            fluid.fail("Renderer can't find template '" + templateKey, "'.");
+            fluid.fail("Renderer can't find template '" + templateKey + "'.");
         }
     };
 
