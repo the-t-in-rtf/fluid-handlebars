@@ -189,8 +189,7 @@
              */
             // TODO: Discuss with Antranig.
             try {
-                var destroyReturn = viewComponent.destroy();
-                return destroyReturn;
+                viewComponent.destroy();
             }
             catch (error) {
                 fluid.log("Error destroying view component:", error);
