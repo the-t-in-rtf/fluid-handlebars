@@ -15,7 +15,7 @@
     };
 
     fluid.defaults("gpii.tests.listener.resourceLoader", {
-        gradeNames: ["fluid.resourceLoader", "fluid.viewComponent"],
+        gradeNames: ["fluid.resourceLoader", "fluid.modelComponent"],
         resources: {
             promiseResource: {
                 promiseFunc: "@expand:gpii.tests.listener.resourceLoader.generateResolvedPromise()"
@@ -82,7 +82,6 @@
             resourceLoader: {
                 createOnEvent: "createComponent",
                 type: "gpii.tests.listener.resourceLoader",
-                container: ".container",
                 options: {
                     listeners: {
                         "onResourcesLoaded.notifyParent": {
