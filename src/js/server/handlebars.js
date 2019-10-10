@@ -46,11 +46,17 @@ fluid.defaults("gpii.express.hb", {
     gradeNames:       ["fluid.modelComponent"],
     config:           "{expressConfigHolder}.options.config",
     namespace:        "handlebars", // Namespace to allow other middleware to put themselves in the chain before or after us.
+    model: {
+        messageBundles: {}
+    },
     components: {
         renderer: {
             type: "gpii.handlebars.standaloneRenderer",
             options: {
                 templateDirs: "{gpii.express.hb}.options.templateDirs",
+                model: {
+                    messageBundles: "{gpii.express.hb}.model.messages"
+                },
                 components: {
                     initBlock: {
                         type: "gpii.handlebars.helper.initBlock"

@@ -25,12 +25,20 @@
     fluid.defaults("gpii.handlebars.renderer", {
         gradeNames: ["gpii.handlebars.renderer.common"],
         model: {
-            messageBundles: {},
-            templates: {}
+            templates: {},
+            messages: {}
         },
         components: {
             "md": {
                 "type": "gpii.handlebars.helper.md.client"
+            },
+            messageHelper: {
+                type: "gpii.handlebars.helper.messageHelper.client",
+                options: {
+                    model: {
+                        messages: "{gpii.handlebars.renderer.common}.model.messages"
+                    }
+                }
             }
         },
         invokers: {

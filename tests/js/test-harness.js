@@ -41,7 +41,10 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
         handlebars: {
             type: "gpii.express.hb",
             options: {
-                templateDirs: "{gpii.test.handlebars.harness.base}.options.templateDirs"
+                templateDirs: "{gpii.test.handlebars.harness.base}.options.templateDirs",
+                model: {
+                    messageBundles: "{messageBundleLoader}.model.messageBundles"
+                }
             }
         },
         dispatcher: {
@@ -66,8 +69,8 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
                 templateDirs: "{gpii.test.handlebars.harness.base}.options.templateDirs"
             }
         },
-        messageLoader: {
-            type: "gpii.handlebars.i18n.messageLoader",
+        messageBundleLoader: {
+            type: "gpii.handlebars.i18n.messageBundleLoader",
             options: {
                 messageDirs: "{gpii.test.handlebars.harness.base}.options.messageDirs"
             }
@@ -77,7 +80,7 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
             options: {
                 messageDirs: "{gpii.test.handlebars.harness.base}.options.messageDirs",
                 model: {
-                    messageBundles: "{messageLoader}.model.messageBundles"
+                    messageBundles: "{messageBundleLoader}.model.messageBundles"
                 }
             }
         },

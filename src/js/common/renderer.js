@@ -78,13 +78,11 @@ var Handlebars = Handlebars || {};
      * @return {String} The renderered content.
      */
     gpii.handlebars.renderer.common.render = function (that, templateKey, context) {
-        var combinedContext = fluid.extend(true, { messages: that.model.messages}, context);
-
         var template = fluid.get(that.model, ["templates", "pages", templateKey]);
         if (template) {
             var compiledTemplate = Handlebars.compile(template);
 
-            return compiledTemplate(combinedContext);
+            return compiledTemplate(context);
         }
         else {
             fluid.fail("Renderer can't find template '" + templateKey + "'.");
@@ -106,7 +104,7 @@ var Handlebars = Handlebars || {};
         var pageBody = that.render(templateKey, context);
 
         // Pass both the body and the derived message bundle as part of the effective context.
-        var layoutContext = fluid.extend(true, { messages: that.model.messages}, { body: pageBody}, context);
+        var layoutContext = fluid.extend({}, { body: pageBody}, context);
 
         // Render the page body in the selected layout (or the default if none is selected).
         var layoutTemplateKey = context.layout ? context.layout : that.options.defaultLayout;
@@ -148,9 +146,6 @@ var Handlebars = Handlebars || {};
             },
             jsonify: {
                 type: "gpii.handlebars.helper.jsonify"
-            },
-            messageHelper: {
-                type: "gpii.handlebars.helper.messageHelper"
             }
         },
         invokers: {

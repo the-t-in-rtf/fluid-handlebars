@@ -12,19 +12,39 @@ var gpii   = fluid.registerNamespace("gpii");
 
 fluid.registerNamespace("gpii.handlebars.helper.messageHelper");
 
-gpii.handlebars.helper.messageHelper.getHelper = function () {
+fluid.registerNamespace("gpii.handlebars.helper.messageHelper");
+
+/**
+ *
+ * Look up and render a single i18n string template ("message").  Used by both the client and server implementation.
+ *
+ * @param {Object} messages - A map of i18n keys and string templates.
+ * @param {String} messageKey - The i18n key for our specific message.
+ * @param {Object} dataOrRootContext - Depending on how Handlebars is called, either a data payload, or the root context.
+ * @param {Object} rootContext - If the helper is called with three arguments, this will be the root context.
+ * @return {String} - The plain text of the i18n template with all variable references replaced with data.
+ *
+ */
+gpii.handlebars.helper.messageHelper.resolveMessage = function (messages, messageKey, dataOrRootContext, rootContext) {
+    // If we have a third argument, then the second argument is our "data".  Otherwise, we use the root context (equivalent to passing "." as the variable).
+    var data = rootContext ? dataOrRootContext : fluid.get(dataOrRootContext, "data.root");
+
+    var messageTemplate = fluid.get(messages, messageKey);
+    if (messageTemplate) {
+        return fluid.stringTemplate(messageTemplate, data);
+    }
+    else {
+        return "[Message string for key " + messageKey + " not found]";
+    }
+};
+
+gpii.handlebars.helper.messageHelper.getHelper = function (that) {
     return function (messageKey, dataOrRootContext, rootContext) {
         if (arguments.length < 2) {
             fluid.fail("You must call the 'messageHelper' helper with at least a message key.");
         }
         else {
-            // Pick up the message bundles from the root context, which is always the last argument.
-            var messages = fluid.get(rootContext || dataOrRootContext, "data.root.messages");
-
-            // If we have a third argument, then the second argument is our "data".  Otherwise, we use the root context (equivalent to passing "." as the variable).
-            var data = rootContext ? dataOrRootContext : fluid.get(dataOrRootContext, "data.root");
-            var resolver = fluid.messageResolver({ messageBase: messages });
-            return resolver.resolve(messageKey, data);
+            return that.resolveMessage(messageKey, dataOrRootContext, rootContext);
         }
     };
 };
@@ -32,10 +52,16 @@ gpii.handlebars.helper.messageHelper.getHelper = function () {
 fluid.defaults("gpii.handlebars.helper.messageHelper", {
     gradeNames: ["gpii.handlebars.helper"],
     helperName: "messageHelper",
+    model: {
+        messages: {}
+    },
     invokers: {
         "getHelper": {
             "funcName": "gpii.handlebars.helper.messageHelper.getHelper",
             "args":     ["{that}"]
+        },
+        "resolveMessage": {
+            funcName: "fluid.notImplemented"
         }
     }
 });

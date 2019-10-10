@@ -9,14 +9,16 @@ fluid.require("%gpii-handlebars");
 var jqUnit = require("node-jqunit");
 
 fluid.registerNamespace("gpii.tests.handlebars.standaloneRenderer");
-gpii.tests.handlebars.standaloneRenderer.runTests = function (that) {
+gpii.tests.handlebars.standaloneRenderer.runTests = function (that, messageBundleLoader, renderer) {
     fluid.each(that.options.tests, function (testOptions) {
         jqUnit.test(testOptions.name, function () {
+            var mergedContext = fluid.extend({}, that.options.baseContext, testOptions.context);
+
             if (testOptions.locale) {
-                that.messageLoader.applier.change("locale", testOptions.locale);
+                fluid.set(mergedContext, "req.headers.accept-language", testOptions.locale);
             }
 
-            var output = that.renderer.render(testOptions.templateKey, testOptions.context, testOptions.locale);
+            var output = renderer.render(testOptions.templateKey, mergedContext);
             jqUnit.assertEquals("The output should be as expected...", testOptions.expected, output.trim());
         });
     });
@@ -27,18 +29,13 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
     mergePolicy: {
         tests: "noexpand,nomerge"
     },
-    events: {
-        onMessagesLoaded: null,
-        onTemplatesLoaded: null,
-        onReady: {
-            events: {
-                onMessagesLoaded: "onMessagesLoaded",
-                onTemplatesLoaded: "onTemplatesLoaded"
+    baseContext: {
+        // Fake request for these tests.
+        req: {
+            headers: {
+                "accept-language": "en_us"
             }
         }
-    },
-    model: {
-        messageBundles: {}
     },
     // Tests to be evaluated.  Each test should have the following options:
     // `templateKey`: The name of the template to be used in rendering
@@ -146,9 +143,9 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
         }
     ],
     listeners: {
-        "onReady.runTests": {
+        "onCreate.runTests": {
             funcName: "gpii.tests.handlebars.standaloneRenderer.runTests",
-            args:     ["{that}"]
+            args:     ["{that}", "{messageBundleLoader}", "{renderer}"]
         }
     },
     messageDirs: {
@@ -160,28 +157,15 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
             type: "gpii.handlebars.standaloneRenderer",
             options: {
                 model: {
-                    messages: "{gpii.tests.handlebars.standaloneRenderer}.model.messages"
+                    messageBundles: "{messageBundleLoader}.model.messageBundles"
                 },
-                templateDirs: { primary: "%gpii-handlebars/tests/templates/primary" },
-                modelListeners: {
-                    templates: {
-                        func: "{gpii.tests.handlebars.standaloneRenderer}.events.onTemplatesLoaded.fire"
-                    }
-                }
+                templateDirs: { primary: "%gpii-handlebars/tests/templates/primary" }
             }
         },
-        messageLoader: {
-            type: "gpii.handlebars.i18n.messageLoader",
+        messageBundleLoader: {
+            type: "gpii.handlebars.i18n.messageBundleLoader",
             options: {
-                messageDirs: "{gpii.tests.handlebars.standaloneRenderer}.options.messageDirs",
-                model: {
-                    messages: "{gpii.tests.handlebars.standaloneRenderer}.model.messages"
-                },
-                modelListeners: {
-                    "messageBundles": {
-                        func: "{gpii.tests.handlebars.standaloneRenderer}.events.onMessagesLoaded.fire"
-                    }
-                }
+                messageDirs: "{gpii.tests.handlebars.standaloneRenderer}.options.messageDirs"
             }
         }
     }

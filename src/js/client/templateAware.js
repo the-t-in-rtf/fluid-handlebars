@@ -87,7 +87,7 @@
         gradeNames: ["gpii.handlebars.templateAware"],
         model: {
             templates: "{that}.options.templates",
-            messageBundles: {}
+            messages: {}
         },
         mergePolicy: {
             "templates.layouts":  "noexpand",
@@ -105,7 +105,7 @@
                     },
                     model: {
                         templates: "{gpii.handlebars.templateAware.standalone}.model.templates",
-                        messageBundles: "{gpii.handlebars.templateAware.standalone}.model.messageBundles"
+                        messages: "{gpii.handlebars.templateAware.standalone}.model.messages"
                     }
                 }
             }
