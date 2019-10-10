@@ -13,14 +13,15 @@
             <!-- These cannot be run using only a browser, most need things like the initBlock helper, the message bundling middleware, and/or the template bundling middleware. -->
             QUnit.testSuites([
                 "/dispatcher/initblock?myvar=bar",
-                "/tests/browser-fixtures/tests-hasRequiredOptions.html",
                 "/tests/browser-fixtures/tests-renderer-serverResourceAware.html",
                 "/tests/browser-fixtures/tests-renderer-standalone.html",
                 "/tests/browser-fixtures/tests-serverMessageAware.html",
                 "/tests/browser-fixtures/tests-templateAware-standalone.html",
                 "/tests/browser-fixtures/tests-templateAware-serverResourceAware.html",
                 "/tests/browser-fixtures/tests-templateFormControl.html",
-                "/tests/browser-fixtures/tests-templateMessage.html"
+                "/tests/browser-fixtures/tests-templateMessage.html",
+                // TODO: This intermittently fails if it's in the second spot in the rollup, and only in "ci" mode.
+                "/tests/browser-fixtures/tests-hasRequiredOptions.html"
             ]);
         </script>
     </head>

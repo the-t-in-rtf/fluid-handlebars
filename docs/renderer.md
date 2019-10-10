@@ -47,7 +47,7 @@ fluid.defaults("my.localisedRenderer.component", {
 
 var renderer = my.localisedRenderer.component();
 
-console.log(renderer.render("localisedPage", { key: "hello-message-key", mood: "variable"})); // logs `Hello, variable world.`
+fluid.log(renderer.render("localisedPage", { key: "hello-message-key", mood: "variable"})); // logs `Hello, variable world.`
 
 ```
 
@@ -84,7 +84,7 @@ fluid.defaults("my.renderer.component", {
 
 var renderer = my.renderer.component();
 
-console.log(renderer.renderWithLayout("myPage", { myVariable: "my value" }));
+fluid.log(renderer.renderWithLayout("myPage", { myVariable: "my value" }));
 
 /*
 

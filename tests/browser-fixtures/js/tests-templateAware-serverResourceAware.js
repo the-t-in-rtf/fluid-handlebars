@@ -116,7 +116,5 @@
         }
     });
 
-    // TODO: Figure out why this causes the test run to never leave the "running" state.
-    //fluid.test.runTests("gpii.tests.templateAware.testEnvironment");
-    gpii.tests.templateAware.testEnvironment();
+    fluid.test.runTests("gpii.tests.templateAware.testEnvironment");
 })(fluid);
