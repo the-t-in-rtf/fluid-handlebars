@@ -31,7 +31,7 @@ gpii.express.hb.engine = function (that, templatePath, templateContext, callback
 };
 
 gpii.express.hb.configureExpress = function (that, expressComponent) {
-    var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
+    var resolvedTemplateDirs = gpii.handlebars.resolvePrioritisedPaths(that.options.templateDirs);
     if (resolvedTemplateDirs.length > 0) {
         expressComponent.express.set("views", resolvedTemplateDirs);
         expressComponent.express.engine("handlebars", that.engine);

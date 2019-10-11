@@ -12,7 +12,6 @@ require("./live-reload-tests");
 require("./resolver-tests");
 require("./singleTemplateMiddleware-tests");
 
-
 // Non-IoC tests
 require("./first-matching-path-tests");
 require("./i18n-unit-tests");

@@ -51,7 +51,7 @@ gpii.handlebars.i18n.standardiseQueryLocale = function (rawLocale) {
  *
  * Load our all message bundles from one or more directories and organise them into a single object.
  *
- * @param {Array} messageDirs - An array of full or package-relative paths to directories containing message bundles.
+ * @param {Object<PrioritisedPathDef>|Object<String>} messageDirs - An array of full or package-relative paths to directories containing message bundles.
  * @param {String} defaultLocale - The default locale to use for files that do not provide language or locale data.
  * @return {Object} - A combined bundle of message bundles, keyed by locales and languages.
  *
@@ -59,7 +59,7 @@ gpii.handlebars.i18n.standardiseQueryLocale = function (rawLocale) {
 gpii.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) {
     defaultLocale = defaultLocale || "en_us";
     var messageBundles = {};
-    var resolvedMessageDirs = gpii.express.hb.resolveAllPaths(messageDirs);
+    var resolvedMessageDirs = gpii.handlebars.resolvePrioritisedPaths(messageDirs);
 
     var filesByLocale   = {};
     var filesByLanguage = {};
@@ -116,10 +116,6 @@ gpii.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) 
 
 fluid.defaults("gpii.handlebars.i18n.messageBundleLoader", {
     gradeNames: ["fluid.modelComponent"],
-    mergePolicy: {
-        messageDirs: "nomerge"
-    },
-    messageDirs: [],
     model: {
         messageBundles: "@expand:gpii.handlebars.i18n.loadMessageBundles({that}.options.messageDirs, {that}.options.defaultLocale)"
     }

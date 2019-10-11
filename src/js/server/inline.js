@@ -57,7 +57,7 @@ gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates =  function (that
         that.templates[key] = {};
     });
 
-    var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
+    var resolvedTemplateDirs = gpii.handlebars.resolvePrioritisedPaths(that.options.templateDirs);
     fluid.each(resolvedTemplateDirs, function (templateDir) {
         // Start with each "views" directory and work our way down
         var dirContents = fs.readdirSync(templateDir);

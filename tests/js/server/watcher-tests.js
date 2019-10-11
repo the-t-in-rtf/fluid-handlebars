@@ -63,7 +63,7 @@ gpii.tests.handlebars.watcher.cleanup = function (that) {
 
     // Remove our temporary content
     var promises = [];
-    var resolvedWatchDirs = gpii.express.hb.resolveAllPaths(that.options.watchDirs);
+    var resolvedWatchDirs = gpii.handlebars.resolvePrioritisedPaths(that.options.watchDirs);
     fluid.each(resolvedWatchDirs, function (resolvedWatchdirPath) {
         promises.push(function () {
             var promise = fluid.promise();

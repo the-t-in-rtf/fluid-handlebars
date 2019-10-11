@@ -28,7 +28,7 @@ fluid.registerNamespace("gpii.handlebars.watcher");
 
  */
 gpii.handlebars.watcher.init = function (that) {
-    var resolvedDirs = gpii.express.hb.resolveAllPaths(that.options.watchDirs);
+    var resolvedDirs = gpii.handlebars.resolvePrioritisedPaths(that.options.watchDirs);
 
     that.watcher = chokidar.watch(resolvedDirs, that.options.chokidarOptions);
 
