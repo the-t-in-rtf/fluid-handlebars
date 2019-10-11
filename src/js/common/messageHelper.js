@@ -29,7 +29,8 @@ gpii.handlebars.helper.messageHelper.resolveMessage = function (messages, messag
     // If we have a third argument, then the second argument is our "data".  Otherwise, we use the root context (equivalent to passing "." as the variable).
     var data = rootContext ? dataOrRootContext : fluid.get(dataOrRootContext, "data.root");
 
-    var messageTemplate = fluid.get(messages, messageKey);
+    // Use the array notation to avoid problems with namespaced keys, i.e. `my.package.i18n.mykey`
+    var messageTemplate = fluid.get(messages, [messageKey]);
     if (messageTemplate) {
         return fluid.stringTemplate(messageTemplate, data);
     }
