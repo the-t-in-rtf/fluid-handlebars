@@ -72,7 +72,7 @@ gpii.express({
                     primary: "%gpii-handlebars/tests/templates/primary",
                     secondary: {
                         path: "%gpii-handlebars/tests/templates/secondary",
-                        priority: "after:primary"
+                        priority: "before:primary"
                     }
                 }
             }

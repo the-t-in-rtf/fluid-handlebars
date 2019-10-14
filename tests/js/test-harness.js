@@ -22,11 +22,12 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
             args: ["http://localhost:%port/", { port: "{that}.options.port"}]
         }
     },
-    // TODO: Decide on and use long-form to prioritise one of these.  Use short form for the other.
-    // TODO: Use the same common mechanism for both template dirs and message dirs.
     templateDirs: {
-        secondary: "%gpii-handlebars/tests/templates/secondary",
-        primary: "%gpii-handlebars/tests/templates/primary"
+        primary: "%gpii-handlebars/tests/templates/primary",
+        secondary: {
+            path: "%gpii-handlebars/tests/templates/secondary",
+            priority: "before:primary"
+        }
     },
     messageDirs: {
         secondary: "%gpii-handlebars/tests/messages/secondary",

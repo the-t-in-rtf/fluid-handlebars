@@ -26,7 +26,7 @@ var path = require("path");
  */
 gpii.handlebars.standaloneRenderer.loadTemplateDirs = function (that) {
     var templateMap = {};
-    var resolvedPaths = gpii.handlebars.resolvePrioritisedPaths(that.options.templateDirs).reverse();
+    var resolvedPaths = gpii.handlebars.resolvePrioritisedPaths(that.options.templateDirs);
     fluid.each(resolvedPaths, function (resolvedTemplateDirPath) {
         fluid.each(that.options.templateSubdirs, function (subDir) {
             gpii.handlebars.standaloneRenderer.loadOneTemplateDir(that, resolvedTemplateDirPath, subDir, templateMap);
