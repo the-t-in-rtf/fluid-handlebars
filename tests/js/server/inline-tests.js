@@ -68,7 +68,13 @@ gpii.express({
         inline: {
             type: "gpii.handlebars.inlineTemplateBundlingMiddleware",
             options: {
-                templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"]
+                templateDirs: {
+                    primary: "%gpii-handlebars/tests/templates/primary",
+                    secondary: {
+                        path: "%gpii-handlebars/tests/templates/secondary",
+                        priority: "after:primary"
+                    }
+                }
             }
         }
     }
