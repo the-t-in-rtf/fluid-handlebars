@@ -12,7 +12,7 @@
         "posttest": "node node_modules/nyc/bin/nyc.js report --reporter text-summary --reporter html"
     },
     "dependencies": {
-        "chokidar": "2.1.8",
+        "chokidar": "3.2.2",
         "gpii-binder": "1.0.6",
         "gpii-express": "1.0.15",
         "handlebars": "4.4.3",

@@ -109,6 +109,8 @@ fluid.defaults("gpii.tests.handlebars.watcher", {
     }
 });
 
+jqUnit.module("File change 'watcher' tests.");
+
 jqUnit.asyncTest("We should be able to detect a file that has been added...", function () {
     var watcherComponent = gpii.tests.handlebars.watcher({});
 
