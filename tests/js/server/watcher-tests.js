@@ -58,12 +58,10 @@ gpii.tests.handlebars.watcher.init = function (that) {
 };
 
 gpii.tests.handlebars.watcher.cleanup = function (that) {
-    // Perform the default cleanup actions
-    gpii.handlebars.watcher.cleanup(that);
-
     // Remove our temporary content
     var promises = [];
     var resolvedWatchDirs = gpii.handlebars.resolvePrioritisedPaths(that.options.watchDirs);
+
     fluid.each(resolvedWatchDirs, function (resolvedWatchdirPath) {
         promises.push(function () {
             var promise = fluid.promise();
@@ -88,7 +86,12 @@ gpii.tests.handlebars.watcher.cleanup = function (that) {
 
     var sequence = fluid.promise.sequence(promises);
     sequence.then(
-        function () { fluid.log("Temporary content cleanup complete..."); },
+        function () {
+            // This has to be done after the cleanup to avoid errors like those described here:
+            // https://github.com/paulmillr/chokidar/issues/848#issuecomment-542953585
+            gpii.handlebars.watcher.cleanup(that);
+            fluid.log("Temporary content cleanup complete...");
+        },
         fluid.fail
     );
 };

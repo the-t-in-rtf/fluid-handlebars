@@ -71,14 +71,13 @@ fluid.defaults("gpii.handlebars.watcher", {
     },
     // Watch for file adds, changes, and removals.
     "eventsToWatch": {
-        "add": true,
+        "add":    true,
         "change": true,
         "unlink": true
     },
     watchDirs: {},
     // See: https://github.com/paulmillr/chokidar#api
     chokidarOptions: {
-        useFsEvents: false, // Added to avoid problems with
         ignoreInitial: true, // We do not want to detect files when starting up, only when they change after startup.
         awaitWriteFinish: false,
         depth: 2 // We are typically dealing with template directories that contain at most one level of subdirectories.
