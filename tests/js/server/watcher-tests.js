@@ -58,12 +58,10 @@ gpii.tests.handlebars.watcher.init = function (that) {
 };
 
 gpii.tests.handlebars.watcher.cleanup = function (that) {
-    // Perform the default cleanup actions
-    gpii.handlebars.watcher.cleanup(that);
-
     // Remove our temporary content
     var promises = [];
-    var resolvedWatchDirs = gpii.express.hb.resolveAllPaths(that.options.watchDirs);
+    var resolvedWatchDirs = gpii.handlebars.resolvePrioritisedPaths(that.options.watchDirs);
+
     fluid.each(resolvedWatchDirs, function (resolvedWatchdirPath) {
         promises.push(function () {
             var promise = fluid.promise();
@@ -88,7 +86,10 @@ gpii.tests.handlebars.watcher.cleanup = function (that) {
 
     var sequence = fluid.promise.sequence(promises);
     sequence.then(
-        function () { fluid.log("Temporary content cleanup complete..."); },
+        function () {
+            gpii.handlebars.watcher.cleanup(that);
+            fluid.log("Temporary content cleanup complete...");
+        },
         fluid.fail
     );
 };
@@ -108,6 +109,8 @@ fluid.defaults("gpii.tests.handlebars.watcher", {
         }
     }
 });
+
+jqUnit.module("File change 'watcher' tests.");
 
 jqUnit.asyncTest("We should be able to detect a file that has been added...", function () {
     var watcherComponent = gpii.tests.handlebars.watcher({});

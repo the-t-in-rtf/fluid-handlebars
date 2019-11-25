@@ -14,7 +14,13 @@ fluid.defaults("my.grade.name", {
         hb: {
             type: "gpii.express.hb",
             options: {
-                templateDirs: ["%gpii-handlebars/src/templates", "%my-package/src/templates"]
+                templateDirs: {
+                    handlebars: "%gpii-handlebars/src/templates",
+                    myPackage: {
+                        path: "%my-package/src/templates",
+                        priority: "before:handlebars"
+                    }
+                }
             }
         }
     }

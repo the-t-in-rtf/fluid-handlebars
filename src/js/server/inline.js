@@ -29,11 +29,11 @@ gpii.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse = function
             that.options.response.status(304).end();
         }
         else {
-            gpii.express.handler.sendResponse(that, that.options.response, 200, { ok: true, templates: that.options.templates });
+            gpii.express.handler.sendResponse(that, that.options.response, 200, that.options.templates);
         }
     }
     else {
-        gpii.express.handler.sendResponse(that, that.options.response, 500, { ok: false, message: that.options.messages.noTemplates});
+        gpii.express.handler.sendResponse(that, that.options.response, 500, { isError: true, message: that.options.messages.noTemplates});
     }
 };
 
@@ -57,7 +57,7 @@ gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates =  function (that
         that.templates[key] = {};
     });
 
-    var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
+    var resolvedTemplateDirs = gpii.handlebars.resolvePrioritisedPaths(that.options.templateDirs);
     fluid.each(resolvedTemplateDirs, function (templateDir) {
         // Start with each "views" directory and work our way down
         var dirContents = fs.readdirSync(templateDir);

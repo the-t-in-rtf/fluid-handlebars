@@ -1,6 +1,5 @@
 (function (fluid) {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
     fluid.registerNamespace("gpii.tests.templateAware.serverMessageAware");
 
     // A test fixture to use in exercising the serverMessageAware grade.
@@ -91,7 +90,5 @@
         }
     });
 
-    // TODO: Figure out why this causes the test run to never leave the "running" state.
-    //fluid.test.runTests("gpii.tests.templateAware.serverMessageAware.testEnvironment");
-    gpii.tests.templateAware.serverMessageAware.testEnvironment();
+    fluid.test.runTests("gpii.tests.templateAware.serverMessageAware.testEnvironment");
 })(fluid);

@@ -434,8 +434,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.environmen
         messagesLoaded: null,
         onFixturesConstructed: {
             events: {
-                onExpressReady: "onExpressReady",
-                messagesLoaded: "messagesLoaded"
+                onExpressReady: "onExpressReady"
             }
         }
     },
@@ -443,17 +442,12 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.environmen
         express: {
             options: {
                 components: {
-                    messageLoader: {
-                        type: "gpii.handlebars.i18n.messageLoader",
+                    messageBundleLoader: {
+                        type: "gpii.handlebars.i18n.messageBundleLoader",
                         options: {
                             messageDirs: {
                                 primary: "%gpii-handlebars/tests/messages/primary",
                                 secondary: "%gpii-handlebars/tests/messages/secondary"
-                            },
-                            listeners: {
-                                "onMessagesLoaded.notifyParent": {
-                                    func: "{testEnvironment}.events.messagesLoaded.fire"
-                                }
                             }
                         }
                     },
@@ -461,7 +455,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.environmen
                         type: "gpii.handlebars.inlineMessageBundlingMiddleware",
                         options: {
                             model: {
-                                messageBundles: "{messageLoader}.model.messageBundles"
+                                messageBundles: "{messageBundleLoader}.model.messageBundles"
                             }
                         }
                     }

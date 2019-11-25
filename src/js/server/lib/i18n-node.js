@@ -51,7 +51,7 @@ gpii.handlebars.i18n.standardiseQueryLocale = function (rawLocale) {
  *
  * Load our all message bundles from one or more directories and organise them into a single object.
  *
- * @param {Array} messageDirs - An array of full or package-relative paths to directories containing message bundles.
+ * @param {Object<PrioritisedPathDef>|Object<String>} messageDirs - An array of full or package-relative paths to directories containing message bundles.
  * @param {String} defaultLocale - The default locale to use for files that do not provide language or locale data.
  * @return {Object} - A combined bundle of message bundles, keyed by locales and languages.
  *
@@ -59,7 +59,7 @@ gpii.handlebars.i18n.standardiseQueryLocale = function (rawLocale) {
 gpii.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) {
     defaultLocale = defaultLocale || "en_us";
     var messageBundles = {};
-    var resolvedMessageDirs = gpii.express.hb.resolveAllPaths(messageDirs);
+    var resolvedMessageDirs = gpii.handlebars.resolvePrioritisedPaths(messageDirs);
 
     var filesByLocale   = {};
     var filesByLanguage = {};
@@ -114,52 +114,9 @@ gpii.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) 
     return messageBundles;
 };
 
-fluid.registerNamespace("gpii.handlebars.i18n.messageLoader");
-
-gpii.handlebars.i18n.messageLoader.loadMessageBundles =  function (that) {
-    var messageBundles = gpii.handlebars.i18n.loadMessageBundles(that.options.messageDirs, that.options.defaultLocale);
-
-    gpii.handlebars.utils.deleteAndAddModelData(that, "messageBundles", messageBundles);
-
-    that.events.onMessagesLoaded.fire(that);
-};
-
-gpii.handlebars.i18n.messageLoader.deriveMessagesFromBundlesAndLocale = function (that) {
-    var messages = gpii.handlebars.i18n.deriveMessageBundle(that.model.locale, that.model.messageBundles, that.options.defaultLocale);
-    that.applier.change("messages", messages);
-};
-
-fluid.defaults("gpii.handlebars.i18n.messageLoader", {
+fluid.defaults("gpii.handlebars.i18n.messageBundleLoader", {
     gradeNames: ["fluid.modelComponent"],
-    defaultLocale: "en_us",
-    mergePolicy: {
-        messageDirs: "nomerge"
-    },
-    messageDirs: [],
     model: {
-        locale: "{that}.options.defaultLocale",
-        messages: {},
-        messageBundles: {}
-    },
-    events: {
-        onMessagesLoaded: null
-    },
-    listeners: {
-        "onCreate.loadMessages": {
-            funcName: "gpii.handlebars.i18n.messageLoader.loadMessageBundles",
-            args:     ["{that}"]
-        }
-    },
-    modelListeners: {
-        "locale": {
-            excludeSource: "init",
-            funcName:      "gpii.handlebars.i18n.messageLoader.deriveMessagesFromBundlesAndLocale",
-            args:          ["{that}"]
-        },
-        "messageBundles": {
-            excludeSource: "init",
-            funcName:      "gpii.handlebars.i18n.messageLoader.deriveMessagesFromBundlesAndLocale",
-            args:          ["{that}"]
-        }
+        messageBundles: "@expand:gpii.handlebars.i18n.loadMessageBundles({that}.options.messageDirs, {that}.options.defaultLocale)"
     }
 });

@@ -47,7 +47,7 @@ fluid.defaults("my.localisedRenderer.component", {
 
 var renderer = my.localisedRenderer.component();
 
-console.log(renderer.render("localisedPage", { key: "hello-message-key", mood: "variable"})); // logs `Hello, variable world.`
+fluid.log(renderer.render("localisedPage", { key: "hello-message-key", mood: "variable"})); // logs `Hello, variable world.`
 
 ```
 
@@ -84,7 +84,7 @@ fluid.defaults("my.renderer.component", {
 
 var renderer = my.renderer.component();
 
-console.log(renderer.renderWithLayout("myPage", { myVariable: "my value" }));
+fluid.log(renderer.renderWithLayout("myPage", { myVariable: "my value" }));
 
 /*
 
@@ -217,6 +217,9 @@ package, with the exception of the `initBlock` helper used within the view engin
 ## Internationalisation and Localisation
 
 The renderer includes the [messageHelper helper](i18n.md), which can be used to internationalise and localise template
-content.  In order for the renderer to have access to the necessary message templates, you are expected to populate this
-component's `messages` member with a single message bundle.  In most cases you will want to use the
-`gpii.handlebars.i18n.messageLoader` grade described [in the i18n documentation](i18n.md) to populate this.
+content.  On the client side, this should be populated by the ["Server Resource Aware"](server-resource-aware.md) grade.
+
+On the server side, you will need to ensure that the renderer and handlebars itself have access to the full range of
+available message bundles in their `model.messageBundles`.  There is a ["message bundle loader"](i18n.md) provided for this
+purpose.  Once the renderer, handlebars, etc. has this set of bundles, the specific language bundle is determined per
+request based on the `locale` query parameter, or if that is not found, the `Accept-Language` HTTP request header.

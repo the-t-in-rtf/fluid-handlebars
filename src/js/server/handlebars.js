@@ -31,7 +31,7 @@ gpii.express.hb.engine = function (that, templatePath, templateContext, callback
 };
 
 gpii.express.hb.configureExpress = function (that, expressComponent) {
-    var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
+    var resolvedTemplateDirs = gpii.handlebars.resolvePrioritisedPaths(that.options.templateDirs);
     if (resolvedTemplateDirs.length > 0) {
         expressComponent.express.set("views", resolvedTemplateDirs);
         expressComponent.express.engine("handlebars", that.engine);
@@ -46,11 +46,17 @@ fluid.defaults("gpii.express.hb", {
     gradeNames:       ["fluid.modelComponent"],
     config:           "{expressConfigHolder}.options.config",
     namespace:        "handlebars", // Namespace to allow other middleware to put themselves in the chain before or after us.
+    model: {
+        messageBundles: {}
+    },
     components: {
         renderer: {
             type: "gpii.handlebars.standaloneRenderer",
             options: {
                 templateDirs: "{gpii.express.hb}.options.templateDirs",
+                model: {
+                    messageBundles: "{gpii.express.hb}.model.messages"
+                },
                 components: {
                     initBlock: {
                         type: "gpii.handlebars.helper.initBlock"

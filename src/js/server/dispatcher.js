@@ -18,7 +18,7 @@ var path = require("path");
 
 gpii.handlebars.dispatcherMiddleware.middleware = function (that, req, res, next) {
     var templateName     = req.params.template ? req.params.template : that.options.defaultTemplate;
-    var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
+    var resolvedTemplateDirs = gpii.handlebars.resolvePrioritisedPaths(that.options.templateDirs);
 
     var templateExists =  fluid.find(resolvedTemplateDirs, gpii.express.hb.getPathSearchFn(["pages", templateName + ".handlebars"]));
     if (templateExists) {

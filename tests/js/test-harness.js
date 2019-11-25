@@ -22,8 +22,17 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
             args: ["http://localhost:%port/", { port: "{that}.options.port"}]
         }
     },
-    templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
-    messageDirs: ["%gpii-handlebars/tests/messages/primary", "%gpii-handlebars/tests/messages/secondary"],
+    templateDirs: {
+        primary: "%gpii-handlebars/tests/templates/primary",
+        secondary: {
+            path: "%gpii-handlebars/tests/templates/secondary",
+            priority: "before:primary"
+        }
+    },
+    messageDirs: {
+        secondary: "%gpii-handlebars/tests/messages/secondary",
+        primary: "%gpii-handlebars/tests/messages/primary"
+    },
     contextToOptionsRules: {
         model: {
             "":       "notfound",
@@ -41,7 +50,10 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
         handlebars: {
             type: "gpii.express.hb",
             options: {
-                templateDirs: "{gpii.test.handlebars.harness.base}.options.templateDirs"
+                templateDirs: "{gpii.test.handlebars.harness.base}.options.templateDirs",
+                model: {
+                    messageBundles: "{messageBundleLoader}.model.messageBundles"
+                }
             }
         },
         dispatcher: {
@@ -66,8 +78,8 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
                 templateDirs: "{gpii.test.handlebars.harness.base}.options.templateDirs"
             }
         },
-        messageLoader: {
-            type: "gpii.handlebars.i18n.messageLoader",
+        messageBundleLoader: {
+            type: "gpii.handlebars.i18n.messageBundleLoader",
             options: {
                 messageDirs: "{gpii.test.handlebars.harness.base}.options.messageDirs"
             }
@@ -77,7 +89,7 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
             options: {
                 messageDirs: "{gpii.test.handlebars.harness.base}.options.messageDirs",
                 model: {
-                    messageBundles: "{messageLoader}.model.messageBundles"
+                    messageBundles: "{messageBundleLoader}.model.messageBundles"
                 }
             }
         },
@@ -88,7 +100,7 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
             type: "gpii.test.handlebars.jsonErrorPitcher",
             options: {
                 path: "/errorJsonString",
-                body: JSON.stringify({ok: false, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
+                body: JSON.stringify({isError: true, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
             }
         },
         errorString: {
@@ -112,7 +124,7 @@ fluid.defaults("gpii.test.handlebars.harness", {
             type: "gpii.test.handlebars.jsonErrorPitcher",
             options: {
                 path: "/errorJsonString",
-                body: JSON.stringify({ok: false, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
+                body: JSON.stringify({isError: true, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
             }
         },
         errorString: {

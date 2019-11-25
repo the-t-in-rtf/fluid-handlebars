@@ -200,7 +200,13 @@ fluid.defaults("gpii.tests.handlebars.dispatcher.environment", {
                         type: "gpii.express.hb",
                         options: {
                             priority: "after:urlencoded",
-                            templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"]
+                            templateDirs: {
+                                primary: "%gpii-handlebars/tests/templates/primary",
+                                secondary: {
+                                    path: "%gpii-handlebars/tests/templates/secondary",
+                                    priority: "before:primary"
+                                }
+                            }
                         }
                     },
                     dispatcher: {
@@ -208,7 +214,13 @@ fluid.defaults("gpii.tests.handlebars.dispatcher.environment", {
                         options: {
                             priority: "last",
                             path: ["/dispatcher/:template", "/dispatcher"],
-                            templateDirs: ["%gpii-handlebars/tests/templates/primary", "%gpii-handlebars/tests/templates/secondary"],
+                            templateDirs: {
+                                primary: "%gpii-handlebars/tests/templates/primary",
+                                secondary: {
+                                    path: "%gpii-handlebars/tests/templates/secondary",
+                                    priority: "before:primary"
+                                }
+                            },
                             rules: {
                                 contextToExpose: {
                                     myvar:    { literalValue: "modelvariable" },

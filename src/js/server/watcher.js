@@ -28,7 +28,7 @@ fluid.registerNamespace("gpii.handlebars.watcher");
 
  */
 gpii.handlebars.watcher.init = function (that) {
-    var resolvedDirs = gpii.express.hb.resolveAllPaths(that.options.watchDirs);
+    var resolvedDirs = gpii.handlebars.resolvePrioritisedPaths(that.options.watchDirs);
 
     that.watcher = chokidar.watch(resolvedDirs, that.options.chokidarOptions);
 
@@ -71,7 +71,7 @@ fluid.defaults("gpii.handlebars.watcher", {
     },
     // Watch for file adds, changes, and removals.
     "eventsToWatch": {
-        "add": true,
+        "add":    true,
         "change": true,
         "unlink": true
     },

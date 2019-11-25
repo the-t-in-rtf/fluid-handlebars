@@ -26,7 +26,7 @@ var path = require("path");
  */
 gpii.handlebars.standaloneRenderer.loadTemplateDirs = function (that) {
     var templateMap = {};
-    var resolvedPaths = gpii.express.hb.resolveAllPaths(that.options.templateDirs).reverse();
+    var resolvedPaths = gpii.handlebars.resolvePrioritisedPaths(that.options.templateDirs);
     fluid.each(resolvedPaths, function (resolvedTemplateDirPath) {
         fluid.each(that.options.templateSubdirs, function (subDir) {
             gpii.handlebars.standaloneRenderer.loadOneTemplateDir(that, resolvedTemplateDirPath, subDir, templateMap);
@@ -62,16 +62,51 @@ gpii.handlebars.standaloneRenderer.loadOneTemplateDir = function (that, resolved
     }
 };
 
+gpii.handlebars.standaloneRenderer.render = function (that, templateKey, context) {
+    // Derive the precise messages from the request.
+    var messages = gpii.handlebars.i18n.deriveMessageBundleFromRequest(context.req, that.model.messageBundles, that.options.defaultLocale);
+    var combinedContext = fluid.extend(true, {}, { messages: messages}, context);
+
+    return gpii.handlebars.renderer.common.render(that, templateKey, combinedContext);
+};
+
+gpii.handlebars.standaloneRenderer.renderWithLayout = function (that, templateKey, context) {
+    // Derive the precise messages from the request.
+    var messages = gpii.handlebars.i18n.deriveMessageBundleFromRequest(context.req, that.model.messageBundles, that.options.defaultLocale);
+    var combinedContext = fluid.extend(true, {}, { messages: messages }, context);
+
+    return gpii.handlebars.renderer.common.renderWithLayout(that, templateKey, combinedContext);
+};
+
 fluid.defaults("gpii.handlebars.standaloneRenderer", {
     gradeNames: ["gpii.handlebars.renderer.common"],
     handlebarsRegexp: /(.+)\.(hbs|handlebars)$/i,
     templateSubdirs: ["layouts", "pages", "partials"],
     model: {
-        templates: {}
+        templates: {},
+        messageBundles: {}
     },
     components: {
         md: {
             type: "gpii.handlebars.helper.md.server"
+        },
+        messageHelper: {
+            type: "gpii.handlebars.helper.messageHelper.server",
+            options: {
+                model: {
+                    messageBundles: "{gpii.handlebars.standaloneRenderer}.model.messageBundles"
+                }
+            }
+        }
+    },
+    invokers: {
+        render: {
+            funcName: "gpii.handlebars.standaloneRenderer.render",
+            args:     ["{that}", "{arguments}.0", "{arguments}.1"] // templateName, context
+        },
+        renderWithLayout: {
+            funcName: "gpii.handlebars.standaloneRenderer.renderWithLayout",
+            args:     ["{that}", "{arguments}.0", "{arguments}.1"] // templateName, context
         }
     },
     listeners: {

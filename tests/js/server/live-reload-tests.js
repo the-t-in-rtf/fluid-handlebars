@@ -177,7 +177,7 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                         {
                             listener: "gpii.tests.handlebars.live.pathEquals",
                             event:    "{initialInlineRequest}.events.onComplete",
-                            args:     ["The original content should be unaltered when we begin.", "@expand:JSON.parse({arguments}.0)", "templates.partials.renderer-partial", "This is partial content."] // message, root, path, expected
+                            args:     ["The original content should be unaltered when we begin.", "@expand:JSON.parse({arguments}.0)", "partials.renderer-partial", "This is partial content."] // message, root, path, expected
                         },
                         {
                             func: "gpii.tests.handlebars.live.updateTemplate",
@@ -191,7 +191,7 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                         {
                             listener: "gpii.tests.handlebars.live.pathEquals",
                             event:    "{postChangeInlineRequest}.events.onComplete",
-                            args:     ["The updated content should be delivered in the payload.", "@expand:JSON.parse({arguments}.0)", "templates.partials.renderer-partial", "This is partial content.  I love inline templates."] // message, root, path, expected
+                            args:     ["The updated content should be delivered in the payload.", "@expand:JSON.parse({arguments}.0)", "partials.renderer-partial", "This is partial content.  I love inline templates."] // message, root, path, expected
                         }
                     ]
                 },
