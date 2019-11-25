@@ -65,7 +65,7 @@ gpii.handlebars.standaloneRenderer.loadOneTemplateDir = function (that, resolved
 gpii.handlebars.standaloneRenderer.render = function (that, templateKey, context) {
     // Derive the precise messages from the request.
     var messages = gpii.handlebars.i18n.deriveMessageBundleFromRequest(context.req, that.model.messageBundles, that.options.defaultLocale);
-    var combinedContext = fluid.extend({}, { messages: messages}, context);
+    var combinedContext = fluid.extend(true, {}, { messages: messages}, context);
 
     return gpii.handlebars.renderer.common.render(that, templateKey, combinedContext);
 };
@@ -73,7 +73,7 @@ gpii.handlebars.standaloneRenderer.render = function (that, templateKey, context
 gpii.handlebars.standaloneRenderer.renderWithLayout = function (that, templateKey, context) {
     // Derive the precise messages from the request.
     var messages = gpii.handlebars.i18n.deriveMessageBundleFromRequest(context.req, that.model.messageBundles, that.options.defaultLocale);
-    var combinedContext = fluid.extend({}, { messages: messages }, context);
+    var combinedContext = fluid.extend(true, {}, { messages: messages }, context);
 
     return gpii.handlebars.renderer.common.renderWithLayout(that, templateKey, combinedContext);
 };

@@ -12,7 +12,9 @@ fluid.registerNamespace("gpii.tests.handlebars.standaloneRenderer");
 gpii.tests.handlebars.standaloneRenderer.runTests = function (that, messageBundleLoader, renderer) {
     fluid.each(that.options.tests, function (testOptions) {
         jqUnit.test(testOptions.name, function () {
-            var mergedContext = fluid.extend({}, that.options.baseContext, testOptions.context);
+            // Pass `true` as the first argument to ensure that a mutable copy is made:
+            // https://api.jquery.com/jQuery.extend/#jQuery-extend-deep-target-object1-objectN
+            var mergedContext = fluid.extend(true, {}, that.options.baseContext, testOptions.context);
 
             if (testOptions.locale) {
                 fluid.set(mergedContext, "req.headers.accept-language", testOptions.locale);

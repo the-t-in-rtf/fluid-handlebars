@@ -25,8 +25,9 @@
             }
         },
         model: {
+            // TODO: Review after it's possible to drill deeper into "parsed" material.
             messages: "{that}.resources.messages.parsed",
-            templates: "{that}.resources.templates.parsed.templates"
+            templates: "{that}.resources.templates.parsed"
         },
         components: {
             renderer: {

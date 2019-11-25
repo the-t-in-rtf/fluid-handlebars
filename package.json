@@ -15,8 +15,8 @@
         "chokidar": "3.3.0",
         "gpii-binder": "1.0.6",
         "gpii-express": "1.0.15",
-        "handlebars": "4.4.3",
-        "infusion": "3.0.0-dev.20191009T141140Z.32c9263b4.FLUID-6148",
+        "handlebars": "4.5.3",
+        "infusion": "3.0.0-dev.20191123T235705Z.4cd1b9d90.FLUID-6426",
         "json5": "2.1.1",
         "markdown-it": "10.0.0",
         "md5": "2.2.1",
@@ -24,11 +24,11 @@
     },
     "devDependencies": {
         "cheerio": "1.0.0-rc.3",
-        "eslint": "6.5.1",
+        "eslint": "6.7.1",
         "eslint-config-fluid": "1.4.0",
         "gpii-grunt-lint-all": "1.0.5",
-        "gpii-testem": "2.1.10",
-        "graceful-fs": "4.2.2",
+        "gpii-testem": "2.1.11",
+        "graceful-fs": "4.2.3",
         "grunt": "1.0.4",
         "kettle": "1.11.0",
         "mkdirp": "0.5.1",
@@ -37,6 +37,7 @@
         "recursive-copy": "2.0.10",
         "request": "2.88.0",
         "rimraf": "3.0.0",
+        "testem": "3.0.1",
         "tough-cookie": "3.0.1"
     }
 }

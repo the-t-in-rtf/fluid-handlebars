@@ -29,11 +29,11 @@ gpii.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse = function
             that.options.response.status(304).end();
         }
         else {
-            gpii.express.handler.sendResponse(that, that.options.response, 200, { ok: true, templates: that.options.templates });
+            gpii.express.handler.sendResponse(that, that.options.response, 200, that.options.templates);
         }
     }
     else {
-        gpii.express.handler.sendResponse(that, that.options.response, 500, { ok: false, message: that.options.messages.noTemplates});
+        gpii.express.handler.sendResponse(that, that.options.response, 500, { isError: true, message: that.options.messages.noTemplates});
     }
 };
 

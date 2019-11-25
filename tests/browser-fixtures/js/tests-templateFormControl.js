@@ -83,7 +83,7 @@
         },
         rules: {
             successResponseToModel: {
-                ok:             false,
+                isError:        true,
                 successMessage: "responseText"
             }
         },
@@ -150,7 +150,7 @@
         },
         rules: {
             errorResponseToModel: {
-                ok:           false,
+                isError:      true,
                 errorMessage: "responseText"
             }
         },

@@ -100,7 +100,7 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
             type: "gpii.test.handlebars.jsonErrorPitcher",
             options: {
                 path: "/errorJsonString",
-                body: JSON.stringify({ok: false, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
+                body: JSON.stringify({isError: true, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
             }
         },
         errorString: {
@@ -124,7 +124,7 @@ fluid.defaults("gpii.test.handlebars.harness", {
             type: "gpii.test.handlebars.jsonErrorPitcher",
             options: {
                 path: "/errorJsonString",
-                body: JSON.stringify({ok: false, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
+                body: JSON.stringify({isError: true, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
             }
         },
         errorString: {

@@ -26,7 +26,7 @@ gpii.tests.handlebars.server.inline.runTests = function (that) {
                 var data = typeof body === "string" ? JSON.parse(body) : body;
                 jqUnit.assertNotNull("There should be templates returned...", data.templates);
                 ["layouts", "pages", "partials"].forEach(function (key) {
-                    jqUnit.assertTrue("There should be at least some content for each template type...", Object.keys(data.templates[key]).length > 0);
+                    jqUnit.assertTrue("There should be at least some content for each template type...", Object.keys(data[key]).length > 0);
                 });
             }
         });

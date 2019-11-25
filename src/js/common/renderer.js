@@ -104,7 +104,7 @@ var Handlebars = Handlebars || {};
         var pageBody = that.render(templateKey, context);
 
         // Pass both the body and the derived message bundle as part of the effective context.
-        var layoutContext = fluid.extend({}, { body: pageBody}, context);
+        var layoutContext = fluid.extend(true, {}, { body: pageBody}, context);
 
         // Render the page body in the selected layout (or the default if none is selected).
         var layoutTemplateKey = context.layout ? context.layout : that.options.defaultLayout;
