@@ -37,8 +37,7 @@ A few more things to note:
    3.  This component does not handle any rendering, you are expected to do that yourself, or use a grade that does so.
 
  */
-// TODO:  Reconcile this with the larger migration to dataSources.
-/* global fluid, jQuery */
+// TODO:  Reconcile this with the larger migration to dataSources and / or resource loaders.
 (function (fluid, $) {
     "use strict";
     var gpii = fluid.registerNamespace("gpii");
@@ -117,7 +116,9 @@ A few more things to note:
 
             // Rules to control how our model is parsed before making a request
             modelToRequestPayload: {
-                "": ""    // By default, pass the model with no alterations.
+                "": "", // Pass the model with no alterations except for excluding our two key variables, messages and templates.
+                "messages": { transform: { type: "fluid.transforms.delete" } },
+                "templates": { transform: { type: "fluid.transforms.delete" } }
             },
 
             // Rules to control how the raw ajaxOptions are permuted before sending to the server.  This allows things
@@ -138,7 +139,7 @@ A few more things to note:
             },
             handleError: {
                 funcName: "gpii.handlebars.ajaxCapable.handleError",
-                args:     ["{that}", "{arguments}.0"] // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
+                args:     ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"] // jqXHR, textStatus, errorThrown
             }
         }
     });

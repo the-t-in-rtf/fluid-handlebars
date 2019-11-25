@@ -32,8 +32,19 @@ fluid.registerNamespace("gpii.handlebars.i18n");
  *
  */
 gpii.handlebars.i18n.deriveMessageBundleFromRequest = function (request, messageBundles, defaultLocale) {
-    var header = fluid.get(request, "headers.accept-language");
-    return gpii.handlebars.i18n.deriveMessageBundleFromHeader(header, messageBundles, defaultLocale);
+    var queryLocale = fluid.get(request, "query.locale");
+    if (queryLocale) {
+        var standardisedQueryLocale = gpii.handlebars.i18n.standardiseQueryLocale(queryLocale);
+        return gpii.handlebars.i18n.deriveMessageBundle(standardisedQueryLocale, messageBundles, defaultLocale);
+    }
+    else {
+        var header = fluid.get(request, "headers.accept-language");
+        return gpii.handlebars.i18n.deriveMessageBundleFromHeader(header, messageBundles, defaultLocale);
+    }
+};
+
+gpii.handlebars.i18n.standardiseQueryLocale = function (rawLocale) {
+    return rawLocale.toLowerCase().replace(/-/g, "_");
 };
 
 /**

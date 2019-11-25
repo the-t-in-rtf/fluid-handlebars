@@ -9,7 +9,6 @@
   For more details on the request and response cycle, see the `templateRequestAndUpdate` grade.
 
  */
-/* global fluid */
 /* eslint-env browser */
 (function (fluid) {
     "use strict";
@@ -39,7 +38,7 @@
     };
 
     fluid.defaults("gpii.handlebars.templateFormControl", {
-        gradeNames:    ["gpii.handlebars.ajaxCapable", "gpii.hasRequiredFields", "gpii.handlebars.templateAware"],
+        gradeNames:    ["gpii.handlebars.ajaxCapable", "gpii.hasRequiredFields", "gpii.handlebars.templateAware.serverResourceAware"],
         hideOnSuccess: true,  // Whether to hide our form if the results are successful
         hideOnError:   false, // Whether to hide our form if the results are unsuccessful
         requiredFields: {
@@ -48,7 +47,29 @@
             "templateKeys.error":   true,
             "templateKeys.success": true
         },
+        templateKeys: {
+            success: "common-success",
+            error:   "common-error"
+        },
+        // You are expected to add any data from the response you care about to the success and error rules.
+        rules: {
+            successResponseToModel: {
+                successMessage: "responseJSON.message"
+            },
+            errorResponseToModel: {
+                errorMessage:   "responseJSON.message"
+            }
+        },
+        selectors: {
+            initial: "",         // The container that will be updated with template content on startup and on a full refresh.
+            form:    "form",     // The form element whose submission we will control
+            error:   ".templateFormControl-error",   // The error message controlled by our sub-component
+            success: ".templateFormControl-success", // The positive feedback controlled by our sub-component
+            submit:  ".submit"   // Clicking or hitting enter on our submit button will launch our AJAX request
+        },
         model: {
+            errorMessage: false,
+            successMessage: false
         },
         components: {
             success: {
@@ -59,7 +80,7 @@
                     components: {
                         renderer: "{templateFormControl}.renderer"
                     },
-                    template: "{templateFormControl}.options.templateKeys.success",
+                    templateKey: "{templateFormControl}.options.templateKeys.success",
                     model:  {
                         message: "{templateFormControl}.model.successMessage"
                     },
@@ -78,7 +99,7 @@
                     components: {
                         renderer: "{templateFormControl}.renderer"
                     },
-                    template: "{templateFormControl}.options.templateKeys.error",
+                    templateKey: "error",
                     model:  {
                         message: "{templateFormControl}.model.errorMessage"
                     },
@@ -89,22 +110,6 @@
                     }
                 }
             }
-        },
-        // You are expected to add any data from the response you care about to the success and error rules.
-        rules: {
-            successResponseToModel: {
-                successMessage: "responseJSON.message"
-            },
-            errorResponseToModel: {
-                errorMessage:   "responseJSON.message"
-            }
-        },
-        selectors: {
-            initial: "",         // The container that will be updated with template content on startup and on a full refresh.
-            form:    "form",     // The form element whose submission we will control
-            error:   ".templateFormControl-error",   // The error message controlled by our sub-component
-            success: ".templateFormControl-success", // The positive feedback controlled by our sub-component
-            submit:  ".submit"   // Clicking or hitting enter on our submit button will launch our AJAX request
         },
         invokers: {
             renderInitialMarkup: {
@@ -119,10 +124,6 @@
                 funcName: "gpii.handlebars.templateFormControl.handleKeyPress",
                 args:     ["{that}", "{arguments}.0"]
             }
-        },
-        templateKeys: {
-            success: "common-success",
-            error:   "common-error"
         },
         listeners: {
             "onMarkupRendered.wireSubmitKeyPress": {

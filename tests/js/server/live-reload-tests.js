@@ -125,7 +125,7 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                         },
                         {
                             func: "gpii.tests.handlebars.live.updateTemplate",
-                            args: ["{testEnvironment}.options.templateDirs", "pages/singleTemplateMiddleware", "I love single templates."] // templateDir, path, textToAppend
+                            args: ["{testEnvironment}.options.templateDirs.unique", "pages/singleTemplateMiddleware", "I love single templates."] // templateDir, path, textToAppend
                         },
                         {
                             changeEvent: "{testEnvironment}.express.handlebars.renderer.applier.modelChanged",
@@ -153,7 +153,7 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                         },
                         {
                             func: "gpii.tests.handlebars.live.updateTemplate",
-                            args: ["{testEnvironment}.options.templateDirs", "pages/index", "I love dispatched templates."] // templateDir, path, textToAppend
+                            args: ["{testEnvironment}.options.templateDirs.unique", "pages/index", "I love dispatched templates."] // templateDir, path, textToAppend
                         },
                         {
                             changeEvent: "{testEnvironment}.express.handlebars.renderer.applier.modelChanged",
@@ -181,7 +181,7 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                         },
                         {
                             func: "gpii.tests.handlebars.live.updateTemplate",
-                            args: ["{testEnvironment}.options.templateDirs", "partials/renderer-partial", "  I love inline templates."] // templateDir, path, textToAppend
+                            args: ["{testEnvironment}.options.templateDirs.unique", "partials/renderer-partial", "  I love inline templates."] // templateDir, path, textToAppend
                         },
                         {
                             changeEvent: "{testEnvironment}.express.handlebars.renderer.applier.modelChanged",
@@ -209,7 +209,7 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                         },
                         {
                             func: "gpii.tests.handlebars.live.updateTemplate",
-                            args: ["{testEnvironment}.options.templateDirs", "pages/error", "I love error templates."] // templateDir, path, textToAppend
+                            args: ["{testEnvironment}.options.templateDirs.unique", "pages/error", "I love error templates."] // templateDir, path, textToAppend
                         },
                         {
                             changeEvent: "{testEnvironment}.express.handlebars.renderer.applier.modelChanged",
@@ -254,13 +254,13 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
         initialInlineRequest: {
             type: "gpii.tests.handlebars.live.request",
             options: {
-                path: "/inline"
+                path: "/templates"
             }
         },
         postChangeInlineRequest: {
             type: "gpii.tests.handlebars.live.request",
             options: {
-                path: "/inline"
+                path: "/templates"
             }
         },
         initialErrorRequest: {
@@ -291,13 +291,18 @@ gpii.tests.handlebars.live.generateUniqueTemplateDir = function (that) {
  */
 gpii.tests.handlebars.live.cloneTemplates = function (that) {
     var resolvedSourcePath = fluid.module.resolvePath(that.options.templateSource);
-    var copyPromise = copy(resolvedSourcePath, that.options.templateDirs);
-    copyPromise.then(that.events.onTemplatesCloned.fire);
-    copyPromise["catch"](fluid.fail);
+    copy(resolvedSourcePath, that.options.templateDirs.unique, { dot: false }, function (error) {
+        if (error) {
+            fluid.fail(error);
+        }
+        else {
+            that.events.onTemplatesCloned.fire();
+        }
+    });
 };
 
 gpii.tests.handlebars.live.cleanup = function (that) {
-    rimraf(that.options.templateDirs, function (error) {
+    rimraf(that.options.templateDirs.unique, function (error) {
         if (error) {
             fluid.log("Error removing cloned template content:", error);
         }
@@ -336,7 +341,9 @@ fluid.defaults("gpii.tests.handlebars.live.environment", {
         onTemplatesCloned: null
     },
     templateSource: "%gpii-handlebars/tests/templates/primary",
-    templateDirs: "@expand:gpii.tests.handlebars.live.generateUniqueTemplateDir({that})",
+    templateDirs: {
+        unique: "@expand:gpii.tests.handlebars.live.generateUniqueTemplateDir({that})"
+    },
     listeners: {
         "cloneTemplates.cloneTemplates": {
             funcName: "gpii.tests.handlebars.live.cloneTemplates",
@@ -390,7 +397,7 @@ fluid.defaults("gpii.tests.handlebars.live.environment", {
                     inlineMiddleware: {
                         type: "gpii.handlebars.inlineTemplateBundlingMiddleware",
                         options: {
-                            path: "/inline",
+                            path: "/templates",
                             templateDirs: "{gpii.tests.handlebars.live.environment}.options.templateDirs"
                         }
                     },

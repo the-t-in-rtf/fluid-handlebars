@@ -151,7 +151,10 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
             args:     ["{that}"]
         }
     },
-    messageDirs: ["%gpii-handlebars/tests/messages/primary", "%gpii-handlebars/tests/messages/secondary"],
+    messageDirs: {
+        primary: "%gpii-handlebars/tests/messages/primary",
+        secondary: "%gpii-handlebars/tests/messages/secondary"
+    },
     components: {
         renderer: {
             type: "gpii.handlebars.standaloneRenderer",
@@ -159,7 +162,7 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
                 model: {
                     messages: "{gpii.tests.handlebars.standaloneRenderer}.model.messages"
                 },
-                templateDirs: "%gpii-handlebars/tests/templates/primary",
+                templateDirs: { primary: "%gpii-handlebars/tests/templates/primary" },
                 modelListeners: {
                     templates: {
                         func: "{gpii.tests.handlebars.standaloneRenderer}.events.onTemplatesLoaded.fire"

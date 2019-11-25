@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>Tests for "standalone" client-side handlebars renderer...</title>
+
+        <!-- Bring in jQuery and fluid dependencies -->
+        <script type="text/javascript" src="/node_modules/infusion/dist/infusion-all.js"></script>
+        <script type="text/javascript" src="/node_modules/infusion/src/framework/core/js/MessageResolver.js"></script>
+
+        <!-- IoC test dependencies -->
+
+        <!-- Bring in Handlebars dependency -->
+        <script type="text/javascript" src="/node_modules/handlebars/dist/handlebars.js"></script>
+
+        <!-- Bring in markdown-it dependencies -->
+        <script type="text/javascript" src="/node_modules/markdown-it/dist/markdown-it.js"></script>
+
+        <!-- Bring in client library being tested -->
+        <script type="text/javascript" src="/src/js/common/lib/i18n.js"></script>
+        <script type="text/javascript" src="/src/js/common/lib/delete-and-add.js"></script>
+        <script type="text/javascript" src="/src/js/common/helper.js"></script>
+        <script type="text/javascript" src="/src/js/common/equals.js"></script>
+        <script type="text/javascript" src="/src/js/common/jsonify.js"></script>
+        <script type="text/javascript" src="/src/js/common/md-common.js"></script>
+        <script type="text/javascript" src="/src/js/common/messageHelper.js"></script>
+
+        <script type="text/javascript" src="/src/js/client/hasRequiredOptions.js"></script>
+        <script type="text/javascript" src="/src/js/client/ajaxCapable.js"></script>
+        <script type="text/javascript" src="/src/js/client/md-client.js"></script>
+        <script type="text/javascript" src="/src/js/common/renderer.js"></script>
+        <script type="text/javascript" src="/src/js/client/renderer.js"></script>
+        <script type="text/javascript" src="/src/js/client/serverResourceAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateManager.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateAware.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateFormControl.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateMessage.js"></script>
+        <script type="text/javascript" src="/src/js/client/templateRequestAndRender.js"></script>
+        <script type="text/javascript" src="/node_modules/gpii-binder/src/js/binder.js"></script>
+
+        <!-- Required for Fluid IoC tests. -->
+        <script type="text/javascript" src="/node_modules/infusion/tests/test-core/utils/js/IoCTestUtils.js"></script>
+
+        <!-- QUnit/jqUnit and Testem dependencies -->
+        <link rel="stylesheet" media="screen" href="/node_modules/infusion/tests/lib/qunit/css/qunit.css" />
+        <script type="text/javascript" src="/node_modules/infusion/tests/lib/qunit/js/qunit.js"></script>
+        <script type="text/javascript" src="/node_modules/infusion/tests/test-core/jqUnit/js/jqUnit.js"></script>
+        <script src="/testem.js"></script>
+        <script type="text/javascript" src="/coverage/client/coverageSender.js"></script>
+    </head>
+    <body>
+        <h1 id="qunit-header">"Standalone" Renderer Tests</h1>
+        <h2 id="qunit-banner"></h2>
+        <div id="qunit-testrunner-toolbar"></div>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests">
+        </ol>
+
+        <!-- Bring in our test helper -->
+        <script type="text/javascript" src="./js/tests-renderer-standalone.js"></script>
+    </body>
+</html>

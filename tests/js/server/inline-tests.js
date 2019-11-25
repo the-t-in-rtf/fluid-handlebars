@@ -17,7 +17,7 @@ gpii.tests.handlebars.server.inline.runTests = function (that) {
     jqUnit.module("Tests for inlining of templates...");
 
     jqUnit.asyncTest("Confirm that template content is inlined...", function () {
-        request.get(that.options.baseUrl + "inline", function (error, response, body) {
+        request.get(that.options.baseUrl + "templates", function (error, response, body) {
             jqUnit.start();
 
             gpii.test.handlebars.server.isSaneResponse(error, response, body);
@@ -34,14 +34,14 @@ gpii.tests.handlebars.server.inline.runTests = function (that) {
 
     jqUnit.asyncTest("Confirm that caching works as expected...", function () {
         // Get it once to get the etag.
-        request.get({ url: that.options.baseUrl + "inline"}, function (error, response) {
+        request.get({ url: that.options.baseUrl + "templates"}, function (error, response) {
             jqUnit.start();
             jqUnit.assertFalse("There should be no error getting the initial template payload...", error);
             jqUnit.stop();
 
             // Get it again to confirm that cachine behaves properly.
             var initialEtag = response.headers.etag;
-            request.get({ url: that.options.baseUrl + "inline", headers: { "If-None-Match": initialEtag }}, function (error, response, body) {
+            request.get({ url: that.options.baseUrl + "templates", headers: { "If-None-Match": initialEtag }}, function (error, response, body) {
                 jqUnit.start();
                 jqUnit.assertFalse("There should be no errors...", error);
                 jqUnit.assertEquals("The status code should indicate that the content hasn't changed...", 304, response.statusCode);
@@ -53,6 +53,7 @@ gpii.tests.handlebars.server.inline.runTests = function (that) {
     });
 };
 
+// TODO: Convert to a Fluid IoC test if there are any further problems with test instability.
 gpii.express({
     "port" :   6914,
     "baseUrl": "http://localhost:6914/",

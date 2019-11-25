@@ -11,6 +11,8 @@
 var fluid = require("infusion");
 var gpii  = fluid.registerNamespace("gpii");
 
+fluid.require("gpii-express");
+
 fluid.registerNamespace("gpii.handlebars.errorRenderingMiddleware");
 gpii.handlebars.errorRenderingMiddleware.renderError = function (that, error, request, response, next) {
     if (gpii.handlebars.errorRenderingMiddleware.isOurContentType(that, request)) {

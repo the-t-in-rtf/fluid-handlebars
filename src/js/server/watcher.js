@@ -18,6 +18,8 @@ var gpii = fluid.registerNamespace("gpii");
 
 var chokidar = require("chokidar");
 
+require("./lib/resolver");
+
 fluid.registerNamespace("gpii.handlebars.watcher");
 
 /*
@@ -26,7 +28,8 @@ fluid.registerNamespace("gpii.handlebars.watcher");
 
  */
 gpii.handlebars.watcher.init = function (that) {
-    var resolvedDirs = fluid.transform(fluid.makeArray(that.options.watchDirs), fluid.module.resolvePath);
+    var resolvedDirs = gpii.express.hb.resolveAllPaths(that.options.watchDirs);
+
     that.watcher = chokidar.watch(resolvedDirs, that.options.chokidarOptions);
 
     fluid.each(that.options.eventsToWatch, function (eventEnabled, eventName) {
@@ -72,7 +75,7 @@ fluid.defaults("gpii.handlebars.watcher", {
         "change": true,
         "unlink": true
     },
-    watchDirs: [],
+    watchDirs: {},
     // See: https://github.com/paulmillr/chokidar#api
     chokidarOptions: {
         ignoreInitial: true, // We do not want to detect files when starting up, only when they change after startup.

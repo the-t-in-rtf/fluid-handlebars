@@ -7,19 +7,15 @@
 // For this to work as expected and for components to be created in the right order, you should only add components
 // to `components.requireRenderer`.
 //
-/* global fluid, jQuery */
 (function (fluid) {
     "use strict";
     fluid.defaults("gpii.handlebars.templateManager", {
-        gradeNames: ["fluid.component"],
+        gradeNames: ["gpii.handlebars.serverResourceAware"],
         components: {
-            renderer: {
-                type: "gpii.handlebars.renderer.serverAware"
-            },
             // All components that require a renderer should be added as children of the `requireRenderer` component
             // to ensure that they are created once the renderer is available.
             requireRenderer: {
-                createOnEvent: "{renderer}.events.onTemplatesLoaded",
+                createOnEvent: "{gpii.handlebars.templateManager}.events.onResourcesLoaded",
                 type: "fluid.component"
             }
         },
@@ -29,10 +25,10 @@
                 record: "{gpii.handlebars.templateManager}.renderer",
                 target: "{that templateAware}.options.components.renderer"
             },
-            // Any child `templateAware` components of this one should be "born ready" to render.
+            // Make sure any template aware grades are notified when the renderer is ready.
             {
-                record: "gpii.handlebars.templateAware.bornReady",
-                target: "{that templateAware}.options.gradeNames"
+                target: "{that templateAware}.options.events.onRendererAvailable",
+                record: "{gpii.handlebars.templateManager}.events.onRendererAvailable"
             }
         ]
     });

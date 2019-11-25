@@ -52,20 +52,19 @@ fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware.request", {
 });
 
 gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates =  function (that) {
-    var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
-
     // Clear out the existing template content, as we might also be called during a "reload".
     fluid.each(["layouts", "pages", "partials"], function (key) {
         that.templates[key] = {};
     });
 
+    var resolvedTemplateDirs = gpii.express.hb.resolveAllPaths(that.options.templateDirs);
     fluid.each(resolvedTemplateDirs, function (templateDir) {
         // Start with each "views" directory and work our way down
         var dirContents = fs.readdirSync(templateDir);
         dirContents.forEach(function (entry) {
             var subDirPath = path.resolve(templateDir, entry);
             var stats = fs.statSync(subDirPath);
-            if (stats.isDirectory() && that.options.allowedTemplateDirs.indexOf[entry] !== -1) {
+            if (stats.isDirectory() && that.options.allowedTemplateDirs.indexOf(entry) !== -1) {
                 gpii.handlebars.inlineTemplateBundlingMiddleware.scanTemplateSubdir(that, entry, subDirPath);
             }
         });
@@ -94,8 +93,8 @@ gpii.handlebars.inlineTemplateBundlingMiddleware.scanTemplateSubdir = function (
 
 fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware", {
     gradeNames:          ["gpii.express.middleware.requestAware"],
-    path:                "/inline",
-    namespace:           "inline", // Namespace to allow other routers to put themselves in the chain before or after us.
+    path:                "/templates",
+    namespace:           "templates", // Namespace to allow other routers to put themselves in the chain before or after us.
     hbsExtensionRegexp:  /^(.+)\.(?:hbs|handlebars)$/,
     allowedTemplateDirs: ["layouts", "partials", "pages"],
     members: {

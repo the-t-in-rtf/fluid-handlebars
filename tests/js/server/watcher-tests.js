@@ -10,12 +10,15 @@ var gpii = fluid.registerNamespace("gpii");
 
 require("../../../src/js/server/watcher");
 
-var jqUnit = require("node-jqunit");
-var fs     = require("fs");
-var os     = require("os");
-var path   = require("path");
-var rimraf = require("rimraf");
-var mkdirp = require("mkdirp");
+var jqUnit     = require("node-jqunit");
+var os         = require("os");
+var path       = require("path");
+var rimraf     = require("rimraf");
+var mkdirp     = require("mkdirp");
+var fs         = require("fs");
+var gracefulFs = require("graceful-fs");
+
+gracefulFs.gracefulify(fs);
 
 fluid.registerNamespace("gpii.tests.handlebars.watcher");
 
@@ -25,7 +28,7 @@ gpii.tests.handlebars.watcher.generateUniqueTmpDir = function (that) {
 };
 
 gpii.tests.handlebars.watcher.init = function (that) {
-    var resolvedPaths = fluid.transform(fluid.makeArray(that.options.watchDirs), fluid.module.resolvePath);
+    var resolvedPaths = fluid.values(fluid.transform(that.options.watchDirs, fluid.module.resolvePath));
 
     var initPromises = [];
     fluid.each(resolvedPaths, function (watchDir) {
@@ -60,25 +63,32 @@ gpii.tests.handlebars.watcher.cleanup = function (that) {
 
     // Remove our temporary content
     var promises = [];
-    fluid.each(fluid.makeArray(that.options.watchDirs), function (watchDir) {
+    var resolvedWatchDirs = gpii.express.hb.resolveAllPaths(that.options.watchDirs);
+    fluid.each(resolvedWatchDirs, function (resolvedWatchdirPath) {
         promises.push(function () {
             var promise = fluid.promise();
-            var resolvedDirPath = fluid.module.resolvePath(watchDir);
-            rimraf(resolvedDirPath, function (error) {
-                if (error) {
-                    promise.reject(error);
-                }
-                else {
-                    promise.resolve();
-                }
-            });
+            try {
+                rimraf(resolvedWatchdirPath, function (error) {
+                    if (error) {
+                        fluid.log("CLEANUP ERROR:", error);
+                        promise.resolve();
+                    }
+                    else {
+                        promise.resolve();
+                    }
+                });
+            }
+            catch (thrownError) {
+                fluid.log("CLEANUP EXCEPTION:", thrownError);
+                promise.resolve();
+            }
             return promise;
         });
     });
 
     var sequence = fluid.promise.sequence(promises);
     sequence.then(
-        function () { fluid.log("Temporary content removed..."); },
+        function () { fluid.log("Temporary content cleanup complete..."); },
         fluid.fail
     );
 };
@@ -119,7 +129,7 @@ jqUnit.asyncTest("We should be able to detect a file that has been added...", fu
 
 jqUnit.asyncTest("We should be able to detect a file that has been changed...", function () {
     // We need to set the directory ourself so that we can create the file before we start "watching"
-    var tmpPath = path.resolve(os.tmpDir(), "watcher-tests-" + Math.random() * 99999 );
+    var tmpPath = path.resolve(os.tmpdir(), "watcher-change-tests-" + Math.random() * 99999 );
     mkdirp.sync(tmpPath);
     var toBeChanged = path.resolve(tmpPath, "to-be-changed.txt");
 
