@@ -14,6 +14,17 @@
         events: {
             onRendererAvailable: null
         },
+        // TODO: Remove
+        listeners: {
+            "onResourcesLoaded.logTemplates": {
+                funcName: "console.log",
+                args: ["TEMPLATES:", "@expand:JSON.stringify({that}.model.templates, null, 2)"]
+            },
+            "onResourcesLoaded.logMessages": {
+                funcName: "console.log",
+                args: ["MESSAGES:", "@expand:JSON.stringify({that}.model.messages, null, 2)"]
+            }
+        },
         resources: {
             messages: {
                 url: "/messages",
