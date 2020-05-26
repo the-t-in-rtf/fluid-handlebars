@@ -11,9 +11,9 @@ require("./inlineMessageBundlingMiddleware-tests");
 require("./live-reload-tests");
 require("./resolver-tests");
 require("./singleTemplateMiddleware-tests");
+require("./watcher-tests");
 
 // Non-IoC tests
 require("./first-matching-path-tests");
 require("./i18n-unit-tests");
 require("./inline-tests");
-require("./watcher-tests");

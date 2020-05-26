@@ -110,94 +110,182 @@ fluid.defaults("gpii.tests.handlebars.watcher", {
     }
 });
 
-jqUnit.module("File change 'watcher' tests.");
-
-jqUnit.asyncTest("We should be able to detect a file that has been added...", function () {
-    var watcherComponent = gpii.tests.handlebars.watcher({});
-
-    var newFilePath = path.resolve(watcherComponent.options.watchDirs[0], "newfile.txt");
-
-    watcherComponent.events.onFsChange.addListener(function (eventName, path) {
-        jqUnit.start();
-        jqUnit.assertEquals("A file 'add' event should have been fired...", "add", eventName);
-        jqUnit.assertEquals("The path should be correct...", newFilePath, path);
-        watcherComponent.destroy();
-    });
-
-    watcherComponent.events.onReady.addListener(function () {
-        fluid.log("Adding new file '", newFilePath, "'...");
-        fs.writeFileSync(newFilePath, "This is new file content.");
-    });
+fluid.defaults("gpii.tests.handlebars.watcher.startSequenceElement", {
+    gradeNames: "fluid.test.sequenceElement",
+    sequence: [
+        {
+            func: "{gpii.tests.handlebars.watcher.environment}.events.createWatcher.fire"
+        },
+        {
+            event:    "{gpii.tests.handlebars.watcher.environment}.events.watcherReady",
+            listener: "fluid.identity"
+        }
+    ]
 });
 
-jqUnit.asyncTest("We should be able to detect a file that has been changed...", function () {
-    // We need to set the directory ourself so that we can create the file before we start "watching"
-    var tmpPath = path.resolve(os.tmpdir(), "watcher-change-tests-" + Math.random() * 99999 );
-    mkdirp.sync(tmpPath);
-    var toBeChanged = path.resolve(tmpPath, "to-be-changed.txt");
-
-    // Create the file.
-    fs.writeFileSync(toBeChanged, "Original.");
-
-    var watcherComponent = gpii.tests.handlebars.watcher({ watchDirs: [tmpPath] });
-
-    watcherComponent.events.onReady.addListener(function () {
-        watcherComponent.events.onFsChange.addListener(function (eventName, path) {
-            jqUnit.start();
-            jqUnit.assertEquals("A file 'change' event should have been fired...", "change", eventName);
-            jqUnit.assertEquals("The path should be correct...", toBeChanged, path);
-
-            watcherComponent.destroy();
-        });
-
-        // Update the file
-        fs.writeFileSync(toBeChanged, "Updated.");
-    });
+fluid.defaults("gpii.tests.handlebars.watcher.sequenceGrade", {
+    gradeNames: "fluid.test.sequence",
+    sequenceElements: {
+        startWatcher: {
+            gradeNames: "gpii.tests.handlebars.watcher.startSequenceElement",
+            priority: "before:sequence"
+        }
+    }
 });
 
-jqUnit.asyncTest("We should be able to detect a file that has been deleted...", function () {
-    var watcherComponent = gpii.tests.handlebars.watcher({});
-
-    var toBeDeleted = path.resolve(watcherComponent.options.watchDirs[0], "to-be-deleted.txt");
-
-    watcherComponent.events.onReady.addListener(function () {
-        // Create the file before listening to changes.
-        fs.writeFileSync(toBeDeleted, "Don't get comfortable.");
-
-        // Because awaitWriteFinish is set, we need to give the above add ~2 seconds to complete before listening for and then making a change.
-        setTimeout(function () {
-            watcherComponent.events.onFsChange.addListener(function (eventName, path) {
-                jqUnit.start();
-                jqUnit.assert("A file 'unlink' event should have been fired...", "unlink", eventName);
-                jqUnit.assertEquals("The path should be correct...", toBeDeleted, path);
-                watcherComponent.destroy();
-            });
-
-            fluid.log("Removing file '", toBeDeleted, "'...");
-            fs.unlinkSync(toBeDeleted);
-        }, 2500);
-    });
+fluid.defaults("gpii.tests.handlebars.watcher.caseHolder", {
+    gradeNames: ["fluid.test.testCaseHolder"],
+    modules: [{
+        name: "File change 'watcher' tests.",
+        tests: [
+            {
+                name: "We should be able to detect a file that has been added.",
+                sequenceGrade: "gpii.tests.handlebars.watcher.sequenceGrade",
+                sequence: [
+                    {
+                        func: "gpii.tests.handlebars.watcher.caseHolder.addFile",
+                        args: ["{testEnvironment}.watcher", "newFile.txt"] // watcherComponent, filename
+                    },
+                    {
+                        event:    "{testEnvironment}.events.onFsChange",
+                        listener: "gpii.tests.handlebars.watcher.caseHolder.checkFsChangeResults",
+                        args:     ["{testEnvironment}.watcher", "newFile.txt", "add", "{arguments}.0", "{arguments}.1"] // watcherComponent, filename, expectedEventName, eventName, eventFilePath
+                    }
+                ]
+            },
+            {
+                name: "We should be able to detect a file that has been changed.",
+                sequenceGrade: "gpii.tests.handlebars.watcher.sequenceGrade",
+                sequence: [
+                    {
+                        func: "gpii.tests.handlebars.watcher.caseHolder.addFile",
+                        args: ["{testEnvironment}.watcher", "changingFile.txt"] // watcherComponent, filename
+                    },
+                    {
+                        event:     "{testEnvironment}.events.onFsChange",
+                        listener:  "gpii.tests.handlebars.watcher.caseHolder.changeFile",
+                        args:      ["{testEnvironment}.watcher", "changingFile.txt"] // watcherComponent, filename
+                    },
+                    {
+                        event:    "{testEnvironment}.events.onFsChange",
+                        listener: "gpii.tests.handlebars.watcher.caseHolder.checkFsChangeResults",
+                        args:     ["{testEnvironment}.watcher", "changingFile.txt", "change", "{arguments}.0", "{arguments}.1"] // watcherComponent, filename, expectedEventName, eventName, eventFilePath
+                    }
+                ]
+            },
+            {
+                name: "We should be able to detect a file that has been deleted.",
+                sequenceGrade: "gpii.tests.handlebars.watcher.sequenceGrade",
+                sequence: [
+                    {
+                        func: "gpii.tests.handlebars.watcher.caseHolder.addFile",
+                        args: ["{testEnvironment}.watcher", "bornToDie.txt"] // watcherComponent, filename
+                    },
+                    {
+                        event:     "{testEnvironment}.events.onFsChange",
+                        listener:  "gpii.tests.handlebars.watcher.caseHolder.removeFile",
+                        args:      ["{testEnvironment}.watcher", "bornToDie.txt"] // watcherComponent, filename
+                    },
+                    {
+                        event:    "{testEnvironment}.events.onFsChange",
+                        listener: "gpii.tests.handlebars.watcher.caseHolder.checkFsChangeResults",
+                        args:     ["{testEnvironment}.watcher", "bornToDie.txt", "unlink", "{arguments}.0", "{arguments}.1"] // watcherComponent, filename, expectedEventName, eventName, eventFilePath
+                    }
+                ]
+            },
+            {
+                name: "Large file writes should be handled correctly.",
+                sequenceGrade: "gpii.tests.handlebars.watcher.sequenceGrade",
+                sequence: [
+                    {
+                        func: "gpii.tests.handlebars.watcher.caseHolder.addLargeFile",
+                        args: ["{testEnvironment}.watcher", "largeFile.txt"] // watcherComponent, filename
+                    },
+                    {
+                        event:    "{testEnvironment}.events.onFsChange",
+                        listener: "gpii.tests.handlebars.watcher.caseHolder.checkLargeFileChangeResults",
+                        args:     ["{testEnvironment}.watcher", "largeFile.txt", "add", "{arguments}.0", "{arguments}.1"] // watcherComponent, filename, expectedEventName, eventName, eventFilePath
+                    }
+                ]
+            }
+        ]
+    }]
 });
 
-jqUnit.asyncTest("Large writes should be complete before we are notified of a file change...", function () {
-    var watcherComponent = gpii.tests.handlebars.watcher({});
+gpii.tests.handlebars.watcher.caseHolder.checkFsChangeResults = function (watcherComponent, filename, expectedEventName, eventName, eventFilePath) {
+    var expectedFilePath = path.resolve(watcherComponent.options.watchDirs[0], filename);
 
-    var templateContent = (fluid.generate(1024 * 1024 * 25, "X")).join(""); // ~25Mb of "X" characters.
+    jqUnit.assertEquals("The event name should be as expected.", expectedEventName, eventName);
+    jqUnit.assertEquals("The path should be correct.", expectedFilePath, eventFilePath);
+};
 
-    var templatePath = path.resolve(watcherComponent.options.watchDirs[0], "large-file.txt");
+gpii.tests.handlebars.watcher.caseHolder.addFile = function (watcherComponent, filename) {
+    var newFilePath = path.resolve(watcherComponent.options.watchDirs[0], filename);
 
-    watcherComponent.events.onFsChange.addListener(function (eventName, path) {
-        jqUnit.start();
-        jqUnit.assertEquals("A file 'add' event should have been fired...", "add", eventName);
-        jqUnit.assertEquals("The path should be correct...", templatePath, path);
-        var fileContent = fs.readFileSync(templatePath, "utf8");
-        jqUnit.assertEquals("The file's contents should be correct...", templateContent, fileContent);
-        fs.unlinkSync(templatePath);
-        watcherComponent.destroy();
-    });
+    fluid.log("Adding new file '", newFilePath, "'.");
+    fs.writeFileSync(newFilePath, "This is new file content.");
+};
 
-    watcherComponent.events.onReady.addListener(function () {
-        fluid.log("Writing large template file to '", templatePath, "'...");
-        fs.writeFileSync(templatePath, templateContent);
-    });
+gpii.tests.handlebars.watcher.caseHolder.changeFile = function (watcherComponent, filename) {
+    var toBeChanged = path.resolve(watcherComponent.options.watchDirs[0], filename);
+
+    // Update the file
+    fs.writeFileSync(toBeChanged, "Updated.");
+};
+
+gpii.tests.handlebars.watcher.caseHolder.removeFile = function (watcherComponent, filename) {
+    var toBeDeleted = path.resolve(watcherComponent.options.watchDirs[0], filename);
+    fs.unlinkSync(toBeDeleted);
+};
+
+gpii.tests.handlebars.watcher.caseHolder.addLargeFile = function (watcherComponent, filename) {
+    var largeFilePath = path.resolve(watcherComponent.options.watchDirs[0], filename);
+
+    fluid.log("Adding large file '", largeFilePath, "'.");
+    fs.writeFileSync(largeFilePath, gpii.tests.handlebars.watcher.getLargeFilePayload());
+};
+
+gpii.tests.handlebars.watcher.getLargeFilePayload = function () {
+    return (fluid.generate(1024 * 1024 * 25, "X")).join(""); // ~25Mb of "X" characters.
+};
+
+gpii.tests.handlebars.watcher.caseHolder.checkLargeFileChangeResults = function (watcherComponent, filename, expectedEventName, eventName, eventFilePath) {
+    // Run the basic checks.
+    gpii.tests.handlebars.watcher.caseHolder.checkFsChangeResults(watcherComponent, filename, expectedEventName, eventName, eventFilePath);
+
+    // Additionally, check that the content was completely written.
+    var largeFilePath = path.resolve(watcherComponent.options.watchDirs[0], filename);
+    var fileContent = fs.readFileSync(largeFilePath, "utf8");
+    var expectedFileContents = gpii.tests.handlebars.watcher.getLargeFilePayload();
+    jqUnit.assertEquals("The file's contents should be correct...", expectedFileContents, fileContent);
+};
+
+fluid.defaults("gpii.tests.handlebars.watcher.environment", {
+    gradeNames: ["fluid.test.testEnvironment"],
+    events: {
+        createWatcher: null,
+        watcherReady:  null,
+        onFsChange:    null
+    },
+    components: {
+        caseHolder: {
+            type: "gpii.tests.handlebars.watcher.caseHolder"
+        },
+        watcher: {
+            type: "gpii.tests.handlebars.watcher",
+            createOnEvent: "createWatcher",
+            options: {
+                listeners: {
+                    "onReady.notifyParent": {
+                        func: "{gpii.tests.handlebars.watcher.environment}.events.watcherReady.fire"
+                    },
+                    "onFsChange.notifyParent": {
+                        func: "{gpii.tests.handlebars.watcher.environment}.events.onFsChange.fire"
+                    }
+                }
+            }
+        }
+    }
 });
+
+fluid.test.runTests("gpii.tests.handlebars.watcher.environment");
