@@ -33,17 +33,9 @@ gpii.tests.handlebars.watcher.init = function (that) {
     var initPromises = [];
     fluid.each(resolvedPaths, function (watchDir) {
         initPromises.push(function () {
-            var initPromise = fluid.promise();
             fluid.log("Creating directory '", watchDir, "'...");
-            mkdirp(watchDir, function (error) {
-                if (error) {
-                    initPromise.reject(error);
-                }
-                else {
-                    initPromise.resolve();
-                }
-            });
-            return initPromise;
+            var mkdirPromise = mkdirp(watchDir);
+            return mkdirPromise;
         });
     });
 
