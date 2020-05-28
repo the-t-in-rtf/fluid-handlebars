@@ -76,11 +76,18 @@ gpii.tests.handlebars.watcher.cleanup = function (that) {
         });
     });
 
-    var sequence = fluid.promise.sequence(promises);
-    sequence.then(
+    // Turn off the watcher first before we start removing content.
+    var watcherClosePromise = gpii.handlebars.watcher.cleanup(that);
+
+    watcherClosePromise.then(
         function () {
-            gpii.handlebars.watcher.cleanup(that);
-            fluid.log("Temporary content cleanup complete...");
+            var sequence = fluid.promise.sequence(promises);
+            sequence.then(
+                function () {
+                    fluid.log("Temporary content cleanup complete...");
+                },
+                fluid.fail
+            );
         },
         fluid.fail
     );

@@ -55,13 +55,15 @@ gpii.handlebars.watcher.handleFsEvent = function (that, eventName, path, details
     that.events.onFsChange.fire(eventName, path, details);
 };
 
-/*
-
-    Ensure that our filesystem watchers are cleanly closed before the component is destroyed.
-
+/**
+ *
+ * Ensure that our filesystem watchers are cleanly closed before the component is destroyed.
+ *
+ * @param {Object} that - The watcher component.
+ * @return {Promise} - A promise that will resolve when cleanup is complete.
  */
 gpii.handlebars.watcher.cleanup = function (that) {
-    that.watcher.close();
+    return that.watcher.close();
 };
 
 fluid.defaults("gpii.handlebars.watcher", {
