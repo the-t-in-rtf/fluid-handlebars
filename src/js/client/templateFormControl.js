@@ -12,10 +12,9 @@
 /* eslint-env browser */
 (function (fluid) {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.handlebars.templateFormControl");
+    fluid.registerNamespace("fluid.handlebars.templateFormControl");
 
-    gpii.handlebars.templateFormControl.submitForm = function (that, event) {
+    fluid.handlebars.templateFormControl.submitForm = function (that, event) {
         // We are handling this event and should prevent any further handling.
         if (event) { event.preventDefault(); }
 
@@ -23,22 +22,22 @@
         that.makeRequest();
     };
 
-    gpii.handlebars.templateFormControl.handleKeyPress = function (that, event) {
+    fluid.handlebars.templateFormControl.handleKeyPress = function (that, event) {
         if (event.keyCode === 13) { // Enter
             that.submitForm(event);
         }
     };
 
     // Add support for hiding content if needed
-    gpii.handlebars.templateFormControl.hideContentIfNeeded = function (that, success) {
+    fluid.handlebars.templateFormControl.hideContentIfNeeded = function (that, success) {
         if ((success && that.options.hideOnSuccess) || (!success && that.options.hideOnError)) {
             var form = that.locate("form");
             form.hide();
         }
     };
 
-    fluid.defaults("gpii.handlebars.templateFormControl", {
-        gradeNames:    ["gpii.handlebars.ajaxCapable", "gpii.hasRequiredFields", "gpii.handlebars.templateAware.serverResourceAware"],
+    fluid.defaults("fluid.handlebars.templateFormControl", {
+        gradeNames:    ["fluid.handlebars.ajaxCapable", "fluid.hasRequiredFields", "fluid.handlebars.templateAware.serverResourceAware"],
         hideOnSuccess: true,  // Whether to hide our form if the results are successful
         hideOnError:   false, // Whether to hide our form if the results are unsuccessful
         requiredFields: {
@@ -73,7 +72,7 @@
         },
         components: {
             success: {
-                type:          "gpii.handlebars.templateMessage",
+                type:          "fluid.handlebars.templateMessage",
                 createOnEvent: "{templateFormControl}.events.onDomChange",
                 container:     "{templateFormControl}.dom.success",
                 options: {
@@ -92,7 +91,7 @@
                 }
             },
             error: {
-                type:          "gpii.handlebars.templateMessage",
+                type:          "fluid.handlebars.templateMessage",
                 createOnEvent: "{templateFormControl}.events.onDomChange",
                 container:     "{templateFormControl}.dom.error",
                 options: {
@@ -117,11 +116,11 @@
                 args: ["initial", "{that}.options.templateKeys.initial", "{that}.model", "html"]
             },
             submitForm: {
-                funcName: "gpii.handlebars.templateFormControl.submitForm",
+                funcName: "fluid.handlebars.templateFormControl.submitForm",
                 args:     ["{that}", "{arguments}.0"]
             },
             handleKeyPress: {
-                funcName: "gpii.handlebars.templateFormControl.handleKeyPress",
+                funcName: "fluid.handlebars.templateFormControl.handleKeyPress",
                 args:     ["{that}", "{arguments}.0"]
             }
         },
@@ -142,7 +141,7 @@
                 args:   ["submit.submitForm", "{that}.submitForm"]
             },
             "requestReceived.hideContentIfNeeded": {
-                funcName: "gpii.handlebars.templateFormControl.hideContentIfNeeded",
+                funcName: "fluid.handlebars.templateFormControl.hideContentIfNeeded",
                 args:     ["{that}", "{arguments}.1"]
             }
         }

@@ -3,45 +3,44 @@
 /* eslint-env node */
 "use strict";
 var fluid = require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
 
 var jqUnit = require("node-jqunit");
 
-fluid.require("%gpii-handlebars");
+fluid.require("%fluid-handlebars");
 
-fluid.require("%gpii-express");
-gpii.express.loadTestingSupport();
+fluid.require("%fluid-express");
+fluid.express.loadTestingSupport();
 
-fluid.registerNamespace("gpii.tests.handlebars.errorRenderingMiddleware");
-gpii.tests.handlebars.errorRenderingMiddleware.responseHasText = function (message, pattern, body) {
+fluid.registerNamespace("fluid.tests.handlebars.errorRenderingMiddleware");
+fluid.tests.handlebars.errorRenderingMiddleware.responseHasText = function (message, pattern, body) {
     jqUnit.assertTrue(message, body.match(pattern));
 };
 
 // A router that is born to lose, with a worried mind.
-fluid.registerNamespace("gpii.tests.handlebars.errorRenderingMiddleware.errorGeneratingMiddleware");
-gpii.tests.handlebars.errorRenderingMiddleware.errorGeneratingMiddleware.middleware = function (next) {
+fluid.registerNamespace("fluid.tests.handlebars.errorRenderingMiddleware.errorGeneratingMiddleware");
+fluid.tests.handlebars.errorRenderingMiddleware.errorGeneratingMiddleware.middleware = function (next) {
     next({ isError: true, message: "*sound of drums*"});
 };
 
-fluid.defaults("gpii.tests.handlebars.errorRenderingMiddleware.errorGeneratingMiddleware", {
-    gradeNames: ["gpii.express.middleware"],
+fluid.defaults("fluid.tests.handlebars.errorRenderingMiddleware.errorGeneratingMiddleware", {
+    gradeNames: ["fluid.express.middleware"],
     path:       "/untemperedSchism",
     namespace:  "errorGeneratingMiddleware",
     invokers: {
         middleware: {
-            funcName: "gpii.tests.handlebars.errorRenderingMiddleware.errorGeneratingMiddleware.middleware",
+            funcName: "fluid.tests.handlebars.errorRenderingMiddleware.errorGeneratingMiddleware.middleware",
             args:     ["{arguments}.2"] // req, res, next
         }
     }
 });
 
-fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.request", {
-    gradeNames: ["gpii.test.express.request"],
+fluid.defaults("fluid.tests.templates.errorRenderingMiddleware.request", {
+    gradeNames: ["fluid.test.express.request"],
     endpoint:   "untemperedSchism"
 });
 
-fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.caseHolder", {
-    gradeNames: ["gpii.test.express.caseHolder"],
+fluid.defaults("fluid.tests.templates.errorRenderingMiddleware.caseHolder", {
+    gradeNames: ["fluid.test.express.caseHolder"],
     expected: {
         html: /There was an error:\r?\n\r?\n\*sound of drums\*/m,
         json: { isError: true, message: "*sound of drums*"}
@@ -58,7 +57,7 @@ fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.caseHolder", {
                             func: "{htmlRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.errorRenderingMiddleware.responseHasText",
+                            listener: "fluid.tests.handlebars.errorRenderingMiddleware.responseHasText",
                             event:    "{htmlRequest}.events.onComplete",
                             args:     ["The HTML error should be as expected...", "{that}.options.expected.html", "{arguments}.0"]
                         }
@@ -86,7 +85,7 @@ fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.caseHolder", {
                             func: "{noAcceptHeaderRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.errorRenderingMiddleware.responseHasText",
+                            listener: "fluid.tests.handlebars.errorRenderingMiddleware.responseHasText",
                             event:    "{noAcceptHeaderRequest}.events.onComplete",
                             args:     ["The default error should be as expected...", "{that}.options.expected.html", "{arguments}.0"]
                         }
@@ -97,7 +96,7 @@ fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.caseHolder", {
     ],
     components: {
         htmlRequest: {
-            type: "gpii.tests.templates.errorRenderingMiddleware.request",
+            type: "fluid.tests.templates.errorRenderingMiddleware.request",
             options: {
                 headers: {
                     accept: "text/html"
@@ -105,7 +104,7 @@ fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.caseHolder", {
             }
         },
         jsonRequest: {
-            type: "gpii.tests.templates.errorRenderingMiddleware.request",
+            type: "fluid.tests.templates.errorRenderingMiddleware.request",
             options: {
                 headers: {
                     accept: "application/json"
@@ -113,39 +112,39 @@ fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.caseHolder", {
             }
         },
         noAcceptHeaderRequest: {
-            type: "gpii.tests.templates.errorRenderingMiddleware.request"
+            type: "fluid.tests.templates.errorRenderingMiddleware.request"
         }
     }
 });
 
-fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.environment", {
-    gradeNames: ["gpii.test.express.testEnvironment"],
+fluid.defaults("fluid.tests.templates.errorRenderingMiddleware.environment", {
+    gradeNames: ["fluid.test.express.testEnvironment"],
     port:       6494,
     components: {
         express: {
             options: {
                 components: {
                     handlebars: {
-                        type: "gpii.express.hb",
+                        type: "fluid.express.hb",
                         options: {
-                            templateDirs:   ["%gpii-handlebars/tests/templates/primary"]
+                            templateDirs:   ["%fluid-handlebars/tests/templates/primary"]
                         }
                     },
                     errorGeneratingMiddleware: {
-                        type: "gpii.tests.handlebars.errorRenderingMiddleware.errorGeneratingMiddleware",
+                        type: "fluid.tests.handlebars.errorRenderingMiddleware.errorGeneratingMiddleware",
                         options: {
                             priority: "after:handlebars"
                         }
                     },
                     htmlErrorHandler: {
-                        type: "gpii.handlebars.errorRenderingMiddleware",
+                        type: "fluid.handlebars.errorRenderingMiddleware",
                         options: {
                             templateKey: "pages/error",
                             priority: "after:errorGeneratingMiddleware"
                         }
                     },
                     defaultErrorHandler: {
-                        type: "gpii.express.middleware.error",
+                        type: "fluid.express.middleware.error",
                         options: {
                             priority: "after:htmlErrorHandler"
                         }
@@ -154,9 +153,9 @@ fluid.defaults("gpii.tests.templates.errorRenderingMiddleware.environment", {
             }
         },
         caseHolder: {
-            type: "gpii.tests.templates.errorRenderingMiddleware.caseHolder"
+            type: "fluid.tests.templates.errorRenderingMiddleware.caseHolder"
         }
     }
 });
 
-fluid.test.runTests("gpii.tests.templates.errorRenderingMiddleware.environment");
+fluid.test.runTests("fluid.tests.templates.errorRenderingMiddleware.environment");

@@ -3,24 +3,22 @@
 "use strict";
 var fluid = require("infusion");
 
-var gpii = fluid.registerNamespace("gpii");
-
 var jqUnit  = fluid.require("node-jqunit");
 var request = require("request");
 
-fluid.require("%gpii-express");
-fluid.require("%gpii-handlebars");
+fluid.require("%fluid-express");
+fluid.require("%fluid-handlebars");
 require("./lib/sanity.js");
 
-fluid.registerNamespace("gpii.tests.handlebars.server.inline");
-gpii.tests.handlebars.server.inline.runTests = function (that) {
+fluid.registerNamespace("fluid.tests.handlebars.server.inline");
+fluid.tests.handlebars.server.inline.runTests = function (that) {
     jqUnit.module("Tests for inlining of templates...");
 
     jqUnit.asyncTest("Confirm that template content is inlined...", function () {
         request.get(that.options.baseUrl + "templates", function (error, response, body) {
             jqUnit.start();
 
-            gpii.test.handlebars.server.isSaneResponse(error, response, body);
+            fluid.test.handlebars.server.isSaneResponse(error, response, body);
 
             if (body) {
                 var data = typeof body === "string" ? JSON.parse(body) : body;
@@ -54,24 +52,24 @@ gpii.tests.handlebars.server.inline.runTests = function (that) {
 };
 
 // TODO: Convert to a Fluid IoC test if there are any further problems with test instability.
-gpii.express({
+fluid.express({
     "port" :   6914,
     "baseUrl": "http://localhost:6914/",
     json: { foo: "bar", baz: "quux", qux: "quux" },
     listeners: {
         "onStarted.runTests": {
-            funcName: "gpii.tests.handlebars.server.inline.runTests",
+            funcName: "fluid.tests.handlebars.server.inline.runTests",
             args:     ["{that}"]
         }
     },
     components: {
         inline: {
-            type: "gpii.handlebars.inlineTemplateBundlingMiddleware",
+            type: "fluid.handlebars.inlineTemplateBundlingMiddleware",
             options: {
                 templateDirs: {
-                    primary: "%gpii-handlebars/tests/templates/primary",
+                    primary: "%fluid-handlebars/tests/templates/primary",
                     secondary: {
-                        path: "%gpii-handlebars/tests/templates/secondary",
+                        path: "%fluid-handlebars/tests/templates/secondary",
                         priority: "before:primary"
                     }
                 }

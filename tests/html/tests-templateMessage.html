@@ -19,8 +19,8 @@
         <script type="text/javascript" src="../../node_modules/infusion/src/framework/core/js/ModelTransformationTransforms.js"></script>
 
 
-        <!-- gpii-binder model<->view binder -->
-        <script type="text/javascript" src="../../node_modules/gpii-binder/src/js/binder.js"></script>
+        <!-- fluid-binder model<->view binder -->
+        <script type="text/javascript" src="../../node_modules/fluid-binder/src/js/binder.js"></script>
 
         <!-- Bring in Handlebars dependency -->
         <script type="text/javascript" src="../../node_modules/handlebars/dist/handlebars.js"></script>
@@ -63,8 +63,8 @@
 
         <script type="text/javascript">
             <!-- instantiate test components -->
-            var initialized = gpii.tests.handlebars.templateMessage.initialized(".viewport-initialized");
-            var updated     = gpii.tests.handlebars.templateMessage.updated(".viewport-updated");
+            var initialized = fluid.tests.handlebars.templateMessage.initialized(".viewport-initialized");
+            var updated     = fluid.tests.handlebars.templateMessage.updated(".viewport-updated");
             updated.applier.change("message", "Some are born with data, some achieve data, and some have data thrust upon them.");
         </script>
     </body>

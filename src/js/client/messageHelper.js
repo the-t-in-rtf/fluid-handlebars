@@ -3,15 +3,15 @@
 "use strict";
 var fluid  = fluid || require("infusion");
 
-fluid.defaults("gpii.handlebars.helper.messageHelper.client", {
-    gradeNames: ["gpii.handlebars.helper.messageHelper"],
+fluid.defaults("fluid.handlebars.helper.messageHelper.client", {
+    gradeNames: ["fluid.handlebars.helper.messageHelper"],
     helperName: "messageHelper",
     model: {
         messages: {}
     },
     invokers: {
         "resolveMessage": {
-            funcName: "gpii.handlebars.helper.messageHelper.resolveMessage",
+            funcName: "fluid.handlebars.helper.messageHelper.resolveMessage",
             args:     ["{that}.model.messages", "{arguments}.0", "{arguments}.1", "{arguments}.2"] // messages, messageKey, dataOrRootContext, rootContext
         }
     }

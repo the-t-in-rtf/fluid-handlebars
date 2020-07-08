@@ -28,11 +28,10 @@
 /* eslint-env browser */
 (function (fluid) {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.handlebars.templateAware");
+    fluid.registerNamespace("fluid.handlebars.templateAware");
 
     // A convenience function that can be used to more easily define `renderInitialMarkup` invokers (see example above).
-    gpii.handlebars.templateAware.renderMarkup = function (that, renderer, selector, templateKey, data, manipulator) {
+    fluid.handlebars.templateAware.renderMarkup = function (that, renderer, selector, templateKey, data, manipulator) {
         manipulator = manipulator ? manipulator : "html";
         var element = that.locate(selector);
         if (renderer) {
@@ -44,7 +43,7 @@
         }
     };
 
-    gpii.handlebars.templateAware.refreshDom = function (that) {
+    fluid.handlebars.templateAware.refreshDom = function (that) {
         // Adapted from: https://github.com/fluid-project/infusion/blob/master/src/framework/preferences/js/Panels.js#L147
         var userJQuery = that.container.constructor;
         that.container = userJQuery(that.container.selector, that.container.context);
@@ -53,8 +52,8 @@
         that.events.onDomChange.fire(that);
     };
 
-    fluid.defaults("gpii.handlebars.templateAware", {
-        gradeNames: ["gpii.binder.bindOnDomChange", "fluid.viewComponent"],
+    fluid.defaults("fluid.handlebars.templateAware", {
+        gradeNames: ["fluid.binder.bindOnDomChange", "fluid.viewComponent"],
         events: {
             refresh: null,
             onMarkupRendered: null,
@@ -68,7 +67,7 @@
                 func: "{that}.renderInitialMarkup"
             },
             "onMarkupRendered.refreshDom": {
-                funcName: "gpii.handlebars.templateAware.refreshDom",
+                funcName: "fluid.handlebars.templateAware.refreshDom",
                 args:     ["{that}"]
             }
         },
@@ -77,14 +76,14 @@
                 funcName: "fluid.notImplemented"
             },
             renderMarkup: {
-                funcName: "gpii.handlebars.templateAware.renderMarkup",
+                funcName: "fluid.handlebars.templateAware.renderMarkup",
                 args:     ["{that}", "{renderer}", "{arguments}.0", "{arguments}.1", "{arguments}.2", "{arguments}.3"] // renderer, selector, templateKey, data, manipulator
             }
         }
     });
 
-    fluid.defaults("gpii.handlebars.templateAware.standalone", {
-        gradeNames: ["gpii.handlebars.templateAware"],
+    fluid.defaults("fluid.handlebars.templateAware.standalone", {
+        gradeNames: ["fluid.handlebars.templateAware"],
         model: {
             templates: "{that}.options.templates",
             messages: {}
@@ -96,30 +95,30 @@
         },
         components: {
             renderer: {
-                type: "gpii.handlebars.renderer",
+                type: "fluid.handlebars.renderer",
                 options: {
                     listeners: {
                         "onCreate.notifyParent": {
-                            func: "{gpii.handlebars.templateAware}.events.onRendererAvailable.fire"
+                            func: "{fluid.handlebars.templateAware}.events.onRendererAvailable.fire"
                         }
                     },
                     model: {
-                        templates: "{gpii.handlebars.templateAware.standalone}.model.templates",
-                        messages: "{gpii.handlebars.templateAware.standalone}.model.messages"
+                        templates: "{fluid.handlebars.templateAware.standalone}.model.templates",
+                        messages: "{fluid.handlebars.templateAware.standalone}.model.messages"
                     }
                 }
             }
         }
     });
 
-    fluid.defaults("gpii.handlebars.templateAware.serverResourceAware", {
-        gradeNames: ["gpii.handlebars.serverResourceAware", "gpii.handlebars.templateAware"],
+    fluid.defaults("fluid.handlebars.templateAware.serverResourceAware", {
+        gradeNames: ["fluid.handlebars.serverResourceAware", "fluid.handlebars.templateAware"],
         components: {
             renderer: {
                 options: {
                     listeners: {
                         "onCreate.notifyParent": {
-                            func: "{gpii.handlebars.templateAware}.events.onRendererAvailable.fire"
+                            func: "{fluid.handlebars.templateAware}.events.onRendererAvailable.fire"
                         }
                     }
                 }

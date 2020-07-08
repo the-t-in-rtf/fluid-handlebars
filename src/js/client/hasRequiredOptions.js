@@ -1,10 +1,9 @@
 /* eslint-env browser */
 // Grade to add checking for required options on startup.
-// TODO: Migrate to using JSON Schema validation to handle this once this is resolved: https://issues.gpii.net/browse/GPII-1176
+// TODO: Migrate to using JSON Schema validation to handle this once this is resolved: https://issues.fluid.net/browse/fluid-1176
 /* eslint-env browser */
 (function (fluid) {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
 
     // A static function to check for the existing of required options data and fail, typically called on startup.
     //
@@ -14,7 +13,7 @@
     //   "path.relative.to.that.options": true
     // }
     //
-    gpii.checkRequiredOptions = function (options, requiredFields, location, suffix) {
+    fluid.checkRequiredOptions = function (options, requiredFields, location, suffix) {
         var errors = [];
 
         fluid.each(requiredFields, function (value, path) {
@@ -29,11 +28,11 @@
         }
     };
 
-    fluid.defaults("gpii.hasRequiredOptions", {
+    fluid.defaults("fluid.hasRequiredOptions", {
         gradeNames: ["fluid.component"],
         listeners: {
             "onCreate.checkRequiredOptions": {
-                funcName: "gpii.checkRequiredOptions",
+                funcName: "fluid.checkRequiredOptions",
                 args:     ["{that}.options", "{that}.options.requiredFields", "{arguments}.0", "component"]
             }
         }

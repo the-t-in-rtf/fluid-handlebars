@@ -6,13 +6,12 @@
 /* eslint-env node */
 "use strict";
 var fluid = require("infusion");
-fluid.setLogging(true);
 
+// TODO: Confirm whether these are truly necessary.
+fluid.setLogging(true);
 fluid.logObjectRenderChars = 10240;
 
-var gpii  = fluid.registerNamespace("gpii");
-
-fluid.require("%gpii-handlebars");
+fluid.require("%fluid-handlebars");
 
 var copy   = require("recursive-copy");
 var fs     = require("fs");
@@ -21,13 +20,13 @@ var os     = require("os");
 var path   = require("path");
 var rimraf = require("rimraf");
 
-fluid.require("%gpii-express");
-gpii.express.loadTestingSupport();
+fluid.require("%fluid-express");
+fluid.express.loadTestingSupport();
 
 var kettle = require("kettle");
 kettle.loadTestingSupport();
 
-fluid.registerNamespace("gpii.tests.handlebars.live");
+fluid.registerNamespace("fluid.tests.handlebars.live");
 
 /**
  *
@@ -38,13 +37,13 @@ fluid.registerNamespace("gpii.tests.handlebars.live");
  * @param {Boolean} invert - Whether to invert the comparison (used to confirm that the text is not initially present).
  *
  */
-gpii.tests.handlebars.live.verifyResults = function (body, expectedText, invert) {
+fluid.tests.handlebars.live.verifyResults = function (body, expectedText, invert) {
     var jqUnitFn = invert ? "assertFalse" : "assertTrue";
     var outcome = invert ? "should not" : "should";
     jqUnit[jqUnitFn]("The expected text " + outcome + " be found...", body && body.indexOf(expectedText) !== -1);
 };
 
-fluid.defaults("gpii.tests.handlebars.live.request", {
+fluid.defaults("fluid.tests.handlebars.live.request", {
     gradeNames: ["kettle.test.request.http"],
     port:       "{testEnvironment}.options.port",
     path:       "{testEnvironment}.options.baseUrl"
@@ -59,7 +58,7 @@ fluid.defaults("gpii.tests.handlebars.live.request", {
  * @param {String} textToAppend - The text to append to the template.
  *
  */
-gpii.tests.handlebars.live.updateTemplate = function (templateDir, relativeTemplatePath, textToAppend) {
+fluid.tests.handlebars.live.updateTemplate = function (templateDir, relativeTemplatePath, textToAppend) {
     var fullPath = path.resolve(templateDir, relativeTemplatePath) + ".handlebars";
     fs.appendFileSync(fullPath, textToAppend);
 };
@@ -74,13 +73,13 @@ gpii.tests.handlebars.live.updateTemplate = function (templateDir, relativeTempl
  * @param {String|Number|Boolean} expected - The expected value to be compared.  Note that `Array` and `Object` values are not handled properly.
  *
  */
-gpii.tests.handlebars.live.pathEquals = function (message, root, path, expected) {
+fluid.tests.handlebars.live.pathEquals = function (message, root, path, expected) {
     var actual = fluid.get(root, path);
     jqUnit.assertEquals(message, expected, actual);
 };
 
-fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
-    gradeNames: ["gpii.test.express.caseHolder.base"],
+fluid.defaults("fluid.tests.handlebars.live.caseHolder", {
+    gradeNames: ["fluid.test.express.caseHolder.base"],
     sequenceStart: [
         {
             func: "{testEnvironment}.events.cloneTemplates.fire"
@@ -119,12 +118,12 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                             func: "{initialSingleTemplateRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.live.verifyResults",
+                            listener: "fluid.tests.handlebars.live.verifyResults",
                             event:    "{initialSingleTemplateRequest}.events.onComplete",
                             args:     ["{arguments}.0", "I love single templates.", true] // body, expectedText, invert
                         },
                         {
-                            func: "gpii.tests.handlebars.live.updateTemplate",
+                            func: "fluid.tests.handlebars.live.updateTemplate",
                             args: ["{testEnvironment}.options.templateDirs.unique", "pages/singleTemplateMiddleware", "I love single templates."] // templateDir, path, textToAppend
                         },
                         {
@@ -133,7 +132,7 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                             listener:    "{postChangeSingleTemplateRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.live.verifyResults",
+                            listener: "fluid.tests.handlebars.live.verifyResults",
                             event:    "{postChangeSingleTemplateRequest}.events.onComplete",
                             args:     ["{arguments}.0", "I love single templates."] // body, expectedText, invert
                         }
@@ -147,12 +146,12 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                             func: "{initialDispatcherRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.live.verifyResults",
+                            listener: "fluid.tests.handlebars.live.verifyResults",
                             event:    "{initialDispatcherRequest}.events.onComplete",
                             args:     ["{arguments}.0", "I love dispatched templates.", true] // body, expectedText, invert
                         },
                         {
-                            func: "gpii.tests.handlebars.live.updateTemplate",
+                            func: "fluid.tests.handlebars.live.updateTemplate",
                             args: ["{testEnvironment}.options.templateDirs.unique", "pages/index", "I love dispatched templates."] // templateDir, path, textToAppend
                         },
                         {
@@ -161,7 +160,7 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                             listener:    "{postChangeDispatcherRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.live.verifyResults",
+                            listener: "fluid.tests.handlebars.live.verifyResults",
                             event:    "{postChangeDispatcherRequest}.events.onComplete",
                             args:     ["{arguments}.0", "I love dispatched templates."] // body, expectedText, invert
                         }
@@ -175,12 +174,12 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                             func: "{initialInlineRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.live.pathEquals",
+                            listener: "fluid.tests.handlebars.live.pathEquals",
                             event:    "{initialInlineRequest}.events.onComplete",
                             args:     ["The original content should be unaltered when we begin.", "@expand:JSON.parse({arguments}.0)", "partials.renderer-partial", "This is partial content."] // message, root, path, expected
                         },
                         {
-                            func: "gpii.tests.handlebars.live.updateTemplate",
+                            func: "fluid.tests.handlebars.live.updateTemplate",
                             args: ["{testEnvironment}.options.templateDirs.unique", "partials/renderer-partial", "  I love inline templates."] // templateDir, path, textToAppend
                         },
                         {
@@ -189,7 +188,7 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                             listener:    "{postChangeInlineRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.live.pathEquals",
+                            listener: "fluid.tests.handlebars.live.pathEquals",
                             event:    "{postChangeInlineRequest}.events.onComplete",
                             args:     ["The updated content should be delivered in the payload.", "@expand:JSON.parse({arguments}.0)", "partials.renderer-partial", "This is partial content.  I love inline templates."] // message, root, path, expected
                         }
@@ -203,12 +202,12 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                             func: "{initialErrorRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.live.verifyResults",
+                            listener: "fluid.tests.handlebars.live.verifyResults",
                             event:    "{initialErrorRequest}.events.onComplete",
                             args:     ["{arguments}.0", "I love error templates.", true] // body, expectedText, invert
                         },
                         {
-                            func: "gpii.tests.handlebars.live.updateTemplate",
+                            func: "fluid.tests.handlebars.live.updateTemplate",
                             args: ["{testEnvironment}.options.templateDirs.unique", "pages/error", "I love error templates."] // templateDir, path, textToAppend
                         },
                         {
@@ -217,7 +216,7 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
                             listener:    "{postChangeErrorRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.live.verifyResults",
+                            listener: "fluid.tests.handlebars.live.verifyResults",
                             event:    "{postChangeErrorRequest}.events.onComplete",
                             args:     ["{arguments}.0", "I love error templates."] // body, expectedText, invert
                         }
@@ -228,49 +227,49 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
     ],
     components: {
         initialSingleTemplateRequest: {
-            type: "gpii.tests.handlebars.live.request",
+            type: "fluid.tests.handlebars.live.request",
             options: {
                 path: "/singleTemplate"
             }
         },
         postChangeSingleTemplateRequest: {
-            type: "gpii.tests.handlebars.live.request",
+            type: "fluid.tests.handlebars.live.request",
             options: {
                 path: "/singleTemplate"
             }
         },
         initialDispatcherRequest: {
-            type: "gpii.tests.handlebars.live.request",
+            type: "fluid.tests.handlebars.live.request",
             options: {
                 path: "/dispatcher"
             }
         },
         postChangeDispatcherRequest: {
-            type: "gpii.tests.handlebars.live.request",
+            type: "fluid.tests.handlebars.live.request",
             options: {
                 path: "/dispatcher"
             }
         },
         initialInlineRequest: {
-            type: "gpii.tests.handlebars.live.request",
+            type: "fluid.tests.handlebars.live.request",
             options: {
                 path: "/templates"
             }
         },
         postChangeInlineRequest: {
-            type: "gpii.tests.handlebars.live.request",
+            type: "fluid.tests.handlebars.live.request",
             options: {
                 path: "/templates"
             }
         },
         initialErrorRequest: {
-            type: "gpii.tests.handlebars.live.request",
+            type: "fluid.tests.handlebars.live.request",
             options: {
                 path: "/error"
             }
         },
         postChangeErrorRequest: {
-            type: "gpii.tests.handlebars.live.request",
+            type: "fluid.tests.handlebars.live.request",
             options: {
                 path: "/error"
             }
@@ -278,7 +277,7 @@ fluid.defaults("gpii.tests.handlebars.live.caseHolder", {
     }
 });
 
-gpii.tests.handlebars.live.generateUniqueTemplateDir = function (that) {
+fluid.tests.handlebars.live.generateUniqueTemplateDir = function (that) {
     return path.resolve(os.tmpdir(), "live-templates-" + that.id);
 };
 
@@ -289,7 +288,7 @@ gpii.tests.handlebars.live.generateUniqueTemplateDir = function (that) {
  * @param {Object} that - The testEnvironment component itself.
  *
  */
-gpii.tests.handlebars.live.cloneTemplates = function (that) {
+fluid.tests.handlebars.live.cloneTemplates = function (that) {
     var resolvedSourcePath = fluid.module.resolvePath(that.options.templateSource);
     copy(resolvedSourcePath, that.options.templateDirs.unique, { dot: false }, function (error) {
         if (error) {
@@ -301,7 +300,7 @@ gpii.tests.handlebars.live.cloneTemplates = function (that) {
     });
 };
 
-gpii.tests.handlebars.live.cleanup = function (that) {
+fluid.tests.handlebars.live.cleanup = function (that) {
     rimraf(that.options.templateDirs.unique, function (error) {
         if (error) {
             fluid.log("Error removing cloned template content:", error);
@@ -313,25 +312,25 @@ gpii.tests.handlebars.live.cleanup = function (that) {
     });
 };
 
-fluid.registerNamespace("gpii.tests.handlebars.live.errorRenderingMiddleware.errorGeneratingMiddleware");
-gpii.tests.handlebars.live.errorRenderingMiddleware.errorGeneratingMiddleware.middleware = function (next) {
+fluid.registerNamespace("fluid.tests.handlebars.live.errorRenderingMiddleware.errorGeneratingMiddleware");
+fluid.tests.handlebars.live.errorRenderingMiddleware.errorGeneratingMiddleware.middleware = function (next) {
     next({ isError: true, message: "nothing good can come from this..."});
 };
 
-fluid.defaults("gpii.tests.handlebars.live.errorRenderingMiddleware.errorGeneratingMiddleware", {
-    gradeNames: ["gpii.express.middleware"],
+fluid.defaults("fluid.tests.handlebars.live.errorRenderingMiddleware.errorGeneratingMiddleware", {
+    gradeNames: ["fluid.express.middleware"],
     path:       "/error",
     namespace:  "errorGeneratingMiddleware",
     invokers: {
         middleware: {
-            funcName: "gpii.tests.handlebars.live.errorRenderingMiddleware.errorGeneratingMiddleware.middleware",
+            funcName: "fluid.tests.handlebars.live.errorRenderingMiddleware.errorGeneratingMiddleware.middleware",
             args:     ["{arguments}.2"] // req, res, next
         }
     }
 });
 
-fluid.defaults("gpii.tests.handlebars.live.environment", {
-    gradeNames:  ["gpii.test.express.testEnvironment"],
+fluid.defaults("fluid.tests.handlebars.live.environment", {
+    gradeNames:  ["fluid.test.express.testEnvironment"],
     port: 6484,
     events: {
         cloneTemplates:    null,
@@ -340,17 +339,17 @@ fluid.defaults("gpii.tests.handlebars.live.environment", {
         onWatcherReady:    null,
         onTemplatesCloned: null
     },
-    templateSource: "%gpii-handlebars/tests/templates/primary",
+    templateSource: "%fluid-handlebars/tests/templates/primary",
     templateDirs: {
-        unique: "@expand:gpii.tests.handlebars.live.generateUniqueTemplateDir({that})"
+        unique: "@expand:fluid.tests.handlebars.live.generateUniqueTemplateDir({that})"
     },
     listeners: {
         "cloneTemplates.cloneTemplates": {
-            funcName: "gpii.tests.handlebars.live.cloneTemplates",
+            funcName: "fluid.tests.handlebars.live.cloneTemplates",
             args:     ["{that}"]
         },
         "cleanup.cleanup": {
-            funcName: "gpii.tests.handlebars.live.cleanup",
+            funcName: "fluid.tests.handlebars.live.cleanup",
             args:     ["{that}"]
         }
     },
@@ -367,45 +366,45 @@ fluid.defaults("gpii.tests.handlebars.live.environment", {
                 },
                 components: {
                     handlebars: {
-                        type: "gpii.express.hb.live",
+                        type: "fluid.express.hb.live",
                         options: {
-                            templateDirs: "{gpii.tests.handlebars.live.environment}.options.templateDirs",
+                            templateDirs: "{fluid.tests.handlebars.live.environment}.options.templateDirs",
                             listeners: {
                                 "onWatcherReady.notifyEnvironment": {
                                     func: "{testEnvironment}.events.onWatcherReady.fire"
                                 },
                                 "onFsChange.notifyExpress": {
-                                    func: "{gpii.express}.events.onFsChange.fire"
+                                    func: "{fluid.express}.events.onFsChange.fire"
                                 }
                             }
                         }
                     },
                     dispatcher: {
-                        type: "gpii.handlebars.dispatcherMiddleware",
+                        type: "fluid.handlebars.dispatcherMiddleware",
                         options: {
                             path: ["/dispatcher/:template", "/dispatcher"],
-                            templateDirs: "{gpii.tests.handlebars.live.environment}.options.templateDirs"
+                            templateDirs: "{fluid.tests.handlebars.live.environment}.options.templateDirs"
                         }
                     },
                     singleTemplateMiddleware: {
-                        type: "gpii.express.singleTemplateMiddleware",
+                        type: "fluid.express.singleTemplateMiddleware",
                         options: {
                             path: "/singleTemplate",
                             templateKey: "pages/singleTemplateMiddleware"
                         }
                     },
                     inlineMiddleware: {
-                        type: "gpii.handlebars.inlineTemplateBundlingMiddleware",
+                        type: "fluid.handlebars.inlineTemplateBundlingMiddleware",
                         options: {
                             path: "/templates",
-                            templateDirs: "{gpii.tests.handlebars.live.environment}.options.templateDirs"
+                            templateDirs: "{fluid.tests.handlebars.live.environment}.options.templateDirs"
                         }
                     },
                     errorGeneratingMiddleware: {
-                        type: "gpii.tests.handlebars.live.errorRenderingMiddleware.errorGeneratingMiddleware"
+                        type: "fluid.tests.handlebars.live.errorRenderingMiddleware.errorGeneratingMiddleware"
                     },
                     htmlErrorHandler: {
-                        type: "gpii.handlebars.errorRenderingMiddleware",
+                        type: "fluid.handlebars.errorRenderingMiddleware",
                         options: {
                             templateKey: "pages/error",
                             priority: "after:errorGeneratingMiddleware"
@@ -415,9 +414,9 @@ fluid.defaults("gpii.tests.handlebars.live.environment", {
             }
         },
         caseHolder: {
-            type: "gpii.tests.handlebars.live.caseHolder"
+            type: "fluid.tests.handlebars.live.caseHolder"
         }
     }
 });
 
-fluid.test.runTests("gpii.tests.handlebars.live.environment");
+fluid.test.runTests("fluid.tests.handlebars.live.environment");

@@ -14,21 +14,20 @@
 /* eslint-env node */
 "use strict";
 var fluid = require("infusion");
-var gpii = fluid.registerNamespace("gpii");
 
 var chokidar = require("chokidar");
 
 require("./lib/resolver");
 
-fluid.registerNamespace("gpii.handlebars.watcher");
+fluid.registerNamespace("fluid.handlebars.watcher");
 
 /*
 
     Initialize our chokidar "watcher" and bind to its events.
 
  */
-gpii.handlebars.watcher.init = function (that) {
-    var resolvedDirs = gpii.handlebars.resolvePrioritisedPaths(that.options.watchDirs);
+fluid.handlebars.watcher.init = function (that) {
+    var resolvedDirs = fluid.handlebars.resolvePrioritisedPaths(that.options.watchDirs);
 
     that.watcher = chokidar.watch(resolvedDirs, that.options.chokidarOptions);
 
@@ -51,7 +50,7 @@ gpii.handlebars.watcher.init = function (that) {
     Handle a single filesystem event passed by chokidar's "watcher".
 
  */
-gpii.handlebars.watcher.handleFsEvent = function (that, eventName, path, details) {
+fluid.handlebars.watcher.handleFsEvent = function (that, eventName, path, details) {
     that.events.onFsChange.fire(eventName, path, details);
 };
 
@@ -62,11 +61,11 @@ gpii.handlebars.watcher.handleFsEvent = function (that, eventName, path, details
  * @param {Object} that - The watcher component.
  * @return {Promise} - A promise that will resolve when cleanup is complete.
  */
-gpii.handlebars.watcher.cleanup = function (that) {
+fluid.handlebars.watcher.cleanup = function (that) {
     return that.watcher.close();
 };
 
-fluid.defaults("gpii.handlebars.watcher", {
+fluid.defaults("fluid.handlebars.watcher", {
     gradeNames: ["fluid.component"],
     members: {
         watcher: null
@@ -90,11 +89,11 @@ fluid.defaults("gpii.handlebars.watcher", {
     },
     listeners: {
         "onCreate.init": {
-            funcName: "gpii.handlebars.watcher.init",
+            funcName: "fluid.handlebars.watcher.init",
             args:     ["{that}"]
         },
         "onDestroy.cleanup": {
-            funcName: "gpii.handlebars.watcher.cleanup",
+            funcName: "fluid.handlebars.watcher.cleanup",
             args:     ["{that}"]
         },
         "onReady.log": {
@@ -104,7 +103,7 @@ fluid.defaults("gpii.handlebars.watcher", {
     },
     invokers: {
         "handleFsEvent": {
-            funcName: "gpii.handlebars.watcher.handleFsEvent",
+            funcName: "fluid.handlebars.watcher.handleFsEvent",
             args:     ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"] // event, path, details
         }
     }

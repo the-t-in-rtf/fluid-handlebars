@@ -2,16 +2,15 @@
 
     A handlebars helper to allow us to safely output object content from within a template.  See the docs for details:
 
-    https://github.com/GPII/gpii-handlebars/blob/master/docs/jsonifyHelper.md
+    https://github.com/fluid-project/fluid-handlebars/blob/master/docs/jsonifyHelper.md
 
  */
 /* eslint-env node */
 "use strict";
 var fluid = fluid || require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.handlebars.helper.jsonify");
+fluid.registerNamespace("fluid.handlebars.helper.jsonify");
 
-gpii.handlebars.helper.jsonify.getJsonifyFunction = function (that) {
+fluid.handlebars.helper.jsonify.getJsonifyFunction = function (that) {
     return function (contentToStringify, options) {
         if (contentToStringify) {
             var combinedOptions = fluid.copy(that.options);
@@ -35,15 +34,15 @@ gpii.handlebars.helper.jsonify.getJsonifyFunction = function (that) {
     };
 };
 
-fluid.defaults("gpii.handlebars.helper.jsonify", {
-    gradeNames: ["gpii.handlebars.helper"],
+fluid.defaults("fluid.handlebars.helper.jsonify", {
+    gradeNames: ["fluid.handlebars.helper"],
     helperName: "jsonify",
     replacer: null,
     stringifyStrings: false,
     space:    2,
     invokers: {
         "getHelper": {
-            "funcName": "gpii.handlebars.helper.jsonify.getJsonifyFunction",
+            "funcName": "fluid.handlebars.helper.jsonify.getJsonifyFunction",
             "args":     ["{that}"]
         }
     }

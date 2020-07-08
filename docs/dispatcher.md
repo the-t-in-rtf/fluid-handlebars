@@ -1,9 +1,9 @@
-# `gpii.handlebars.dispatcherMiddleware`
+# `fluid.handlebars.dispatcherMiddleware`
 
-[`gpii.express.middleware`](https://github.com/GPII/gpii-express/blob/master/docs/middleware.md) that renders content
-using a page template and/or layout based on the URL path.  The dispatcher turns the last part of a path (such as
-`/dispatcher/foo`) into a template name (such as `foo`), and then attempts to find and render that template.  The
-templates available to the dispatcher are  configured in the options for the enclosing [`gpii.express.hb`](handlebars.md)
+[`fluid.express.middleware`](https://github.com/fluid-project/fluid-express/blob/master/docs/middleware.md) that renders
+content using a page template and/or layout based on the URL path.  The dispatcher turns the last part of a path (such
+as `/dispatcher/foo`) into a template name (such as `foo`), and then attempts to find and render that template.  The
+templates available to the dispatcher are  configured in the options for the enclosing [`fluid.express.hb`](handlebars.md)
 instance.
 
 If a template matching the path can be found, it will be used to render the page.  If the last part of the path is
@@ -12,13 +12,13 @@ that will be used, otherwise, the layout found at `options.defaultLayout` will b
 
 If the last part of the path is supplied but does not match any templates, a 404 error is passed along the middleware
 chain, which will be handled by the next piece of [error
-middleware](https://github.com/GPII/gpii-express/blob/master/docs/errorMiddleware.md) in the stack.
+middleware](https://github.com/fluid-project/fluid-express/blob/master/docs/errorMiddleware.md) in the stack.
 
 ## Component Options
 
 This component supports the options available for any
-[`gpii.express.middleware`](https://github.com/GPII/gpii-express/blob/master/docs/middleware.md) instance.  In addition,
-this component supports the following configuration options:
+[`fluid.express.middleware`](https://github.com/fluid-project/fluid-express/blob/master/docs/middleware.md) instance.
+In addition, this component supports the following configuration options:
 
 | Option                  | Type     | Description |
 | ----------------------- | -------- | ----------- |
@@ -30,16 +30,16 @@ this component supports the following configuration options:
 
 ### `{that}.middleware(request, response, next)`
 
-* `request`: An object representing the individual user's request.  See [the `gpii-express`
-  documentation](https://github.com/GPII/gpii-express/blob/master/docs/express.md#the-express-request-object) for
+* `request`: An object representing the individual user's request.  See [the `fluid-express`
+  documentation](https://github.com/fluid-project/fluid-express/blob/master/docs/express.md#the-express-request-object) for
   details.
 * `response`: The response object, which can be used to send information to the requesting user.  See [the
-  `gpii-express`
-  documentation](https://github.com/GPII/gpii-express/blob/master/docs/express.md#the-express-response-object) for
-  details.
-* `next`: The next Express middleware or router function in the chain.  See [the `gpii-express` documentation for
-  details](https://github.com/GPII/gpii-express/blob/master/docs/middleware.md#what-is-middleware).
-  Returns: Nothing.
+  `fluid-express`
+  documentation](https://github.com/fluid-project/fluid-express/blob/master/docs/express.md#the-express-response-object)
+  for details.
+* `next`: The next Express middleware or router function in the chain.  See [the `fluid-express` documentation for
+  details](https://github.com/fluid-project/fluid-express/blob/master/docs/middleware.md#what-is-middleware).
+* Returns: Nothing.
 
-Implements the `middleware` function required by the [`gpii.express.middleware`
-grade](https://github.com/GPII/gpii-express/blob/master/docs/middleware.md)
+Implements the `middleware` function required by the [`fluid.express.middleware`
+grade](https://github.com/fluid-project/fluid-express/blob/master/docs/middleware.md)

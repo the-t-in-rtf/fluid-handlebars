@@ -9,7 +9,7 @@
 (function (fluid) {
     "use strict";
 
-    fluid.defaults("gpii.handlebars.serverResourceAware", {
+    fluid.defaults("fluid.handlebars.serverResourceAware", {
         gradeNames: ["fluid.resourceLoader", "fluid.modelComponent"],
         events: {
             onRendererAvailable: null
@@ -42,16 +42,16 @@
         },
         components: {
             renderer: {
-                type: "gpii.handlebars.renderer",
-                createOnEvent: "{gpii.handlebars.serverResourceAware}.events.onResourcesLoaded",
+                type: "fluid.handlebars.renderer",
+                createOnEvent: "{fluid.handlebars.serverResourceAware}.events.onResourcesLoaded",
                 options: {
                     model: {
-                        messages:  "{gpii.handlebars.serverResourceAware}.model.messages",
-                        templates: "{gpii.handlebars.serverResourceAware}.model.templates"
+                        messages:  "{fluid.handlebars.serverResourceAware}.model.messages",
+                        templates: "{fluid.handlebars.serverResourceAware}.model.templates"
                     },
                     listeners: {
                         "onCreate.notifyParent": {
-                            func: "{gpii.handlebars.serverResourceAware}.events.onRendererAvailable.fire"
+                            func: "{fluid.handlebars.serverResourceAware}.events.onRendererAvailable.fire"
                         }
                     }
                 }

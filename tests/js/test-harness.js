@@ -5,16 +5,16 @@
 "use strict";
 var fluid = require("infusion");
 
-fluid.require("%gpii-handlebars");
-fluid.require("%gpii-express");
+fluid.require("%fluid-handlebars");
+fluid.require("%fluid-express");
 
 require("../../");
 
 require("./lib/test-router-error");
 
 // A common "base" grade that is also suitable for use with Testem.
-fluid.defaults("gpii.test.handlebars.harness.base", {
-    gradeNames:  ["gpii.express"],
+fluid.defaults("fluid.test.handlebars.harness.base", {
+    gradeNames:  ["fluid.express"],
     port: 6994,
     baseUrl: {
         expander: {
@@ -23,15 +23,15 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
         }
     },
     templateDirs: {
-        primary: "%gpii-handlebars/tests/templates/primary",
+        primary: "%fluid-handlebars/tests/templates/primary",
         secondary: {
-            path: "%gpii-handlebars/tests/templates/secondary",
+            path: "%fluid-handlebars/tests/templates/secondary",
             priority: "before:primary"
         }
     },
     messageDirs: {
-        secondary: "%gpii-handlebars/tests/messages/secondary",
-        primary: "%gpii-handlebars/tests/messages/primary"
+        secondary: "%fluid-handlebars/tests/messages/secondary",
+        primary: "%fluid-handlebars/tests/messages/primary"
     },
     contextToOptionsRules: {
         model: {
@@ -44,24 +44,24 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
     },
     distributeOptions: {
         source: "{that}.options.contextToOptionsRules",
-        target: "{that gpii.handlebars.helper.initBlock}.options.contextToOptionsRules"
+        target: "{that fluid.handlebars.helper.initBlock}.options.contextToOptionsRules"
     },
     components: {
         handlebars: {
-            type: "gpii.express.hb",
+            type: "fluid.express.hb",
             options: {
-                templateDirs: "{gpii.test.handlebars.harness.base}.options.templateDirs",
+                templateDirs: "{fluid.test.handlebars.harness.base}.options.templateDirs",
                 model: {
                     messageBundles: "{messageBundleLoader}.model.messageBundles"
                 }
             }
         },
         dispatcher: {
-            type: "gpii.handlebars.dispatcherMiddleware",
+            type: "fluid.handlebars.dispatcherMiddleware",
             options: {
                 priority: "after:handlebars",
                 path: ["/dispatcher/:template", "/dispatcher"],
-                templateDirs: "{gpii.test.handlebars.harness.base}.options.templateDirs",
+                templateDirs: "{fluid.test.handlebars.harness.base}.options.templateDirs",
                 rules: {
                     contextToExpose: {
                         myvar:    { literalValue: "modelvariable" },
@@ -73,38 +73,38 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
             }
         },
         templates: {
-            type: "gpii.handlebars.inlineTemplateBundlingMiddleware",
+            type: "fluid.handlebars.inlineTemplateBundlingMiddleware",
             options: {
-                templateDirs: "{gpii.test.handlebars.harness.base}.options.templateDirs"
+                templateDirs: "{fluid.test.handlebars.harness.base}.options.templateDirs"
             }
         },
         messageBundleLoader: {
-            type: "gpii.handlebars.i18n.messageBundleLoader",
+            type: "fluid.handlebars.i18n.messageBundleLoader",
             options: {
-                messageDirs: "{gpii.test.handlebars.harness.base}.options.messageDirs"
+                messageDirs: "{fluid.test.handlebars.harness.base}.options.messageDirs"
             }
         },
         messages: {
-            type: "gpii.handlebars.inlineMessageBundlingMiddleware",
+            type: "fluid.handlebars.inlineMessageBundlingMiddleware",
             options: {
-                messageDirs: "{gpii.test.handlebars.harness.base}.options.messageDirs",
+                messageDirs: "{fluid.test.handlebars.harness.base}.options.messageDirs",
                 model: {
                     messageBundles: "{messageBundleLoader}.model.messageBundles"
                 }
             }
         },
         error: {
-            type: "gpii.test.handlebars.jsonErrorPitcher"
+            type: "fluid.test.handlebars.jsonErrorPitcher"
         },
         errorJsonString: {
-            type: "gpii.test.handlebars.jsonErrorPitcher",
+            type: "fluid.test.handlebars.jsonErrorPitcher",
             options: {
                 path: "/errorJsonString",
                 body: JSON.stringify({isError: true, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
             }
         },
         errorString: {
-            type: "gpii.test.handlebars.jsonErrorPitcher",
+            type: "fluid.test.handlebars.jsonErrorPitcher",
             options: {
                 path: "/errorString",
                 body: "There was a problem.  I'm telling you about it with a string response, hopefully this doesn't cause another problem."
@@ -114,21 +114,21 @@ fluid.defaults("gpii.test.handlebars.harness.base", {
 });
 
 // A more fully fleshed out grade that has its own express instance and additional error handling components.
-fluid.defaults("gpii.test.handlebars.harness", {
-    gradeNames:  ["gpii.express", "gpii.test.handlebars.harness.base"],
+fluid.defaults("fluid.test.handlebars.harness", {
+    gradeNames:  ["fluid.express", "fluid.test.handlebars.harness.base"],
     components: {
         error: {
-            type: "gpii.test.handlebars.jsonErrorPitcher"
+            type: "fluid.test.handlebars.jsonErrorPitcher"
         },
         errorJsonString: {
-            type: "gpii.test.handlebars.jsonErrorPitcher",
+            type: "fluid.test.handlebars.jsonErrorPitcher",
             options: {
                 path: "/errorJsonString",
                 body: JSON.stringify({isError: true, message: "There was a problem.  I'm telling you about it using a stringified JSON response.  Hope that's OK with you."})
             }
         },
         errorString: {
-            type: "gpii.test.handlebars.jsonErrorPitcher",
+            type: "fluid.test.handlebars.jsonErrorPitcher",
             options: {
                 path: "/errorString",
                 body: "There was a problem.  I'm telling you about it with a string response, hopefully this doesn't cause another problem."

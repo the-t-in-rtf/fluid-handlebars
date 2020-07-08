@@ -5,7 +5,7 @@
     with `fluid.find`, as in:
 
     ```
-    var firstDirWithLayout = fluid.find(dirs, gpii.express.hb.getPathSearchFn([subdir, name]));
+    var firstDirWithLayout = fluid.find(dirs, fluid.express.hb.getPathSearchFn([subdir, name]));
     ```
 
     The return value is the full path to the first match.
@@ -14,13 +14,12 @@
 /* eslint-env node */
 "use strict";
 var fluid = require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
 
 var fs = require("fs");
 var path = require("path");
 
-fluid.registerNamespace("gpii.express.hb");
-gpii.express.hb.getPathSearchFn = function (pathSegments) {
+fluid.registerNamespace("fluid.express.hb");
+fluid.express.hb.getPathSearchFn = function (pathSegments) {
     var pathSegmentArray = fluid.makeArray(pathSegments);
     return function (dir) {
         var resolvedDir = fluid.module.resolvePath(dir);

@@ -1,11 +1,8 @@
 /* eslint-env node */
 "use strict";
 var fluid = require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
 
-fluid.registerNamespace("gpii.handlebars");
-
-
+fluid.registerNamespace("fluid.handlebars");
 
 /**
  *
@@ -32,7 +29,7 @@ fluid.registerNamespace("gpii.handlebars");
  * @return {Array<String>} - An array of resolved paths.
  *
  */
-gpii.handlebars.resolvePrioritisedPaths = function (pathsToResolve) {
+fluid.handlebars.resolvePrioritisedPaths = function (pathsToResolve) {
     // Make sure that any short form (string) paths are resolved to structured path defs.
     var longFormPathDefs = fluid.transform(pathsToResolve, function (pathDef) {
         if (fluid.get(pathDef, "path")) {

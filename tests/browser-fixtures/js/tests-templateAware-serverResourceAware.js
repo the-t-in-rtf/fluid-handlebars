@@ -2,11 +2,9 @@
 /* eslint-env browser */
 (function (fluid) {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
-
     // Test components to render content.
-    fluid.defaults("gpii.tests.templateAware.serverResourceAware", {
-        gradeNames: ["gpii.tests.handlebars.templateAware.serverResourceAware"],
+    fluid.defaults("fluid.tests.templateAware.serverResourceAware", {
+        gradeNames: ["fluid.tests.handlebars.templateAware.serverResourceAware"],
         template:   "index",
         selectors: {
             initial: "" // Update the whole container
@@ -24,15 +22,15 @@
         }
     });
 
-    fluid.defaults("gpii.tests.templateAware.contained", {
-        gradeNames: ["gpii.tests.templateAware.serverResourceAware"],
+    fluid.defaults("fluid.tests.templateAware.contained", {
+        gradeNames: ["fluid.tests.templateAware.serverResourceAware"],
         template:  "form-contained-initial",
         selectors: {
             initial: ".contained-inner" // Update an interior element without disturbing the root container.
         }
     });
 
-    fluid.defaults("gpii.tests.templateAware.testCaseHolder", {
+    fluid.defaults("fluid.tests.templateAware.testCaseHolder", {
         gradeNames: ["fluid.test.testCaseHolder"],
         matchDefs: {
             contained: {
@@ -60,11 +58,11 @@
                         listener: "fluid.identity"
                     },
                     {
-                        funcName: "gpii.test.handlebars.browser.sanityCheckSelectors",
-                        args: [".viewport", gpii.test.handlebars.browser.matchDefs.standard]
+                        funcName: "fluid.test.handlebars.browser.sanityCheckSelectors",
+                        args: [".viewport", fluid.test.handlebars.browser.matchDefs.standard]
                     },
                     {
-                        funcName: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                        funcName: "fluid.test.handlebars.browser.sanityCheckSelectors",
                         args: [".contained", "{that}.options.matchDefs.contained"]
                     }
                 ]
@@ -72,7 +70,7 @@
         }]
     });
 
-    fluid.defaults("gpii.tests.templateAware.testEnvironment", {
+    fluid.defaults("fluid.tests.templateAware.testEnvironment", {
         gradeNames: ["fluid.test.testEnvironment"],
         events: {
             createFixtures: null,
@@ -87,34 +85,34 @@
         },
         components: {
             main: {
-                type: "gpii.tests.templateAware.serverResourceAware",
+                type: "fluid.tests.templateAware.serverResourceAware",
                 container: ".viewport",
                 createOnEvent: "{that}.events.createFixtures",
                 options: {
                     listeners: {
                         "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.templateAware.testEnvironment}.events.mainRendered.fire"
+                            func: "{fluid.tests.templateAware.testEnvironment}.events.mainRendered.fire"
                         }
                     }
                 }
             },
             contained: {
-                type: "gpii.tests.templateAware.contained",
+                type: "fluid.tests.templateAware.contained",
                 container: ".contained",
                 createOnEvent: "{that}.events.createFixtures",
                 options: {
                     listeners: {
                         "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.templateAware.testEnvironment}.events.containedRendered.fire"
+                            func: "{fluid.tests.templateAware.testEnvironment}.events.containedRendered.fire"
                         }
                     }
                 }
             },
             caseHolder: {
-                type: "gpii.tests.templateAware.testCaseHolder"
+                type: "fluid.tests.templateAware.testCaseHolder"
             }
         }
     });
 
-    fluid.test.runTests("gpii.tests.templateAware.testEnvironment");
+    fluid.test.runTests("fluid.tests.templateAware.testEnvironment");
 })(fluid);

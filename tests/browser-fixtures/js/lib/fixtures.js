@@ -7,8 +7,8 @@
         avoid inconsistencies when running tests on various machines.
 
      */
-    fluid.defaults("gpii.tests.handlebars.templateAware.serverResourceAware", {
-        gradeNames: ["gpii.handlebars.templateAware.serverResourceAware"],
+    fluid.defaults("fluid.tests.handlebars.templateAware.serverResourceAware", {
+        gradeNames: ["fluid.handlebars.templateAware.serverResourceAware"],
         resources: {
             messages: {
                 url: "/messages?locale=en-GB"

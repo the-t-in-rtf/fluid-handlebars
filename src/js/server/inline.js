@@ -3,22 +3,22 @@
     Middleware that combines all available Handlebars templates into a single bundle that can be downloaded and used
     by the client-side renderer.  For more information, see the docs:
 
-    https://github.com/GPII/gpii-handlebars/blob/master/docs/inline.md
+    https://github.com/fluid-project/fluid-handlebars/blob/master/docs/inline.md
 
  */
 /* eslint-env node */
 "use strict";
 var fluid  = require("infusion");
-var gpii = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.handlebars.inlineTemplateBundlingMiddleware");
+fluid.registerNamespace("fluid.handlebars.inlineTemplateBundlingMiddleware");
+
 var fs     = require("fs");
 var path   = require("path");
 var md5    = require("md5");
 
 require("./lib/resolver");
 
-fluid.registerNamespace("gpii.handlebars.inlineTemplateBundlingMiddleware.request");
-gpii.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse = function (that) {
+fluid.registerNamespace("fluid.handlebars.inlineTemplateBundlingMiddleware.request");
+fluid.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse = function (that) {
     if (that.options.templates) {
         var md5Sum = md5(JSON.stringify(that.options.templates));
         // Always set the "etag" header so that we always have something to compare for each subsequent request.
@@ -29,35 +29,35 @@ gpii.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse = function
             that.options.response.status(304).end();
         }
         else {
-            gpii.express.handler.sendResponse(that, that.options.response, 200, that.options.templates);
+            fluid.express.handler.sendResponse(that, that.options.response, 200, that.options.templates);
         }
     }
     else {
-        gpii.express.handler.sendResponse(that, that.options.response, 500, { isError: true, message: that.options.messages.noTemplates});
+        fluid.express.handler.sendResponse(that, that.options.response, 500, { isError: true, message: that.options.messages.noTemplates});
     }
 };
 
-fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware.request", {
-    gradeNames: ["gpii.express.handler"],
+fluid.defaults("fluid.handlebars.inlineTemplateBundlingMiddleware.request", {
+    gradeNames: ["fluid.express.handler"],
     templates: "{inlineTemplateBundlingMiddleware}.templates",
     messages: {
         noTemplates: "No templates were found."
     },
     invokers: {
         "handleRequest": {
-            funcName: "gpii.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse",
+            funcName: "fluid.handlebars.inlineTemplateBundlingMiddleware.request.sendResponse",
             args:     ["{that}"]
         }
     }
 });
 
-gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates =  function (that) {
+fluid.handlebars.inlineTemplateBundlingMiddleware.loadTemplates =  function (that) {
     // Clear out the existing template content, as we might also be called during a "reload".
     fluid.each(["layouts", "pages", "partials"], function (key) {
         that.templates[key] = {};
     });
 
-    var resolvedTemplateDirs = gpii.handlebars.resolvePrioritisedPaths(that.options.templateDirs);
+    var resolvedTemplateDirs = fluid.handlebars.resolvePrioritisedPaths(that.options.templateDirs);
     fluid.each(resolvedTemplateDirs, function (templateDir) {
         // Start with each "views" directory and work our way down
         var dirContents = fs.readdirSync(templateDir);
@@ -65,7 +65,7 @@ gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates =  function (that
             var subDirPath = path.resolve(templateDir, entry);
             var stats = fs.statSync(subDirPath);
             if (stats.isDirectory() && that.options.allowedTemplateDirs.indexOf(entry) !== -1) {
-                gpii.handlebars.inlineTemplateBundlingMiddleware.scanTemplateSubdir(that, entry, subDirPath);
+                fluid.handlebars.inlineTemplateBundlingMiddleware.scanTemplateSubdir(that, entry, subDirPath);
             }
         });
     });
@@ -73,7 +73,7 @@ gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates =  function (that
     that.events.templatesLoaded.fire(that);
 };
 
-gpii.handlebars.inlineTemplateBundlingMiddleware.scanTemplateSubdir = function (that, key, dirPath) {
+fluid.handlebars.inlineTemplateBundlingMiddleware.scanTemplateSubdir = function (that, key, dirPath) {
     var dirContents = fs.readdirSync(dirPath);
     dirContents.forEach(function (entry) {
         var entryPath = path.resolve(dirPath, entry);
@@ -91,8 +91,8 @@ gpii.handlebars.inlineTemplateBundlingMiddleware.scanTemplateSubdir = function (
     });
 };
 
-fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware", {
-    gradeNames:          ["gpii.express.middleware.requestAware"],
+fluid.defaults("fluid.handlebars.inlineTemplateBundlingMiddleware", {
+    gradeNames:          ["fluid.express.middleware.requestAware"],
     path:                "/templates",
     namespace:           "templates", // Namespace to allow other routers to put themselves in the chain before or after us.
     hbsExtensionRegexp:  /^(.+)\.(?:hbs|handlebars)$/,
@@ -108,13 +108,13 @@ fluid.defaults("gpii.handlebars.inlineTemplateBundlingMiddleware", {
         loadTemplates: null,
         templatesLoaded: null
     },
-    handlerGrades: ["gpii.handlebars.inlineTemplateBundlingMiddleware.request"],
+    handlerGrades: ["fluid.handlebars.inlineTemplateBundlingMiddleware.request"],
     listeners: {
         "onCreate.loadTemplates": {
             func: "{that}.events.loadTemplates.fire"
         },
         "loadTemplates.loadTemplates": {
-            funcName: "gpii.handlebars.inlineTemplateBundlingMiddleware.loadTemplates",
+            funcName: "fluid.handlebars.inlineTemplateBundlingMiddleware.loadTemplates",
             args:     ["{that}"]
         }
     }

@@ -3,10 +3,8 @@
 /* globals jqUnit */
 (function (fluid, jqUnit) {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
-
-    fluid.defaults("gpii.tests.templateFormControl", {
-        gradeNames: ["gpii.handlebars.templateFormControl"],
+    fluid.defaults("fluid.tests.templateFormControl", {
+        gradeNames: ["fluid.handlebars.templateFormControl"],
         templateKeys: {
             success: "common-success",
             error:   "common-error"
@@ -27,8 +25,8 @@
         }
     });
 
-    fluid.defaults("gpii.tests.templateFormControl.readyForSuccess", {
-        gradeNames: ["gpii.tests.templateFormControl"],
+    fluid.defaults("fluid.tests.templateFormControl.readyForSuccess", {
+        gradeNames: ["fluid.tests.templateFormControl"],
         ajaxOptions: {
             url:    "./data/success.json",
             dataType: "json"
@@ -53,8 +51,8 @@
         }
     });
 
-    fluid.defaults("gpii.tests.templateFormControl.readyForStringifySuccess", {
-        gradeNames: ["gpii.tests.templateFormControl.readyForSuccess"],
+    fluid.defaults("fluid.tests.templateFormControl.readyForStringifySuccess", {
+        gradeNames: ["fluid.tests.templateFormControl.readyForSuccess"],
         ajaxOptions: {
             url:      "./data/stringifySuccess.txt",
             dataType: "json"
@@ -75,8 +73,8 @@
         }
     });
 
-    fluid.defaults("gpii.tests.templateFormControl.readyForStringSuccess", {
-        gradeNames: ["gpii.tests.templateFormControl.readyForSuccess"],
+    fluid.defaults("fluid.tests.templateFormControl.readyForStringSuccess", {
+        gradeNames: ["fluid.tests.templateFormControl.readyForSuccess"],
         ajaxOptions: {
             url:      "./data/stringSuccess.txt",
             dataType: "text"
@@ -99,8 +97,8 @@
         }
     });
 
-    fluid.defaults("gpii.tests.templateFormControl.readyForFailure", {
-        gradeNames: ["gpii.tests.templateFormControl"],
+    fluid.defaults("fluid.tests.templateFormControl.readyForFailure", {
+        gradeNames: ["fluid.tests.templateFormControl"],
         ajaxOptions: {
             url: "/error"
         },
@@ -119,8 +117,8 @@
         }
     });
 
-    fluid.defaults("gpii.tests.templateFormControl.readyForStringifyFailure", {
-        gradeNames: ["gpii.tests.templateFormControl"],
+    fluid.defaults("fluid.tests.templateFormControl.readyForStringifyFailure", {
+        gradeNames: ["fluid.tests.templateFormControl"],
         ajaxOptions: {
             url: "/errorJsonString"
         },
@@ -139,8 +137,8 @@
         }
     });
 
-    fluid.defaults("gpii.tests.templateFormControl.readyForStringFailure", {
-        gradeNames: ["gpii.tests.templateFormControl"],
+    fluid.defaults("fluid.tests.templateFormControl.readyForStringFailure", {
+        gradeNames: ["fluid.tests.templateFormControl"],
         ajaxOptions: {
             url: "/errorString",
             dataType: "text"
@@ -166,23 +164,23 @@
         }
     });
 
-    fluid.registerNamespace("gpii.tests.handlebars.browser.templateFormControl.runner");
+    fluid.registerNamespace("fluid.tests.handlebars.browser.templateFormControl.runner");
 
-    gpii.tests.handlebars.browser.templateFormControl.submitForm = function (componentToSubmit) {
+    fluid.tests.handlebars.browser.templateFormControl.submitForm = function (componentToSubmit) {
         componentToSubmit.submitForm();
     };
 
-    gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults = function (componentToTest) {
+    fluid.tests.handlebars.browser.templateFormControl.checkSubmitResults = function (componentToTest) {
         // Inspect the results once the form is submitted.
         if (componentToTest.options.submitResultMatchDef) {
-            gpii.test.handlebars.browser.sanityCheckElements([componentToTest.locate("initial")], [componentToTest.options.submitResultMatchDef]);
+            fluid.test.handlebars.browser.sanityCheckElements([componentToTest.locate("initial")], [componentToTest.options.submitResultMatchDef]);
         }
         if (componentToTest.options.expectedModel) {
             jqUnit.assertLeftHand("The model should be as expected after the form is submitted.", componentToTest.options.expectedModel, componentToTest.model);
         }
     };
 
-    fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.testCaseHolder", {
+    fluid.defaults("fluid.tests.handlebars.browser.templateFormControl.testCaseHolder", {
         gradeNames: ["fluid.test.testCaseHolder"],
         matchDefs: {
             initialState: {
@@ -202,13 +200,13 @@
                         },
                         {
                             event: "{testCaseHolder}.events.onFailureRendered",
-                            listener: "gpii.tests.handlebars.browser.templateFormControl.submitForm",
-                            args: ["{gpii.tests.templateFormControl.readyForFailure}"] // componentToSubmit
+                            listener: "fluid.tests.handlebars.browser.templateFormControl.submitForm",
+                            args: ["{fluid.tests.templateFormControl.readyForFailure}"] // componentToSubmit
                         },
                         {
                             event: "{testCaseHolder}.events.onFailureRequestReceived",
-                            listener: "gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults",
-                            args: ["{gpii.tests.templateFormControl.readyForFailure}"] // componentToTest
+                            listener: "fluid.tests.handlebars.browser.templateFormControl.checkSubmitResults",
+                            args: ["{fluid.tests.templateFormControl.readyForFailure}"] // componentToTest
                         }
                     ]
                 },
@@ -220,13 +218,13 @@
                         },
                         {
                             event: "{testCaseHolder}.events.onStringifyFailureRendered",
-                            listener: "gpii.tests.handlebars.browser.templateFormControl.submitForm",
-                            args: ["{gpii.tests.templateFormControl.readyForStringifyFailure}"] // componentToSubmit
+                            listener: "fluid.tests.handlebars.browser.templateFormControl.submitForm",
+                            args: ["{fluid.tests.templateFormControl.readyForStringifyFailure}"] // componentToSubmit
                         },
                         {
                             event: "{testCaseHolder}.events.onStringifyFailureRequestReceived",
-                            listener: "gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults",
-                            args: ["{gpii.tests.templateFormControl.readyForStringifyFailure}"] // componentToTest
+                            listener: "fluid.tests.handlebars.browser.templateFormControl.checkSubmitResults",
+                            args: ["{fluid.tests.templateFormControl.readyForStringifyFailure}"] // componentToTest
                         }
                     ]
                 },
@@ -238,13 +236,13 @@
                         },
                         {
                             event: "{testCaseHolder}.events.onStringFailureRendered",
-                            listener: "gpii.tests.handlebars.browser.templateFormControl.submitForm",
-                            args: ["{gpii.tests.templateFormControl.readyForStringFailure}"] // componentToSubmit
+                            listener: "fluid.tests.handlebars.browser.templateFormControl.submitForm",
+                            args: ["{fluid.tests.templateFormControl.readyForStringFailure}"] // componentToSubmit
                         },
                         {
                             event: "{testCaseHolder}.events.onStringFailureRequestReceived",
-                            listener: "gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults",
-                            args: ["{gpii.tests.templateFormControl.readyForStringFailure}"] // componentToTest
+                            listener: "fluid.tests.handlebars.browser.templateFormControl.checkSubmitResults",
+                            args: ["{fluid.tests.templateFormControl.readyForStringFailure}"] // componentToTest
                         }
                     ]
                 },
@@ -256,13 +254,13 @@
                         },
                         {
                             event: "{testCaseHolder}.events.onSuccessRendered",
-                            listener: "gpii.tests.handlebars.browser.templateFormControl.submitForm",
-                            args: ["{gpii.tests.templateFormControl.readyForSuccess}"] // componentToSubmit
+                            listener: "fluid.tests.handlebars.browser.templateFormControl.submitForm",
+                            args: ["{fluid.tests.templateFormControl.readyForSuccess}"] // componentToSubmit
                         },
                         {
                             event: "{testCaseHolder}.events.onSuccessRequestReceived",
-                            listener: "gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults",
-                            args: ["{gpii.tests.templateFormControl.readyForSuccess}"] // componentToTest
+                            listener: "fluid.tests.handlebars.browser.templateFormControl.checkSubmitResults",
+                            args: ["{fluid.tests.templateFormControl.readyForSuccess}"] // componentToTest
                         }
                     ]
                 },
@@ -274,13 +272,13 @@
                         },
                         {
                             event: "{testCaseHolder}.events.onSuccessStringRendered",
-                            listener: "gpii.tests.handlebars.browser.templateFormControl.submitForm",
-                            args: ["{gpii.tests.templateFormControl.readyForStringSuccess}"] // componentToSubmit
+                            listener: "fluid.tests.handlebars.browser.templateFormControl.submitForm",
+                            args: ["{fluid.tests.templateFormControl.readyForStringSuccess}"] // componentToSubmit
                         },
                         {
                             event: "{testCaseHolder}.events.onSuccessStringRequestReceived",
-                            listener: "gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults",
-                            args: ["{gpii.tests.templateFormControl.readyForStringSuccess}"] // componentToTest
+                            listener: "fluid.tests.handlebars.browser.templateFormControl.checkSubmitResults",
+                            args: ["{fluid.tests.templateFormControl.readyForStringSuccess}"] // componentToTest
                         }
                     ]
                 },
@@ -292,13 +290,13 @@
                         },
                         {
                             event: "{testCaseHolder}.events.onSuccessStringifyRendered",
-                            listener: "gpii.tests.handlebars.browser.templateFormControl.submitForm",
-                            args: ["{gpii.tests.templateFormControl.readyForStringifySuccess}"] // componentToSubmit
+                            listener: "fluid.tests.handlebars.browser.templateFormControl.submitForm",
+                            args: ["{fluid.tests.templateFormControl.readyForStringifySuccess}"] // componentToSubmit
                         },
                         {
                             event: "{testCaseHolder}.events.onSuccessStringifyRequestReceived",
-                            listener: "gpii.tests.handlebars.browser.templateFormControl.checkSubmitResults",
-                            args: ["{gpii.tests.templateFormControl.readyForStringifySuccess}"] // componentToTest
+                            listener: "fluid.tests.handlebars.browser.templateFormControl.checkSubmitResults",
+                            args: ["{fluid.tests.templateFormControl.readyForStringifySuccess}"] // componentToTest
                         }
                     ]
                 }
@@ -331,91 +329,91 @@
         },
         components: {
             failure: {
-                type: "gpii.tests.templateFormControl.readyForFailure",
+                type: "fluid.tests.templateFormControl.readyForFailure",
                 container: ".readyForFailure",
                 createOnEvent: "createFailureComponent",
                 options: {
                     listeners: {
                         "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onFailureRendered.fire"
+                            func: "{fluid.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onFailureRendered.fire"
                         },
                         "requestReceived.notifyParent": {
-                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onFailureRequestReceived.fire"
+                            func: "{fluid.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onFailureRequestReceived.fire"
                         }
                     }
                 }
             },
             stringifyFailure: {
-                type: "gpii.tests.templateFormControl.readyForStringifyFailure",
+                type: "fluid.tests.templateFormControl.readyForStringifyFailure",
                 container: ".readyForStringifyFailure",
                 createOnEvent: "createStringifyFailureComponent",
                 options: {
                     listeners: {
                         "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onStringifyFailureRendered.fire"
+                            func: "{fluid.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onStringifyFailureRendered.fire"
                         },
                         "requestReceived.notifyParent": {
-                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onStringifyFailureRequestReceived.fire"
+                            func: "{fluid.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onStringifyFailureRequestReceived.fire"
                         }
                     }
                 }
             },
             stringFailure: {
-                type: "gpii.tests.templateFormControl.readyForStringFailure",
+                type: "fluid.tests.templateFormControl.readyForStringFailure",
                 container: ".readyForStringFailure",
                 createOnEvent: "createStringFailureComponent",
                 options: {
                     listeners: {
                         "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onStringFailureRendered.fire"
+                            func: "{fluid.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onStringFailureRendered.fire"
                         },
                         "requestReceived.notifyParent": {
-                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onStringFailureRequestReceived.fire"
+                            func: "{fluid.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onStringFailureRequestReceived.fire"
                         }
                     }
                 }
             },
             success: {
-                type: "gpii.tests.templateFormControl.readyForSuccess",
+                type: "fluid.tests.templateFormControl.readyForSuccess",
                 container: ".readyForSuccess",
                 createOnEvent: "createSuccessComponent",
                 options: {
                     listeners: {
                         "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessRendered.fire"
+                            func: "{fluid.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessRendered.fire"
                         },
                         "requestReceived.notifyParent": {
-                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessRequestReceived.fire"
+                            func: "{fluid.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessRequestReceived.fire"
                         }
                     }
                 }
             },
             successString: {
-                type: "gpii.tests.templateFormControl.readyForStringSuccess",
+                type: "fluid.tests.templateFormControl.readyForStringSuccess",
                 container: ".readyForStringSuccess",
                 createOnEvent: "createSuccessStringComponent",
                 options: {
                     listeners: {
                         "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessStringRendered.fire"
+                            func: "{fluid.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessStringRendered.fire"
                         },
                         "requestReceived.notifyParent": {
-                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessStringRequestReceived.fire"
+                            func: "{fluid.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessStringRequestReceived.fire"
                         }
                     }
                 }
             },
             successStringify: {
-                type: "gpii.tests.templateFormControl.readyForStringifySuccess",
+                type: "fluid.tests.templateFormControl.readyForStringifySuccess",
                 container: ".readyForStringifySuccess",
                 createOnEvent: "createSuccessStringifyComponent",
                 options: {
                     listeners: {
                         "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessStringifyRendered.fire"
+                            func: "{fluid.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessStringifyRendered.fire"
                         },
                         "requestReceived.notifyParent": {
-                            func: "{gpii.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessStringifyRequestReceived.fire"
+                            func: "{fluid.tests.handlebars.browser.templateFormControl.testCaseHolder}.events.onSuccessStringifyRequestReceived.fire"
                         }
                     }
                 }
@@ -423,15 +421,15 @@
         }
     });
 
-    fluid.defaults("gpii.tests.handlebars.browser.templateFormControl.testEnvironment", {
+    fluid.defaults("fluid.tests.handlebars.browser.templateFormControl.testEnvironment", {
         gradeNames: ["fluid.test.testEnvironment"],
         components: {
             caseHolder: {
-                type: "gpii.tests.handlebars.browser.templateFormControl.testCaseHolder",
+                type: "fluid.tests.handlebars.browser.templateFormControl.testCaseHolder",
                 container: "body"
             }
         }
     });
 
-    fluid.test.runTests("gpii.tests.handlebars.browser.templateFormControl.testEnvironment");
+    fluid.test.runTests("fluid.tests.handlebars.browser.templateFormControl.testEnvironment");
 })(fluid, jqUnit);

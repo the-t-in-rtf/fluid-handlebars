@@ -1,29 +1,28 @@
 /* eslint-env node */
 "use strict";
 var fluid = require("infusion");
-var gpii = fluid.registerNamespace("gpii");
 
-fluid.require("%gpii-testem");
-fluid.require("%gpii-handlebars");
+fluid.require("%fluid-testem");
+fluid.require("%fluid-handlebars");
 
 require("./js/test-harness");
 
-fluid.defaults("gpii.test.handlebars.coverageServer", {
-    gradeNames: ["gpii.testem.coverage.express", "gpii.test.handlebars.harness.base"]
+fluid.defaults("fluid.test.handlebars.coverageServer", {
+    gradeNames: ["fluid.testem.coverage.express", "fluid.test.handlebars.harness.base"]
 });
 
-var testemComponent = gpii.testem.instrumentation({
+var testemComponent = fluid.testem.instrumentation({
     reportsDir: "reports",
     coverageDir: "coverage",
     testPages:   [
         "tests/browser-fixtures/all-tests.html"
     ],
     sourceDirs: {
-        src: "%gpii-handlebars/src"
+        src: "%fluid-handlebars/src"
     },
     contentDirs: {
-        "tests": "%gpii-handlebars/tests",
-        "node_modules": "%gpii-handlebars/node_modules"
+        "tests": "%fluid-handlebars/tests",
+        "node_modules": "%fluid-handlebars/node_modules"
     },
     additionalProxies: {
         dispatcher:      "/dispatcher",
@@ -46,10 +45,10 @@ var testemComponent = gpii.testem.instrumentation({
     },
     components: {
         express: {
-            type: "gpii.test.handlebars.coverageServer",
+            type: "fluid.test.handlebars.coverageServer",
             options: {
-                templateDirs: "{gpii.testem.instrumentation}.options.templateDirs",
-                messageDirs:  "{gpii.testem.instrumentation}.options.messageDirs"
+                templateDirs: "{fluid.testem.instrumentation}.options.templateDirs",
+                messageDirs:  "{fluid.testem.instrumentation}.options.messageDirs"
             }
         }
     }

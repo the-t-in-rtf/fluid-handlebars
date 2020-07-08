@@ -2,10 +2,9 @@
 /* globals jqUnit pageComponent */
 (function (fluid, jqUnit, $) {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.tests.initBlock");
+    fluid.registerNamespace("fluid.tests.initBlock");
 
-    gpii.tests.initBlock.runTests = function () {
+    fluid.tests.initBlock.runTests = function () {
         jqUnit.module("initBlock Helper Tests.");
 
         jqUnit.test("Verify the generated component.", function () {
@@ -36,8 +35,8 @@
     };
 
     // A component definition that will be referenced from within the {{initBlock}} helper in our tests.
-    fluid.defaults("gpii.tests.initBlock", {
-        gradeNames: ["gpii.handlebars.templateAware"],
+    fluid.defaults("fluid.tests.initBlock", {
+        gradeNames: ["fluid.handlebars.templateAware"],
         template:   "initblock-viewport",
         selectors: {
             initial: ".initblock-viewport"
@@ -53,7 +52,7 @@
         },
         listeners: {
             "onMarkupRendered.runTests": {
-                funcName: "gpii.tests.initBlock.runTests"
+                funcName: "fluid.tests.initBlock.runTests"
             }
         }
     });

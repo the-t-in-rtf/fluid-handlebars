@@ -40,11 +40,10 @@ A few more things to note:
 // TODO:  Reconcile this with the larger migration to dataSources and / or resource loaders.
 (function (fluid, $) {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.handlebars.ajaxCapable");
+    fluid.registerNamespace("fluid.handlebars.ajaxCapable");
 
     // Apply all changes in a single transaction.  Also ensures that values flagged with `null` are deleted from the model.
-    gpii.handlebars.ajaxCapable.batchChanges = function (that, changeSet) {
+    fluid.handlebars.ajaxCapable.batchChanges = function (that, changeSet) {
         var myTransaction = that.applier.initiate();
 
         fluid.each(changeSet, function (value, key) {
@@ -61,7 +60,7 @@ A few more things to note:
         myTransaction.commit();
     };
 
-    gpii.handlebars.ajaxCapable.makeRequest = function (that) {
+    fluid.handlebars.ajaxCapable.makeRequest = function (that) {
         var rules = fluid.expandOptions(that.options.rules.ajaxOptions, that);
         var transformedAjaxOptions = fluid.model.transformWithRules(that.options.ajaxOptions, rules);
 
@@ -76,23 +75,23 @@ A few more things to note:
         $.ajax(transformedAjaxOptions);
     };
 
-    gpii.handlebars.ajaxCapable.handleSuccess = function (that, data) {
+    fluid.handlebars.ajaxCapable.handleSuccess = function (that, data) {
         var transformedData = fluid.model.transformWithRules(data, that.options.rules.successResponseToModel);
 
-        gpii.handlebars.ajaxCapable.batchChanges(that, transformedData);
+        fluid.handlebars.ajaxCapable.batchChanges(that, transformedData);
 
         that.events.requestReceived.fire(that, true);
     };
 
-    gpii.handlebars.ajaxCapable.handleError = function (that, data) {
+    fluid.handlebars.ajaxCapable.handleError = function (that, data) {
         var errorData = fluid.model.transformWithRules(data, that.options.rules.errorResponseToModel);
 
-        gpii.handlebars.ajaxCapable.batchChanges(that, errorData);
+        fluid.handlebars.ajaxCapable.batchChanges(that, errorData);
 
         that.events.requestReceived.fire(that, false);
     };
 
-    fluid.defaults("gpii.handlebars.ajaxCapable", {
+    fluid.defaults("fluid.handlebars.ajaxCapable", {
         gradeNames:    ["fluid.modelComponent"],
         ajaxOptions: {
             accepts:  "application/json",
@@ -130,15 +129,15 @@ A few more things to note:
         },
         invokers: {
             makeRequest: {
-                funcName: "gpii.handlebars.ajaxCapable.makeRequest",
+                funcName: "fluid.handlebars.ajaxCapable.makeRequest",
                 args:     ["{that}"]
             },
             handleSuccess: {
-                funcName: "gpii.handlebars.ajaxCapable.handleSuccess",
+                funcName: "fluid.handlebars.ajaxCapable.handleSuccess",
                 args:     ["{that}", "{arguments}.2"]  // We use the jqXHR object because it gives us fine control over text vs. JSON responses.
             },
             handleError: {
-                funcName: "gpii.handlebars.ajaxCapable.handleError",
+                funcName: "fluid.handlebars.ajaxCapable.handleError",
                 args:     ["{that}", "{arguments}.0", "{arguments}.1", "{arguments}.2"] // jqXHR, textStatus, errorThrown
             }
         }

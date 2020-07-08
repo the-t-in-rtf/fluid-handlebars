@@ -1,11 +1,9 @@
 /* eslint-env browser */
 (function (fluid) {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
-
     // Test the "template message" component.
-    fluid.defaults("gpii.tests.handlebars.templateMessage", {
-        gradeNames: ["gpii.handlebars.templateAware.standalone", "gpii.handlebars.templateMessage"],
+    fluid.defaults("fluid.tests.handlebars.templateMessage", {
+        gradeNames: ["fluid.handlebars.templateAware.standalone", "fluid.handlebars.templateMessage"],
         model: {
             templates: {
                 pages: {
@@ -15,21 +13,21 @@
         }
     });
 
-    fluid.defaults("gpii.tests.handlebars.templateMessage.initialised", {
-        gradeNames: ["gpii.tests.handlebars.templateMessage"],
+    fluid.defaults("fluid.tests.handlebars.templateMessage.initialised", {
+        gradeNames: ["fluid.tests.handlebars.templateMessage"],
         model: {
             message: "I was born with silver model data in my mouth."
         }
     });
 
-    fluid.registerNamespace("gpii.tests.handlebars.templateMessage.caseHolder");
+    fluid.registerNamespace("fluid.tests.handlebars.templateMessage.caseHolder");
 
-    gpii.tests.handlebars.templateMessage.caseHolder.checkViewComponent = function (viewComponent, selector, matchDefs) {
+    fluid.tests.handlebars.templateMessage.caseHolder.checkViewComponent = function (viewComponent, selector, matchDefs) {
         var elementToCheck = viewComponent.locate(selector);
-        gpii.test.handlebars.browser.sanityCheckElements(elementToCheck, matchDefs);
+        fluid.test.handlebars.browser.sanityCheckElements(elementToCheck, matchDefs);
     };
 
-    fluid.defaults("gpii.tests.handlebars.templateMessage.caseHolder", {
+    fluid.defaults("fluid.tests.handlebars.templateMessage.caseHolder", {
         gradeNames: ["fluid.test.testCaseHolder", "fluid.viewComponent"],
         selectors: {
             updated: ".viewport-updated",
@@ -62,12 +60,12 @@
                     name: "Testing component initialisation.",
                     sequence: [
                         {
-                            func: "{gpii.tests.handlebars.templateMessage.caseHolder}.events.createInitialisedComponent.fire"
+                            func: "{fluid.tests.handlebars.templateMessage.caseHolder}.events.createInitialisedComponent.fire"
                         },
                         {
-                            event: "{gpii.tests.handlebars.templateMessage.caseHolder}.events.onInitialisedComponentRendered",
-                            listener: "gpii.tests.handlebars.templateMessage.caseHolder.checkViewComponent",
-                            args: ["{gpii.tests.handlebars.templateMessage.caseHolder}.initialised", "viewport", ["{gpii.tests.handlebars.templateMessage.caseHolder}.options.matchDefs.initialMarkupReplaced", "{gpii.tests.handlebars.templateMessage.caseHolder}.options.matchDefs.renderedMarkup"]] // viewComponent, selector, matchDefs
+                            event: "{fluid.tests.handlebars.templateMessage.caseHolder}.events.onInitialisedComponentRendered",
+                            listener: "fluid.tests.handlebars.templateMessage.caseHolder.checkViewComponent",
+                            args: ["{fluid.tests.handlebars.templateMessage.caseHolder}.initialised", "viewport", ["{fluid.tests.handlebars.templateMessage.caseHolder}.options.matchDefs.initialMarkupReplaced", "{fluid.tests.handlebars.templateMessage.caseHolder}.options.matchDefs.renderedMarkup"]] // viewComponent, selector, matchDefs
                         }
                     ]
                 },
@@ -75,13 +73,13 @@
                     name: "Test component model relay.",
                     sequence: [
                         {
-                            func: "{gpii.tests.handlebars.templateMessage.caseHolder}.updated.applier.change",
+                            func: "{fluid.tests.handlebars.templateMessage.caseHolder}.updated.applier.change",
                             args: ["message", "Some are born with data, some achieve data, and some have data thrust upon them."]
                         },
                         {
                             event: "{that}.events.onUpdatedComponentRendered",
-                            listener: "gpii.tests.handlebars.templateMessage.caseHolder.checkViewComponent",
-                            args: ["{gpii.tests.handlebars.templateMessage.caseHolder}.updated", "viewport", ["{gpii.tests.handlebars.templateMessage.caseHolder}.options.matchDefs.initialMarkupReplaced", "{gpii.tests.handlebars.templateMessage.caseHolder}.options.matchDefs.updatedModelData"]] // viewComponent, selector, matchDefs
+                            listener: "fluid.tests.handlebars.templateMessage.caseHolder.checkViewComponent",
+                            args: ["{fluid.tests.handlebars.templateMessage.caseHolder}.updated", "viewport", ["{fluid.tests.handlebars.templateMessage.caseHolder}.options.matchDefs.initialMarkupReplaced", "{fluid.tests.handlebars.templateMessage.caseHolder}.options.matchDefs.updatedModelData"]] // viewComponent, selector, matchDefs
                         }
                     ]
                 }
@@ -89,24 +87,24 @@
         }],
         components: {
             initialised: {
-                type: "gpii.tests.handlebars.templateMessage.initialised",
-                container: "{gpii.tests.handlebars.templateMessage.caseHolder}.dom.initialised",
-                createOnEvent: "{gpii.tests.handlebars.templateMessage.caseHolder}.events.createInitialisedComponent",
+                type: "fluid.tests.handlebars.templateMessage.initialised",
+                container: "{fluid.tests.handlebars.templateMessage.caseHolder}.dom.initialised",
+                createOnEvent: "{fluid.tests.handlebars.templateMessage.caseHolder}.events.createInitialisedComponent",
                 options: {
                     listeners: {
                         "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.handlebars.templateMessage.caseHolder}.events.onInitialisedComponentRendered.fire"
+                            func: "{fluid.tests.handlebars.templateMessage.caseHolder}.events.onInitialisedComponentRendered.fire"
                         }
                     }
                 }
             },
             updated: {
-                type: "gpii.tests.handlebars.templateMessage",
-                container: "{gpii.tests.handlebars.templateMessage.caseHolder}.dom.updated",
+                type: "fluid.tests.handlebars.templateMessage",
+                container: "{fluid.tests.handlebars.templateMessage.caseHolder}.dom.updated",
                 options: {
                     listeners: {
                         "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.handlebars.templateMessage.caseHolder}.events.onUpdatedComponentRendered.fire"
+                            func: "{fluid.tests.handlebars.templateMessage.caseHolder}.events.onUpdatedComponentRendered.fire"
                         }
                     }
                 }
@@ -114,15 +112,15 @@
         }
     });
 
-    fluid.defaults("gpii.tests.handlebars.templateMessage.testEnvironment", {
+    fluid.defaults("fluid.tests.handlebars.templateMessage.testEnvironment", {
         gradeNames: ["fluid.test.testEnvironment"],
         components: {
             caseHolder: {
-                type: "gpii.tests.handlebars.templateMessage.caseHolder",
+                type: "fluid.tests.handlebars.templateMessage.caseHolder",
                 container: "body"
             }
         }
     });
 
-    fluid.test.runTests("gpii.tests.handlebars.templateMessage.testEnvironment");
+    fluid.test.runTests("fluid.tests.handlebars.templateMessage.testEnvironment");
 })(fluid);

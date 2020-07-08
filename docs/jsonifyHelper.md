@@ -1,4 +1,4 @@
-# `gpii.handlebars.helper.jsonify`
+# `fluid.handlebars.helper.jsonify`
 
 This component is a [Handlebars helper](http://handlebarsjs.com/block_helpers.html) that allows us to output JSON
 structures as part of rendered content.  By default, object content is replaced with the literal value `[Object object]`
@@ -12,7 +12,7 @@ braces, as in:
 
 `{{jsonify VARIABLE}}`
 
-This functionality is wired into `gpii.express.handlebars` by default.
+This functionality is wired into `fluid.express.handlebars` by default.
 
 ## Component Options
 

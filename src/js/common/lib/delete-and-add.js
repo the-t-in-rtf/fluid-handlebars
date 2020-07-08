@@ -1,9 +1,8 @@
 /* eslint-env node */
 "use strict";
 var fluid = fluid || require("infusion");
-var gpii = fluid.registerNamespace("gpii");
 
-fluid.registerNamespace("gpii.handlebars.utils");
+fluid.registerNamespace("fluid.handlebars.utils");
 
 /**
  *
@@ -15,7 +14,7 @@ fluid.registerNamespace("gpii.handlebars.utils");
  * @param {Any} value - The value to set the model variable to.
  *
  */
-gpii.handlebars.utils.deleteAndAddModelData = function (modelComponent, path, value) {
+fluid.handlebars.utils.deleteAndAddModelData = function (modelComponent, path, value) {
     var transaction = modelComponent.applier.initiate();
     transaction.fireChangeRequest({path: path, type: "DELETE"});
     transaction.fireChangeRequest({path: path, type: "ADD", value: value});

@@ -1,4 +1,4 @@
-# `gpii.handlebars.serverResourceAware`
+# `fluid.handlebars.serverResourceAware`
 
 This component uses the "resource loading" features of the Infusion framework to load the templates and message bundles
 provided by the middleware in this package.  Once both are available, a client-side [renderer component](renderer.md)

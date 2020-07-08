@@ -1,4 +1,4 @@
-# `gpii.handlebars.watcher`
+# `fluid.handlebars.watcher`
 
 This component uses the ["chokidar" library](https://github.com/paulmillr/chokidar) to watch one or more directories
 for changes.  When a relevant change occurs, the component's `onFsChange` event is fired with three arguments,

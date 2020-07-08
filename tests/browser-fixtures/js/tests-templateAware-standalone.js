@@ -1,10 +1,10 @@
 /* eslint-env browser */
 (function (fluid) {
     "use strict";
-    fluid.registerNamespace("gpii.tests.handlebars.templateAware.standalone");
+    fluid.registerNamespace("fluid.tests.handlebars.templateAware.standalone");
 
-    fluid.defaults("gpii.tests.handlebars.templateAware.standalone", {
-        gradeNames: ["fluid.modelComponent", "gpii.handlebars.templateAware.standalone"],
+    fluid.defaults("fluid.tests.handlebars.templateAware.standalone", {
+        gradeNames: ["fluid.modelComponent", "fluid.handlebars.templateAware.standalone"],
         selectors: {
             viewport: ""
         },
@@ -30,7 +30,7 @@
         }
     });
 
-    fluid.defaults("gpii.tests.handlebars.templateAware.standalone.caseHolder", {
+    fluid.defaults("fluid.tests.handlebars.templateAware.standalone.caseHolder", {
         gradeNames: ["fluid.test.testCaseHolder"],
         matchDefs: {
             markdown: {
@@ -48,7 +48,7 @@
                     },
                     {
                         event: "{testEnvironment}.events.onMarkupRendered",
-                        listener: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                        listener: "fluid.test.handlebars.browser.sanityCheckSelectors",
                         args: [".templateAware-standalone-viewport", "{that}.options.matchDefs"]
                     }
                 ]
@@ -56,7 +56,7 @@
         }]
     });
 
-    fluid.defaults("gpii.tests.handlebars.templateAware.standalone.testEnvironment", {
+    fluid.defaults("fluid.tests.handlebars.templateAware.standalone.testEnvironment", {
         gradeNames: ["fluid.test.testEnvironment"],
         events: {
             createFixtures: null,
@@ -64,16 +64,16 @@
         },
         components: {
             caseHolder: {
-                type: "gpii.tests.handlebars.templateAware.standalone.caseHolder"
+                type: "fluid.tests.handlebars.templateAware.standalone.caseHolder"
             },
             viewComponent: {
-                type: "gpii.tests.handlebars.templateAware.standalone",
+                type: "fluid.tests.handlebars.templateAware.standalone",
                 container: ".templateAware-standalone-viewport",
                 createOnEvent: "createFixtures",
                 options: {
                     listeners: {
                         "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.handlebars.templateAware.standalone.testEnvironment}.events.onMarkupRendered.fire"
+                            func: "{fluid.tests.handlebars.templateAware.standalone.testEnvironment}.events.onMarkupRendered.fire"
                         }
                     }
                 }
@@ -81,5 +81,5 @@
         }
     });
 
-    fluid.test.runTests("gpii.tests.handlebars.templateAware.standalone.testEnvironment");
+    fluid.test.runTests("fluid.tests.handlebars.templateAware.standalone.testEnvironment");
 })(fluid);

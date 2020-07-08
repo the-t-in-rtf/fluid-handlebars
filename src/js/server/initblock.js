@@ -2,22 +2,21 @@
 
     A handlebars helper that generates a client-side component definition when the page is rendered on the server-side.
 
-    See the docs for details: https://github.com/GPII/gpii-handlebars/blob/master/docs/initBlock.md
+    See the docs for details: https://github.com/fluid-project/fluid-handlebars/blob/master/docs/initBlock.md
 
  */
 /* eslint-env node */
 "use strict";
 var fluid  = require("infusion");
-var gpii   = fluid.registerNamespace("gpii");
 var jQuery = fluid.registerNamespace("jQuery");
 
-fluid.registerNamespace("gpii.handlebars.helper.initBlock");
+fluid.registerNamespace("fluid.handlebars.helper.initBlock");
 
-gpii.handlebars.helper.initBlock.getHelper = function (that) {
+fluid.handlebars.helper.initBlock.getHelper = function (that) {
     return that.generateInitBlock;
 };
 
-gpii.handlebars.helper.initBlock.generateInitBlock = function (that, args) {
+fluid.handlebars.helper.initBlock.generateInitBlock = function (that, args) {
     // Guard against being handed an `Arguments` object instead of an array.
     args = fluid.makeArray(args);
 
@@ -48,19 +47,19 @@ gpii.handlebars.helper.initBlock.generateInitBlock = function (that, args) {
         jQuery.extend(pageComponent.options, generatedOptions);
 
         // TODO:  This may prevent instantiating multiple components in a single page.  Review this practice as needed.
-        var payload = ["<script type=\"text/javascript\">", "var gpii=fluid.registerNamespace(\"gpii\");", "var pageComponent = " + that.options.baseGradeName, "(" + JSON.stringify(options, null, 2) + ");", "</script>"].join("\n");
+        var payload = ["<script type=\"text/javascript\">", "var pageComponent = " + that.options.baseGradeName, "(" + JSON.stringify(options, null, 2) + ");", "</script>"].join("\n");
 
         return payload;
     }
 };
 
-fluid.defaults("gpii.handlebars.helper.initBlock", {
-    gradeNames: ["gpii.handlebars.helper"],
+fluid.defaults("fluid.handlebars.helper.initBlock", {
+    gradeNames: ["fluid.handlebars.helper"],
     mergePolicy: {
         "baseOptions": "noexpand,nomerge"
     },
     contextToOptionsRules: { "": "" }, // By default, expose everything that's available.
-    baseGradeName: "gpii.handlebars.templateManager",
+    baseGradeName: "fluid.handlebars.templateManager",
     baseOptions: {
         components: {
             requireRenderer: {
@@ -78,11 +77,11 @@ fluid.defaults("gpii.handlebars.helper.initBlock", {
     helperName: "initBlock",
     invokers: {
         "getHelper": {
-            "funcName": "gpii.handlebars.helper.initBlock.getHelper",
+            "funcName": "fluid.handlebars.helper.initBlock.getHelper",
             "args":     ["{that}"]
         },
         "generateInitBlock": {
-            "funcName": "gpii.handlebars.helper.initBlock.generateInitBlock",
+            "funcName": "fluid.handlebars.helper.initBlock.generateInitBlock",
             "args":     ["{that}", "{arguments}"]
         }
     }

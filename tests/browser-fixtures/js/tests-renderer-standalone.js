@@ -2,11 +2,9 @@
 /* globals jqUnit */
 (function (fluid, jqUnit) {
     "use strict";
-    var gpii = fluid.registerNamespace("gpii");
-
     // Test component to exercise "standalone" client-side renderer.
-    fluid.defaults("gpii.tests.handlebars.renderer.standalone", {
-        gradeNames: ["gpii.handlebars.renderer"],
+    fluid.defaults("fluid.tests.handlebars.renderer.standalone", {
+        gradeNames: ["fluid.handlebars.renderer"],
         mergePolicy: {
             templates: "noexpand"
         },
@@ -29,13 +27,13 @@
         }
     });
 
-    gpii.tests.handlebars.renderer.standalone.renderAndCompare = function (message, renderer, templateKey, payload, expected, compareFn) {
+    fluid.tests.handlebars.renderer.standalone.renderAndCompare = function (message, renderer, templateKey, payload, expected, compareFn) {
         compareFn = compareFn || "assertEquals";
         var renderedOutput = renderer.render(templateKey, { payload: payload });
         jqUnit[compareFn](message, expected, renderedOutput);
     };
 
-    fluid.defaults("gpii.tests.handlebars.renderer.standalone.testEnvironment.caseHolder", {
+    fluid.defaults("fluid.tests.handlebars.renderer.standalone.testEnvironment.caseHolder", {
         gradeNames: ["fluid.test.testCaseHolder"],
         // We have to make sure this expected value isn't expanded.
         troublesomeExpectations: {
@@ -50,21 +48,21 @@
                 {
                     name: "Confirm that the client-side renderer can render markdown.",
                     sequence: [{
-                        funcName: "gpii.tests.handlebars.renderer.standalone.renderAndCompare",
+                        funcName: "fluid.tests.handlebars.renderer.standalone.renderAndCompare",
                         // message, renderer, templateKey, payload, expected, [compareFn]
                         args: [
                             "We should have received rendered markup.",
                             "{renderer}",
                             "md",
-                            "[unified listing](http://ul.gpii.net/)",
-                            "<p><a href=\"http://ul.gpii.net/\">unified listing</a></p>\n"
+                            "[unified listing](http://ul.fluid.net/)",
+                            "<p><a href=\"http://ul.fluid.net/\">unified listing</a></p>\n"
                         ]
                     }]
                 },
                 {
                     name: "Confirm that the client-side partials work.",
                     sequence: [{
-                        funcName: "gpii.tests.handlebars.renderer.standalone.renderAndCompare",
+                        funcName: "fluid.tests.handlebars.renderer.standalone.renderAndCompare",
                         // message, renderer, templateKey, payload, expected, [compareFn]
                         args: [
                             "We should have received partial content.",
@@ -78,7 +76,7 @@
                 {
                     name: "Confirm that the JSONify helper works.",
                     sequence: [{
-                        funcName: "gpii.tests.handlebars.renderer.standalone.renderAndCompare",
+                        funcName: "fluid.tests.handlebars.renderer.standalone.renderAndCompare",
                         // message, renderer, templateKey, payload, expected, [compareFn]
                         args: [
                             "We should have received stringified JSON content.",
@@ -93,7 +91,7 @@
                     name: "Confirm that the equals helper works.",
                     sequence: [
                         {
-                            funcName: "gpii.tests.handlebars.renderer.standalone.renderAndCompare",
+                            funcName: "fluid.tests.handlebars.renderer.standalone.renderAndCompare",
                             // message, renderer, templateKey, payload, expected, [compareFn]
                             args: [
                                 "We should have hit the 'equals' block...",
@@ -104,7 +102,7 @@
                             ]
                         },
                         {
-                            funcName: "gpii.tests.handlebars.renderer.standalone.renderAndCompare",
+                            funcName: "fluid.tests.handlebars.renderer.standalone.renderAndCompare",
                             // message, renderer, templateKey, payload, expected, [compareFn]
                             args: [
                                 "We should have hit the 'not equals' block...",
@@ -120,19 +118,19 @@
         }],
         components: {
             renderer: {
-                type: "gpii.tests.handlebars.renderer.standalone"
+                type: "fluid.tests.handlebars.renderer.standalone"
             }
         }
     });
 
-    fluid.defaults("gpii.tests.handlebars.renderer.standalone.testEnvironment", {
+    fluid.defaults("fluid.tests.handlebars.renderer.standalone.testEnvironment", {
         gradeNames: ["fluid.test.testEnvironment"],
         components: {
             caseHolder: {
-                type: "gpii.tests.handlebars.renderer.standalone.testEnvironment.caseHolder"
+                type: "fluid.tests.handlebars.renderer.standalone.testEnvironment.caseHolder"
             }
         }
     });
 
-    fluid.test.runTests("gpii.tests.handlebars.renderer.standalone.testEnvironment");
+    fluid.test.runTests("fluid.tests.handlebars.renderer.standalone.testEnvironment");
 })(fluid, jqUnit);
