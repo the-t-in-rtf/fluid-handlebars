@@ -6,15 +6,14 @@
 
     http://doginthehat.com.au/2012/02/comparison-block-helper-for-handlebars-templates/
 
-    For more information, see the docs: https://github.com/GPII/gpii-handlebars/blob/master/docs/helper.md
+    For more information, see the docs: https://github.com/fluid-project/fluid-handlebars/blob/master/docs/helper.md
 
 */
 "use strict";
 var fluid = fluid || require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.handlebars.helper.equals");
+fluid.registerNamespace("fluid.handlebars.helper.equals");
 
-gpii.handlebars.helper.equals.getEqualsFunction = function () {
+fluid.handlebars.helper.equals.getEqualsFunction = function () {
     return function (lvalue, rvalue, options) {
         if (arguments.length < 3) {
             fluid.fail("You must call the 'equals' helper with three arguments.");
@@ -28,12 +27,12 @@ gpii.handlebars.helper.equals.getEqualsFunction = function () {
     };
 };
 
-fluid.defaults("gpii.handlebars.helper.equals", {
-    gradeNames: ["gpii.handlebars.helper"],
+fluid.defaults("fluid.handlebars.helper.equals", {
+    gradeNames: ["fluid.handlebars.helper"],
     helperName: "equals",
     invokers: {
         "getHelper": {
-            "funcName": "gpii.handlebars.helper.equals.getEqualsFunction",
+            "funcName": "fluid.handlebars.helper.equals.getEqualsFunction",
             "args":     ["{that}"]
         }
     }

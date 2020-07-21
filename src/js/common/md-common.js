@@ -3,15 +3,14 @@
 // NOTE:  This grade should not be used directly, you should add either the server or client appropriate gradeName to the appropriate list of components.
 //
 //  For your convenience, here are those grade names:
-//  _server_: `gpii.handlebars.helper.md.server`
-//  _client_: `gpii.handlebars.helper.md.client`
+//  _server_: `fluid.handlebars.helper.md.server`
+//  _client_: `fluid.handlebars.helper.md.client`
 /* eslint-env node */
 "use strict";
 var fluid = fluid || require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
-fluid.registerNamespace("gpii.handlebars.helper.md");
+fluid.registerNamespace("fluid.handlebars.helper.md");
 
-gpii.handlebars.helper.md.getMdFunction = function (that) {
+fluid.handlebars.helper.md.getMdFunction = function (that) {
     return function (context) {
         if (context) {
             if (that && that.renderer) {
@@ -28,8 +27,8 @@ gpii.handlebars.helper.md.getMdFunction = function (that) {
     };
 };
 
-fluid.defaults("gpii.handlebars.helper.md", {
-    gradeNames: ["gpii.handlebars.helper"],
+fluid.defaults("fluid.handlebars.helper.md", {
+    gradeNames: ["fluid.handlebars.helper"],
     helperName: "md",
     markdownItOptions: {},
     members: {
@@ -37,7 +36,7 @@ fluid.defaults("gpii.handlebars.helper.md", {
     },
     invokers: {
         "getHelper": {
-            "funcName": "gpii.handlebars.helper.md.getMdFunction",
+            "funcName": "fluid.handlebars.helper.md.getMdFunction",
             "args":     ["{that}"]
         }
     },

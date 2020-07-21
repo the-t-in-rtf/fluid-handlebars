@@ -3,22 +3,21 @@
     Middleware that combines all available Handlebars templates into a single bundle that can be downloaded and used
     by the client-side renderer.  For more information, see the docs:
 
-    https://github.com/GPII/gpii-handlebars/blob/master/docs/inline.md
+    https://github.com/fluid-project/fluid-handlebars/blob/master/docs/inline.md
 
  */
 /* eslint-env node */
 "use strict";
 var fluid = require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
 var md5   = require("md5");
 
 require("./lib/i18n-node");
 
-fluid.registerNamespace("gpii.handlebars.inlineMessageBundlingMiddleware.request");
+fluid.registerNamespace("fluid.handlebars.inlineMessageBundlingMiddleware.request");
 
-gpii.handlebars.inlineMessageBundlingMiddleware.request.sendResponse = function (that) {
+fluid.handlebars.inlineMessageBundlingMiddleware.request.sendResponse = function (that) {
     if (that.model.messageBundles) {
-        var messageBundle = gpii.handlebars.i18n.deriveMessageBundleFromRequest(that.options.request, that.model.messageBundles, that.options.defaultLocale);
+        var messageBundle = fluid.handlebars.i18n.deriveMessageBundleFromRequest(that.options.request, that.model.messageBundles, that.options.defaultLocale);
         var md5Sum = md5(JSON.stringify(messageBundle));
         // Always set the "etag" header so that we always have something to compare for each subsequent request.
         that.options.response.set("ETag", md5Sum);
@@ -28,16 +27,16 @@ gpii.handlebars.inlineMessageBundlingMiddleware.request.sendResponse = function 
             that.options.response.status(304).end();
         }
         else {
-            gpii.express.handler.sendResponse(that, that.options.response, 200, messageBundle);
+            fluid.express.handler.sendResponse(that, that.options.response, 200, messageBundle);
         }
     }
     else {
-        gpii.express.handler.sendResponse(that, that.options.response, 500, { isError: true, message: that.options.messages.noMessages});
+        fluid.express.handler.sendResponse(that, that.options.response, 500, { isError: true, message: that.options.messages.noMessages});
     }
 };
 
-fluid.defaults("gpii.handlebars.inlineMessageBundlingMiddleware.request", {
-    gradeNames: ["gpii.express.handler", "fluid.modelComponent"],
+fluid.defaults("fluid.handlebars.inlineMessageBundlingMiddleware.request", {
+    gradeNames: ["fluid.express.handler", "fluid.modelComponent"],
     defaultLocale: "{inlineMessageBundlingMiddleware}.options.defaultLocale",
     model: {
         messageBundles: "{inlineMessageBundlingMiddleware}.model.messageBundles"
@@ -47,19 +46,19 @@ fluid.defaults("gpii.handlebars.inlineMessageBundlingMiddleware.request", {
     },
     invokers: {
         "handleRequest": {
-            funcName: "gpii.handlebars.inlineMessageBundlingMiddleware.request.sendResponse",
+            funcName: "fluid.handlebars.inlineMessageBundlingMiddleware.request.sendResponse",
             args:     ["{that}"]
         }
     }
 });
 
-fluid.defaults("gpii.handlebars.inlineMessageBundlingMiddleware", {
-    gradeNames:          ["gpii.express.middleware.requestAware", "fluid.modelComponent"],
+fluid.defaults("fluid.handlebars.inlineMessageBundlingMiddleware", {
+    gradeNames:          ["fluid.express.middleware.requestAware", "fluid.modelComponent"],
     defaultLocale:       "en_us",
     path:                "/messages",
     namespace:           "messages", // Namespace to allow other routers to put themselves in the chain before or after us.
     model: {
         messageBundles: {}
     },
-    handlerGrades: ["gpii.handlebars.inlineMessageBundlingMiddleware.request"]
+    handlerGrades: ["fluid.handlebars.inlineMessageBundlingMiddleware.request"]
 });

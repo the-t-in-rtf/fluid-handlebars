@@ -6,18 +6,17 @@
 /* eslint-env node */
 "use strict";
 var fluid = require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
 var jqUnit = require("node-jqunit");
 
-fluid.require("%gpii-handlebars");
+fluid.require("%fluid-handlebars");
 
 jqUnit.module("Unit tests for i18n functions.");
 
 jqUnit.test("Testing message loading.", function () {
-    var messageBundle = gpii.handlebars.i18n.loadMessageBundles(
+    var messageBundle = fluid.handlebars.i18n.loadMessageBundles(
         {
-            primary: "%gpii-handlebars/tests/messages/primary",
-            secondary: "%gpii-handlebars/tests/messages/secondary"
+            primary: "%fluid-handlebars/tests/messages/primary",
+            secondary: "%fluid-handlebars/tests/messages/secondary"
         },
         "en_us");
 
@@ -31,13 +30,13 @@ jqUnit.test("Testing message loading.", function () {
     jqUnit.assertEquals("Content should have been merged from a secondary directory.", "Young.  I feel young.", fluid.get(messageBundle, "en_us.merged-key"));
     jqUnit.assertEquals("Unique locale content from a secondary directory should have been added to the language data.", "Works just fine.", fluid.get(messageBundle, "en.unique-to-secondary-dir"));
 
-    var messageBundleFromArray = gpii.handlebars.i18n.loadMessageBundles(["%gpii-handlebars/tests/messages/primary","%gpii-handlebars/tests/messages/secondary"],"en_us");
+    var messageBundleFromArray = fluid.handlebars.i18n.loadMessageBundles(["%fluid-handlebars/tests/messages/primary","%fluid-handlebars/tests/messages/secondary"],"en_us");
     jqUnit.assertEquals("Locale content should have been loaded as expected (from an array).", "Things are fine.", fluid.get(messageBundleFromArray, "en_us.how-are-things"));
 
 });
 
 jqUnit.test("Testing message loading error handling.", function () {
-    var messageBundle = gpii.handlebars.i18n.loadMessageBundles(["%non-existing-package/messages", "/bad/path/messages"]);
+    var messageBundle = fluid.handlebars.i18n.loadMessageBundles(["%non-existing-package/messages", "/bad/path/messages"]);
     jqUnit.assertDeepEq("An empty message bundle should be returned if no valid message directories are provided.", {}, messageBundle);
 });
 
@@ -92,35 +91,35 @@ jqUnit.test("Testing message loading error handling.", function () {
 */
 
 jqUnit.test("Testing deriving messages from message bundle by language/locale.", function () {
-    var messageBundles = gpii.handlebars.i18n.loadMessageBundles(["%gpii-handlebars/tests/messages/primary", "%gpii-handlebars/tests/messages/secondary"], "en_us");
+    var messageBundles = fluid.handlebars.i18n.loadMessageBundles(["%fluid-handlebars/tests/messages/primary", "%fluid-handlebars/tests/messages/secondary"], "en_us");
 
-    var nlNlMessages =  gpii.handlebars.i18n.deriveMessageBundleFromHeader("nl_nl", messageBundles);
+    var nlNlMessages =  fluid.handlebars.i18n.deriveMessageBundleFromHeader("nl_nl", messageBundles);
     jqUnit.assertEquals("Locale specific data should be included in a bundle derived from a locale.", "Hier is er geen hond.", fluid.get(nlNlMessages, "four-oh-four"));
     jqUnit.assertEquals("Language data should be included in a bundle derived from a locale.", "Het gaat goed.", fluid.get(nlNlMessages, "how-are-things"));
     jqUnit.assertEquals("Unique data from the default locale should be included in a bundle derived from a locale.", "This is %condition.", fluid.get(nlNlMessages, "shallow-variable"));
 
-    var nlBeMessages =  gpii.handlebars.i18n.deriveMessageBundleFromHeader("nl_be", messageBundles);
+    var nlBeMessages =  fluid.handlebars.i18n.deriveMessageBundleFromHeader("nl_be", messageBundles);
     jqUnit.assertEquals("Locale specific data should be included in a bundle derived from a locale.", "Hier is er geen kat.", fluid.get(nlBeMessages, "four-oh-four"));
     jqUnit.assertEquals("Language data should be included in a bundle derived from a locale.", "Het gaat goed.", fluid.get(nlBeMessages, "how-are-things"));
     jqUnit.assertEquals("Unique from a locale with the same language should be included in a bundle derived from a locale.", "golf", fluid.get(nlBeMessages, "wave"));
 
-    var enInMessages = gpii.handlebars.i18n.deriveMessageBundleFromHeader("en_in", messageBundles);
+    var enInMessages = fluid.handlebars.i18n.deriveMessageBundleFromHeader("en_in", messageBundles);
     jqUnit.assertEquals("A locale for which we have no messages should fail over to the language.", "Things are fine.", fluid.get(enInMessages, "how-are-things"));
 
-    var zhTwMessages = gpii.handlebars.i18n.deriveMessageBundleFromHeader("zh_tw", messageBundles);
+    var zhTwMessages = fluid.handlebars.i18n.deriveMessageBundleFromHeader("zh_tw", messageBundles);
     jqUnit.assertEquals("A language for which we have no messages should fail over to the default.", "Things are fine.", fluid.get(zhTwMessages, "how-are-things"));
 
-    jqUnit.assertDeepEq("Missing headers should be handled correctly in deriveMessageBundleFromHeader.", { "this": "works"}, gpii.handlebars.i18n.deriveMessageBundleFromHeader(undefined, { "my-default": { "this": "works"} }, "my-default"));
+    jqUnit.assertDeepEq("Missing headers should be handled correctly in deriveMessageBundleFromHeader.", { "this": "works"}, fluid.handlebars.i18n.deriveMessageBundleFromHeader(undefined, { "my-default": { "this": "works"} }, "my-default"));
 
-    jqUnit.assertDeepEq("Missing headers should be handled correctly in getAllLocalesFromHeader.", ["*"],  gpii.handlebars.i18n.getAllLocalesFromHeader());
+    jqUnit.assertDeepEq("Missing headers should be handled correctly in getAllLocalesFromHeader.", ["*"],  fluid.handlebars.i18n.getAllLocalesFromHeader());
 
-    jqUnit.assertDeepEq("Garbled headers should be handled correctly in getAllLocalesFromHeader.", ["*"],  gpii.handlebars.i18n.getAllLocalesFromHeader(Math.PI));
+    jqUnit.assertDeepEq("Garbled headers should be handled correctly in getAllLocalesFromHeader.", ["*"],  fluid.handlebars.i18n.getAllLocalesFromHeader(Math.PI));
 });
 
 jqUnit.test("Testing language detection from locale.", function () {
-    jqUnit.assertEquals("A valid locale should return a language.", "en", gpii.handlebars.i18n.languageFromLocale("en_us"));
-    jqUnit.assertEquals("Upper-case locale data should result in a lower case language.", "en", gpii.handlebars.i18n.languageFromLocale("EN_US"));
-    jqUnit.assertEquals("A nonsensical locale should by handled correctly.", undefined, gpii.handlebars.i18n.languageFromLocale("Narnia"));
-    jqUnit.assertEquals("An undefined locale should by handled correctly.", undefined, gpii.handlebars.i18n.languageFromLocale(undefined));
-    jqUnit.assertEquals("A null locale should by handled correctly.", undefined, gpii.handlebars.i18n.languageFromLocale(null));
+    jqUnit.assertEquals("A valid locale should return a language.", "en", fluid.handlebars.i18n.languageFromLocale("en_us"));
+    jqUnit.assertEquals("Upper-case locale data should result in a lower case language.", "en", fluid.handlebars.i18n.languageFromLocale("EN_US"));
+    jqUnit.assertEquals("A nonsensical locale should by handled correctly.", undefined, fluid.handlebars.i18n.languageFromLocale("Narnia"));
+    jqUnit.assertEquals("An undefined locale should by handled correctly.", undefined, fluid.handlebars.i18n.languageFromLocale(undefined));
+    jqUnit.assertEquals("A null locale should by handled correctly.", undefined, fluid.handlebars.i18n.languageFromLocale(null));
 });

@@ -10,8 +10,8 @@
  */
 (function (fluid) {
     "use strict";
-    fluid.defaults("gpii.handlebars.templateRequestAndRender", {
-        gradeNames:    ["gpii.hasRequiredOptions", "gpii.handlebars.ajaxCapable"],
+    fluid.defaults("fluid.handlebars.templateRequestAndRender", {
+        gradeNames:    ["fluid.hasRequiredOptions", "fluid.handlebars.ajaxCapable"],
         requiredOptions: {
             templateKeys:           true,
             "templateKeys.error":   true,
@@ -23,7 +23,7 @@
         },
         components: {
             success: {
-                type:          "gpii.handlebars.templateMessage",
+                type:          "fluid.handlebars.templateMessage",
                 createOnEvent: "{renderer}.events.onRequestReceived",
                 container:     "{templateRequestAndRender}.dom.success",
                 options: {
@@ -34,7 +34,7 @@
                 }
             },
             error: {
-                type:          "gpii.handlebars.templateMessage",
+                type:          "fluid.handlebars.templateMessage",
                 createOnEvent: "{renderer}.events.onRequestReceived",
                 container:     "{templateRequestAndRender}.dom.error",
                 options: {
@@ -59,11 +59,11 @@
         },
         invokers: {
             handleSuccessFirst: {
-                funcName: "gpii.handlebars.templateRequestAndRender.handleSuccessFirst",
+                funcName: "fluid.handlebars.templateRequestAndRender.handleSuccessFirst",
                 args:     ["{that}"]
             },
             handleErrorFirst: {
-                funcName: "gpii.handlebars.templateRequestAndRender.handleErrorFirst",
+                funcName: "fluid.handlebars.templateRequestAndRender.handleErrorFirst",
                 args:     ["{that}"]
             }
         },

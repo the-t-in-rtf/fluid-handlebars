@@ -1,4 +1,4 @@
-# `gpii.handlebars.helper.initBlock`
+# `fluid.handlebars.helper.initBlock`
 
 The `initBlock` Handlebars helper constructs a client side component given a list of grades, including all
 wiring required to ensure that:
@@ -112,5 +112,5 @@ Most of the examples in this package make use of one or more of the following gr
 * src/js/client/templateMessage.js
 * src/js/client/templateRequestAndRender.js
 
-These grades require the client-side binder component provided by the [`gpii-binder`](http://github.com/GPII/gpii-binder/)
+These grades require the client-side binder component provided by the [`fluid-binder`](http://github.com/fluid-project/fluid-binder/)
 component.

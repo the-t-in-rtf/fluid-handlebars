@@ -1,10 +1,10 @@
 (function (fluid) {
     "use strict";
-    fluid.registerNamespace("gpii.tests.templateAware.serverMessageAware");
+    fluid.registerNamespace("fluid.tests.templateAware.serverMessageAware");
 
     // A test fixture to use in exercising the serverMessageAware grade.
-    fluid.defaults("gpii.tests.templateAware.serverMessageAware", {
-        gradeNames: ["gpii.tests.handlebars.templateAware.serverResourceAware"],
+    fluid.defaults("fluid.tests.templateAware.serverMessageAware", {
+        gradeNames: ["fluid.tests.handlebars.templateAware.serverResourceAware"],
         template:   "serverMessageAware",
         selectors: {
             initial: "" // Update the whole container
@@ -23,7 +23,7 @@
         }
     });
 
-    fluid.defaults("gpii.tests.templateAware.serverMessageAware.caseHolder", {
+    fluid.defaults("fluid.tests.templateAware.serverMessageAware.caseHolder", {
         gradeNames: ["fluid.test.testCaseHolder"],
         matchDefs: {
             howAreThings: {
@@ -57,7 +57,7 @@
                     },
                     {
                         event: "{testEnvironment}.events.onMarkupRendered",
-                        listener: "gpii.test.handlebars.browser.sanityCheckSelectors",
+                        listener: "fluid.test.handlebars.browser.sanityCheckSelectors",
                         args: [".viewport", "{that}.options.matchDefs"]
                     }
                 ]
@@ -65,7 +65,7 @@
         }]
     });
 
-    fluid.defaults("gpii.tests.templateAware.serverMessageAware.testEnvironment", {
+    fluid.defaults("fluid.tests.templateAware.serverMessageAware.testEnvironment", {
         gradeNames: ["fluid.test.testEnvironment"],
         events: {
             createFixtures: null,
@@ -73,16 +73,16 @@
         },
         components: {
             caseHolder: {
-                type: "gpii.tests.templateAware.serverMessageAware.caseHolder"
+                type: "fluid.tests.templateAware.serverMessageAware.caseHolder"
             },
             viewComponent: {
-                type: "gpii.tests.templateAware.serverMessageAware",
+                type: "fluid.tests.templateAware.serverMessageAware",
                 createOnEvent: "createFixtures",
                 container: ".viewport",
                 options: {
                     listeners: {
                         "onMarkupRendered.notifyParent": {
-                            func: "{gpii.tests.templateAware.serverMessageAware.testEnvironment}.events.onMarkupRendered.fire"
+                            func: "{fluid.tests.templateAware.serverMessageAware.testEnvironment}.events.onMarkupRendered.fire"
                         }
                     }
                 }
@@ -90,5 +90,5 @@
         }
     });
 
-    fluid.test.runTests("gpii.tests.templateAware.serverMessageAware.testEnvironment");
+    fluid.test.runTests("fluid.tests.templateAware.serverMessageAware.testEnvironment");
 })(fluid);

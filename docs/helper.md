@@ -1,7 +1,7 @@
-# `gpii.handlebars.helper`
+# `fluid.handlebars.helper`
 
 This is the base grade for Fluid components that are intended to add new [Handlebars block helpers](http://handlebarsjs.com/block_helpers.html)
-to an instance of [`gpii.express.hb`](handlebars.md).
+to an instance of [`fluid.express.hb`](handlebars.md).
 
 ## Component Invokers
 
@@ -22,7 +22,7 @@ your.helper.getHelperFn = function (that) {
 };
 
 fluid.defaults("your.helper", {
-    gradeNames: ["gpii.handlebars.helper"],
+    gradeNames: ["fluid.handlebars.helper"],
     invokers: {
         "getHelper": {
             "funcName": "your.helper.getHelperFn",
@@ -38,8 +38,8 @@ helper functions that are possible.
 ## Helper functions included with this package
 
 This package provides additional handlebars helpers that can be used in your handlebars templates.  On the server side,
-these are available by default when you use the `gpii.express.hb` handlebars middleware.  On the client side, these are
-prewired into `gpii.templates.renderer`, the client-side renderer.
+these are available by default when you use the `fluid.express.hb` handlebars middleware.  On the client side, these are
+prewired into `fluid.templates.renderer`, the client-side renderer.
 
 ### `{{jsonify}}`
 

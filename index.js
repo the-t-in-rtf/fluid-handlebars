@@ -3,7 +3,7 @@
 //
 "use strict";
 var fluid = require("infusion");
-fluid.module.register("gpii-handlebars", __dirname, require);
+fluid.module.register("fluid-handlebars", __dirname, require);
 
 // Common base components for both server and client side
 require("./src/js/common/lib/i18n");

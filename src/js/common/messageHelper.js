@@ -2,17 +2,14 @@
 
     A handlebars helper that interpolates variable content into i18n/l10n message strings and produces string output.
 
-    See the docs for details: https://github.com/GPII/gpii-handlebars/blob/master/docs/i18n.md
+    See the docs for details: https://github.com/fluid-project/fluid-handlebars/blob/master/docs/i18n.md
 
  */
 /* eslint-env node */
 "use strict";
 var fluid  = fluid || require("infusion");
-var gpii   = fluid.registerNamespace("gpii");
 
-fluid.registerNamespace("gpii.handlebars.helper.messageHelper");
-
-fluid.registerNamespace("gpii.handlebars.helper.messageHelper");
+fluid.registerNamespace("fluid.handlebars.helper.messageHelper");
 
 /**
  *
@@ -25,7 +22,7 @@ fluid.registerNamespace("gpii.handlebars.helper.messageHelper");
  * @return {String} - The plain text of the i18n template with all variable references replaced with data.
  *
  */
-gpii.handlebars.helper.messageHelper.resolveMessage = function (messages, messageKey, dataOrRootContext, rootContext) {
+fluid.handlebars.helper.messageHelper.resolveMessage = function (messages, messageKey, dataOrRootContext, rootContext) {
     // If we have a third argument, then the second argument is our "data".  Otherwise, we use the root context (equivalent to passing "." as the variable).
     var data = rootContext ? dataOrRootContext : fluid.get(dataOrRootContext, "data.root");
 
@@ -39,7 +36,7 @@ gpii.handlebars.helper.messageHelper.resolveMessage = function (messages, messag
     }
 };
 
-gpii.handlebars.helper.messageHelper.getHelper = function (that) {
+fluid.handlebars.helper.messageHelper.getHelper = function (that) {
     return function (messageKey, dataOrRootContext, rootContext) {
         if (arguments.length < 2) {
             fluid.fail("You must call the 'messageHelper' helper with at least a message key.");
@@ -50,15 +47,15 @@ gpii.handlebars.helper.messageHelper.getHelper = function (that) {
     };
 };
 
-fluid.defaults("gpii.handlebars.helper.messageHelper", {
-    gradeNames: ["gpii.handlebars.helper"],
+fluid.defaults("fluid.handlebars.helper.messageHelper", {
+    gradeNames: ["fluid.handlebars.helper"],
     helperName: "messageHelper",
     model: {
         messages: {}
     },
     invokers: {
         "getHelper": {
-            "funcName": "gpii.handlebars.helper.messageHelper.getHelper",
+            "funcName": "fluid.handlebars.helper.messageHelper.getHelper",
             "args":     ["{that}"]
         },
         "resolveMessage": {

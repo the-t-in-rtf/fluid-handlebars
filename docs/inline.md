@@ -1,4 +1,4 @@
-# `gpii.handlebars.inlineTemplateBundlingMiddleware`
+# `fluid.handlebars.inlineTemplateBundlingMiddleware`
 
 Middleware that combines all available Handlebars templates into a single bundle that can be downloaded and used
 by the client-side renderer.
@@ -34,7 +34,7 @@ available and that the right layout is used.
 
 | Option         | Type             | Description |
 | -------------- | ---------------- | ----------- |
-| `templateDirs` | `Array | String` | A list of template directories that contain handlebars layouts, pages, and partials.  These can either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`. |
+| `templateDirs` | `Array | String` | A list of template directories that contain handlebars layouts, pages, and partials.  These can either be full paths or (better) paths relative to a particular package, as in `%fluid-handlebars/src/templates`. |
 
 ## Live Reloading
 
@@ -45,7 +45,7 @@ following example:
 
 ```$javascript
 fluid.defaults("my.live.express", {
-    gradeNames: ["gpii.express"],
+    gradeNames: ["fluid.express"],
     events: {
         onFsChange: null
     },
@@ -56,7 +56,7 @@ fluid.defaults("my.live.express", {
     },
     components: {
         handlebars: {
-            type: "gpii.express.hb.live",
+            type: "fluid.express.hb.live",
             options: {
                 templateDirs: "{my.live.express}.options.templateDirs",
                 listeners: {
@@ -67,7 +67,7 @@ fluid.defaults("my.live.express", {
             }
         },
         inlineMiddleware: {
-            type: "gpii.handlebars.inlineTemplateBundlingMiddleware",
+            type: "fluid.handlebars.inlineTemplateBundlingMiddleware",
             options: {
                 templateDirs: "{my.live.express}.options.templateDirs"
             }

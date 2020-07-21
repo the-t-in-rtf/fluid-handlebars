@@ -2,7 +2,7 @@
 
     The common core of both the client and server-side renderers.
 
-    See the docs for details: https://github.com/GPII/gpii-handlebars/blob/master/docs/renderer.md
+    See the docs for details: https://github.com/fluid-project/fluid-handlebars/blob/master/docs/renderer.md
 
 */
 /* global fluid, Handlebars, require */
@@ -15,8 +15,7 @@ var Handlebars = Handlebars || {};
         Handlebars = require("handlebars");
     }
 
-    var gpii  = fluid.registerNamespace("gpii");
-    fluid.registerNamespace("gpii.handlebars.renderer.common");
+    fluid.registerNamespace("fluid.handlebars.renderer.common");
 
     /**
      *
@@ -26,7 +25,7 @@ var Handlebars = Handlebars || {};
      * @param {Object} that - The renderer component itself.
      *
      */
-    gpii.handlebars.renderer.common.registerHelpers = function (that) {
+    fluid.handlebars.renderer.common.registerHelpers = function (that) {
         if (Handlebars) {
             fluid.each(that.helpers, function (value, key) {
                 Handlebars.registerHelper(key, value);
@@ -44,7 +43,7 @@ var Handlebars = Handlebars || {};
      * @param {Object} that The renderer component itself.
      *
      */
-    gpii.handlebars.renderer.loadPartials  = function (that) {
+    fluid.handlebars.renderer.loadPartials  = function (that) {
         fluid.each(that.model.templates.partials, function (value, key) {
             Handlebars.registerPartial(key, value);
         });
@@ -58,7 +57,7 @@ var Handlebars = Handlebars || {};
      * @param {Object} component - The helper component to register.
      *
      */
-    gpii.handlebars.renderer.common.addHelper = function (that, component) {
+    fluid.handlebars.renderer.common.addHelper = function (that, component) {
         var key = component.options.helperName;
         if (component.getHelper) {
             that.helpers[key] = component.getHelper();
@@ -77,7 +76,7 @@ var Handlebars = Handlebars || {};
      * @param {Object} context - The "context" data to expose to Handlebars.
      * @return {String} The renderered content.
      */
-    gpii.handlebars.renderer.common.render = function (that, templateKey, context) {
+    fluid.handlebars.renderer.common.render = function (that, templateKey, context) {
         var template = fluid.get(that.model, ["templates", "pages", templateKey]);
         if (template) {
             var compiledTemplate = Handlebars.compile(template);
@@ -99,7 +98,7 @@ var Handlebars = Handlebars || {};
      * @return {String} The renderered content.
      *
      */
-    gpii.handlebars.renderer.common.renderWithLayout = function (that, templateKey, context) {
+    fluid.handlebars.renderer.common.renderWithLayout = function (that, templateKey, context) {
         // Render the page body first.
         var pageBody = that.render(templateKey, context);
 
@@ -114,7 +113,7 @@ var Handlebars = Handlebars || {};
         return compiledLayoutTemplate(layoutContext);
     };
 
-    fluid.defaults("gpii.handlebars.renderer.common", {
+    fluid.defaults("fluid.handlebars.renderer.common", {
         gradeNames: ["fluid.modelComponent"],
         defaultLocale: "en_us",
         defaultLayout: "main",
@@ -134,39 +133,39 @@ var Handlebars = Handlebars || {};
         distributeOptions: [
             {
                 record: {
-                    "funcName": "gpii.handlebars.renderer.common.addHelper",
-                    "args": ["{gpii.handlebars.renderer.common}", "{gpii.handlebars.helper}"]
+                    "funcName": "fluid.handlebars.renderer.common.addHelper",
+                    "args": ["{fluid.handlebars.renderer.common}", "{fluid.handlebars.helper}"]
                 },
-                target: "{that > gpii.handlebars.helper}.options.listeners.onCreate"
+                target: "{that > fluid.handlebars.helper}.options.listeners.onCreate"
             }
         ],
         components: {
             equals: {
-                type: "gpii.handlebars.helper.equals"
+                type: "fluid.handlebars.helper.equals"
             },
             jsonify: {
-                type: "gpii.handlebars.helper.jsonify"
+                type: "fluid.handlebars.helper.jsonify"
             }
         },
         invokers: {
             render: {
-                funcName: "gpii.handlebars.renderer.common.render",
+                funcName: "fluid.handlebars.renderer.common.render",
                 args:     ["{that}", "{arguments}.0", "{arguments}.1"] // templateName, context
             },
             renderWithLayout: {
-                funcName: "gpii.handlebars.renderer.common.renderWithLayout",
+                funcName: "fluid.handlebars.renderer.common.renderWithLayout",
                 args:     ["{that}", "{arguments}.0", "{arguments}.1"] // templateName, context
             }
         },
         modelListeners: {
             "templates": {
-                funcName: "gpii.handlebars.renderer.loadPartials",
+                funcName: "fluid.handlebars.renderer.loadPartials",
                 args:     ["{that}"]
             }
         },
         listeners: {
             "onCreate.addHelpers": {
-                funcName: "gpii.handlebars.renderer.common.registerHelpers",
+                funcName: "fluid.handlebars.renderer.common.registerHelpers",
                 args:     ["{that}"]
             }
         }

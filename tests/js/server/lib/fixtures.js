@@ -2,8 +2,8 @@
 "use strict";
 var fluid = require("infusion");
 
-fluid.defaults("gpii.test.handlebars.environment", {
-    gradeNames: ["gpii.test.express.testEnvironment"],
+fluid.defaults("fluid.test.handlebars.environment", {
+    gradeNames: ["fluid.test.express.testEnvironment"],
     port: 6984,
     path: "",
     url: {
@@ -14,7 +14,7 @@ fluid.defaults("gpii.test.handlebars.environment", {
     },
     components: {
         express: {
-            type: "gpii.test.handlebars.harness"
+            type: "fluid.test.handlebars.harness"
         }
     }
 });

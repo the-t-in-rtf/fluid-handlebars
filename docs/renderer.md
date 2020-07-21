@@ -1,6 +1,6 @@
 # The Renderer
 
-## `gpii.handlebars.renderer.common`
+## `fluid.handlebars.renderer.common`
 
 The underlying base grade common to both the Node and browser renderer grades.  Although this grade is able to render
 content, it does not have access to the [markdown helper](mdHelper.md).  To use that helper, you need to use one of the
@@ -33,7 +33,7 @@ Render a template without an enclosing layout, as shown here:
 
 ```javascript
 fluid.defaults("my.localisedRenderer.component", {
-    gradeNames: ["gpii.handlebars.renderer"],
+    gradeNames: ["fluid.handlebars.renderer"],
     templates: {
         pages: {
             localisedPage: "<p>{{message-helper key}}</p>"
@@ -68,7 +68,7 @@ the top-level `layout` variable, as shown here:
 
 ```javascript
 fluid.defaults("my.renderer.component", {
-    gradeNames: ["gpii.handlebars.renderer"],
+    gradeNames: ["fluid.handlebars.renderer"],
     templates: {
         layouts: {
             main: "<p>Content from the layout.</p>\n{{body}}"
@@ -101,19 +101,19 @@ fluid.log(renderer.renderWithLayout("myPage", { myVariable: "my value" }));
 
 ## Browser Renderer Grades
 
-### `gpii.handlebars.renderer`
+### `fluid.handlebars.renderer`
 
 A client-side module that provides various template handling capabilities, including rendering content and placing
 it in the DOM relative to a specified element.
 
-Like the server-side handlebars grade `gpii.express.hb`, the client-side renderer can use
+Like the server-side handlebars grade `fluid.express.hb`, the client-side renderer can use
 [Handlebars block helpers](http://handlebarsjs.com/block_helpers.html).  In this case, our helpers are expected to be
-components with the grade `gpii.handlebars.helper`.  These will automatically be wired in to this component when it is
+components with the grade `fluid.handlebars.helper`.  These will automatically be wired in to this component when it is
 created.
 
 The base grade does not have the required template data by default. You are expected either to use the
-`gpii.handlebars.renderer.standalone` grade and provide raw template data, or to use the
-`gpii.handlebars.renderer.serverAware` grade and communicate with a server that will return the template content.  See
+`fluid.handlebars.renderer.standalone` grade and provide raw template data, or to use the
+`fluid.handlebars.renderer.serverAware` grade and communicate with a server that will return the template content.  See
 below for details on those grades.
 
 All variations of this component require [Handlebars.js](http://handlebarsjs.com/).
@@ -156,10 +156,10 @@ Call `{that}.render(templateKey, context)` (see below) and prepend the results t
 Call `{that}.render(templateKey, context)` (see above) and replace `element` completely with the results using
 [`element.replaceWith`](https://api.jquery.com/replaceWith/).
 
-### `gpii.handlebars.renderer.serverAware`
+### `fluid.handlebars.renderer.serverAware`
 
-This is an extension of the above `gpii.handlebars.renderer` grade which communicates with an instance of
-`gpii.handlebars.inlineTemplateBundlingMiddleware` on startup and wires the templates returned into itself.
+This is an extension of the above `fluid.handlebars.renderer` grade which communicates with an instance of
+`fluid.handlebars.inlineTemplateBundlingMiddleware` on startup and wires the templates returned into itself.
 
 #### Component Options
 
@@ -167,16 +167,16 @@ This is an extension of the above `gpii.handlebars.renderer` grade which communi
 | ------------------------ | ---------- | ----------- |
 | `templateUrl` (required) | `{String}` | The URL (relative or absolute) where our template content can be retrieved. |
 
-### `gpii.handlebars.renderer.serverMessageAware`
+### `fluid.handlebars.renderer.serverMessageAware`
 
-This is an extension of the above `gpii.handlebars.renderer.serverAware` grade, which, in addition to loading templates
-as described above, communicates with an instance of `gpii.handlebars.inlineMessageBundlingMiddleware` on startup and
+This is an extension of the above `fluid.handlebars.renderer.serverAware` grade, which, in addition to loading templates
+as described above, communicates with an instance of `fluid.handlebars.inlineMessageBundlingMiddleware` on startup and
 wires the message bundles into itself.  You must use this grade to make effective use of the `{{messageHelper}}` helper
 (see the [i18n docs](i18n.md) for details).
 
 #### Component Options
 
-In addition to the options for `gpii.handlebars.renderer.serverAware`, this grade supports the following options:
+In addition to the options for `fluid.handlebars.renderer.serverAware`, this grade supports the following options:
 
 | Option                        | Type       | Description |
 | ----------------------------- | ---------- | ----------- |
@@ -184,7 +184,7 @@ In addition to the options for `gpii.handlebars.renderer.serverAware`, this grad
 
 ## Node Renderer Grades
 
-## `gpii.handlebars.standaloneRenderer`
+## `fluid.handlebars.standaloneRenderer`
 
 The core renderer designed both for use as [an Express view engine](http://expressjs.com/en/advanced/developing-template-engines.html),
 and in node contexts outside of Express, for example, when rendering mail templates.
@@ -193,7 +193,7 @@ and in node contexts outside of Express, for example, when rendering mail templa
 
 | Option         | Type             | Description |
 | -------------- | ---------------- | ----------- |
-| `templateDirs` | `Array | String` | A list of template directories that contain handlebars layouts, pages, and partials.  These can either be full paths or (better) paths relative to a particular package, as in `%gpii-handlebars/src/templates`.   Please note, if multiple directories contain layouts, pages, or partials with the same name, the highest-index directory in the array takes precedence. |
+| `templateDirs` | `Array | String` | A list of template directories that contain handlebars layouts, pages, and partials.  These can either be full paths or (better) paths relative to a particular package, as in `%fluid-handlebars/src/templates`.   Please note, if multiple directories contain layouts, pages, or partials with the same name, the highest-index directory in the array takes precedence. |
 
 #### Template Directory Layout
 
@@ -209,7 +209,7 @@ specified in `options.templateDirs` (see above), there is expected to be one or 
 
 ## Adding block helpers
 
-Child components of this grade that extend the [`gpii.handlebars.helper`](helper.md) grade are made available as block
+Child components of this grade that extend the [`fluid.handlebars.helper`](helper.md) grade are made available as block
 helpers that can be used when rendering content.  By default, this grade includes all of the helpers provided by this
 package, with the exception of the `initBlock` helper used within the view engine..  See the
 [helpers documentation](helpers.md) for details.

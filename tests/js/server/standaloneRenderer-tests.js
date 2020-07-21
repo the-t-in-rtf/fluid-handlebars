@@ -2,14 +2,13 @@
 /* eslint-env node */
 "use strict";
 var fluid = require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
 
-fluid.require("%gpii-handlebars");
+fluid.require("%fluid-handlebars");
 
 var jqUnit = require("node-jqunit");
 
-fluid.registerNamespace("gpii.tests.handlebars.standaloneRenderer");
-gpii.tests.handlebars.standaloneRenderer.runTests = function (that, messageBundleLoader, renderer) {
+fluid.registerNamespace("fluid.tests.handlebars.standaloneRenderer");
+fluid.tests.handlebars.standaloneRenderer.runTests = function (that, messageBundleLoader, renderer) {
     fluid.each(that.options.tests, function (testOptions) {
         jqUnit.test(testOptions.name, function () {
             // Pass `true` as the first argument to ensure that a mutable copy is made:
@@ -26,7 +25,7 @@ gpii.tests.handlebars.standaloneRenderer.runTests = function (that, messageBundl
     });
 };
 
-fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
+fluid.defaults("fluid.tests.handlebars.standaloneRenderer", {
     gradeNames: ["fluid.modelComponent"],
     mergePolicy: {
         tests: "noexpand,nomerge"
@@ -146,30 +145,30 @@ fluid.defaults("gpii.tests.handlebars.standaloneRenderer", {
     ],
     listeners: {
         "onCreate.runTests": {
-            funcName: "gpii.tests.handlebars.standaloneRenderer.runTests",
+            funcName: "fluid.tests.handlebars.standaloneRenderer.runTests",
             args:     ["{that}", "{messageBundleLoader}", "{renderer}"]
         }
     },
     messageDirs: {
-        primary: "%gpii-handlebars/tests/messages/primary",
-        secondary: "%gpii-handlebars/tests/messages/secondary"
+        primary: "%fluid-handlebars/tests/messages/primary",
+        secondary: "%fluid-handlebars/tests/messages/secondary"
     },
     components: {
         renderer: {
-            type: "gpii.handlebars.standaloneRenderer",
+            type: "fluid.handlebars.standaloneRenderer",
             options: {
                 model: {
                     messageBundles: "{messageBundleLoader}.model.messageBundles"
                 },
-                templateDirs: { primary: "%gpii-handlebars/tests/templates/primary" }
+                templateDirs: { primary: "%fluid-handlebars/tests/templates/primary" }
             }
         },
         messageBundleLoader: {
-            type: "gpii.handlebars.i18n.messageBundleLoader",
+            type: "fluid.handlebars.i18n.messageBundleLoader",
             options: {
-                messageDirs: "{gpii.tests.handlebars.standaloneRenderer}.options.messageDirs"
+                messageDirs: "{fluid.tests.handlebars.standaloneRenderer}.options.messageDirs"
             }
         }
     }
 });
-gpii.tests.handlebars.standaloneRenderer();
+fluid.tests.handlebars.standaloneRenderer();

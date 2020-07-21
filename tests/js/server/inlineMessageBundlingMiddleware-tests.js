@@ -1,39 +1,38 @@
 /* eslint-env node */
 "use strict";
 var fluid = require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
 
-fluid.require("%gpii-handlebars");
+fluid.require("%fluid-handlebars");
 
-fluid.require("%gpii-express");
-gpii.express.loadTestingSupport();
+fluid.require("%fluid-express");
+fluid.express.loadTestingSupport();
 
 var jqUnit = require("node-jqunit");
 
 var request = require("request");
 
-fluid.registerNamespace("gpii.tests.handlebars.inlineMessageBundlingMiddleware");
+fluid.registerNamespace("fluid.tests.handlebars.inlineMessageBundlingMiddleware");
 
-gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle = function (response, returnedBundle, expected) {
+fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle = function (response, returnedBundle, expected) {
     jqUnit.assertEquals("The response code should be as expected.", 200, response.statusCode);
     jqUnit.assertLeftHand("The returned message bundle body should contain the expected content.", expected, returnedBundle);
 };
 
-fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.request.noHeaders", {
+fluid.defaults("fluid.tests.handlebars.inlineMessageBundlingMiddleware.request.noHeaders", {
     gradeNames: ["kettle.test.request.http"],
     port:       "{testEnvironment}.options.port",
     path:       "/messages"
 });
 
-fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.request", {
-    gradeNames: ["gpii.tests.handlebars.inlineMessageBundlingMiddleware.request.noHeaders"],
+fluid.defaults("fluid.tests.handlebars.inlineMessageBundlingMiddleware.request", {
+    gradeNames: ["fluid.tests.handlebars.inlineMessageBundlingMiddleware.request.noHeaders"],
     acceptLanguageHeaders: "en-US",
     headers: {
-        "Accept-Language": "{gpii.tests.handlebars.inlineMessageBundlingMiddleware.request}.options.acceptLanguageHeaders"
+        "Accept-Language": "{fluid.tests.handlebars.inlineMessageBundlingMiddleware.request}.options.acceptLanguageHeaders"
     }
 });
 
-gpii.tests.handlebars.inlineMessageBundlingMiddleware.testBundleCaching = function (testEnvironment) {
+fluid.tests.handlebars.inlineMessageBundlingMiddleware.testBundleCaching = function (testEnvironment) {
     var messagesEndpoint = "http://localhost:" + testEnvironment.options.port + "/messages";
 
     var firstRequestOptions = {
@@ -70,8 +69,8 @@ gpii.tests.handlebars.inlineMessageBundlingMiddleware.testBundleCaching = functi
     });
 };
 
-fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder", {
-    gradeNames: ["gpii.test.express.caseHolder"],
+fluid.defaults("fluid.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder", {
+    gradeNames: ["fluid.test.express.caseHolder"],
     expected: {
         // equivalent to "en-US"
         noHeaders: {
@@ -156,7 +155,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                     name: "Message bundle caching should work as expected.",
                     type: "test",
                     sequence: [{
-                        func: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.testBundleCaching",
+                        func: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.testBundleCaching",
                         args: ["{testEnvironment}"]
                     }]
                 },
@@ -168,7 +167,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{noHeadersRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{noHeadersRequest}.events.onComplete",
                             args:     ["{noHeadersRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.noHeaders"] // response, returnedBundle, expected
                         }
@@ -182,7 +181,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{localeFailoverRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{localeFailoverRequest}.events.onComplete",
                             args:     ["{localeFailoverRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.localeFailover"] // response, returnedBundle, expected
                         }
@@ -196,7 +195,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{languageFailoverRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{languageFailoverRequest}.events.onComplete",
                             args:     ["{languageFailoverRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.languageFailover"] // response, returnedBundle, expected
                         }
@@ -210,7 +209,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{threeCharacterLanguageRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{threeCharacterLanguageRequest}.events.onComplete",
                             args:     ["{threeCharacterLanguageRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.threeCharacterLanguage"] // response, returnedBundle, expected
                         }
@@ -224,7 +223,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{enLanguageRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{enLanguageRequest}.events.onComplete",
                             args:     ["{enLanguageRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.enLanguage"] // response, returnedBundle, expected
                             //args:     ["{enLanguageRequest}.nativeResponse", "{arguments}.0", "{caseHolder}.options.expected.enLanguage"] // response, returnedBundle, expected
@@ -239,7 +238,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{enGbLocaleRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{enGbLocaleRequest}.events.onComplete",
                             args:     ["{enGbLocaleRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.enGbLocale"] // response, returnedBundle, expected
                         }
@@ -253,7 +252,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{enUsLocaleRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{enUsLocaleRequest}.events.onComplete",
                             args:     ["{enUsLocaleRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.enUsLocale"] // response, returnedBundle, expected
                         }
@@ -267,7 +266,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{nlLanguageRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{nlLanguageRequest}.events.onComplete",
                             args:     ["{nlLanguageRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.nlLanguage"] // response, returnedBundle, expected
                         }
@@ -281,7 +280,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{nlBeLocaleRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{nlBeLocaleRequest}.events.onComplete",
                             args:     ["{nlBeLocaleRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.nlBeLocale"] // response, returnedBundle, expected
                         }
@@ -295,7 +294,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{nlNlLocaleRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{nlNlLocaleRequest}.events.onComplete",
                             args:     ["{nlNlLocaleRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.nlNlLocale"] // response, returnedBundle, expected
                         }
@@ -309,7 +308,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{queryLocaleRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{queryLocaleRequest}.events.onComplete",
                             args:     ["{queryLocaleRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.queryLocaleRequest"] // response, returnedBundle, expected
                         }
@@ -323,7 +322,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{weightedLocaleRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{weightedLocaleRequest}.events.onComplete",
                             args:     ["{weightedLocaleRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.weightedLocale"] // response, returnedBundle, expected
                         }
@@ -337,7 +336,7 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
                             func: "{wildcardLocaleRequest}.send"
                         },
                         {
-                            listener: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
+                            listener: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.verifyLanguageBundle",
                             event:    "{wildcardLocaleRequest}.events.onComplete",
                             args:     ["{wildcardLocaleRequest}.nativeResponse", "@expand:JSON.parse({arguments}.0)", "{caseHolder}.options.expected.wildcardLocale"] // response, returnedBundle, expected
                         }
@@ -348,78 +347,78 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
     ],
     components: {
         noHeadersRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request.noHeaders"
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request.noHeaders"
         },
         localeFailoverRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
                 acceptLanguageHeaders: "en-ca"
             }
         },
         languageFailoverRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
                 acceptLanguageHeaders: "fr"
             }
         },
         threeCharacterLanguageRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
                 acceptLanguageHeaders: "tlh" // Klingon
             }
         },
         enLanguageRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
                 acceptLanguageHeaders: "en"
             }
         },
         enGbLocaleRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
                 acceptLanguageHeaders: "en-GB"
             }
         },
         enUsLocaleRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
                 acceptLanguageHeaders: "en-US"
             }
         },
         nlLanguageRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
                 acceptLanguageHeaders: "nl"
             }
         },
         nlBeLocaleRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
                 acceptLanguageHeaders: "nl-BE"
             }
         },
         nlNlLocaleRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
                 acceptLanguageHeaders: "nl-NL"
             }
 
         },
         queryLocaleRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
                 path: "/messages?locale=en-GB"
             }
         },
         weightedLocaleRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
                 acceptLanguageHeaders: "fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5"
             }
 
         },
         wildcardLocaleRequest: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.request",
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.request",
             options: {
                 acceptLanguageHeaders: "*"
             }
@@ -427,8 +426,8 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder
     }
 });
 
-fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.environment", {
-    gradeNames:  ["gpii.test.express.testEnvironment"],
+fluid.defaults("fluid.tests.handlebars.inlineMessageBundlingMiddleware.environment", {
+    gradeNames:  ["fluid.test.express.testEnvironment"],
     port: 6494,
     events: {
         messagesLoaded: null,
@@ -443,16 +442,16 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.environmen
             options: {
                 components: {
                     messageBundleLoader: {
-                        type: "gpii.handlebars.i18n.messageBundleLoader",
+                        type: "fluid.handlebars.i18n.messageBundleLoader",
                         options: {
                             messageDirs: {
-                                primary: "%gpii-handlebars/tests/messages/primary",
-                                secondary: "%gpii-handlebars/tests/messages/secondary"
+                                primary: "%fluid-handlebars/tests/messages/primary",
+                                secondary: "%fluid-handlebars/tests/messages/secondary"
                             }
                         }
                     },
                     inlineMessageBundlingMiddleware: {
-                        type: "gpii.handlebars.inlineMessageBundlingMiddleware",
+                        type: "fluid.handlebars.inlineMessageBundlingMiddleware",
                         options: {
                             model: {
                                 messageBundles: "{messageBundleLoader}.model.messageBundles"
@@ -463,9 +462,9 @@ fluid.defaults("gpii.tests.handlebars.inlineMessageBundlingMiddleware.environmen
             }
         },
         caseHolder: {
-            type: "gpii.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder"
+            type: "fluid.tests.handlebars.inlineMessageBundlingMiddleware.caseHolder"
         }
     }
 });
 
-fluid.test.runTests("gpii.tests.handlebars.inlineMessageBundlingMiddleware.environment");
+fluid.test.runTests("fluid.tests.handlebars.inlineMessageBundlingMiddleware.environment");

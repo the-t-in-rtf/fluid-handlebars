@@ -6,7 +6,6 @@
 /* eslint-env node */
 "use strict";
 var fluid = require("infusion");
-var gpii  = fluid.registerNamespace("gpii");
 
 var fs = require("fs");
 var path = require("path");
@@ -14,7 +13,7 @@ var JSON5 = require("json5");
 
 require("./resolver");
 
-fluid.registerNamespace("gpii.handlebars.i18n");
+fluid.registerNamespace("fluid.handlebars.i18n");
 
 /**
  *
@@ -31,19 +30,19 @@ fluid.registerNamespace("gpii.handlebars.i18n");
  * @return {Object} - A map of messages for a single locale.
  *
  */
-gpii.handlebars.i18n.deriveMessageBundleFromRequest = function (request, messageBundles, defaultLocale) {
+fluid.handlebars.i18n.deriveMessageBundleFromRequest = function (request, messageBundles, defaultLocale) {
     var queryLocale = fluid.get(request, "query.locale");
     if (queryLocale) {
-        var standardisedQueryLocale = gpii.handlebars.i18n.standardiseQueryLocale(queryLocale);
-        return gpii.handlebars.i18n.deriveMessageBundle(standardisedQueryLocale, messageBundles, defaultLocale);
+        var standardisedQueryLocale = fluid.handlebars.i18n.standardiseQueryLocale(queryLocale);
+        return fluid.handlebars.i18n.deriveMessageBundle(standardisedQueryLocale, messageBundles, defaultLocale);
     }
     else {
         var header = fluid.get(request, "headers.accept-language");
-        return gpii.handlebars.i18n.deriveMessageBundleFromHeader(header, messageBundles, defaultLocale);
+        return fluid.handlebars.i18n.deriveMessageBundleFromHeader(header, messageBundles, defaultLocale);
     }
 };
 
-gpii.handlebars.i18n.standardiseQueryLocale = function (rawLocale) {
+fluid.handlebars.i18n.standardiseQueryLocale = function (rawLocale) {
     return rawLocale.toLowerCase().replace(/-/g, "_");
 };
 
@@ -56,10 +55,10 @@ gpii.handlebars.i18n.standardiseQueryLocale = function (rawLocale) {
  * @return {Object} - A combined bundle of message bundles, keyed by locales and languages.
  *
  */
-gpii.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) {
+fluid.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) {
     defaultLocale = defaultLocale || "en_us";
     var messageBundles = {};
-    var resolvedMessageDirs = gpii.handlebars.resolvePrioritisedPaths(messageDirs);
+    var resolvedMessageDirs = fluid.handlebars.resolvePrioritisedPaths(messageDirs);
 
     var filesByLocale   = {};
     var filesByLanguage = {};
@@ -98,7 +97,7 @@ gpii.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) 
             messageBundles[locale] = fluid.extend(true, messageBundles[locale], data);
 
             // Add any unique material from the locale to the language, taking care to prefer existing language data.
-            var languageFromLocale = gpii.handlebars.i18n.languageFromLocale(locale);
+            var languageFromLocale = fluid.handlebars.i18n.languageFromLocale(locale);
             messageBundles[languageFromLocale] = fluid.extend(true, messageBundles[languageFromLocale], data);
         });
     });
@@ -114,9 +113,9 @@ gpii.handlebars.i18n.loadMessageBundles = function (messageDirs, defaultLocale) 
     return messageBundles;
 };
 
-fluid.defaults("gpii.handlebars.i18n.messageBundleLoader", {
+fluid.defaults("fluid.handlebars.i18n.messageBundleLoader", {
     gradeNames: ["fluid.modelComponent"],
     model: {
-        messageBundles: "@expand:gpii.handlebars.i18n.loadMessageBundles({that}.options.messageDirs, {that}.options.defaultLocale)"
+        messageBundles: "@expand:fluid.handlebars.i18n.loadMessageBundles({that}.options.messageDirs, {that}.options.defaultLocale)"
     }
 });
