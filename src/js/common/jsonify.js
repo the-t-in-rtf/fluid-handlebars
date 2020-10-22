@@ -2,7 +2,7 @@
 
     A handlebars helper to allow us to safely output object content from within a template.  See the docs for details:
 
-    https://github.com/fluid-project/fluid-handlebars/blob/master/docs/jsonifyHelper.md
+    https://github.com/fluid-project/fluid-handlebars/blob/main/docs/jsonifyHelper.md
 
  */
 /* eslint-env node */
