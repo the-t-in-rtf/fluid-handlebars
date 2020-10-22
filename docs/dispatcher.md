@@ -1,6 +1,6 @@
 # `fluid.handlebars.dispatcherMiddleware`
 
-[`fluid.express.middleware`](https://github.com/fluid-project/fluid-express/blob/master/docs/middleware.md) that renders
+[`fluid.express.middleware`](https://github.com/fluid-project/fluid-express/blob/main/docs/middleware.md) that renders
 content using a page template and/or layout based on the URL path.  The dispatcher turns the last part of a path (such
 as `/dispatcher/foo`) into a template name (such as `foo`), and then attempts to find and render that template.  The
 templates available to the dispatcher are  configured in the options for the enclosing [`fluid.express.hb`](handlebars.md)
@@ -12,12 +12,12 @@ that will be used, otherwise, the layout found at `options.defaultLayout` will b
 
 If the last part of the path is supplied but does not match any templates, a 404 error is passed along the middleware
 chain, which will be handled by the next piece of [error
-middleware](https://github.com/fluid-project/fluid-express/blob/master/docs/errorMiddleware.md) in the stack.
+middleware](https://github.com/fluid-project/fluid-express/blob/main/docs/errorMiddleware.md) in the stack.
 
 ## Component Options
 
 This component supports the options available for any
-[`fluid.express.middleware`](https://github.com/fluid-project/fluid-express/blob/master/docs/middleware.md) instance.
+[`fluid.express.middleware`](https://github.com/fluid-project/fluid-express/blob/main/docs/middleware.md) instance.
 In addition, this component supports the following configuration options:
 
 | Option                  | Type     | Description |
@@ -31,15 +31,15 @@ In addition, this component supports the following configuration options:
 ### `{that}.middleware(request, response, next)`
 
 * `request`: An object representing the individual user's request.  See [the `fluid-express`
-  documentation](https://github.com/fluid-project/fluid-express/blob/master/docs/express.md#the-express-request-object) for
+  documentation](https://github.com/fluid-project/fluid-express/blob/main/docs/express.md#the-express-request-object) for
   details.
 * `response`: The response object, which can be used to send information to the requesting user.  See [the
   `fluid-express`
-  documentation](https://github.com/fluid-project/fluid-express/blob/master/docs/express.md#the-express-response-object)
+  documentation](https://github.com/fluid-project/fluid-express/blob/main/docs/express.md#the-express-response-object)
   for details.
 * `next`: The next Express middleware or router function in the chain.  See [the `fluid-express` documentation for
-  details](https://github.com/fluid-project/fluid-express/blob/master/docs/middleware.md#what-is-middleware).
+  details](https://github.com/fluid-project/fluid-express/blob/main/docs/middleware.md#what-is-middleware).
 * Returns: Nothing.
 
 Implements the `middleware` function required by the [`fluid.express.middleware`
-grade](https://github.com/fluid-project/fluid-express/blob/master/docs/middleware.md)
+grade](https://github.com/fluid-project/fluid-express/blob/main/docs/middleware.md)

@@ -19,17 +19,17 @@ renderer associated with your `fluid.express` instance to deliver an error.  To 
 ### `{that}.middleware(error, request, response, next)`
 
 * `error`: The error payload returned by upstream middleware.  See [the `fluid-express`
-  documentation](https://github.com/fluid-project/fluid-express/blob/master/docs/middleware.md#error-handling-middleware)
+  documentation](https://github.com/fluid-project/fluid-express/blob/main/docs/middleware.md#error-handling-middleware)
   for details.
 * `request`: An object representing the individual user's request.  See [the `fluid-express`
-  documentation](https://github.com/fluid-project/fluid-express/blob/master/docs/express.md#the-express-request-object) for
+  documentation](https://github.com/fluid-project/fluid-express/blob/main/docs/express.md#the-express-request-object) for
   details.
 * `response`: The response object, which can be used to send information to the requesting user.  See [the
   `fluid-express`
-  documentation](https://github.com/fluid-project/fluid-express/blob/master/docs/express.md#the-express-response-object)
+  documentation](https://github.com/fluid-project/fluid-express/blob/main/docs/express.md#the-express-response-object)
   for details.
 * `next`: The next Express middleware or router function in the chain.  See [the `fluid-express` documentation for
-  details](https://github.com/fluid-project/fluid-express/blob/master/docs/middleware.md#what-is-middleware).
+  details](https://github.com/fluid-project/fluid-express/blob/main/docs/middleware.md#what-is-middleware).
 * Returns: Nothing.
 
 This invoker fulfills the standard contract for a `fluid.express.middleware.error` component.  It first checks to see

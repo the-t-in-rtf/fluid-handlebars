@@ -2,7 +2,7 @@
 
     Middleware that uses the standard renderer to render a single template.  See the docs for details:
 
-    https://github.com/fluid-project/fluid-handlebars/blob/master/docs/singleTemplateMiddleware.md
+    https://github.com/fluid-project/fluid-handlebars/blob/main/docs/singleTemplateMiddleware.md
 
 */
 /* eslint-env node */

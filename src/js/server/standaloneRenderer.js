@@ -2,7 +2,7 @@
 
     Our common handlebars renderer, used for rendering mail templates as well as within our own Express view engine.
 
-    See the docs for details: https://github.com/fluid-project/fluid-handlebars/blob/master/docs/standaloneRenderer.md
+    See the docs for details: https://github.com/fluid-project/fluid-handlebars/blob/main/docs/standaloneRenderer.md
 
 */
 /* eslint-env node */

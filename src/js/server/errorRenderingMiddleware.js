@@ -3,7 +3,7 @@
     A `fluid.express.middleware.error` component that uses the standard renderer to return an error to a user, see the
     documentation for details:
 
-    https://github.com/fluid-project/fluid-handlebars/blob/master/docs/errorRenderingMiddleware.md
+    https://github.com/fluid-project/fluid-handlebars/blob/main/docs/errorRenderingMiddleware.md
 
  */
 /* eslint-env node */
