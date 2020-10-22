@@ -4,7 +4,7 @@
 
     See the docs for more details:
 
-    https://github.com/fluid-project/fluid-handlebars/blob/master/docs/jsonifyHelper.md
+    https://github.com/fluid-project/fluid-handlebars/blob/main/docs/jsonifyHelper.md
 
  */
 (function (fluid) {

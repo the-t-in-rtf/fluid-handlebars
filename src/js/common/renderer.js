@@ -2,7 +2,7 @@
 
     The common core of both the client and server-side renderers.
 
-    See the docs for details: https://github.com/fluid-project/fluid-handlebars/blob/master/docs/renderer.md
+    See the docs for details: https://github.com/fluid-project/fluid-handlebars/blob/main/docs/renderer.md
 
 */
 /* global fluid, Handlebars, require */

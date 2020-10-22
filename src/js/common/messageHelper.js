@@ -2,7 +2,7 @@
 
     A handlebars helper that interpolates variable content into i18n/l10n message strings and produces string output.
 
-    See the docs for details: https://github.com/fluid-project/fluid-handlebars/blob/master/docs/i18n.md
+    See the docs for details: https://github.com/fluid-project/fluid-handlebars/blob/main/docs/i18n.md
 
  */
 /* eslint-env node */

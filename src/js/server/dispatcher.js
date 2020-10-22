@@ -2,7 +2,7 @@
 
     Middleware that renders a layout and/or page based on the URL path. For more information, see the docs:
 
-    https://github.com/fluid-project/fluid-handlebars/blob/master/docs/dispatcher.md
+    https://github.com/fluid-project/fluid-handlebars/blob/main/docs/dispatcher.md
 
  */
 /* eslint-env node */

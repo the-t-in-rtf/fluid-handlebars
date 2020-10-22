@@ -44,7 +44,7 @@
     };
 
     fluid.handlebars.templateAware.refreshDom = function (that) {
-        // Adapted from: https://github.com/fluid-project/infusion/blob/master/src/framework/preferences/js/Panels.js#L147
+        // Adapted from: https://github.com/fluid-project/infusion/blob/main/src/framework/preferences/js/Panels.js#L147
         var userJQuery = that.container.constructor;
         that.container = userJQuery(that.container.selector, that.container.context);
         // fluid.initDomBinder(that, that.options.selectors);

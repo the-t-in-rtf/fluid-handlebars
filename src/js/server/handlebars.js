@@ -2,7 +2,7 @@
 
     Middleware that adds Handlebars rendering to a `fluid.express` instance.  See the docs for details:
 
-    https://github.com/fluid-project/fluid-handlebars/blob/master/docs/handlebars.md
+    https://github.com/fluid-project/fluid-handlebars/blob/main/docs/handlebars.md
 
 */
 /* eslint-env node */

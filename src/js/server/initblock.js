@@ -2,7 +2,7 @@
 
     A handlebars helper that generates a client-side component definition when the page is rendered on the server-side.
 
-    See the docs for details: https://github.com/fluid-project/fluid-handlebars/blob/master/docs/initBlock.md
+    See the docs for details: https://github.com/fluid-project/fluid-handlebars/blob/main/docs/initBlock.md
 
  */
 /* eslint-env node */

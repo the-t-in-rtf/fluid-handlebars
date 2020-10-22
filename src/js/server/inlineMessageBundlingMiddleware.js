@@ -3,7 +3,7 @@
     Middleware that combines all available Handlebars templates into a single bundle that can be downloaded and used
     by the client-side renderer.  For more information, see the docs:
 
-    https://github.com/fluid-project/fluid-handlebars/blob/master/docs/inline.md
+    https://github.com/fluid-project/fluid-handlebars/blob/main/docs/inline.md
 
  */
 /* eslint-env node */

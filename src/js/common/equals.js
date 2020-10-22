@@ -6,7 +6,7 @@
 
     http://doginthehat.com.au/2012/02/comparison-block-helper-for-handlebars-templates/
 
-    For more information, see the docs: https://github.com/fluid-project/fluid-handlebars/blob/master/docs/helper.md
+    For more information, see the docs: https://github.com/fluid-project/fluid-handlebars/blob/main/docs/helper.md
 
 */
 "use strict";

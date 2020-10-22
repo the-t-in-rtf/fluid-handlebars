@@ -2,7 +2,7 @@
 
     A helper component that adds additional block helpers to a `fluid.express.hb` instance.  See the docs for details:
 
-    https://github.com/fluid-project/fluid-handlebars/blob/master/docs/helper.md
+    https://github.com/fluid-project/fluid-handlebars/blob/main/docs/helper.md
 
  */
 /* eslint-env node */
