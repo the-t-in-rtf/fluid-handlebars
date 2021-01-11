@@ -83,6 +83,11 @@
                 }
             }
         },
+        // TODO: Remove
+        listeners: {
+            "mainRendered.log": { funcName: "console.log", args: ["mainRendered event triggered."] },
+            "containedRendered.log": { funcName: "console.log", args: ["containedRendered event triggered."] }
+        },
         components: {
             main: {
                 type: "fluid.tests.templateAware.serverResourceAware",
