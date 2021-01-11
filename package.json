@@ -13,7 +13,7 @@
         "posttest": "nyc report --reporter text-summary --reporter html"
     },
     "dependencies": {
-        "chokidar": "3.5.0",
+        "chokidar": "3.4.0",
         "fluid-binder": "1.1.1",
         "fluid-express": "1.0.16",
         "handlebars": "4.7.6",
