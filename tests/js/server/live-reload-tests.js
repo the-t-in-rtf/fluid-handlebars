@@ -7,10 +7,6 @@
 "use strict";
 var fluid = require("infusion");
 
-// TODO: Confirm whether these are truly necessary.
-fluid.setLogging(true);
-fluid.logObjectRenderChars = 10240;
-
 fluid.require("%fluid-handlebars");
 
 var copy   = require("recursive-copy");
