@@ -79,6 +79,7 @@ fluid.defaults("fluid.handlebars.watcher", {
     watchDirs: {},
     // See: https://github.com/paulmillr/chokidar#api
     chokidarOptions: {
+        useFsEvents: false, // Added to work around a crash when handling large files.
         ignoreInitial: true, // We do not want to detect files when starting up, only when they change after startup.
         awaitWriteFinish: false,
         depth: 2 // We are typically dealing with template directories that contain at most one level of subdirectories.

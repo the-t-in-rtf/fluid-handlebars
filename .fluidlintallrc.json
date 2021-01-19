@@ -1,0 +1,10 @@
+{
+    "sources": {
+        "md": ["./src/**/*.md", "./tests/**/*.md", "./*.md", "./docs/**/*.md"]
+    },
+    "lintspaces": {
+        "newlines": {
+            "excludes": ["./node_modules/*", "./tests/templates/**/*.handlebars"]
+        }
+    }
+}

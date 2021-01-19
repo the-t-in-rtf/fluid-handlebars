@@ -32,16 +32,10 @@ var testemComponent = fluid.testem.instrumentation({
         errorJsonString: "/errorJsonString",
         errorString:     "/errorString"
     },
-    // Force Firefox to run headless as a temporary fix for Firefox issues on Windows:
-    // https://github.com/testem/testem/issues/1377
-    "browserArgs": {
-        "Firefox": [
-            "--no-remote",
-            "--headless"
-        ]
-    },
     testemOptions: {
-        skip: "PhantomJS,Safari,IE,Headless Chrome" // "Headless Chrome" throws GPU errors at the moment, so just use Chrome.
+        // "Headless Chrome" throws GPU errors at the moment, so just use Chrome.
+        // "Firefox" is now redundant as there is a headless option.
+        skip: "PhantomJS,Safari,IE,Firefox,Headless Chrome"
     },
     components: {
         express: {

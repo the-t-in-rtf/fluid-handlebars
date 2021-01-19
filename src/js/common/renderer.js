@@ -5,7 +5,7 @@
     See the docs for details: https://github.com/fluid-project/fluid-handlebars/blob/main/docs/renderer.md
 
 */
-/* global fluid, Handlebars, require */
+/* global require */
 var fluid_3_0_0 = fluid_3_0_0 || {};
 var Handlebars = Handlebars || {};
 (function (fluid, Handlebars) {
@@ -40,7 +40,7 @@ var Handlebars = Handlebars || {};
      *
      * Our internal handlebars instance needs to be made aware of each of our helpers.
      *
-     * @param {Object} that The renderer component itself.
+     * @param {Object} that - The renderer component itself.
      *
      */
     fluid.handlebars.renderer.loadPartials  = function (that) {
